@@ -1,0 +1,249 @@
+// @import "assets/styles/bootstrap/bootstrap-grid.min";
+@import "assets/styles/bootstrap/bootstrap-customized";
+@import "assets/styles/antd/style";
+@import "assets/styles/airui/style";
+@import "assets/styles/nprogress/style";
+@import "assets/styles/chartist/style";
+@import "assets/styles/chartist-tooltip-plugin/style";
+@import "assets/styles/font-google/font-google.css";
+
+* {
+  body.seller {
+    @import "assets/styles/theme-seller.scss";
+    a:hover {
+      color: $primary;
+    }
+    .loading-svg {
+      stroke: $primary;
+    }
+  }
+  body.buyer {
+    @import "assets/styles/theme-buyer.scss";
+    a:hover {
+      color: $primary;
+    }
+    .loading-svg {
+      stroke: $primary;
+    }
+  }
+  a:hover {
+    text-decoration: none;
+  }
+
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+
+  label {
+    margin-bottom: 0;
+  }
+
+  ul,
+  li {
+    list-style: none;
+  }
+}
+
+body.seller,
+body.buyer {
+  .bid-card .ant-card-body {
+    padding-bottom: 18px !important;
+  }
+
+  .ant-form-item-label {
+    padding-bottom: 0;
+  }
+
+  .ant-form-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .document-managent .ant-upload {
+    width: 100%;
+  }
+
+  .leaflet-popup-content {
+    width: auto !important;
+  }
+
+  // input addon for phone at register
+  .ant-input-group-addon {
+    background-color: #fff;
+  }
+
+  .ant-input-group-wrapper {
+    margin-top: 1px;
+  }
+
+  .ant-input-group-addon .ant-select-disabled {
+    background-color: #f2f4f8;
+  }
+
+  .has-error .ant-input-group-addon .ant-select-disabled {
+    background-color: transparent;
+  }
+
+  .ant-table-thead > tr > th {
+    font-weight: 600;
+  }
+
+  .air__utils__shadow {
+    box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-table-thead > tr > th .ant-table-header-column {
+    width: 100%;
+  }
+
+  .ant-table-thead > tr > th .ant-table-column-sorter {
+    display: flex;
+    /* vertical-align: middle; */
+    align-self: center;
+  }
+
+  .ant-table-thead > tr > th .ant-table-header-column .ant-table-column-sorters {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+  }
+
+  .ant-radio-wrapper {
+    width: 48%;
+  }
+
+  // --------------------------
+  // CUSTOM UTILITY CLASS
+  // dtc = distichain
+  // --------------------------
+  .dtc {
+    &-white-tooltip {
+      .ant-tooltip-inner {
+        background-color: white;
+        color: black;
+        min-width: 300px;
+      }
+      .ant-tooltip-arrow::before {
+        background-color: white;
+        width: 7px;
+        height: 7px;
+      }
+    }
+    &-cursor {
+      &-pointer {
+        cursor: pointer;
+      }
+    }
+    &-bg {
+      &-blue {
+        background-color: #005691;
+      }
+      &-green {
+        background-color: #46be8a;
+      }
+      &-light-green {
+        background-color: #90ee90;
+      }
+      &-red {
+        background-color: #fb434a;
+      }
+      &-orange {
+        background-color: #f1842b;
+      }
+      &-transparent {
+        background: transparent;
+      }
+    }
+    &-br {
+      &-5 {
+        border-radius: rem(5);
+      }
+      &-10 {
+        border-radius: rem(10);
+      }
+    }
+    &-min-width {
+      &-50 {
+        -webkit-min-width: rem(50);
+        -moz-min-width: rem(50);
+        -ms-min-width: rem(50);
+        -o-min-width: rem(50);
+        min-width: rem(50);
+      }
+      &-70 {
+        -webkit-min-width: rem(70);
+        -moz-min-width: rem(70);
+        -ms-min-width: rem(70);
+        -o-min-width: rem(70);
+        min-width: rem(70);
+      }
+      &-100 {
+        -webkit-min-width: rem(100);
+        -moz-min-width: rem(100);
+        -ms-min-width: rem(100);
+        -o-min-width: rem(100);
+        min-width: rem(100);
+      }
+      &-150 {
+        -webkit-min-width: rem(150);
+        -moz-min-width: rem(150);
+        -ms-min-width: rem(150);
+        -o-min-width: rem(150);
+        min-width: rem(150);
+      }
+    }
+    &-max-width {
+      &-100 {
+        -webkit-max-width: rem(100);
+        -moz-max-width: rem(100);
+        -ms-max-width: rem(100);
+        -o-max-width: rem(100);
+        max-width: rem(100);
+      }
+      &-150 {
+        -webkit-max-width: rem(150);
+        -moz-max-width: rem(150);
+        -ms-max-width: rem(150);
+        -o-max-width: rem(150);
+        max-width: rem(150);
+      }
+    }
+    &-h {
+      &-15 {
+        height: 15%;
+      }
+      &-fix-410 {
+        height: rem(410);
+      }
+      &-fix-380 {
+        height: rem(380);
+      }
+      &-min-fix-50 {
+        min-height: rem(90);
+      }
+      &-min-fix-90 {
+        min-height: rem(90);
+      }
+      &-min-fix-200 {
+        min-height: rem(200);
+      }
+      &-min-fix-410 {
+        min-height: rem(410);
+      }
+    }
+    &-w {
+      &-15 {
+        width: 15%;
+      }
+      &-fit-content {
+        width: fit-content;
+      }
+      &-80 {
+        width: 80%;
+      }
+      &-95 {
+        width: 95%;
+      }
+    }
+    &-bottom-0 {
+      bottom: 0;
+    }
+  }
+}

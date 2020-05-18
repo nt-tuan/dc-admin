@@ -1,0 +1,12 @@
+// Import mixins
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/*  ANT DESIGN SPIN */
+
+.ant-spin-blur {
+  filter: none !important;
+}
+
+.ant-spin-nested-loading > div > .ant-spin {
+  max-height: none;
+}

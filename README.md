@@ -1,29 +1,65 @@
-# README #
+## Techs
 
-This README would normally document whatever steps are necessary to get your application up and running.
+- React
+- React-Router
+- Redux
+- Redux-Saga
+- [Ant Design](https://ant.design/docs/react/introduce "Ant Design")
+- Bootstrap 4, ReactStrap
+- Axios
+- Sass
+- Jest
+- StompJS
+- [AirUI template](https://www.airuitemplate.com/preview/react/#/icons/feather-icons "AirUI template")
 
-### What is this repository for? ###
+## Useful links
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+- [Bootstrap 4 cheatsheet](https://hackerthemes.com/bootstrap-cheatsheet/ "Bootstrap 4 cheatsheet")
 
-### How do I get set up? ###
+## Documentation & Source quality control
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+- Prettier
+- Husky
+- Eslint
 
-### Contribution guidelines ###
+## Folder structure
 
-* Writing tests
-* Code review
-* Other guidelines
+```
+Distichain-frontend
+│
+└── src
+    ├── assets
+    ├── commons
+	├── HOCs
+	├── hooks
+    ├── components
+    ├── layouts
+	├── pages
+	├── redux
+	├── utils
+    └── services
+```
 
-### Who do I talk to? ###
+## Available Scripts
 
-* Repo owner or admin
-* Other community or team contact
+In the project directory, you can run:
+
+### `yarn start`
+
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### `yarn test`
+
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.

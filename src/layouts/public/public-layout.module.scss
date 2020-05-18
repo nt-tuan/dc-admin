@@ -1,0 +1,40 @@
+@import "assets/styles/mixins.scss";
+
+#left {
+  background: url("../../assets/images/login/login-left-top.png") no-repeat;
+  min-height: 100px;
+  background-size: contain;
+}
+
+#right {
+  background: url("../../assets/images/login/login-right.png") no-repeat;
+  background-size: contain;
+  background-position: bottom;
+}
+
+#logo {
+  margin-top: -4rem;
+  max-height: 5rem;
+}
+
+@media only screen and (min-width: 768px) {
+  #left {
+    background: url("../../assets/images/login/login-left-top.png") no-repeat;
+    background-size: cover;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #left {
+    background: url("../../assets/images/login/login-left.png") no-repeat;
+    background-size: contain;
+    height: 100%;
+  }
+}
+
+#public-layout {
+  a {
+    color: $darkblue;
+  }
+}
