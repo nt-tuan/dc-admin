@@ -1,10 +1,8 @@
-import React from "react";
 import { Layout } from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import classNames from "classnames";
-import { TopBar, SubBar, MenuLeft } from "components";
-import { ROUTES } from "commons/consts";
+import { MenuLeft, SubBar, TopBar } from "components";
+import React from "react";
+import { connect } from "react-redux";
 
 const AuthLayout = ({
   children,

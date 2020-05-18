@@ -3,7 +3,6 @@ import { ROUTES } from "commons/consts";
 import { APIError } from "commons/types";
 import { removeAuthCredential } from "./auth.util";
 import { log } from "./logger.util";
-import * as Sentry from "@sentry/browser";
 
 export const axiosErrorHandler = (err) => {
   if (err.response) {
@@ -47,11 +46,5 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
       log(error);
     }
     message.error("Something went wrong, please press F5 to refresh the page", 0);
-    if (process.env.NODE_ENV === "production") {
-      Sentry.withScope((scope) => {
-        scope.setExtras("async Error");
-        Sentry.captureException(error);
-      });
-    }
   }
 };

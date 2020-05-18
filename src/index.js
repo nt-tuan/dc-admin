@@ -36,8 +36,6 @@ const composeEnhancers =
 const store = createStore(reducers(history), composeEnhancers(applyMiddleware(...middlewares)));
 sagaMiddleware.run(sagas);
 
-// Sentry.init({ dsn: process.env.REACT_APP_SENTRY_DNS });
-
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={store}>

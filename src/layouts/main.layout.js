@@ -1,15 +1,13 @@
 import { Loader } from "components";
+import { modifyVars } from "less";
 import NProgress from "nprogress";
 import React, { Fragment, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { Redirect, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
-import { ERROR_LAYOUT_ROUTES, NO_LAYOUT_ROUTES, PUBLIC_ROUTES, ROUTES } from "../commons/consts";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
-import qs from "qs";
-import { modifyVars } from "less";
 
 const Layouts = {
   public: PublicLayout,
@@ -22,7 +20,6 @@ export const Layout = React.memo(({ children }) => {
   const user = useSelector(selectCurrentUser);
   const lastPathRole = useRef(undefined);
   const { pathname } = location;
-  const { from } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   useEffect(() => {
     // NProgress Management

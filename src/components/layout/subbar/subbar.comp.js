@@ -4,19 +4,7 @@ import { ROUTES } from "commons/consts";
 import { getPrefixUrl, removeIdPartFromProductUrl } from "utils";
 import { Helmet } from "react-helmet";
 
-const TEXT_ONLY_PATH = [
-  ROUTES.BUYER_INVENTORY_EXPLORE,
-  ROUTES.SELLER_INVENTORY_REVIEW_AND_SELL,
-  ROUTES.SELLER_BID_DETAILS,
-  ROUTES.BUYER_BID_NEGOTIATION,
-  ROUTES.SELLER_BID_NEGOTIATION,
-
-  ROUTES.BUYER_PENDING_APPROVAL_POST_PRODUCT,
-  ROUTES.SELLER_PENDING_APPROVAL_POST_PRODUCT,
-
-  "offer-approved",
-  "order-management/"
-];
+const TEXT_ONLY_PATH = [];
 
 const _SubBar = () => {
   const path = location.pathname;

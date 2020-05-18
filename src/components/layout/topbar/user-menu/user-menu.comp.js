@@ -1,11 +1,10 @@
 import { Avatar, Dropdown, Menu } from "antd";
 import classNames from "classnames";
-import { ROUTES, USER_TABS_NAME } from "commons/consts";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
-import { disableLinkClick, getPrefixUrl } from "utils";
+import { disableLinkClick } from "utils";
 import styles from "./style.module.scss";
 
 const AuthorizedMenuItem = ({ canView, data = {} }) => {
@@ -23,7 +22,6 @@ const AuthorizedMenuItem = ({ canView, data = {} }) => {
 };
 
 const _ProfileMenu = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const username = useSelector(USER_DUCK.selectUsername);
 
@@ -76,42 +74,10 @@ const _ProfileMenu = () => {
   };
 
   const getMenu = () => {
-    const prefixUrl = getPrefixUrl(location.pathname);
-    switch (prefixUrl) {
-      case ROUTES.BUYER_PREFIX:
-        return buildMenu({
-          viewName: "Buyer",
-          menuItems: [
-            MENU_ITEMS("/buyer").profile,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).sublist,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).seller,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).userManagement,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).auditLog
-          ]
-        });
-      case ROUTES.SELLER_PREFIX:
-        return buildMenu({
-          viewName: "Seller",
-          menuItems: [
-            MENU_ITEMS("/seller").profile,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).buyer,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).userManagement,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).auditLog
-          ]
-        });
-      case ROUTES.ADMIN_PREFIX:
-        return buildMenu({
-          viewName: "Admin",
-          menuItems: [
-            MENU_ITEMS("/seller").profile,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).seller,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).userManagement,
-            MENU_ITEMS(getPrefixUrl(location.pathname)).auditLog
-          ]
-        });
-      default:
-        break;
-    }
+    return buildMenu({
+      viewName: "User",
+      menuItems: []
+    });
   };
 
   return (
@@ -145,54 +111,4 @@ const UserMenuItem = React.memo(({ title, iconClassesNames, url, disabled = fals
       <span>{title}</span>
     </Link>
   );
-});
-
-const authoNames = {
-  UserManagementMenuItem: "UserManagementMenuItem",
-  UserProfileTopMenuKey: "UserProfileTopMenu",
-  UserSubListTopMenuKey: "UserSubListTopMenu",
-  AuditLogMenuItem: "AuditLogMenuItem"
-};
-
-const MENU_ITEMS = (prefixUrl) => ({
-  profile: {
-    title: "My Profile",
-    url: `${prefixUrl}${ROUTES.PROFILE}/${USER_TABS_NAME.profileInfo}`,
-    iconClassesNames: ["fe fe-user"],
-    authorizeName: authoNames.UserProfileTopMenuKey,
-    disabledOnly: true
-  },
-  seller: {
-    title: "Seller",
-    url: ROUTES.SELLER_DASHBOARD_ROUTE,
-    iconClassesNames: ["fe fe-corner-up-right"]
-  },
-  buyer: {
-    title: "Buyer",
-    url: ROUTES.BUYER_DASHBOARD_ROUTE,
-    iconClassesNames: ["fe fe-corner-up-right"]
-  },
-  sublist: {
-    title: "Product Subscriptions",
-    url: ROUTES.BUYER_SUB_LIST,
-    iconClassesNames: ["fe fe-shopping-cart"],
-    authorizeName: authoNames.UserSubListTopMenuKey
-  },
-  roleManagement: {
-    title: "Role Management",
-    url: ROUTES.ADMIN_USER_MANAGEMENT_ROUTE,
-    iconClassesNames: ["fe fe-unlock"]
-  },
-  userManagement: {
-    title: "User Management",
-    url: ROUTES.ADMIN_USER_MANAGEMENT_ROUTE,
-    iconClassesNames: ["fe fe-users"],
-    authorizeName: authoNames.UserManagementMenuItem
-  },
-  auditLog: {
-    title: "Audit Log",
-    url: ROUTES.ADMIN_AUDIT_LOG_ROUTE,
-    iconClassesNames: ["fe fe-list"],
-    authorizeName: authoNames.AuditLogMenuItem
-  }
 });

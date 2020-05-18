@@ -1,16 +1,8 @@
-import {
-  BID_STATUS,
-  ORDER_PROCESS,
-  ORDER_STATUS,
-  ORDER_STATUS_LABEL,
-  ORDER_PROCESS_LABEL
-} from "commons/consts";
 import domtoimage from "dom-to-image";
-import moment from "moment-timezone";
 
 export * from "./auth.util";
-export * from "./string.util";
 export * from "./sort.util";
+export * from "./string.util";
 export * from "./web-socket.util";
 
 export const isScreensize = (size) => {
@@ -38,6 +30,9 @@ export const isScreensize = (size) => {
 };
 
 export const getPrefixUrl = (pathname) => {
+  if (pathname.includes("/") === false) {
+    return pathname;
+  }
   const firstUrlSegment = pathname.split("/")[1];
   return firstUrlSegment ? "/" + firstUrlSegment : "/";
 };

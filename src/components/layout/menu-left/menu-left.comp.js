@@ -1,14 +1,12 @@
 import { Avatar, Layout } from "antd";
 import classNames from "classnames";
-import { ROUTES, USER_TABS_NAME } from "commons/consts";
 import React, { useState } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { selectMenuData } from "redux/menu/reducers";
 import * as SETTING_DUCK from "redux/settings/settings.duck";
 import { selectCurrentUser } from "redux/user/user.duck";
-import { disableLinkClick, getPrefixUrl } from "utils";
+import { getPrefixUrl } from "utils";
 import styles from "./menu-left-comp.module.scss";
 
 const { Sider } = Layout;
@@ -37,7 +35,6 @@ export const MenuLeft = () => {
   const menuData = useSelector(selectMenuData);
 
   const urlPrefix = getPrefixUrl(location.pathname);
-  const parsedUrlPrefix = urlPrefix === "/admin" ? "/seller" : urlPrefix;
   const role = urlPrefix.replace("/", "");
 
   const toggleMenu = () => {
@@ -71,35 +68,6 @@ export const MenuLeft = () => {
   };
 
   const generateMenuItems = () => {
-    const handleMenuClick = (e, key) => {
-      switch (key) {
-        case "inventoryManagement": {
-          break;
-        }
-        case "cancelledOrder":
-          break;
-        case "BiddingArena":
-          break;
-        default:
-          break;
-      }
-    };
-
-    const renderMenuStatus = (key, title) => {
-      switch (key) {
-        case "inventoryManagement": {
-          return title;
-        }
-        case "cancelledOrder": {
-          return title;
-        }
-        case "BiddingArena": {
-          return title;
-        }
-        default:
-          break;
-      }
-    };
     const menuItem = (item) => {
       const { key, title, icon, url } = item;
       if (item.category) {
@@ -118,10 +86,9 @@ export const MenuLeft = () => {
         >
           {item.url && (
             <NavLink
-              title={renderMenuStatus(key, title)}
+              title={title}
               exact
               to={url}
-              onClick={(e) => handleMenuClick(e, key)}
               className={styles.air__menuLeft__link}
               activeClassName={styles.air__menuLeft__item__active}
             >
@@ -171,7 +138,7 @@ export const MenuLeft = () => {
     return (
       <Link
         title="User Profile"
-        to={`${parsedUrlPrefix}${ROUTES.PROFILE}/${USER_TABS_NAME.profileInfo}`}
+        to="/"
         className={classNames(styles.air__menuLeft__user)}
         style={{ cursor: "pointer" }}
       >
@@ -217,25 +184,10 @@ export const MenuLeft = () => {
             <span />
           </span>
           {renderUserSection()}
-          <Scrollbars
-            autoHide
-            renderThumbVertical={({ ...props }) => (
-              <div
-                {...props}
-                style={{
-                  width: "5px",
-                  borderRadius: "inherit",
-                  backgroundColor: "rgba(195, 190, 220, 0.4)",
-                  left: "1px",
-                  marginRight: 0
-                }}
-              />
-            )}
-          >
-            <div id="menu-left-container" className={styles.air__menuLeft__container}>
-              <ul className={styles.air__menuLeft__list}>{generateMenuItems()}</ul>
-            </div>
-          </Scrollbars>
+
+          <div id="menu-left-container" className={styles.air__menuLeft__container}>
+            <ul className={styles.air__menuLeft__list}>{generateMenuItems()}</ul>
+          </div>
         </div>
       </div>
       <span className={styles.air__menuLeft__backdrop} onClick={toggleMobileMenu} />

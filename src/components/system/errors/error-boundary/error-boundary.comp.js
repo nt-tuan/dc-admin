@@ -1,7 +1,6 @@
 import React from "react";
 import { log } from "utils/logger.util";
 import { message } from "antd";
-import * as Sentry from "@sentry/browser";
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,11 +20,6 @@ export class ErrorBoundary extends React.Component {
       log(error);
       log(errorInfo);
       console.groupEnd();
-    } else {
-      Sentry.withScope((scope) => {
-        scope.setExtras({ "Component Error": errorInfo });
-        Sentry.captureException(error);
-      });
     }
   }
 

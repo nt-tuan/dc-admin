@@ -1,28 +1,8 @@
 import { all, put, call, takeEvery } from "redux-saga/effects";
-import actions, { getBuyerData, getSellerData, getAdminData } from "./actions";
+import actions, { getUserData } from "./actions";
 
-export function* GET_BUYER_DATA() {
-  const menuData = yield call(getBuyerData);
-  yield put({
-    type: "menu/SET_STATE",
-    payload: {
-      menuData
-    }
-  });
-}
-
-export function* GET_SELLER_DATA() {
-  const menuData = yield call(getSellerData);
-  yield put({
-    type: "menu/SET_STATE",
-    payload: {
-      menuData
-    }
-  });
-}
-
-export function* GET_ADMIN_DATA() {
-  const menuData = yield call(getAdminData);
+export function* GET_USER_DATA() {
+  const menuData = yield call(getUserData);
   yield put({
     type: "menu/SET_STATE",
     payload: {
@@ -32,9 +12,5 @@ export function* GET_ADMIN_DATA() {
 }
 
 export default function* rootSaga() {
-  yield all([
-    takeEvery(actions.SET_BUYER_DATA, GET_BUYER_DATA),
-    takeEvery(actions.SET_SELLER_DATA, GET_SELLER_DATA),
-    takeEvery(actions.SET_ADMIN_DATA, GET_ADMIN_DATA)
-  ]);
+  yield all([takeEvery(actions.SET_USER_DATA, GET_USER_DATA)]);
 }
