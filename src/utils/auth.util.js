@@ -1,14 +1,13 @@
 import store from "store";
-import moment from "moment-timezone";
 const AUTH_LOCALSTORAGE_KEY = "auth";
 
 export const getAccessToken = async () => {
   const authCredential = store.get(AUTH_LOCALSTORAGE_KEY);
   if (authCredential) {
     const { rememberMe, createdDate } = authCredential;
-    if (!rememberMe) {
-      const curDate = moment();
-      let expiredDate = moment(createdDate).add(2, "days");
+    if (rememberMe === false) {
+      const curDate = new Date(createdDate);
+      let expiredDate = curDate - 2;
       if (expiredDate < curDate) {
         throw new Error("401");
       }

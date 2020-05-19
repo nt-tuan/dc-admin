@@ -1,11 +1,8 @@
-import "c3/c3.min.css";
 import { ErrorBoundary } from "components";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import "lightgallery.js/dist/css/lightgallery.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import { LightgalleryProvider } from "react-lightgallery";
 import { Provider } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
@@ -39,9 +36,7 @@ sagaMiddleware.run(sagas);
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={store}>
-      <LightgalleryProvider>
-        <Router history={history} />
-      </LightgalleryProvider>
+      <Router history={history} />
     </Provider>
   </ErrorBoundary>,
   document.getElementById("root")
