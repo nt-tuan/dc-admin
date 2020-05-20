@@ -1,10 +1,7 @@
 {
-  "name": "distichain-frontend",
+  "name": "distichain-admin-frontend",
   "version": "1.0.0",
   "private": true,
-  "sideEffects": [
-    "./src/web-workers/dashboard/product-timeline-chart.worker.js"
-  ],
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",

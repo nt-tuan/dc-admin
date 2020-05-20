@@ -25,7 +25,7 @@
 ## Folder structure
 
 ```
-Distichain-frontend
+Distichain-admin-frontend
 │
 └── src
     ├── assets
