@@ -21,4 +21,5 @@ export const ADMIN_PREFIX = "/admin";
 export const PROFILE = "/profile";
 export const NOTIFICATION = "/notifications";
 export const INVENTORY = "/inventory-management";
+export const ORDERS = "/orders";
 export const USER_MANAGEMENT = "/user-management";

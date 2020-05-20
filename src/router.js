@@ -80,6 +80,11 @@ const privateRoutes = [
     path: ROUTES.USER_MANAGEMENT,
     Component: loadable(() => import("pages/user-management/user-management.page")),
     exact: true
+  },
+  {
+    path: ROUTES.ORDERS,
+    Component: loadable(() => import("pages/orders/orders.page")),
+    exact: true
   }
 ];
 
