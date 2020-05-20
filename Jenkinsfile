@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        registry = 'nexus.morphotech.co.uk/distichain-frontend'
+        registry = 'nexus.morphotech.co.uk/distichain-admin-frontend'
         registryUrl = 'https://nexus.morphotech.co.uk'
         registryCredential = 'nexus'
         dockerImage = ''
@@ -28,7 +28,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    dockerImage = docker.build("${registry}:${portal_tag_version}", "-f Dockerfile-${env.environment} .")
+                    dockerImage = docker.build("${registry}:${portal_admin_tag_version}", "-f Dockerfile-${env.environment} .")
                 }
             }
         }
