@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { UserMgtSellerTable } from "components/widgets/user-management";
+import React, { useState, useEffect, Fragment } from "react";
+import { UserMgtSellerTable, AssignBadgesModal } from "components/widgets/user-management";
 import { USER_MANAGEMENT_SCHEMA } from "commons/schemas/user-management.schema";
+import { useBooleanState } from "hooks/utilHooks";
 
 const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
 
 export const UserManagementSellerTab = () => {
   const [data, setData] = useState([]);
+  const [showForm, toggleShowForm] = useBooleanState(false);
 
   useEffect(() => {
     setData(users.sort((a, b) => a.id - b.id));
@@ -30,7 +32,18 @@ export const UserManagementSellerTab = () => {
     setData(res);
   };
 
-  return <UserMgtSellerTable users={data} onUnblock={handleUnblock} onBlock={handleBlock} />;
+  return (
+    <Fragment>
+      <UserMgtSellerTable
+        users={data}
+        onUnblock={handleUnblock}
+        onBlock={handleBlock}
+        onViewAssignBadges={toggleShowForm}
+      />
+
+      <AssignBadgesModal showForm={showForm} toggleShowForm={toggleShowForm} />
+    </Fragment>
+  );
 };
 
 const users = [
