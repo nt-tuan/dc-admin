@@ -1,13 +1,16 @@
+import { ConstMediator } from "commons/consts/const.mediator";
 import { Loader } from "components";
 import { modifyVars } from "less";
 import NProgress from "nprogress";
 import React, { Fragment, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
+
+const privateRoutes = ConstMediator.getPrivateRoutes();
 
 const Layouts = {
   public: PublicLayout,
@@ -20,6 +23,10 @@ export const Layout = React.memo(({ children }) => {
   const user = useSelector(selectCurrentUser);
   const lastPathRole = useRef(undefined);
   const { pathname } = location;
+  const isPrivateRoute = useRouteMatch({
+    path: privateRoutes,
+    exact: true
+  });
 
   useEffect(() => {
     // NProgress Management
@@ -41,7 +48,10 @@ export const Layout = React.memo(({ children }) => {
   }, [location]);
 
   const getLayout = () => {
-    return "private";
+    if (isPrivateRoute !== null) {
+      return "private";
+    }
+    return "public";
   };
 
   const BootstrappedLayout = () => {
@@ -53,13 +63,21 @@ export const Layout = React.memo(({ children }) => {
     const isNotFoundPage = getLayout() === "notfound";
 
     // show loader when user in check authorization process, not authorized yet and not on login pages
-    if (isUserLoading && !isUserAuthorized && isPrivateLayout) {
+    if (isUserLoading && isUserAuthorized === false && isPrivateLayout) {
       return <Loader />;
     }
 
     // Error page or page not found
     if (isErrorPage || isNotFoundPage) {
       return children;
+    }
+
+    if (isUserAuthorized === false && isPrivateLayout) {
+      return <Redirect to="/login" />;
+    }
+
+    if (isUserAuthorized && isPrivateLayout === false) {
+      return <Redirect to="/" />;
     }
 
     // in other case render previously set layout

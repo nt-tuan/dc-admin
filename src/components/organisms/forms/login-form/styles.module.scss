@@ -1,0 +1,31 @@
+@import "assets/styles/mixins.scss";
+
+//////////////////////////////////////////////////////////////////////////////////////////
+/* AUTH */
+
+.auth {
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  .phone-prefix {
+    min-width: rem(70);
+    font-size: 0.9rem;
+    margin: -2px -13px;
+  }
+}
+
+.container {
+  max-width: rem(700);
+  min-height: rem(400);
+  // width: 100%;
+  // box-shadow: 0 4px 38px 0 rgba(22, 21, 55, 0.06), 0 0 21px 0 rgba(22, 21, 55, 0.03);
+  border-radius: 5px;
+}
+
+.footerNav {
+  li {
+    margin: rem(5) rem(14);
+  }
+}

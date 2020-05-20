@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "commons/consts";
-import { getPrefixUrl, removeIdPartFromProductUrl } from "utils";
+import { removeIdPartFromProductUrl } from "utils";
 import { Helmet } from "react-helmet";
 
 const TEXT_ONLY_PATH = [];
 
 const _SubBar = () => {
   const path = location.pathname;
-  const prefixUrl = getPrefixUrl(path);
-  const resourceNames = path.split("/");
+  // const prefixUrl = getPrefixUrl(path);
+  const resourceNames = path === "/" ? [" "] : path.split("/");
   const title = removeIdPartFromProductUrl(resourceNames[resourceNames.length - 1]); //use the last breadcrumb as title
 
   const isTextOnlyPath = (link) => {
@@ -61,7 +61,10 @@ const _SubBar = () => {
   };
 
   const parseHeader = () => {
-    return `${parseRoleText(prefixUrl)} - ${title.replace(/-/g, " ")}`;
+    if (path === "/") {
+      return "Home";
+    }
+    return `${title.replace(/-/g, " ")}`;
   };
 
   return resourceNames.length === 0 ? null : (
@@ -69,7 +72,7 @@ const _SubBar = () => {
       <Helmet title={parseHeader()} />
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white">
         <h3 className="text-capitalize">{parseHeader()}</h3>
-        {resourceNames.length === 1 ? null : (
+        {resourceNames.length === 0 ? null : (
           <div className="d-flex flex-wrap align-items-center mr-4">{renderBreadCrumbs()}</div>
         )}
       </div>

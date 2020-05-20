@@ -15,12 +15,14 @@ class HttpApi {
     this.api = axios.create(config);
   }
 
-  get = (authToken) => async (uri, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  setAuthHeader = (authToken) => {
+    this.api.defaults.headers.common["Authorization"] = `bearer ${authToken}`;
+  };
+
+  get = async (uri, params) => {
     try {
       const result = await this.api.get(uri, {
-        params: params,
-        headers: { ...authHeader }
+        params: params
       });
       return result.data;
     } catch (error) {
@@ -28,12 +30,10 @@ class HttpApi {
     }
   };
 
-  post = (authToken) => async (uri, body, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  post = async (uri, body, params) => {
     try {
       const result = await this.api.post(uri, body, {
-        params: params,
-        headers: { ...authHeader }
+        params: params
       });
       return result.data;
     } catch (error) {
@@ -41,15 +41,13 @@ class HttpApi {
     }
   };
 
-  postFile = (authToken) => async (uri, file, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  postFile = async (uri, file, params) => {
     const formDataTypeHeader = {
       "Content-Type": "multipart/form-data"
     };
     try {
       const result = await this.api.post(uri, file, {
-        params: params,
-        headers: { ...authHeader, ...formDataTypeHeader }
+        params: params
       });
       return result.data;
     } catch (error) {
@@ -57,15 +55,14 @@ class HttpApi {
     }
   };
 
-  putFile = (authToken) => async (uri, file, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  putFile = async (uri, file, params) => {
     const formDataTypeHeader = {
       "Content-Type": "multipart/form-data"
     };
     try {
       const result = await this.api.put(uri, file, {
         params: params,
-        headers: { ...authHeader, ...formDataTypeHeader }
+        headers: { ...formDataTypeHeader }
       });
       return result.data;
     } catch (error) {
@@ -73,12 +70,10 @@ class HttpApi {
     }
   };
 
-  put = (authToken) => async (uri, body, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  put = async (uri, body, params) => {
     try {
       const result = await this.api.put(uri, body, {
-        params: params,
-        headers: { ...authHeader }
+        params: params
       });
       return result.data;
     } catch (error) {
@@ -86,12 +81,10 @@ class HttpApi {
     }
   };
 
-  delete = (authToken) => async (uri, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  delete = async (uri, params) => {
     try {
       const result = await this.api.delete(uri, {
-        params: params,
-        headers: { ...authHeader }
+        params: params
       });
       return result.data;
     } catch (error) {
@@ -99,12 +92,10 @@ class HttpApi {
     }
   };
 
-  patch = (authToken) => async (uri, body, params) => {
-    const authHeader = authToken ? { Authorization: `bearer ${authToken}` } : {};
+  patch = async (uri, body, params) => {
     try {
       const result = await this.api.patch(uri, body, {
-        params: params,
-        headers: { ...authHeader }
+        params: params
       });
       return result.data;
     } catch (error) {

@@ -1,5 +1,3 @@
-import { PERMISSIONS_IDS, PERMISSION_LEVELS } from "commons/consts";
-
 export const SET_STATE = "@@DTC/USER/SET_STATE";
 export const LOGIN = "@@DTC/USER/LOGIN";
 export const LOAD_CURRENT_ACCOUNT = "@@DTC/USER/LOAD_CURRENT_ACCOUNT";
@@ -59,19 +57,7 @@ export const selectUserPermissionList = (state) => state.user.permissionList;
 export const selectUserLoginStatus = (state) => state.user.authorized;
 export const selectSuccessfulTransactions = (state) => state.user.company.totalNumberOfTransaction;
 export const selectLargestTransactionValue = (state) => state.user.company.transactionValue;
-export const selectIsAdminRight = (state) => {
-  const user = state.user;
-  const { permissionList } = user;
-  let isAdmin = false;
-  if (permissionList && Array.isArray(permissionList)) {
-    isAdmin = permissionList.some(
-      ({ permissionCatalogId, permissionLevel }) =>
-        permissionCatalogId === PERMISSIONS_IDS.ADMIN &&
-        permissionLevel === PERMISSION_LEVELS.APPROVER
-    );
-  }
-  return isAdmin;
-};
+
 export const selectCompanyId = (state) => state.user.company.id;
 
 export const selectUpdateTimeZone = (state) => {

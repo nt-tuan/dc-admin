@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import styles from "./footer-comp.module.scss";
-import logoImg from "../../../assets/images/logo.png";
+import logoImg from "assets/images/logo.png";
 
 const mapStateToProps = ({ settings }) => ({ settings });
 

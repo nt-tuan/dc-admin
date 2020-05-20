@@ -1,12 +1,11 @@
 import { ROUTES } from "commons/consts";
-import { Loader } from "components";
-import { MenuDataManager } from "components/layout";
+import { Loader, MenuDataManager } from "components";
 import { ConnectedRouter } from "connected-react-router";
 import { Layout } from "layouts/main.layout";
 import NotFoundPage from "pages/system/404/404.page";
 import React, { Suspense } from "react";
 import { connect } from "react-redux";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
@@ -43,12 +42,6 @@ class Router extends React.Component {
                 );
               }}
             >
-              <Route
-                exact
-                path={ROUTES.HOME_ROUTE}
-                render={() => <Redirect to={ROUTES.SELLER_DASHBOARD_ROUTE} />}
-              />
-
               {routes.map(({ path, Component, exact }) => {
                 return (
                   <Route path={path} key={path} exact={exact}>
@@ -70,12 +63,19 @@ export default Router;
 const loadable = (loader) => React.lazy(loader);
 
 const publicRoutes = [
-  // public
   {
     path: ROUTES.LOGIN_ROUTE,
+    Component: loadable(() => import("pages/login/login.page")),
+    exact: true
+  }
+];
+
+const privateRoutes = [
+  {
+    path: ROUTES.HOME_ROUTE,
     Component: loadable(() => import("pages/home/home.page")),
     exact: true
   }
 ];
 
-const routes = [...publicRoutes];
+const routes = [...publicRoutes, ...privateRoutes];

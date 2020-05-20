@@ -22,9 +22,7 @@ const sagaMiddleware = createSagaMiddleware({
 });
 const routeMiddleware = routerMiddleware(history);
 const middlewares = [sagaMiddleware, routeMiddleware];
-// if (process.env.NODE_ENV === 'development') {
-//   middlewares.push(logger)
-// }
+
 const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

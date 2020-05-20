@@ -2,10 +2,6 @@ import logoImgNotext from "assets/images/logo-notext.png";
 import logoImg from "assets/images/logo.png";
 import React from "react";
 import { isScreensize } from "utils";
-// import Search from "./Search";
-// import IssuesHistory from "./IssuesHistory";
-// import Status from "./Status";
-// import LanguageSwitcher from "./LanguageSwitcher";
 import style from "./topbar-comp.module.scss";
 import { ProfileMenu } from "./user-menu/user-menu.comp";
 

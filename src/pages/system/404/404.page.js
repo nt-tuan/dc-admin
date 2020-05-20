@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import Error404 from "components/system/errors/404/404.comp";
+import { Error404 } from "components";
 
 const Error404Page = () => (
   <div>
