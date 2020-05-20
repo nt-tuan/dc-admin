@@ -51,3 +51,13 @@ export const getIdPartFromProductUrl = (str) => {
 };
 
 export const disableLinkClick = (disabled, e) => (disabled ? e.preventDefault() : () => {});
+
+export const roundToHalfDecimal = (value) => {
+  // ex: value: 1.4 => 1.5, 1.2 => 1.0
+
+  if (value) {
+    return Math.round(value * 2) / 2;
+  }
+
+  return 0;
+};

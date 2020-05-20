@@ -1,0 +1,23 @@
+@import "assets/styles/mixins.scss";
+
+.mark {
+  background-color: yellow;
+}
+:global {
+  body.seller {
+    @import "assets/styles/theme-seller.scss";
+    :local {
+      .mark {
+        color: $primary;
+      }
+    }
+  }
+  body.buyer {
+    @import "assets/styles/theme-buyer.scss";
+    :local {
+      .mark {
+        color: $primary;
+      }
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { ROUTES } from "commons/consts";
+
 const actions = {
   SET_STATE: "menu/SET_STATE",
   SET_BUYER_DATA: "menu/SET_BUYER_DATA",
@@ -20,7 +22,7 @@ export async function getUserData() {
       title: "Users",
       key: "Users",
       icon: "fe fe-users",
-      url: "/"
+      url: ROUTES.USER_MANAGEMENT
     },
     {
       title: "Services",

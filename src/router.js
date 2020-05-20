@@ -75,6 +75,11 @@ const privateRoutes = [
     path: ROUTES.HOME_ROUTE,
     Component: loadable(() => import("pages/home/home.page")),
     exact: true
+  },
+  {
+    path: ROUTES.USER_MANAGEMENT,
+    Component: loadable(() => import("pages/user-management/user-management.page")),
+    exact: true
   }
 ];
 
