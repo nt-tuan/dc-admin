@@ -18,7 +18,7 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm }) => {
           <div className="w-50 mx-auto">
             <ManuFactorBadge />
           </div>
-          <div>
+          <div className="font-weight-bold">
             <span>
               <Checkbox>Manufacturer</Checkbox>
             </span>
@@ -29,7 +29,7 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm }) => {
           <div className="w-50 mx-auto">
             <DistributorBadge />
           </div>
-          <div>
+          <div className="font-weight-bold">
             <span>
               <Checkbox>Distributor</Checkbox>
             </span>

@@ -56,7 +56,7 @@ export const USER_MANAGEMENT_SCHEMA = Object.freeze({
   STATUS_LABELS: USER_MGT_STATUS_LABELS
 });
 
-export const getUserMgtTableSchema = ({ onUnblock, onBlock, onViewAssignBadges }) => ({
+export const getUserMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => ({
   [FIELDS.company]: {
     title: LABELS[FIELDS.company],
     dataIndex: FIELDS.company,
@@ -154,21 +154,17 @@ export const getUserMgtTableSchema = ({ onUnblock, onBlock, onViewAssignBadges }
         <React.Fragment>
           <Fragment>
             {status === USER_MGT_STATUS_LABELS[USER_MGT_STATUS.SUSPENDED] ? (
-              <Button
-                onClick={() => onUnblock(id)}
-                type="primary"
-                className="dtc-min-width-50 mr-2"
-              >
+              <Button onClick={() => onUnlock(id)} type="primary" className="dtc-min-width-50 mr-2">
                 <i className="fe fe-play" style={{ verticalAlign: "middle" }}></i>
               </Button>
             ) : (
-              <Button onClick={() => onBlock(id)} type="danger" className="dtc-min-width-50 mr-2">
+              <Button onClick={() => onLock(id)} type="danger" className="dtc-min-width-50 mr-2">
                 <i className="fe fe-pause" style={{ verticalAlign: "middle" }}></i>
               </Button>
             )}
 
             <Button type="primary" className="dtc-min-width-50 mr-2" onClick={onViewAssignBadges}>
-              <i className="fe fe-edit-2" style={{ verticalAlign: "middle" }}></i>
+              <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
             </Button>
           </Fragment>
         </React.Fragment>

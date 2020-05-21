@@ -8,22 +8,28 @@
 * {
   body.seller {
     @import "assets/styles/theme-seller.scss";
+
     a:hover {
       color: $primary;
     }
+
     .loading-svg {
       stroke: $primary;
     }
   }
+
   body.buyer {
     @import "assets/styles/theme-buyer.scss";
+
     a:hover {
       color: $primary;
     }
+
     .loading-svg {
       stroke: $primary;
     }
   }
+
   a:hover {
     text-decoration: none;
   }
@@ -107,6 +113,12 @@ body.buyer {
     width: 48%;
   }
 
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+  }
+
   // --------------------------
   // CUSTOM UTILITY CLASS
   // dtc = distichain
@@ -118,45 +130,56 @@ body.buyer {
         color: black;
         min-width: 300px;
       }
+
       .ant-tooltip-arrow::before {
         background-color: white;
         width: 7px;
         height: 7px;
       }
     }
+
     &-cursor {
       &-pointer {
         cursor: pointer;
       }
     }
+
     &-bg {
       &-blue {
         background-color: #005691;
       }
+
       &-green {
         background-color: #46be8a;
       }
+
       &-light-green {
         background-color: #90ee90;
       }
+
       &-red {
         background-color: #fb434a;
       }
+
       &-orange {
         background-color: #f1842b;
       }
+
       &-transparent {
         background: transparent;
       }
     }
+
     &-br {
       &-5 {
         border-radius: rem(5);
       }
+
       &-10 {
         border-radius: rem(10);
       }
     }
+
     &-min-width {
       &-50 {
         -webkit-min-width: rem(50);
@@ -165,6 +188,7 @@ body.buyer {
         -o-min-width: rem(50);
         min-width: rem(50);
       }
+
       &-70 {
         -webkit-min-width: rem(70);
         -moz-min-width: rem(70);
@@ -172,6 +196,7 @@ body.buyer {
         -o-min-width: rem(70);
         min-width: rem(70);
       }
+
       &-100 {
         -webkit-min-width: rem(100);
         -moz-min-width: rem(100);
@@ -179,6 +204,7 @@ body.buyer {
         -o-min-width: rem(100);
         min-width: rem(100);
       }
+
       &-150 {
         -webkit-min-width: rem(150);
         -moz-min-width: rem(150);
@@ -187,6 +213,7 @@ body.buyer {
         min-width: rem(150);
       }
     }
+
     &-max-width {
       &-100 {
         -webkit-max-width: rem(100);
@@ -195,6 +222,7 @@ body.buyer {
         -o-max-width: rem(100);
         max-width: rem(100);
       }
+
       &-150 {
         -webkit-max-width: rem(150);
         -moz-max-width: rem(150);
@@ -203,43 +231,55 @@ body.buyer {
         max-width: rem(150);
       }
     }
+
     &-h {
       &-15 {
         height: 15%;
       }
+
       &-fix-410 {
         height: rem(410);
       }
+
       &-fix-380 {
         height: rem(380);
       }
+
       &-min-fix-50 {
         min-height: rem(90);
       }
+
       &-min-fix-90 {
         min-height: rem(90);
       }
+
       &-min-fix-200 {
         min-height: rem(200);
       }
+
       &-min-fix-410 {
         min-height: rem(410);
       }
     }
+
     &-w {
       &-15 {
         width: 15%;
       }
+
       &-fit-content {
         width: fit-content;
       }
+
       &-80 {
         width: 80%;
       }
+
       &-95 {
         width: 95%;
       }
     }
+
     &-bottom-0 {
       bottom: 0;
     }

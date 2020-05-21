@@ -1,28 +1,32 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import { UserMgtBuyerTable, AssignBadgesModal } from "components/widgets/user-management";
 import { USER_MANAGEMENT_SCHEMA } from "commons/schemas/user-management.schema";
 import { useBooleanState } from "hooks/utilHooks";
+import { ConfirmModal } from "components";
 
 const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
 
 export const UserManagementBuyerTab = () => {
   const [data, setData] = useState([]);
-  const [showForm, toggleShowForm] = useBooleanState(false);
+  const [showAssignBadgeForm, toggleShowAssignBadgeForm] = useBooleanState(false);
+  const [showConfirmForm, toggleConfirmForm] = useBooleanState(false);
+  const currentId = useRef(0);
 
   useEffect(() => {
     setData(users.sort((a, b) => a.id - b.id));
   }, []);
 
-  const handleBlock = (id) => {
-    const item = data.find((item) => item.id === id);
-    const itemAfterRemove = [...data].filter((item) => item.id !== id);
+  const handleLock = () => {
+    toggleConfirmForm();
+    const item = data.find((item) => item.id === currentId.current);
+    const itemAfterRemove = [...data].filter((item) => item.id !== currentId.current);
     const res = [{ ...item, status: STATUS_LABELS[STATUS.SUSPENDED] }, ...itemAfterRemove].sort(
       (a, b) => a.id - b.id
     );
     setData(res);
   };
 
-  const handleUnblock = (id) => {
+  const handleUnlock = (id) => {
     const item = data.find((item) => item.id === id);
     const itemAfterRemove = [...data].filter((item) => item.id !== id);
     const res = [{ ...item, status: STATUS_LABELS[STATUS.BUYING_BUYERS] }, ...itemAfterRemove].sort(
@@ -31,16 +35,32 @@ export const UserManagementBuyerTab = () => {
     setData(res);
   };
 
+  const handelConfirmLock = (id) => {
+    currentId.current = id;
+    toggleConfirmForm();
+  };
+
   return (
     <Fragment>
       <UserMgtBuyerTable
         users={data}
-        onUnblock={handleUnblock}
-        onBlock={handleBlock}
-        onViewAssignBadges={toggleShowForm}
+        onUnlock={handleUnlock}
+        onLock={handelConfirmLock}
+        onViewAssignBadges={toggleShowAssignBadgeForm}
       />
 
-      <AssignBadgesModal showForm={showForm} toggleShowForm={toggleShowForm} />
+      <ConfirmModal
+        showForm={showConfirmForm}
+        toggleShowForm={toggleConfirmForm}
+        onConfirmLock={handleLock}
+        title="Please Confirm"
+        innerText="Please note that if you disable the account, all the actions and processes of this user will be suspended."
+      />
+
+      <AssignBadgesModal
+        showForm={showAssignBadgeForm}
+        toggleShowForm={toggleShowAssignBadgeForm}
+      />
     </Fragment>
   );
 };

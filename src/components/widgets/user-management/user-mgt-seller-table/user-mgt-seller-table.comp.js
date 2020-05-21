@@ -20,13 +20,13 @@ const columns = (params) => {
   ];
 };
 
-export const UserMgtSellerTable = ({ users, isBlock, onBlock, onUnblock, onViewAssignBadges }) => {
+export const UserMgtSellerTable = ({ users, onLock, onUnlock, onViewAssignBadges }) => {
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       <DTCTable
         showSettings={false}
         data={users}
-        columns={columns({ isBlock, onBlock, onUnblock, onViewAssignBadges })}
+        columns={columns({ onLock, onUnlock, onViewAssignBadges })}
         isLoading={false}
       />
     </div>
