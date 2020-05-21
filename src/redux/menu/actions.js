@@ -34,7 +34,7 @@ export async function getUserData() {
       title: "Orders",
       key: "Orders",
       icon: "fe fe-layers",
-      url: "/"
+      url: ROUTES.ORDERS
     },
     {
       title: "Analytics",
