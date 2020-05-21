@@ -19,7 +19,8 @@ export const DTCTable = ({
   showSettings = true,
   isLoading = false,
   onSettingClick,
-  searchTextValue = ""
+  searchTextValue = "",
+  onChange
 }) => {
   const [sortedInfo, setSortedInfo] = React.useState({});
   const [searchText, setSearchText] = React.useState(searchTextValue);
@@ -98,7 +99,10 @@ export const DTCTable = ({
           rowKey={(record) => record.id}
           columns={mappedColumns}
           dataSource={filteredData}
-          onChange={(pagination, filters, sorter) => setSortedInfo(sorter)}
+          onChange={(pagination, filters, sorter, value) => {
+            onChange && onChange(value.currentDataSource);
+            setSortedInfo(sorter);
+          }}
           showLessItems={true}
         />
       </div>

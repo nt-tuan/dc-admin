@@ -1,5 +1,6 @@
 import React from "react";
 import { DTCHighlighter } from "components/widgets";
+import { sortAlphabetically } from "utils";
 
 const FIELDS = {
   orderNumber: "orderNumber",
@@ -77,7 +78,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.productCategory],
     dataIndex: FIELDS.productCategory,
     key: FIELDS.productCategory,
-    sorter: (a, b) => a.productCategory - b.productCategory,
+    sorter: (a, b) => sortAlphabetically(a.productCategory, b.productCategory),
     makeRender: ({ searchText }) => (productCategory) => (
       <DTCHighlighter searchText={searchText} value={productCategory} />
     )
@@ -86,7 +87,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.productType],
     dataIndex: FIELDS.productType,
     key: FIELDS.productType,
-    sorter: (a, b) => a.productType - b.productType,
+    sorter: (a, b) => sortAlphabetically(a.productType, b.productType),
     makeRender: ({ searchText }) => (productType) => (
       <DTCHighlighter searchText={searchText} value={productType} />
     )
@@ -95,7 +96,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.productBrand],
     dataIndex: FIELDS.productBrand,
     key: FIELDS.productBrand,
-    sorter: (a, b) => a.productBrand - b.productBrand,
+    sorter: (a, b) => sortAlphabetically(a.productBrand, b.productBrand),
     makeRender: ({ searchText }) => (productBrand) => (
       <DTCHighlighter searchText={searchText} value={productBrand} />
     )
@@ -104,7 +105,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.productName],
     dataIndex: FIELDS.productName,
     key: FIELDS.productName,
-    sorter: (a, b) => a.productName - b.productName,
+    sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
     makeRender: ({ searchText }) => (productName) => (
       <DTCHighlighter searchText={searchText} value={productName} />
     )
@@ -140,7 +141,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.buyerCompanyName],
     dataIndex: FIELDS.buyerCompanyName,
     key: FIELDS.buyerCompanyName,
-    sorter: (a, b) => a.buyerCompanyName - b.buyerCompanyName,
+    sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
     makeRender: ({ searchText }) => (buyerCompanyName) => (
       <DTCHighlighter searchText={searchText} value={buyerCompanyName} />
     )
@@ -149,7 +150,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.sellerCompanyName],
     dataIndex: FIELDS.sellerCompanyName,
     key: FIELDS.sellerCompanyName,
-    sorter: (a, b) => a.sellerCompanyName - b.sellerCompanyName,
+    sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
     makeRender: ({ searchText }) => (sellerCompanyName) => (
       <DTCHighlighter searchText={searchText} value={sellerCompanyName} />
     )
@@ -158,7 +159,7 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.status],
     dataIndex: FIELDS.status,
     key: FIELDS.status,
-    sorter: (a, b) => a.status - b.status,
+    sorter: (a, b) => sortAlphabetically(a.status, b.status),
     makeRender: ({ searchText }) => (status) => (
       <DTCHighlighter searchText={searchText} value={status} />
     )
@@ -180,7 +181,7 @@ export const getOrderHistoryTableSchema = () => ({
     title: LABELS[FIELDS.productName],
     dataIndex: FIELDS.productName,
     key: FIELDS.productName,
-    sorter: (a, b) => a.productName - b.productName,
+    sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
     makeRender: ({ searchText }) => (productName) => (
       <DTCHighlighter searchText={searchText} value={productName} />
     )
@@ -216,7 +217,7 @@ export const getOrderHistoryTableSchema = () => ({
     title: LABELS[FIELDS.buyerCompanyName],
     dataIndex: FIELDS.buyerCompanyName,
     key: FIELDS.buyerCompanyName,
-    sorter: (a, b) => a.buyerCompanyName - b.buyerCompanyName,
+    sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
     makeRender: ({ searchText }) => (buyerCompanyName) => (
       <DTCHighlighter searchText={searchText} value={buyerCompanyName} />
     )
@@ -225,7 +226,7 @@ export const getOrderHistoryTableSchema = () => ({
     title: LABELS[FIELDS.sellerCompanyName],
     dataIndex: FIELDS.sellerCompanyName,
     key: FIELDS.sellerCompanyName,
-    sorter: (a, b) => a.sellerCompanyName - b.sellerCompanyName,
+    sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
     makeRender: ({ searchText }) => (sellerCompanyName) => (
       <DTCHighlighter searchText={searchText} value={sellerCompanyName} />
     )
@@ -234,7 +235,7 @@ export const getOrderHistoryTableSchema = () => ({
     title: LABELS[FIELDS.status],
     dataIndex: FIELDS.status,
     key: FIELDS.status,
-    sorter: (a, b) => a.status - b.status,
+    sorter: (a, b) => sortAlphabetically(a.status, b.status),
     makeRender: ({ searchText }) => (status) => (
       <DTCHighlighter searchText={searchText} value={status} />
     )
