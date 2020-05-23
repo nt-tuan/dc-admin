@@ -9,7 +9,7 @@ const renderHistory = () => <OrderHistoryTab />;
 const OrdersPage = () => {
   return (
     <OrderPageContainer
-      title="Seller Order Management"
+      title="Order Management"
       renderActive={renderActive}
       renderHistory={renderHistory}
     />

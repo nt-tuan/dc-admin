@@ -4,6 +4,7 @@ import { message } from "antd";
 export * from "./auth.util";
 export * from "./sort.util";
 export * from "./string.util";
+export * from "./date-time.util";
 
 export const isScreensize = (size) => {
   let _isTrue = false;

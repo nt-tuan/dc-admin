@@ -1,13 +1,15 @@
 // Overriding CreateReactApp settings, ref: https://github.com/arackaf/customize-cra
 const path = require("path");
 const antdTheme = require("./src/theme.js");
+const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 const {
   override,
   fixBabelImports,
   addLessLoader,
   useEslintRc,
   addDecoratorsLegacy,
-  addWebpackModuleRule
+  addWebpackModuleRule,
+  addWebpackPlugin
 } = require("customize-cra");
 const AntDesignThemePlugin = require("antd-theme-webpack-plugin");
 
@@ -61,5 +63,6 @@ module.exports = override(
   addWebpackModuleRule({
     test: /\.worker\.js$/,
     use: { loader: "worker-loader" }
-  })
+  }),
+  addWebpackPlugin(new AntdDayjsWebpackPlugin())
 );

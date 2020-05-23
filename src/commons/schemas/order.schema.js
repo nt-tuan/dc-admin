@@ -3,6 +3,7 @@ import { DTCHighlighter } from "components/widgets";
 import { sortAlphabetically } from "utils";
 
 const FIELDS = {
+  timestamp: "timestamp",
   orderNumber: "orderNumber",
   productCategory: "productCategory",
   productType: "productType",
@@ -17,6 +18,7 @@ const FIELDS = {
 };
 
 const LABELS = {
+  [FIELDS.timestamp]: "Time Stamp",
   [FIELDS.orderNumber]: "Order Number",
   [FIELDS.productCategory]: "Product Category",
   [FIELDS.productType]: "Product Type",
@@ -65,6 +67,15 @@ export const ORDERS_SCHEMA = Object.freeze({
 
 // active tab
 export const getOrderActiveTableSchema = () => ({
+  [FIELDS.timestamp]: {
+    title: LABELS[FIELDS.timestamp],
+    dataIndex: FIELDS.timestamp,
+    key: FIELDS.timestamp,
+    sorter: (a, b) => a.timeStamp - b.timeStamp,
+    makeRender: ({ searchText }) => (timeStamp) => (
+      <DTCHighlighter searchText={searchText} value={timeStamp || ""} />
+    )
+  },
   [FIELDS.orderNumber]: {
     title: LABELS[FIELDS.orderNumber],
     dataIndex: FIELDS.orderNumber,
@@ -168,6 +179,15 @@ export const getOrderActiveTableSchema = () => ({
 
 // history tab
 export const getOrderHistoryTableSchema = () => ({
+  [FIELDS.timestamp]: {
+    title: LABELS[FIELDS.timestamp],
+    dataIndex: FIELDS.timestamp,
+    key: FIELDS.timestamp,
+    sorter: (a, b) => a.timeStamp - b.timeStamp,
+    makeRender: ({ searchText }) => (timeStamp) => (
+      <DTCHighlighter searchText={searchText} value={timeStamp || ""} />
+    )
+  },
   [FIELDS.orderNumber]: {
     title: LABELS[FIELDS.orderNumber],
     dataIndex: FIELDS.orderNumber,

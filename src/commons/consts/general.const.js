@@ -25,3 +25,6 @@ export const BADGE_LEVELS = Object.freeze({
     4: "platinum"
   }
 });
+
+export const DATE_FORMAT = "YYYY-MM-DD";
+export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm A";
