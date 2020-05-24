@@ -1,8 +1,11 @@
 import { Button, Rate } from "antd";
 import { DTCHighlighter } from "components";
 import React, { Fragment } from "react";
-import { sortAlphabetically, roundToHalfDecimal } from "utils";
-import { UserBadge } from "components/widgets/general/user-badge/user-badge.comp";
+import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
+import { UtilMediator } from "utils";
+
+const { sortAlphabetically } = UtilMediator.getSortUtils();
+const { roundToHalfDecimal } = UtilMediator.getgeneralUtils();
 
 const FIELDS = {
   id: "id",

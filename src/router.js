@@ -1,13 +1,15 @@
-import { ROUTES } from "commons/consts";
 import { Loader, MenuDataManager } from "components";
 import { ConnectedRouter } from "connected-react-router";
 import { Layout } from "layouts/main.layout";
-import NotFoundPage from "pages/system/404/404.page";
+import NotFoundPage from "components/pages/system/404/404.page";
 import React, { Suspense } from "react";
 import { connect } from "react-redux";
 import { Route } from "react-router-dom";
 import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+
+import { ConstMediator } from "commons/consts";
+const ROUTES = ConstMediator.getAllRoutes();
 
 const mapStateToProps = ({ settings }) => ({ settings });
 
@@ -65,7 +67,7 @@ const loadable = (loader) => React.lazy(loader);
 const publicRoutes = [
   {
     path: ROUTES.LOGIN_ROUTE,
-    Component: loadable(() => import("pages/login/login.page")),
+    Component: loadable(() => import("components/pages/login/login.page")),
     exact: true
   }
 ];
@@ -73,22 +75,22 @@ const publicRoutes = [
 const privateRoutes = [
   {
     path: ROUTES.HOME_ROUTE,
-    Component: loadable(() => import("pages/home/home.page")),
+    Component: loadable(() => import("components/pages/home/home.page")),
     exact: true
   },
   {
     path: ROUTES.USER_MANAGEMENT,
-    Component: loadable(() => import("pages/user-management/user-management.page")),
+    Component: loadable(() => import("components/pages/user-management/user-management.page")),
     exact: true
   },
   {
     path: ROUTES.ORDERS,
-    Component: loadable(() => import("pages/orders/orders.page")),
+    Component: loadable(() => import("components/pages/orders/orders.page")),
     exact: true
   },
   {
     path: ROUTES.SERVICE,
-    Component: loadable(() => import("pages/service/service.page")),
+    Component: loadable(() => import("components/pages/service/service.page")),
     exact: true
   }
 ];

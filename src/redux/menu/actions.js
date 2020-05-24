@@ -1,4 +1,5 @@
-import { ROUTES } from "commons/consts";
+import { ConstMediator } from "commons/consts";
+const ROUTES = ConstMediator.getAllRoutes();
 
 const actions = {
   SET_STATE: "menu/SET_STATE",

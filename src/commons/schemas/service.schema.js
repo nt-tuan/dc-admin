@@ -1,7 +1,10 @@
 import { Button, Rate } from "antd";
 import { DTCHighlighter } from "components";
 import React, { Fragment } from "react";
-import { sortAlphabetically, roundToHalfDecimal } from "utils";
+import { UtilMediator } from "utils";
+
+const { sortAlphabetically } = UtilMediator.getSortUtils();
+const { roundToHalfDecimal } = UtilMediator.getgeneralUtils();
 
 const FIELDS = {
   id: "id",

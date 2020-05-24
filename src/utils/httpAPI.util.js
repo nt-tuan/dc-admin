@@ -42,12 +42,10 @@ class HttpApi {
   };
 
   postFile = async (uri, file, params) => {
-    const formDataTypeHeader = {
-      "Content-Type": "multipart/form-data"
-    };
     try {
       const result = await this.api.post(uri, file, {
-        params: params
+        params: params,
+        headers: { "Content-Type": "multipart/form-data" }
       });
       return result.data;
     } catch (error) {
@@ -56,13 +54,10 @@ class HttpApi {
   };
 
   putFile = async (uri, file, params) => {
-    const formDataTypeHeader = {
-      "Content-Type": "multipart/form-data"
-    };
     try {
       const result = await this.api.put(uri, file, {
         params: params,
-        headers: { ...formDataTypeHeader }
+        headers: { "Content-Type": "multipart/form-data" }
       });
       return result.data;
     } catch (error) {

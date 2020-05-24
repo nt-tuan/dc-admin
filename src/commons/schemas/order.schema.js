@@ -1,6 +1,8 @@
 import React from "react";
-import { DTCHighlighter } from "components/widgets";
-import { sortAlphabetically } from "utils";
+import { DTCHighlighter } from "components";
+import { UtilMediator } from "utils";
+
+const { sortAlphabetically } = UtilMediator.getSortUtils();
 
 const FIELDS = {
   timestamp: "timestamp",

@@ -1,11 +1,17 @@
 import { Button, Checkbox, Form, Input } from "antd";
-import { API_ERRORS, ERR_MSG, ROUTES } from "commons/consts";
+import { ConstMediator } from "commons/consts";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
-import { isScreensize } from "utils";
 import style from "./styles.module.scss";
+import { UtilMediator } from "utils";
+
+const { isScreensize } = UtilMediator.getgeneralUtils();
+
+const ROUTES = ConstMediator.getAllRoutes();
+const ERR_MSG = ConstMediator.getErrorMessages();
+const API_ERRORS = ConstMediator.getApiErrors();
 
 export const LoginForm = ({ isLoading, onSubmit }) => {
   const [isSmallDevice, setIsSmallDevice] = useState(false);

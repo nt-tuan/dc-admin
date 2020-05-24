@@ -1,8 +1,10 @@
 import { message } from "antd";
-import { ROUTES } from "commons/consts";
 import { APIError } from "commons/types";
 import { removeAuthCredential } from "./auth.util";
 import { log } from "./logger.util";
+import { ConstMediator } from "commons/consts";
+
+const ROUTES = ConstMediator.getAllRoutes();
 
 export const axiosErrorHandler = (err) => {
   if (err.response) {

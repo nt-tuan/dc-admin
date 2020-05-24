@@ -1,4 +1,13 @@
-import { API_URI, ERR_MSG, MESSAGES, PRIVATE_ROUTES, PUBLIC_ROUTES, ROUTES } from "./system";
+import {
+  API_URI,
+  ERR_MSG,
+  MESSAGES,
+  PRIVATE_ROUTES,
+  PUBLIC_ROUTES,
+  ROUTES,
+  API_ERRORS
+} from "./system";
+import * as GENERAL_CONST from "./general.const";
 
 export class ConstMediator {
   static getAllRoutes = () => {
@@ -23,5 +32,13 @@ export class ConstMediator {
 
   static getMessages = () => {
     return MESSAGES;
+  };
+
+  static getGeneralConst = () => {
+    return GENERAL_CONST;
+  };
+
+  static getApiErrors = () => {
+    return API_ERRORS;
   };
 }
