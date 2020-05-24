@@ -1,5 +1,5 @@
-import { ConstMediator } from "commons/consts";
-const ROUTES = ConstMediator.getAllRoutes();
+import { ConstFacade } from "commons/consts";
+const ROUTES = ConstFacade.getAllRoutes();
 
 const actions = {
   SET_STATE: "menu/SET_STATE",

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { ConstMediator } from "commons/consts";
-import { UtilMediator } from "utils";
+import { ConstFacade } from "commons/consts";
+import { UtilFacade } from "utils";
 
-const { removeIdPartFromProductUrl } = UtilMediator.getgeneralUtils();
+const { removeIdPartFromProductUrl } = UtilFacade.getgeneralUtils();
 
-const ROUTES = ConstMediator.getAllRoutes();
+const ROUTES = ConstFacade.getAllRoutes();
 const TEXT_ONLY_PATH = [];
 
 const _SubBar = () => {

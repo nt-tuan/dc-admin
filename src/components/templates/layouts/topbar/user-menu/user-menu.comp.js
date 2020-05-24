@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
 import styles from "./style.module.scss";
-import { UtilMediator } from "utils";
+import { UtilFacade } from "utils";
 
-const { disableLinkClick } = UtilMediator.getgeneralUtils();
+const { disableLinkClick } = UtilFacade.getgeneralUtils();
 
 const AuthorizedMenuItem = ({ canView, data = {} }) => {
   const { title, iconClassesNames, url } = data;

@@ -4,12 +4,12 @@ import { getOrderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { ConstMediator } from "commons/consts";
-import { UtilMediator } from "utils";
+import { ConstFacade } from "commons/consts";
+import { UtilFacade } from "utils";
 
-const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstMediator.getGeneralConst();
-const { handleDownloadExcel } = UtilMediator.getgeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilMediator.getDatetimeUtils();
+const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
+const { handleDownloadExcel } = UtilFacade.getgeneralUtils();
+const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDatetimeUtils();
 
 const { FIELDS, LABELS } = ORDERS_SCHEMA;
 

@@ -9,7 +9,7 @@ import * as sagaUtils from "./saga.util";
 import * as sortUtils from "./sort.util";
 import * as stringUtils from "./string.util";
 
-export class UtilMediator {
+export class UtilFacade {
   static getAuthUtils = () => authUtils;
   static getDatetimeUtils = () => datetimeUtils;
   static getErrorHandlerUtils = () => errorHandlerUtil;

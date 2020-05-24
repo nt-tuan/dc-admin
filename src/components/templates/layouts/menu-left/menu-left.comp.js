@@ -7,9 +7,9 @@ import { selectMenuData } from "redux/menu/reducers";
 import * as SETTING_DUCK from "redux/settings/settings.duck";
 import { selectCurrentUser } from "redux/user/user.duck";
 import styles from "./menu-left-comp.module.scss";
-import { UtilMediator } from "utils";
+import { UtilFacade } from "utils";
 
-const { getPrefixUrl } = UtilMediator.getgeneralUtils();
+const { getPrefixUrl } = UtilFacade.getgeneralUtils();
 
 const { Sider } = Layout;
 const { selectSetting } = SETTING_DUCK;

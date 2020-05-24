@@ -1,1 +1,1 @@
-export * from "./const.mediator";
+export * from "./const.facade";

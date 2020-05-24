@@ -9,7 +9,7 @@ import {
 } from "./system";
 import * as GENERAL_CONST from "./general.const";
 
-export class ConstMediator {
+export class ConstFacade {
   static getAllRoutes = () => {
     return ROUTES;
   };

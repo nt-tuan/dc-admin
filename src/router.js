@@ -8,8 +8,8 @@ import { Route } from "react-router-dom";
 import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-import { ConstMediator } from "commons/consts";
-const ROUTES = ConstMediator.getAllRoutes();
+import { ConstFacade } from "commons/consts";
+const ROUTES = ConstFacade.getAllRoutes();
 
 const mapStateToProps = ({ settings }) => ({ settings });
 

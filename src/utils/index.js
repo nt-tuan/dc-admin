@@ -1,1 +1,1 @@
-export * from "./utils.mediator";
+export * from "./utils.facade";

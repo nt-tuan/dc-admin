@@ -1,8 +1,8 @@
 import { log } from "./logger.util";
 import { removeAuthCredential } from "./auth.util";
 import { message } from "antd";
-import { ConstMediator } from "commons/consts";
-const { ROUTES } = ConstMediator.getGeneralConst();
+import { ConstFacade } from "commons/consts";
+const { ROUTES } = ConstFacade.getGeneralConst();
 
 export const handleSagaError = (error) => {
   if (error instanceof Error) {

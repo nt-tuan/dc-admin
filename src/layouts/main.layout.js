@@ -1,4 +1,4 @@
-import { ConstMediator } from "commons/consts/const.mediator";
+import { ConstFacade } from "commons/consts/const.facade";
 import { Loader } from "components";
 import { modifyVars } from "less";
 import NProgress from "nprogress";
@@ -10,7 +10,7 @@ import { selectCurrentUser } from "redux/user/user.duck";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
 
-const privateRoutes = ConstMediator.getPrivateRoutes();
+const privateRoutes = ConstFacade.getPrivateRoutes();
 
 const Layouts = {
   public: PublicLayout,

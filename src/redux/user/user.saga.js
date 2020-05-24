@@ -1,11 +1,11 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import * as USER_ACTIONS from "./user.duck";
 import { notification } from "antd";
-import { ConstMediator } from "commons/consts/const.mediator";
+import { ConstFacade } from "commons/consts/const.facade";
 import { APIError } from "commons/types";
 import { AuthService, UserService } from "services";
 
-const messages = ConstMediator.getMessages();
+const messages = ConstFacade.getMessages();
 
 const { setStateAction } = USER_ACTIONS;
 

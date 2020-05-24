@@ -1,15 +1,15 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { ConstMediator } from "commons/consts";
+import { ConstFacade } from "commons/consts";
 import { getOrderActiveTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { DTCTable, FilterDropdown } from "components";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { UtilMediator } from "utils";
+import { UtilFacade } from "utils";
 
-const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstMediator.getGeneralConst();
-const { handleDownloadExcel } = UtilMediator.getgeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilMediator.getDatetimeUtils();
+const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
+const { handleDownloadExcel } = UtilFacade.getgeneralUtils();
+const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDatetimeUtils();
 
 const { FIELDS, LABELS } = ORDERS_SCHEMA;
 
