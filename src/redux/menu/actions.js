@@ -28,7 +28,7 @@ export async function getUserData() {
       title: "Services",
       key: "Services",
       icon: "fe fe-phone-call",
-      url: "/"
+      url: ROUTES.SERVICE
     },
     {
       title: "Orders",

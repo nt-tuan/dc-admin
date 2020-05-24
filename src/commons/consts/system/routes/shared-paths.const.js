@@ -23,3 +23,4 @@ export const NOTIFICATION = "/notifications";
 export const INVENTORY = "/inventory-management";
 export const ORDERS = "/orders";
 export const USER_MANAGEMENT = "/user-management";
+export const SERVICE = "/service";

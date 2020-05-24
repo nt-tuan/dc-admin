@@ -5,16 +5,16 @@ import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { handleDownloadExcel, subtractDateTime, isBetweenTwoDate } from "utils";
 import dayjs from "dayjs";
-import { DATETIME_FORMAT } from "commons/consts";
+import { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } from "commons/consts";
 
 const { FIELDS, LABELS } = ORDERS_SCHEMA;
 
 const filterDays = {
-  defaultValue: 30,
+  defaultValue: TIME_FIELDS.month,
   items: [
-    { value: 7, name: "Week" },
-    { value: 30, name: "Month" },
-    { value: 365, name: "Year" }
+    { value: TIME_FIELDS.week, name: TIME_LABELS[TIME_FIELDS.week] },
+    { value: TIME_FIELDS.month, name: TIME_LABELS[TIME_FIELDS.month] },
+    { value: TIME_FIELDS.year, name: TIME_LABELS[TIME_FIELDS.year] }
   ]
 };
 

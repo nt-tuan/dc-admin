@@ -85,6 +85,11 @@ const privateRoutes = [
     path: ROUTES.ORDERS,
     Component: loadable(() => import("pages/orders/orders.page")),
     exact: true
+  },
+  {
+    path: ROUTES.SERVICE,
+    Component: loadable(() => import("pages/service/service.page")),
+    exact: true
   }
 ];
 
