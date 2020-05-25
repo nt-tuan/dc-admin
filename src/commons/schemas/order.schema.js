@@ -73,9 +73,9 @@ export const getOrderActiveTableSchema = () => ({
     title: LABELS[FIELDS.timestamp],
     dataIndex: FIELDS.timestamp,
     key: FIELDS.timestamp,
-    sorter: (a, b) => a.timeStamp - b.timeStamp,
-    makeRender: ({ searchText }) => (timeStamp) => (
-      <DTCHighlighter searchText={searchText} value={timeStamp || ""} />
+    sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
+    makeRender: ({ searchText }) => (timestamp) => (
+      <DTCHighlighter searchText={searchText} value={timestamp || ""} />
     )
   },
   [FIELDS.orderNumber]: {
@@ -185,9 +185,9 @@ export const getOrderHistoryTableSchema = () => ({
     title: LABELS[FIELDS.timestamp],
     dataIndex: FIELDS.timestamp,
     key: FIELDS.timestamp,
-    sorter: (a, b) => a.timeStamp - b.timeStamp,
-    makeRender: ({ searchText }) => (timeStamp) => (
-      <DTCHighlighter searchText={searchText} value={timeStamp || ""} />
+    sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
+    makeRender: ({ searchText }) => (timestamp) => (
+      <DTCHighlighter searchText={searchText} value={timestamp || ""} />
     )
   },
   [FIELDS.orderNumber]: {
