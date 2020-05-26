@@ -5,7 +5,7 @@ import style from "./topbar-comp.module.scss";
 import { ProfileMenu } from "./user-menu/user-menu.comp";
 import { UtilFacade } from "utils";
 
-const { isScreensize } = UtilFacade.getgeneralUtils();
+const { isScreensize } = UtilFacade.getGeneralUtils();
 
 export const TopBar = () => {
   return (

@@ -1,15 +1,15 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { ConstFacade } from "commons/consts";
-import { getOrderActiveTableSchema, ORDERS_SCHEMA } from "commons/schemas";
+import { orderActiveTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { DTCTable, FilterDropdown } from "components";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { UtilFacade } from "utils";
 
 const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
-const { handleDownloadExcel } = UtilFacade.getgeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDatetimeUtils();
+const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
+const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDateTimeUtils();
 
 const { FIELDS, LABELS } = ORDERS_SCHEMA;
 
@@ -20,24 +20,6 @@ const filterDays = {
     { value: TIME_FIELDS.month, name: TIME_LABELS[TIME_FIELDS.month] },
     { value: TIME_FIELDS.year, name: TIME_LABELS[TIME_FIELDS.year] }
   ]
-};
-
-const columns = () => {
-  const columns = getOrderActiveTableSchema();
-  return [
-    columns[FIELDS.timestamp],
-    columns[FIELDS.orderNumber],
-    columns[FIELDS.productCategory],
-    columns[FIELDS.productType],
-    columns[FIELDS.productBrand],
-    columns[FIELDS.productName],
-    columns[FIELDS.quantity],
-    columns[FIELDS.unitPrice],
-    columns[FIELDS.totalPrice],
-    columns[FIELDS.buyerCompanyName],
-    columns[FIELDS.sellerCompanyName],
-    columns[FIELDS.status]
-  ];
 };
 
 const labelIndex = {
@@ -106,9 +88,9 @@ export const OrderActiveTab = () => {
 
       <DTCTable
         showSettings={false}
-        data={data}
-        columns={columns()}
-        isLoading={false}
+        loading={false}
+        dataSource={data}
+        schema={orderActiveTableSchema()}
         onChange={(value) => setData(value)}
       />
     </div>

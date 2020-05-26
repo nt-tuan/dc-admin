@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DTCTable, FilterDropdown } from "components";
-import { getOrderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
+import { orderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -8,8 +8,8 @@ import { ConstFacade } from "commons/consts";
 import { UtilFacade } from "utils";
 
 const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
-const { handleDownloadExcel } = UtilFacade.getgeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDatetimeUtils();
+const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
+const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDateTimeUtils();
 
 const { FIELDS, LABELS } = ORDERS_SCHEMA;
 
@@ -20,21 +20,6 @@ const filterDays = {
     { value: TIME_FIELDS.month, name: TIME_LABELS[TIME_FIELDS.month] },
     { value: TIME_FIELDS.year, name: TIME_LABELS[TIME_FIELDS.year] }
   ]
-};
-
-const columns = () => {
-  const columns = getOrderHistoryTableSchema();
-  return [
-    columns[FIELDS.timestamp],
-    columns[FIELDS.orderNumber],
-    columns[FIELDS.productName],
-    columns[FIELDS.quantity],
-    columns[FIELDS.unitPrice],
-    columns[FIELDS.totalPrice],
-    columns[FIELDS.buyerCompanyName],
-    columns[FIELDS.sellerCompanyName],
-    columns[FIELDS.status]
-  ];
 };
 
 const labelIndex = {
@@ -99,9 +84,9 @@ export const OrderHistoryTab = () => {
       </div>
       <DTCTable
         showSettings={false}
-        data={data}
-        columns={columns()}
-        isLoading={false}
+        loading={false}
+        dataSource={data}
+        schema={orderHistoryTableSchema()}
         onChange={(value) => setData(value)}
       />
     </div>

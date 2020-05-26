@@ -9,7 +9,7 @@ import { selectCurrentUser } from "redux/user/user.duck";
 import styles from "./menu-left-comp.module.scss";
 import { UtilFacade } from "utils";
 
-const { getPrefixUrl } = UtilFacade.getgeneralUtils();
+const { getPrefixUrl } = UtilFacade.getGeneralUtils();
 
 const { Sider } = Layout;
 const { selectSetting } = SETTING_DUCK;

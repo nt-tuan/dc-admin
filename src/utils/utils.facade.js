@@ -11,9 +11,9 @@ import * as stringUtils from "./string.util";
 
 export class UtilFacade {
   static getAuthUtils = () => authUtils;
-  static getDatetimeUtils = () => datetimeUtils;
+  static getDateTimeUtils = () => datetimeUtils;
   static getErrorHandlerUtils = () => errorHandlerUtil;
-  static getgeneralUtils = () => generalUtils;
+  static getGeneralUtils = () => generalUtils;
   static getHttpApiUtils = () => httpApiUtils;
   static getLogUtils = () => logUtils;
   static getMonkeyPatcherUtils = () => monkeyPatchUtils;

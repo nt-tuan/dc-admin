@@ -1,5 +1,4 @@
 import React from "react";
-import { DTCHighlighter } from "components";
 import { UtilFacade } from "utils";
 
 const { sortAlphabetically } = UtilFacade.getSortUtils();
@@ -68,198 +67,204 @@ export const ORDERS_SCHEMA = Object.freeze({
 });
 
 // active tab
-export const getOrderActiveTableSchema = () => ({
-  [FIELDS.timestamp]: {
-    title: LABELS[FIELDS.timestamp],
-    dataIndex: FIELDS.timestamp,
-    key: FIELDS.timestamp,
-    sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
-    makeRender: ({ searchText }) => (timestamp) => (
-      <DTCHighlighter searchText={searchText} value={timestamp || ""} />
-    )
-  },
-  [FIELDS.orderNumber]: {
-    title: LABELS[FIELDS.orderNumber],
-    dataIndex: FIELDS.orderNumber,
-    key: FIELDS.orderNumber,
-    sorter: (a, b) => a.orderNumber - b.orderNumber,
-    makeRender: ({ searchText }) => (orderNumber) => (
-      <DTCHighlighter searchText={searchText} value={orderNumber} />
-    )
-  },
-  [FIELDS.productCategory]: {
-    title: LABELS[FIELDS.productCategory],
-    dataIndex: FIELDS.productCategory,
-    key: FIELDS.productCategory,
-    sorter: (a, b) => sortAlphabetically(a.productCategory, b.productCategory),
-    makeRender: ({ searchText }) => (productCategory) => (
-      <DTCHighlighter searchText={searchText} value={productCategory} />
-    )
-  },
-  [FIELDS.productType]: {
-    title: LABELS[FIELDS.productType],
-    dataIndex: FIELDS.productType,
-    key: FIELDS.productType,
-    sorter: (a, b) => sortAlphabetically(a.productType, b.productType),
-    makeRender: ({ searchText }) => (productType) => (
-      <DTCHighlighter searchText={searchText} value={productType} />
-    )
-  },
-  [FIELDS.productBrand]: {
-    title: LABELS[FIELDS.productBrand],
-    dataIndex: FIELDS.productBrand,
-    key: FIELDS.productBrand,
-    sorter: (a, b) => sortAlphabetically(a.productBrand, b.productBrand),
-    makeRender: ({ searchText }) => (productBrand) => (
-      <DTCHighlighter searchText={searchText} value={productBrand} />
-    )
-  },
-  [FIELDS.productName]: {
-    title: LABELS[FIELDS.productName],
-    dataIndex: FIELDS.productName,
-    key: FIELDS.productName,
-    sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
-    makeRender: ({ searchText }) => (productName) => (
-      <DTCHighlighter searchText={searchText} value={productName} />
-    )
-  },
-  [FIELDS.quantity]: {
-    title: LABELS[FIELDS.quantity],
-    dataIndex: FIELDS.quantity,
-    key: FIELDS.quantity,
-    sorter: (a, b) => a.quantity - b.quantity,
-    makeRender: ({ searchText }) => (quantity) => (
-      <DTCHighlighter searchText={searchText} value={quantity} />
-    )
-  },
-  [FIELDS.unitPrice]: {
-    title: LABELS[FIELDS.unitPrice],
-    dataIndex: FIELDS.unitPrice,
-    key: FIELDS.unitPrice,
-    sorter: (a, b) => a.unitPrice - b.unitPrice,
-    makeRender: ({ searchText }) => (unitPrice) => (
-      <DTCHighlighter searchText={searchText} value={unitPrice} />
-    )
-  },
-  [FIELDS.totalPrice]: {
-    title: LABELS[FIELDS.totalPrice],
-    dataIndex: FIELDS.totalPrice,
-    key: FIELDS.totalPrice,
-    sorter: (a, b) => a.totalPrice - b.totalPrice,
-    makeRender: ({ searchText }) => (totalPrice) => (
-      <DTCHighlighter searchText={searchText} value={totalPrice} />
-    )
-  },
-  [FIELDS.buyerCompanyName]: {
-    title: LABELS[FIELDS.buyerCompanyName],
-    dataIndex: FIELDS.buyerCompanyName,
-    key: FIELDS.buyerCompanyName,
-    sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
-    makeRender: ({ searchText }) => (buyerCompanyName) => (
-      <DTCHighlighter searchText={searchText} value={buyerCompanyName} />
-    )
-  },
-  [FIELDS.sellerCompanyName]: {
-    title: LABELS[FIELDS.sellerCompanyName],
-    dataIndex: FIELDS.sellerCompanyName,
-    key: FIELDS.sellerCompanyName,
-    sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
-    makeRender: ({ searchText }) => (sellerCompanyName) => (
-      <DTCHighlighter searchText={searchText} value={sellerCompanyName} />
-    )
-  },
-  [FIELDS.status]: {
-    title: LABELS[FIELDS.status],
-    dataIndex: FIELDS.status,
-    key: FIELDS.status,
-    sorter: (a, b) => sortAlphabetically(a.status, b.status),
-    makeRender: ({ searchText }) => (status) => (
-      <DTCHighlighter searchText={searchText} value={status} />
-    )
-  }
-});
+export const orderActiveTableSchema = () => (
+  sortedInfo,
+  CustomHighlighter,
+  searchText,
+  hiddenColumns
+) => {
+  const columnsSchema = [
+    {
+      title: LABELS[FIELDS.timestamp],
+      dataIndex: FIELDS.timestamp,
+      key: FIELDS.timestamp,
+      sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
+      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
+      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
+    },
+    {
+      title: LABELS[FIELDS.orderNumber],
+      dataIndex: FIELDS.orderNumber,
+      key: FIELDS.orderNumber,
+      sorter: (a, b) => a.orderNumber - b.orderNumber,
+      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
+      render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
+    },
+    {
+      title: LABELS[FIELDS.productCategory],
+      dataIndex: FIELDS.productCategory,
+      key: FIELDS.productCategory,
+      sorter: (a, b) => sortAlphabetically(a.productCategory, b.productCategory),
+      sortOrder: sortedInfo.columnKey === FIELDS.productCategory && sortedInfo.order,
+      render: (productCategory) => (
+        <CustomHighlighter searchText={searchText} value={productCategory} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.productType],
+      dataIndex: FIELDS.productType,
+      key: FIELDS.productType,
+      sorter: (a, b) => sortAlphabetically(a.productType, b.productType),
+      sortOrder: sortedInfo.columnKey === FIELDS.productType && sortedInfo.order,
+      render: (productType) => <CustomHighlighter searchText={searchText} value={productType} />
+    },
+    {
+      title: LABELS[FIELDS.productBrand],
+      dataIndex: FIELDS.productBrand,
+      key: FIELDS.productBrand,
+      sorter: (a, b) => sortAlphabetically(a.productBrand, b.productBrand),
+      sortOrder: sortedInfo.columnKey === FIELDS.productBrand && sortedInfo.order,
+      render: (productBrand) => <CustomHighlighter searchText={searchText} value={productBrand} />
+    },
+    {
+      title: LABELS[FIELDS.productName],
+      dataIndex: FIELDS.productName,
+      key: FIELDS.productName,
+      sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
+      sortOrder: sortedInfo.columnKey === FIELDS.productName && sortedInfo.order,
+      render: (productName) => <CustomHighlighter searchText={searchText} value={productName} />
+    },
+    {
+      title: LABELS[FIELDS.quantity],
+      dataIndex: FIELDS.quantity,
+      key: FIELDS.quantity,
+      sorter: (a, b) => a.quantity - b.quantity,
+      sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
+      render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
+    },
+    {
+      title: LABELS[FIELDS.unitPrice],
+      dataIndex: FIELDS.unitPrice,
+      key: FIELDS.unitPrice,
+      sorter: (a, b) => a.unitPrice - b.unitPrice,
+      sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
+      render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
+    },
+    {
+      title: LABELS[FIELDS.totalPrice],
+      dataIndex: FIELDS.totalPrice,
+      key: FIELDS.totalPrice,
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
+      sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
+      render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
+    },
+    {
+      title: LABELS[FIELDS.buyerCompanyName],
+      dataIndex: FIELDS.buyerCompanyName,
+      key: FIELDS.buyerCompanyName,
+      sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
+      sortOrder: sortedInfo.columnKey === FIELDS.buyerCompanyName && sortedInfo.order,
+      render: (buyerCompanyName) => (
+        <CustomHighlighter searchText={searchText} value={buyerCompanyName} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.sellerCompanyName],
+      dataIndex: FIELDS.sellerCompanyName,
+      key: FIELDS.sellerCompanyName,
+      sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
+      sortOrder: sortedInfo.columnKey === FIELDS.sellerCompanyName && sortedInfo.order,
+      render: (sellerCompanyName) => (
+        <CustomHighlighter searchText={searchText} value={sellerCompanyName} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.status],
+      dataIndex: FIELDS.status,
+      key: FIELDS.status,
+      sorter: (a, b) => sortAlphabetically(a.status, b.status),
+      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
+      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
+    }
+  ];
+  return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
+};
 
 // history tab
-export const getOrderHistoryTableSchema = () => ({
-  [FIELDS.timestamp]: {
-    title: LABELS[FIELDS.timestamp],
-    dataIndex: FIELDS.timestamp,
-    key: FIELDS.timestamp,
-    sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
-    makeRender: ({ searchText }) => (timestamp) => (
-      <DTCHighlighter searchText={searchText} value={timestamp || ""} />
-    )
-  },
-  [FIELDS.orderNumber]: {
-    title: LABELS[FIELDS.orderNumber],
-    dataIndex: FIELDS.orderNumber,
-    key: FIELDS.orderNumber,
-    sorter: (a, b) => a.orderNumber - b.orderNumber,
-    makeRender: ({ searchText }) => (orderNumber) => (
-      <DTCHighlighter searchText={searchText} value={orderNumber} />
-    )
-  },
-  [FIELDS.productName]: {
-    title: LABELS[FIELDS.productName],
-    dataIndex: FIELDS.productName,
-    key: FIELDS.productName,
-    sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
-    makeRender: ({ searchText }) => (productName) => (
-      <DTCHighlighter searchText={searchText} value={productName} />
-    )
-  },
-  [FIELDS.quantity]: {
-    title: LABELS[FIELDS.quantity],
-    dataIndex: FIELDS.quantity,
-    key: FIELDS.quantity,
-    sorter: (a, b) => a.quantity - b.quantity,
-    makeRender: ({ searchText }) => (quantity) => (
-      <DTCHighlighter searchText={searchText} value={quantity} />
-    )
-  },
-  [FIELDS.unitPrice]: {
-    title: LABELS[FIELDS.unitPrice],
-    dataIndex: FIELDS.unitPrice,
-    key: FIELDS.unitPrice,
-    sorter: (a, b) => a.unitPrice - b.unitPrice,
-    makeRender: ({ searchText }) => (unitPrice) => (
-      <DTCHighlighter searchText={searchText} value={unitPrice} />
-    )
-  },
-  [FIELDS.totalPrice]: {
-    title: LABELS[FIELDS.totalPrice],
-    dataIndex: FIELDS.totalPrice,
-    key: FIELDS.totalPrice,
-    sorter: (a, b) => a.totalPrice - b.totalPrice,
-    makeRender: ({ searchText }) => (totalPrice) => (
-      <DTCHighlighter searchText={searchText} value={totalPrice} />
-    )
-  },
-  [FIELDS.buyerCompanyName]: {
-    title: LABELS[FIELDS.buyerCompanyName],
-    dataIndex: FIELDS.buyerCompanyName,
-    key: FIELDS.buyerCompanyName,
-    sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
-    makeRender: ({ searchText }) => (buyerCompanyName) => (
-      <DTCHighlighter searchText={searchText} value={buyerCompanyName} />
-    )
-  },
-  [FIELDS.sellerCompanyName]: {
-    title: LABELS[FIELDS.sellerCompanyName],
-    dataIndex: FIELDS.sellerCompanyName,
-    key: FIELDS.sellerCompanyName,
-    sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
-    makeRender: ({ searchText }) => (sellerCompanyName) => (
-      <DTCHighlighter searchText={searchText} value={sellerCompanyName} />
-    )
-  },
-  [FIELDS.status]: {
-    title: LABELS[FIELDS.status],
-    dataIndex: FIELDS.status,
-    key: FIELDS.status,
-    sorter: (a, b) => sortAlphabetically(a.status, b.status),
-    makeRender: ({ searchText }) => (status) => (
-      <DTCHighlighter searchText={searchText} value={status} />
-    )
-  }
-});
+export const orderHistoryTableSchema = () => (
+  sortedInfo,
+  CustomHighlighter,
+  searchText,
+  hiddenColumns
+) => {
+  const columnsSchema = [
+    {
+      title: LABELS[FIELDS.timestamp],
+      dataIndex: FIELDS.timestamp,
+      key: FIELDS.timestamp,
+      sorter: (a, b) => sortAlphabetically(a.timestamp, b.timestamp),
+      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
+      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
+    },
+    {
+      title: LABELS[FIELDS.orderNumber],
+      dataIndex: FIELDS.orderNumber,
+      key: FIELDS.orderNumber,
+      sorter: (a, b) => a.orderNumber - b.orderNumber,
+      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
+      render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
+    },
+    {
+      title: LABELS[FIELDS.productName],
+      dataIndex: FIELDS.productName,
+      key: FIELDS.productName,
+      sorter: (a, b) => sortAlphabetically(a.productName, b.productName),
+      sortOrder: sortedInfo.columnKey === FIELDS.productName && sortedInfo.order,
+      render: (productName) => <CustomHighlighter searchText={searchText} value={productName} />
+    },
+    {
+      title: LABELS[FIELDS.quantity],
+      dataIndex: FIELDS.quantity,
+      key: FIELDS.quantity,
+      sorter: (a, b) => a.quantity - b.quantity,
+      sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
+      render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
+    },
+    {
+      title: LABELS[FIELDS.unitPrice],
+      dataIndex: FIELDS.unitPrice,
+      key: FIELDS.unitPrice,
+      sorter: (a, b) => a.unitPrice - b.unitPrice,
+      sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
+      render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
+    },
+    {
+      title: LABELS[FIELDS.totalPrice],
+      dataIndex: FIELDS.totalPrice,
+      key: FIELDS.totalPrice,
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
+      sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
+      render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
+    },
+    {
+      title: LABELS[FIELDS.buyerCompanyName],
+      dataIndex: FIELDS.buyerCompanyName,
+      key: FIELDS.buyerCompanyName,
+      sorter: (a, b) => sortAlphabetically(a.buyerCompanyName, b.buyerCompanyName),
+      sortOrder: sortedInfo.columnKey === FIELDS.buyerCompanyName && sortedInfo.order,
+      render: (buyerCompanyName) => (
+        <CustomHighlighter searchText={searchText} value={buyerCompanyName} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.sellerCompanyName],
+      dataIndex: FIELDS.sellerCompanyName,
+      key: FIELDS.sellerCompanyName,
+      sorter: (a, b) => sortAlphabetically(a.sellerCompanyName, b.sellerCompanyName),
+      sortOrder: sortedInfo.columnKey === FIELDS.sellerCompanyName && sortedInfo.order,
+      render: (sellerCompanyName) => (
+        <CustomHighlighter searchText={searchText} value={sellerCompanyName} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.status],
+      dataIndex: FIELDS.status,
+      key: FIELDS.status,
+      sorter: (a, b) => sortAlphabetically(a.status, b.status),
+      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
+      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
+    }
+  ];
+
+  return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
+};

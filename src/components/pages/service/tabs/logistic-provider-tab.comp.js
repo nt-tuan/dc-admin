@@ -3,11 +3,26 @@ import { ServiceLogisticProviderTable } from "components/molecules/service";
 import { SERVICE_SCHEMA } from "commons/schemas";
 import AramexLogo from "assets/images/aramex-logo.png";
 import DHLLogo from "assets/images/dhl-logo.jpg";
+import { Button } from "antd";
 
 const { STATUS, STATUS_LABELS } = SERVICE_SCHEMA;
 
 export const ServiceLogisticProviderTab = () => {
   const [data, setData] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectRowKeys, setSelectRowKeys] = useState([]);
+
+  const rowSelection = {
+    selectedRowKeys: selectRowKeys,
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRows(selectedRows);
+      setSelectRowKeys(selectedRowKeys);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: false,
+      name: record.name
+    })
+  };
 
   useEffect(() => {
     setData(providers.sort((a, b) => a.id - b.id));
@@ -31,9 +46,48 @@ export const ServiceLogisticProviderTab = () => {
     setData(res);
   };
 
+  const handleUnlockAll = () => {
+    if (selectedRows.length === 0) {
+      return;
+    }
+  };
+
+  const handleLockAll = () => {
+    if (selectedRows.length === 0) {
+      return;
+    }
+  };
+
+  const renderFooter = () => {
+    return (
+      <Fragment>
+        <div className="d-flex justify-content-center mb-3 mt-2">
+          <Button
+            type="primary"
+            className="mr-2"
+            onClick={handleUnlockAll}
+            disabled={selectedRows.length === 0}
+          >
+            Unlock Selected
+          </Button>
+          <Button type="danger" onClick={handleLockAll} disabled={selectedRows.length === 0}>
+            Lock Selected
+          </Button>
+        </div>
+      </Fragment>
+    );
+  };
+
   return (
     <Fragment>
-      <ServiceLogisticProviderTable providers={data} onUnlock={handleUnlock} onLock={handleLock} />
+      <ServiceLogisticProviderTable
+        loading={false}
+        providers={data}
+        rowSelection={rowSelection}
+        onUnlock={handleUnlock}
+        onLock={handleLock}
+        renderFooter={renderFooter}
+      />
     </Fragment>
   );
 };

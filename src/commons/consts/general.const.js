@@ -29,14 +29,14 @@ export const BADGE_LEVELS = Object.freeze({
 export const DATE_FORMAT = "YYYY-MM-DD";
 export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm A";
 
-export const TIME_FIELDS = {
+export const TIME_FIELDS = Object.freeze({
   week: "7",
   month: "30",
   year: "365"
-};
+});
 
-export const TIME_LABELS = {
+export const TIME_LABELS = Object.freeze({
   [TIME_FIELDS.week]: "Week",
   [TIME_FIELDS.month]: "Month",
   [TIME_FIELDS.year]: "Year"
-};
+});

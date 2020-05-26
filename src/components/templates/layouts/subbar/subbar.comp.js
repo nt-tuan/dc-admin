@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { ConstFacade } from "commons/consts";
 import { UtilFacade } from "utils";
 
-const { removeIdPartFromProductUrl } = UtilFacade.getgeneralUtils();
+const { removeIdPartFromProductUrl } = UtilFacade.getGeneralUtils();
 
 const ROUTES = ConstFacade.getAllRoutes();
 const TEXT_ONLY_PATH = [];

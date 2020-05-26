@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import style from "./styles.module.scss";
 import { UtilFacade } from "utils";
 
-const { isScreensize } = UtilFacade.getgeneralUtils();
+const { isScreensize } = UtilFacade.getGeneralUtils();
 
 const ROUTES = ConstFacade.getAllRoutes();
 const ERR_MSG = ConstFacade.getErrorMessages();

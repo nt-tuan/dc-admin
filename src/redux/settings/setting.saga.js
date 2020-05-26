@@ -4,7 +4,7 @@ import qs from "qs";
 import store from "store";
 import * as SETTING_DUCK from "./settings.duck";
 import { UtilFacade } from "utils";
-const { isScreensize } = UtilFacade.getgeneralUtils();
+const { isScreensize } = UtilFacade.getGeneralUtils();
 
 export function* CHANGE_SETTING({ payload: { setting, value } }) {
   yield store.set(`app.settings.${setting}`, value);

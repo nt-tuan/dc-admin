@@ -7,7 +7,7 @@ import * as USER_DUCK from "redux/user/user.duck";
 import styles from "./style.module.scss";
 import { UtilFacade } from "utils";
 
-const { disableLinkClick } = UtilFacade.getgeneralUtils();
+const { disableLinkClick } = UtilFacade.getGeneralUtils();
 
 const AuthorizedMenuItem = ({ canView, data = {} }) => {
   const { title, iconClassesNames, url } = data;
