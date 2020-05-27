@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Fragment, useRef } from "react";
-import { UserMgtSellerTable, AssignBadgesModal } from "components";
-import { USER_MANAGEMENT_SCHEMA } from "commons/schemas/user-management.schema";
+import { AssignBadgesModal } from "components";
+import { USER_MANAGEMENT_SCHEMA, userMgtTableSchema } from "commons/schemas/user-management.schema";
 import { useBooleanState } from "hooks/utilHooks";
 import { ConfirmModal } from "components";
+import { DTCTable } from "components/atoms";
 
 const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
 
@@ -43,12 +44,18 @@ export const UserManagementSellerTab = () => {
 
   return (
     <Fragment>
-      <UserMgtSellerTable
-        users={data}
-        onUnlock={handleUnlock}
-        onLock={handelConfirmLock}
-        onViewAssignBadges={toggleShowAssignBadgeForm}
-      />
+      <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+        <DTCTable
+          showSetting={false}
+          loading={false}
+          dataSource={users}
+          schema={userMgtTableSchema({
+            onLock: handelConfirmLock,
+            onUnlock: handleUnlock,
+            onViewAssignBadges: toggleShowAssignBadgeForm
+          })}
+        />
+      </div>
 
       <ConfirmModal
         showForm={showConfirmForm}

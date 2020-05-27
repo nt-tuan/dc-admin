@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { ServiceInspectionProviderTable } from "components/molecules/service";
-import { SERVICE_SCHEMA } from "commons/schemas";
+import { SERVICE_SCHEMA, inspectionProviderTableSchema } from "commons/schemas";
 import NoLogo from "assets/images/no.png";
 import { Button } from "antd";
+import { DTCTable } from "components/atoms";
 
 const { STATUS, STATUS_LABELS } = SERVICE_SCHEMA;
 
@@ -78,16 +78,17 @@ export const ServiceInspectionProviderTab = () => {
   };
 
   return (
-    <Fragment>
-      <ServiceInspectionProviderTable
+    <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <DTCTable
+        showSettings={false}
         loading={false}
-        providers={data}
-        rowSelection={rowSelection}
-        onUnlock={handleUnlock}
-        onLock={handleLock}
+        hiddenColumns={[]}
+        dataSource={data}
+        schema={inspectionProviderTableSchema({ onLock: handleLock, onUnlock: handleUnlock })}
         renderFooter={renderFooter}
+        rowSelection={rowSelection}
       />
-    </Fragment>
+    </div>
   );
 };
 
