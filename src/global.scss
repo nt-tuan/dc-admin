@@ -119,6 +119,19 @@ body.buyer {
     border-left: 0;
   }
 
+  .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::before {
+    box-shadow: none;
+  }
+  .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::after {
+    box-shadow: none;
+  }
+  .ant-table-ping-right:not(.ant-table-has-fix-left) .ant-table-container::before {
+    box-shadow: none;
+  }
+  .ant-table-ping-right:not(.ant-table-has-fix-left) .ant-table-container::after {
+    box-shadow: none;
+  }
+
   // --------------------------
   // CUSTOM UTILITY CLASS
   // dtc = distichain
