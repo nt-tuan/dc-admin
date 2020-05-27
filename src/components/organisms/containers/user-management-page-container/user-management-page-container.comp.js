@@ -4,36 +4,41 @@ import { Helmet } from "react-helmet";
 
 const TAB_KEYS = {
   BUYER: "BUYER",
-  SELLER: "SELLER"
+  SELLER: "SELLER",
+  ALL_USER: "ALL_USER"
 };
 
-const { SELLER, BUYER } = TAB_KEYS;
+const { SELLER, BUYER, ALL_USER } = TAB_KEYS;
 
-export const UserManagementPageContainer = memo(({ title, renderBuyer, renderSeller }) => {
-  const [tab, setTab] = useState(BUYER);
+export const UserManagementPageContainer = memo(
+  ({ title, renderBuyer, renderSeller, renderAllUser }) => {
+    const [tab, setTab] = useState(BUYER);
 
-  const renderTabButton = (tabName, key) => {
+    const renderTabButton = (tabName, key) => {
+      return (
+        <Button
+          shape="round"
+          type={tab === key ? "primary" : "default"}
+          className="mr-2"
+          onClick={() => setTab(key)}
+        >
+          {tabName}
+        </Button>
+      );
+    };
+
     return (
-      <Button
-        shape="round"
-        type={tab === key ? "primary" : "default"}
-        className="mr-2"
-        onClick={() => setTab(key)}
-      >
-        {tabName}
-      </Button>
+      <article>
+        <Helmet title={title} />
+        <div className="flex mb-3 ml-2">
+          {renderTabButton("Buyer", BUYER)}
+          {renderTabButton("Seller", SELLER)}
+          {renderTabButton("All User", ALL_USER)}
+        </div>
+        {tab === BUYER && renderBuyer()}
+        {tab === SELLER && renderSeller()}
+        {tab === ALL_USER && renderAllUser()}
+      </article>
     );
-  };
-
-  return (
-    <article>
-      <Helmet title={title} />
-      <div className="flex mb-3 ml-2">
-        {renderTabButton("Buyer", BUYER)}
-        {renderTabButton("Seller", SELLER)}
-      </div>
-      {tab === BUYER && renderBuyer()}
-      {tab === SELLER && renderSeller()}
-    </article>
-  );
-});
+  }
+);

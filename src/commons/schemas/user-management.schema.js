@@ -113,14 +113,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       sortOrder: sortedInfo.columnKey === FIELDS.contact && sortedInfo.order,
       render: (contact) => <CustomHighlighter searchText={searchText} value={contact} />
     },
-    {
-      title: LABELS[FIELDS.status],
-      dataIndex: FIELDS.status,
-      key: FIELDS.status,
-      sorter: (a, b) => sortAlphabetically(a.status, b.status),
-      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
-      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
-    },
+
     {
       title: LABELS[FIELDS.reputation],
       dataIndex: FIELDS.reputation,
@@ -147,6 +140,14 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
           </div>
         </Fragment>
       )
+    },
+    {
+      title: LABELS[FIELDS.status],
+      dataIndex: FIELDS.status,
+      key: FIELDS.status,
+      sorter: (a, b) => sortAlphabetically(a.status, b.status),
+      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
+      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
     },
     {
       title: "Manage",
