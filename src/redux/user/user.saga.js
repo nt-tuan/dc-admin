@@ -58,7 +58,8 @@ export function* LOGOUT({ payload }) {
 export function* LOAD_CURRENT_ACCOUNT() {
   try {
     yield put(setStateAction({ loading: true }));
-    const user = UserService.getCurrentAccount();
+    const user = yield UserService.getCurrentAccount();
+
     if (user) {
       yield put({
         type: USER_ACTIONS.SET_STATE,

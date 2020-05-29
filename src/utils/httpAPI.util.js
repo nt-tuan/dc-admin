@@ -19,6 +19,10 @@ class HttpApi {
     this.api.defaults.headers.common["Authorization"] = `bearer ${authToken}`;
   };
 
+  removeAuthHeader = () => {
+    delete this.api.defaults.headers.common["Authorization"];
+  };
+
   get = async (uri, params) => {
     try {
       const result = await this.api.get(uri, {

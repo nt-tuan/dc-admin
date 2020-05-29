@@ -1,11 +1,14 @@
+import { backendAPI } from "utils/httpAPI.util";
+
 export class UserService {
   static getCurrentAccount = async () => {
-    const accessToken = localStorage.getItem("auth");
-    if (accessToken) {
-      // const userInfo = await backendAPI.get(accessToken)(API_URI.GET_CURRENT_USER);
-      const userInfo = {};
-      return { ...userInfo, createDate: undefined };
+    const localStorageAuth = localStorage.getItem("auth");
+
+    if (localStorageAuth) {
+      const { accessToken } = JSON.parse(localStorageAuth);
+      backendAPI.setAuthHeader(accessToken);
+      return true;
     }
-    return undefined;
+    return false;
   };
 }
