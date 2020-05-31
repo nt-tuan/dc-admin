@@ -1,16 +1,19 @@
-import React from "react";
-import { Modal, Checkbox, Button } from "antd";
+import { Button, Checkbox, Modal } from "antd";
 import { ReactComponent as ManuFactorBadge } from "assets/icons/distributor.svg";
 import { ReactComponent as DistributorBadge } from "assets/icons/manufactor.svg";
+import React from "react";
 
-export const AssignBadgesModal = ({ showForm, toggleShowForm }) => {
+export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, onAssign }) => {
   return (
     <Modal
       width={620}
       title="Choose Badges and Assign badges to your User"
       visible={showForm}
       footer={null}
-      onOk={toggleShowForm}
+      onOk={() => {
+        onAssign && onAssign();
+        toggleShowForm();
+      }}
       onCancel={toggleShowForm}
     >
       <div className="row text-center mx-auto">

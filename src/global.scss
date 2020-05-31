@@ -113,12 +113,6 @@ body.buyer {
     width: 48%;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner::after {
-    border: 2px solid #fff;
-    border-top: 0;
-    border-left: 0;
-  }
-
   .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::before {
     box-shadow: none;
   }

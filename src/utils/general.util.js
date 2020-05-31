@@ -95,3 +95,34 @@ export const handleDownloadExcel = (data, labelIndex, LABELS, FIELDS, fileName) 
     message.info("There is no data");
   }
 };
+
+export const getAllRecordsFromAPI = async (serviceFn) => {
+  const maxSize = 2000;
+  let page = 0;
+
+  const res = await serviceFn({ page: page, size: maxSize, sort: "updatedDate,desc" });
+
+  let allDataRes = { ...res };
+
+  if (res) {
+    const { totalElements } = res;
+    if (totalElements > maxSize) {
+      let remainElements = totalElements - maxSize;
+      while (true) {
+        page = page + 1;
+        const remainRes = await serviceFn({
+          size: remainElements > maxSize ? maxSize : remainElements,
+          page,
+          sort: "updatedDate,desc"
+        });
+        allDataRes = { ...allDataRes, content: [...allDataRes.content, ...remainRes.content] };
+        remainElements = remainElements - maxSize;
+        if (remainElements <= 0) {
+          break;
+        }
+      }
+    }
+  }
+
+  return allDataRes.content;
+};

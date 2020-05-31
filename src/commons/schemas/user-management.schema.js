@@ -163,7 +163,11 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
               <i className="fe fe-pause" style={{ verticalAlign: "middle" }}></i>
             </Button>
           )}
-          <Button type="primary" className="dtc-min-width-50 mr-2" onClick={onViewAssignBadges}>
+          <Button
+            type="primary"
+            className="dtc-min-width-50 mr-2"
+            onClick={() => onViewAssignBadges(id)}
+          >
             <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
           </Button>
         </Fragment>

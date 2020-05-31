@@ -9,6 +9,10 @@ import * as sagaUtils from "./saga.util";
 import * as sortUtils from "./sort.util";
 import * as stringUtils from "./string.util";
 
+/**
+ *  Utilities facade class,
+ *  Use this class to get utility functions
+ */
 export class UtilFacade {
   static getAuthUtils = () => authUtils;
   static getDateTimeUtils = () => datetimeUtils;
