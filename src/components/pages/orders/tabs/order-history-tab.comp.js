@@ -6,6 +6,9 @@ import { DownloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { ConstFacade } from "commons/consts";
 import { UtilFacade } from "utils";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
+import { OrderService } from "services";
 
 const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
 const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
@@ -39,17 +42,20 @@ export const OrderHistoryTab = () => {
   const [days, setDays] = useState(30);
 
   useEffect(() => {
-    const now = dayjs().format();
-    const dateAfterSubtract = subtractDateTime(now, days, "days");
-    const filterData = fakedData.filter((item) => {
-      return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+    asyncErrorHandlerWrapper(async () => {
+      const now = dayjs().format();
+      const dateAfterSubtract = subtractDateTime(now, days, "days");
+      const res = await getAllRecordsFromAPI(OrderService.getAllOrderHistory);
+      const filterData = res.filter((item) => {
+        return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+      });
+      setData([
+        ...filterData.map((item) => ({
+          ...item,
+          timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
+        }))
+      ]);
     });
-    setData([
-      ...filterData.map((item) => ({
-        ...item,
-        timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
-      }))
-    ]);
   }, [days]);
 
   const handleDownload = () => {
@@ -92,30 +98,3 @@ export const OrderHistoryTab = () => {
     </div>
   );
 };
-
-const fakedData = [
-  {
-    id: 1,
-    timestamp: "2020-05-23T17:34:08+07:00",
-    orderNumber: 12345678,
-    productName: "Apple iPhone 11 Black 64GB",
-    quantity: 200,
-    unitPrice: 3000,
-    totalPrice: 40000,
-    buyerCompanyName: "buyer",
-    sellerCompanyName: "seller",
-    status: "Order Cancelled"
-  },
-  {
-    id: 2,
-    timestamp: "2019-12-29T17:34:08+07:00",
-    orderNumber: 12345680,
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: 300,
-    unitPrice: 10000,
-    totalPrice: 600000,
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Completed"
-  }
-];

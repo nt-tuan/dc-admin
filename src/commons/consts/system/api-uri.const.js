@@ -1,6 +1,7 @@
 const PUBLIC_PREFIX = "/public";
 const USER_PREFIX = "/me";
 const USER_MANAGEMENT_PREFIX = "/users";
+const ORDER_PREFIX = "/orders";
 
 export const GET_CURRENT_USER = `${USER_PREFIX}`;
 export const UPDATE_USER_INFO = `${USER_PREFIX}`;
@@ -21,3 +22,6 @@ export const SUGGEST_USERNAME = `${PUBLIC_PREFIX}/username`;
 export const CHECK_RESET_PW_TOKEN = `${PUBLIC_PREFIX}/tokens/password`;
 export const CHECK_EMAIL_CONFIRM_TOKEN = `${PUBLIC_PREFIX}/tokens/registration`;
 export const SEND_RESET_PW_LINK = `${PUBLIC_PREFIX}/sendResetPasswordLink`;
+
+export const GET_ALL_ACTIVE_ORDERS = `${ORDER_PREFIX}/active`;
+export const GET_ALL_ORDERS_HISTORY = `${ORDER_PREFIX}/history`;

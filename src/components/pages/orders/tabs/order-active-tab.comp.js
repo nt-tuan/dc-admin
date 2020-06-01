@@ -6,6 +6,9 @@ import { DTCTable, FilterDropdown } from "components";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { UtilFacade } from "utils";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
+import { OrderService } from "services";
 
 const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
 const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
@@ -42,17 +45,20 @@ export const OrderActiveTab = () => {
   const [days, setDays] = useState(30);
 
   useEffect(() => {
-    const now = dayjs().format();
-    const dateAfterSubtract = subtractDateTime(now, days, "days");
-    const filterData = fakedData.filter((item) => {
-      return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+    asyncErrorHandlerWrapper(async () => {
+      const now = dayjs().format();
+      const dateAfterSubtract = subtractDateTime(now, days, "days");
+      const res = await getAllRecordsFromAPI(OrderService.getAllActiveOrders);
+      const filterData = res.filter((item) => {
+        return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+      });
+      setData([
+        ...filterData.map((item) => ({
+          ...item,
+          timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
+        }))
+      ]);
     });
-    setData([
-      ...filterData.map((item) => ({
-        ...item,
-        timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
-      }))
-    ]);
   }, [days]);
 
   const handleDownload = () => {
@@ -96,96 +102,3 @@ export const OrderActiveTab = () => {
     </div>
   );
 };
-
-const fakedData = [
-  {
-    id: 1,
-    timestamp: "2020-05-23T17:34:08+07:00",
-    orderNumber: 12345678,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Apple",
-    productName: "Apple iPhone 11 Black 64GB",
-    quantity: "111",
-    unitPrice: "333",
-    totalPrice: "555",
-    buyerCompanyName: "buyer",
-    sellerCompanyName: "seller",
-    status: "Order Completed"
-  },
-  {
-    id: 2,
-    timestamp: "2020-04-29T17:34:08+07:00",
-    orderNumber: 12345679,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Samsung",
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: "222",
-    unitPrice: "111",
-    totalPrice: "444",
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Cancelled"
-  },
-  {
-    id: 3,
-    timestamp: "2020-04-29T17:34:08+07:00",
-    orderNumber: 12345681,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Samsung",
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: "222",
-    unitPrice: "111",
-    totalPrice: "444",
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Cancelled"
-  },
-  {
-    id: 4,
-    timestamp: "2020-04-29T17:34:08+07:00",
-    orderNumber: 12345685,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Samsung",
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: "222",
-    unitPrice: "111",
-    totalPrice: "444",
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Cancelled"
-  },
-  {
-    id: 5,
-    timestamp: "2020-03-29T17:34:08+07:00",
-    orderNumber: 12345687,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Samsung",
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: "222",
-    unitPrice: "111",
-    totalPrice: "444",
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Cancelled"
-  },
-  {
-    id: 6,
-    timestamp: "2019-12-29T17:34:08+07:00",
-    orderNumber: 12345690,
-    productCategory: "Consumer Electronics",
-    productType: "Mobile Phone",
-    productBrand: "Samsung",
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: "222",
-    unitPrice: "111",
-    totalPrice: "444",
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Cancelled"
-  }
-];
