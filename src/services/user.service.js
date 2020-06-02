@@ -45,9 +45,9 @@ export class UserService {
     return result;
   };
 
-  static assignBadge = async ({ companyId }) => {
+  static assignBadge = async ({ companyId, type }) => {
     const result = await backendAPI.post(
-      API_URI.ASSIGN_BADGE_TO_USER.replace(":companyId", companyId)
+      `${API_URI.ASSIGN_BADGE_TO_USER.replace(":companyId", companyId)}?type=${type}`
     );
     return result;
   };
