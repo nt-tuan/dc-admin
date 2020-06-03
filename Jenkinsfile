@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'distichain_staging'
+        label env.agent_label
     }
 
     tools {
