@@ -8,8 +8,8 @@ export const UPDATE_USER_INFO = `${USER_PREFIX}`;
 export const CHANGE_PASSWORD = `${USER_PREFIX}/password`;
 
 export const GET_ALL_USERS = `${USER_MANAGEMENT_PREFIX}/all`;
-export const GET_ALL_BUYERS = `${USER_MANAGEMENT_PREFIX}/seller`;
-export const GET_ALL_SELLERS = `${USER_MANAGEMENT_PREFIX}/buyer`;
+export const GET_ALL_BUYERS = `${USER_MANAGEMENT_PREFIX}/buyer`;
+export const GET_ALL_SELLERS = `${USER_MANAGEMENT_PREFIX}/seller`;
 export const SUSPEND_USER = `${USER_MANAGEMENT_PREFIX}/:companyId/suspend`;
 export const UNSUSPEND_USER = `${USER_MANAGEMENT_PREFIX}/:companyId/unsuspend`;
 export const ASSIGN_BADGE_TO_USER = `${USER_MANAGEMENT_PREFIX}/:companyId/assign/badge/type`;
