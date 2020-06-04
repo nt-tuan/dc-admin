@@ -4,17 +4,17 @@ import { UtilFacade } from "utils";
 const { sortAlphabetically } = UtilFacade.getSortUtils();
 
 const FIELDS = {
-  timestamp: "timestamp",
-  orderNumber: "orderNumber",
+  timestamp: "createdDate",
+  orderNumber: "number",
   productCategory: "productCategory",
   productType: "productType",
   productBrand: "productBrand",
   productName: "productName",
   quantity: "quantity",
   unitPrice: "unitPrice",
-  totalPrice: "totalPrice",
-  buyerCompanyName: "buyerCompanyName",
-  sellerCompanyName: "sellerCompanyName",
+  totalPrice: "total",
+  buyerCompanyName: "buyerCompany",
+  sellerCompanyName: "sellerCompany",
   status: "status"
 };
 
@@ -43,7 +43,9 @@ const ORDER_STATUS = {
   BUYER_INSPECTION_REPORT: "BUYER_INSPECTION_REPORT",
   REVIEW: "REVIEW",
   ORDER_COMPLETED: "ORDER_COMPLETED",
-  ORDER_CANCELLED: "ORDER_CANCELLED"
+  ORDER_CANCELLED: "ORDER_CANCELLED",
+  UPLOAD_SHIPPING_DOCUMENTS: "UPLOAD_SHIPPING_DOCUMENTS",
+  DONE: "DONE"
 };
 
 const ORDER_STATUS_LABELS = {
@@ -56,7 +58,9 @@ const ORDER_STATUS_LABELS = {
   [ORDER_STATUS.BUYER_INSPECTION_REPORT]: "Buyer's Inspection Report",
   [ORDER_STATUS.REVIEW]: "Review",
   [ORDER_STATUS.ORDER_COMPLETED]: "Order Completed",
-  [ORDER_STATUS.ORDER_CANCELLED]: "Order Cancelled"
+  [ORDER_STATUS.ORDER_CANCELLED]: "Order Cancelled",
+  [ORDER_STATUS.UPLOAD_SHIPPING_DOCUMENTS]: "Upload Shipping Documents",
+  [ORDER_STATUS.DONE]: "Done"
 };
 
 export const ORDERS_SCHEMA = Object.freeze({

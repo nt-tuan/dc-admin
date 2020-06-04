@@ -14,7 +14,7 @@ const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralCons
 const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
 const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDateTimeUtils();
 
-const { FIELDS, LABELS } = ORDERS_SCHEMA;
+const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
 
 const filterDays = {
   defaultValue: TIME_FIELDS.month,
@@ -43,21 +43,25 @@ const labelIndex = {
 export const OrderActiveTab = () => {
   const [data, setData] = useState([]);
   const [days, setDays] = useState(30);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       const now = dayjs().format();
       const dateAfterSubtract = subtractDateTime(now, days, "days");
       const res = await getAllRecordsFromAPI(OrderService.getAllActiveOrders);
       const filterData = res.filter((item) => {
-        return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+        return isBetweenTwoDate(item[FIELDS.timestamp], dateAfterSubtract, now);
       });
       setData([
         ...filterData.map((item) => ({
           ...item,
-          timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
+          [FIELDS.timestamp]: dayjs(item[FIELDS.timestamp]).format(DATETIME_FORMAT),
+          status: ORDER_STATUS_LABELS[ORDER_STATUS[item.status]]
         }))
       ]);
+      setLoading(false);
     });
   }, [days]);
 
@@ -94,7 +98,7 @@ export const OrderActiveTab = () => {
 
       <DTCTable
         showSettings={false}
-        loading={false}
+        loading={loading}
         dataSource={data}
         schema={orderActiveTableSchema()}
         onChange={(value) => setData(value)}

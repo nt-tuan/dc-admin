@@ -24,7 +24,6 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, onAssign, 
     }
   };
 
-  console.log(loading);
   return (
     <Modal
       width={620}
