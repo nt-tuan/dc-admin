@@ -11,8 +11,7 @@ import { ReactComponent as TransactionSizeBadge3 } from "assets/icons/new_badges
 import { ReactComponent as TransactionSizeBadge4 } from "assets/icons/new_badges/transaction-size-4.svg";
 import { ReactComponent as TransactionSizeBadge5 } from "assets/icons/new_badges/transaction-size-5.svg";
 import React from "react";
-import { ConstFacade } from "commons/consts";
-const { BADGE_TYPES } = ConstFacade.getGeneralConst();
+import { BADGE_TYPES } from "commons/consts";
 
 export const UserBadge = ({ type, value }) => {
   const [tooltipText, Badge] = getBadge(type, value);

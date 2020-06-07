@@ -1,12 +1,14 @@
 import store from "store";
 import { backendAPI } from "utils/httpAPI.util";
-import { API_URI } from "commons/consts/system";
+import { ApiUriConsts } from "commons/consts/system";
 
 export class AuthService {
   static login = async (values) => {
-    const result = await backendAPI.post(API_URI.LOGIN, { ...values, rememberMe: undefined });
+    const result = await backendAPI.post(ApiUriConsts.LOGIN, { ...values, rememberMe: undefined });
     const { access_token } = result;
     const { rememberMe } = values;
+
+    console.log(result);
 
     const userCredentials = {
       accessToken: access_token,

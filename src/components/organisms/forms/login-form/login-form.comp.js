@@ -1,17 +1,17 @@
 import { Button, Checkbox, Form, Input } from "antd";
-import { ConstFacade } from "commons/consts";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
 import style from "./styles.module.scss";
-import { UtilFacade } from "utils";
-
-const { isScreensize } = UtilFacade.getGeneralUtils();
-
-const ROUTES = ConstFacade.getAllRoutes();
-const ERR_MSG = ConstFacade.getErrorMessages();
-const API_ERRORS = ConstFacade.getApiErrors();
+import { isScreensize } from "utils/general.util";
+import { API_ERRORS } from "commons/consts/system/api-error-code.const";
+import {
+  RouteConst,
+  CAPTCHA_NOT_FINISH_ERR,
+  LOGIN_WRONG_OVER_3_TIMES_ERR,
+  REQUIRED_ERR
+} from "commons/consts";
 
 export const LoginForm = ({ isLoading, onSubmit }) => {
   const [isSmallDevice, setIsSmallDevice] = useState(false);
@@ -71,7 +71,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
           ref={recaptchaRef}
           onChange={onCaptchaDone}
         />
-        {showCaptchaError ? <p className="text-danger">{ERR_MSG.CAPTCHA_NOT_FINISH_ERR}</p> : null}
+        {showCaptchaError ? <p className="text-danger">{CAPTCHA_NOT_FINISH_ERR}</p> : null}
       </div>
     );
   };
@@ -81,11 +81,11 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
       <div className="mt-4 mb-3">
         <div>By Signing up, you agree to DistiChain’s </div>
         <div>
-          <Link to={ROUTES.TERMS_AND_CONDITIONS_ROUTE} className="font-weight-bold">
+          <Link to={RouteConst.TERMS_AND_CONDITIONS_ROUTE} className="font-weight-bold">
             Terms and Conditions
           </Link>{" "}
           &{" "}
-          <Link to={ROUTES.PRIVACY_POLICY_ROUTE} className="font-weight-bold">
+          <Link to={RouteConst.PRIVACY_POLICY_ROUTE} className="font-weight-bold">
             Privacy Policy
           </Link>
         </div>
@@ -108,7 +108,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
         <div className="ml-2">
           <span className="mr-2">Not a Member?</span>
           <Link
-            to={ROUTES.REGISTER_ROUTE}
+            to={RouteConst.REGISTER_ROUTE}
             className="font-weight-bold air__utils__link__underlined"
           >
             Sign Up
@@ -120,7 +120,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
 
   const renderServerError = () => {
     let Message = serverError;
-    if (serverError === ERR_MSG.LOGIN_WRONG_OVER_3_TIMES_ERR) {
+    if (serverError === LOGIN_WRONG_OVER_3_TIMES_ERR) {
       const _serverError = serverError;
       const splittedArray = _serverError.split("here");
       Message = (
@@ -186,7 +186,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
             >
               <Checkbox>{rememberMe.label}</Checkbox>
             </Form.Item>
-            <Link to={ROUTES.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
+            <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
           </div>
           {/* other things */}
           {renderTermsAndPolicy()}
@@ -216,7 +216,7 @@ const LOGIN_SCHEMA = {
     placeholder: "Username",
     className: "pb-1 mb-2",
     options: {
-      rules: [{ required: true, message: ERR_MSG.REQUIRED_ERR("Username") }]
+      rules: [{ required: true, message: REQUIRED_ERR("Username") }]
     }
   },
   password: {
@@ -225,7 +225,7 @@ const LOGIN_SCHEMA = {
     placeholder: "Password",
     className: "pb-1 mb-2",
     options: {
-      rules: [{ required: true, message: ERR_MSG.REQUIRED_ERR("Password") }]
+      rules: [{ required: true, message: REQUIRED_ERR("Password") }]
     }
   },
   rememberMe: {

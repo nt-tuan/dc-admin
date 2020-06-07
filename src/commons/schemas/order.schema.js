@@ -1,7 +1,5 @@
 import React from "react";
-import { UtilFacade } from "utils";
-
-const { sortAlphabetically } = UtilFacade.getSortUtils();
+import { sortAlphabetically } from "utils/sort.util";
 
 const FIELDS = {
   timestamp: "createdDate",

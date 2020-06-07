@@ -1,29 +1,15 @@
-import {
-  ADMIN_PREFIX,
-  KYC_PROCESS_ROUTE,
-  LOGIN_ROUTE,
-  NOT_FOUND_ERROR_ROUTE,
-  UNEXPECTED_ERROR_ROUTE,
-  UPDATE_TIMEZONE_ROUTE,
-  HOME_ROUTE,
-  ORDERS,
-  USER_MANAGEMENT,
-  SERVICE
-} from "./shared-paths.const";
+import { SharedPaths } from "./shared-paths.const";
 
-// ADMIN ROUTES
-export const ADMIN_USER_MANAGEMENT_ROUTE = `${ADMIN_PREFIX}/user-management`;
-export const ADMIN_USER_MANAGEMENT_ADD_USER_ROUTE = `${ADMIN_USER_MANAGEMENT_ROUTE}/add-user`;
-export const ADMIN_AUDIT_LOG_ROUTE = `${ADMIN_PREFIX}/audit-log`;
+export class RouteConst extends SharedPaths {
+  static get PUBLIC_ROUTES() {
+    return [this.LOGIN_ROUTE];
+  }
 
-//ROUTE CATEGORY
-export const PUBLIC_ROUTES = [LOGIN_ROUTE];
-export const PRIVATE_ROUTES = [HOME_ROUTE, USER_MANAGEMENT, ORDERS, SERVICE];
+  static get PRIVATE_ROUTES() {
+    return [this.HOME_ROUTE, this.USER_MANAGEMENT, this.ORDERS, this.SERVICE];
+  }
 
-export const NO_LAYOUT_ROUTES = [KYC_PROCESS_ROUTE, UPDATE_TIMEZONE_ROUTE];
-export const ERROR_LAYOUT_ROUTES = [NOT_FOUND_ERROR_ROUTE, UNEXPECTED_ERROR_ROUTE];
-export const ADMIN_ROUTES = [
-  ADMIN_USER_MANAGEMENT_ROUTE,
-  ADMIN_USER_MANAGEMENT_ADD_USER_ROUTE,
-  ADMIN_AUDIT_LOG_ROUTE
-];
+  static ERROR_LAYOUT_ROUTES() {
+    return [this.NOT_FOUND_ERROR_ROUTE, this.UNEXPECTED_ERROR_ROUTE];
+  }
+}

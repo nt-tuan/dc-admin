@@ -1,18 +1,14 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { ConstFacade } from "commons/consts";
 import { orderActiveTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { DTCTable, FilterDropdown } from "components";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { UtilFacade } from "utils";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
 import { OrderService } from "services";
-
-const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
-const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDateTimeUtils();
+import { TIME_FIELDS, TIME_LABELS, DATETIME_FORMAT } from "commons/consts";
+import { subtractDateTime, isBetweenTwoDate } from "utils/date-time.util";
 
 const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
 

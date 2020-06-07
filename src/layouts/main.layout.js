@@ -1,4 +1,3 @@
-import { ConstFacade } from "commons/consts/const.facade";
 import { Loader } from "components";
 import { modifyVars } from "less";
 import NProgress from "nprogress";
@@ -9,8 +8,7 @@ import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
-
-const privateRoutes = ConstFacade.getPrivateRoutes();
+import { RouteConst } from "commons/consts";
 
 const Layouts = {
   public: PublicLayout,
@@ -23,8 +21,9 @@ export const Layout = React.memo(({ children }) => {
   const user = useSelector(selectCurrentUser);
   const lastPathRole = useRef(undefined);
   const { pathname } = location;
+  console.log(RouteConst.PRIVATE_ROUTES);
   const isPrivateRoute = useRouteMatch({
-    path: privateRoutes,
+    path: RouteConst.PRIVATE_ROUTES,
     exact: true
   });
 

@@ -3,9 +3,7 @@ import logoImg from "assets/images/logo.png";
 import React from "react";
 import style from "./topbar-comp.module.scss";
 import { ProfileMenu } from "./user-menu/user-menu.comp";
-import { UtilFacade } from "utils";
-
-const { isScreensize } = UtilFacade.getGeneralUtils();
+import { isScreensize } from "utils/general.util";
 
 export const TopBar = () => {
   return (

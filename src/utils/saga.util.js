@@ -1,14 +1,13 @@
 import { log } from "./logger.util";
 import { removeAuthCredential } from "./auth.util";
 import { message } from "antd";
-import { ConstFacade } from "commons/consts";
-const { ROUTES } = ConstFacade.getGeneralConst();
+import { RouteConst } from "commons/consts";
 
 export const handleSagaError = (error) => {
   if (error instanceof Error) {
     if (error.message === "401") {
       removeAuthCredential().then(() => {
-        window.location.href = ROUTES.LOGIN_ROUTE;
+        window.location.href = RouteConst.LOGIN_ROUTE;
       });
       return;
     }

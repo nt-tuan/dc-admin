@@ -2,9 +2,7 @@ import { message } from "antd";
 import { APIError } from "commons/types";
 import { removeAuthCredential } from "./auth.util";
 import { log } from "./logger.util";
-import { ConstFacade } from "commons/consts";
-
-const ROUTES = ConstFacade.getAllRoutes();
+import { RouteConst } from "commons/consts";
 
 export const axiosErrorHandler = (err) => {
   if (err.response) {
@@ -39,7 +37,7 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
     if (error instanceof Error) {
       if (error.message === "401") {
         removeAuthCredential().then(() => {
-          window.location.href = ROUTES.LOGIN_ROUTE;
+          window.location.href = RouteConst.LOGIN_ROUTE;
         });
         return;
       }

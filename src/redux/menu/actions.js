@@ -1,5 +1,4 @@
-import { ConstFacade } from "commons/consts";
-const ROUTES = ConstFacade.getAllRoutes();
+import { RouteConst } from "commons/consts";
 
 const actions = {
   SET_STATE: "menu/SET_STATE",
@@ -23,19 +22,19 @@ export async function getUserData() {
       title: "Users",
       key: "Users",
       icon: "fe fe-users",
-      url: ROUTES.USER_MANAGEMENT
+      url: RouteConst.USER_MANAGEMENT
     },
     {
       title: "Services",
       key: "Services",
       icon: "fe fe-phone-call",
-      url: ROUTES.SERVICE
+      url: RouteConst.SERVICE
     },
     {
       title: "Orders",
       key: "Orders",
       icon: "fe fe-layers",
-      url: ROUTES.ORDERS
+      url: RouteConst.ORDERS
     },
     {
       title: "Analytics",
