@@ -15,12 +15,14 @@ export const UserManagementAllUserTab = () => {
   const [showAssignBadgeForm, toggleShowAssignBadgeForm] = useBooleanState(false);
   const [showConfirmForm, toggleConfirmForm] = useBooleanState(false);
   const [badges, setBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const toggleShowAssignBadgeFormWrapper = (companyId) => {
     asyncErrorHandlerWrapper(async () => {
       const badges = await UserService.getAvailableBadges({ companyId });
       setBadges(badges);
       toggleShowAssignBadgeForm();
+      setCurrentCompanyId(companyId);
     });
   };
 
@@ -28,6 +30,7 @@ export const UserManagementAllUserTab = () => {
     asyncErrorHandlerWrapper(async () => {
       const data = await getAllRecordsFromAPI(UserService.getAllUsers);
       setData(data);
+      setLoading(false);
     });
   }, []);
 
@@ -57,7 +60,7 @@ export const UserManagementAllUserTab = () => {
       <div className="air__utils__shadow bg-white p-4 dtc-br-10">
         <DTCTable
           showSetting={false}
-          loading={false}
+          loading={loading}
           dataSource={data}
           schema={userMgtTableSchema({
             onLock: handelConfirmLock,
@@ -79,73 +82,41 @@ export const UserManagementAllUserTab = () => {
         badges={badges}
         showForm={showAssignBadgeForm}
         toggleShowForm={toggleShowAssignBadgeForm}
+        companyId={currentCompanyId}
       />
     </Fragment>
   );
 };
+
 // const users = [
 //   {
-//     id: 1,
-//     company: "Morphotech",
-//     owner: "All User 1",
-//     username: "Username 1",
-//     email: "Email 1",
-//     country: "Country 1",
-//     contact: "Contact 1",
-//     reputation: "4.5",
-//     reputationList: [
-//       { type: "STATUS_BADGE", value: 0.0 },
-//       { type: "NUMBER_BADGE", value: 35.0 },
-//       { type: "VALUE_BADGE", value: 5000.0 }
-//     ],
-//     status: STATUS_LABELS[STATUS.LIVE_SELLERS]
-//   },
-//   {
-//     id: 2,
-//     company: "Morphotech",
-//     owner: "All User 2",
-//     username: "Username 2",
-//     email: "Email 2",
-//     country: "Country 2",
-//     contact: "Contact 2",
-//     reputation: "4",
-//     reputationList: [
-//       { type: "STATUS_BADGE", value: 0.0 },
-//       { type: "NUMBER_BADGE", value: 20.0 },
-//       { type: "VALUE_BADGE", value: 110000.0 }
-//     ],
-//     status: STATUS_LABELS[STATUS.BUYING_SELLERS]
-//   },
-//   {
-//     id: 3,
-//     company: "Morphotech",
-//     owner: "All User 3",
-//     username: "Username 3",
-//     email: "Email 3",
-//     country: "Country 3",
-//     contact: "Contact 3",
-//     reputation: "5",
-//     reputationList: [
-//       { type: "STATUS_BADGE", value: 0.0 },
+//     id: "d1ca52db-b4b9-41d6-b4aa-79a2b995685b",
+//     companyName: "qa_seller",
+//     username: "qa_seller",
+//     email: "zec82993@gmail.com",
+//     country: "vn",
+//     contact: "123456789",
+//     reputation: 0.0,
+//     badges: [
 //       { type: "NUMBER_BADGE", value: 15.0 },
-//       { type: "VALUE_BADGE", value: 125000.0 }
-//     ],
-//     status: STATUS_LABELS[STATUS.INACTIVE_SELLERS]
+//       { type: "VALUE_BADGE", value: 5000.0 },
+//       { type: "MANUFACTURE", value: 0.0 },
+//       { type: "DISTRIBUTOR", value: 0.0 }
+//     ]
 //   },
 //   {
-//     id: 4,
-//     company: "Morphotech",
-//     owner: "All User 4",
-//     username: "Username 4",
-//     email: "Email 4",
-//     country: "Country 4",
-//     contact: "Contact 4",
-//     reputation: "5",
-//     reputationList: [
-//       { type: "STATUS_BADGE", value: 0.0 },
+//     id: "e32c8c28-7479-4f6b-8d46-b70d655d1b2e",
+//     companyName: "qa_seller",
+//     username: "qa_seller",
+//     email: "zec82993@gmail.com",
+//     country: "vn",
+//     contact: "123456789",
+//     reputation: 0.0,
+//     badges: [
 //       { type: "NUMBER_BADGE", value: 15.0 },
-//       { type: "VALUE_BADGE", value: 125000.0 }
-//     ],
-//     status: STATUS_LABELS[STATUS.SUSPENDED]
+//       { type: "VALUE_BADGE", value: 5000.0 },
+//       { type: "MANUFACTURE", value: 0.0 },
+//       { type: "DISTRIBUTOR", value: 0.0 }
+//     ]
 //   }
 // ];

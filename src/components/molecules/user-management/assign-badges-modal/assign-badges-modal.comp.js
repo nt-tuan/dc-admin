@@ -3,6 +3,8 @@ import { ReactComponent as ManuFactorBadge } from "assets/icons/distributor.svg"
 import { ReactComponent as DistributorBadge } from "assets/icons/manufactor.svg";
 import React, { useState } from "react";
 import { USER_MANAGEMENT_SCHEMA } from "commons/schemas";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { UserService } from "services";
 
 const { BADGE_TYPES, BADGE_LABELS } = USER_MANAGEMENT_SCHEMA;
 
@@ -11,8 +13,9 @@ const IMAGE_SCHEMA = {
   [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />
 };
 
-export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, onAssign, loading }) => {
+export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, companyId }) => {
   const [types, setTypes] = useState([]);
+  const [isAssigning, setIsAssigning] = useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -22,6 +25,14 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, onAssign, 
     } else {
       setTypes(types.filter((type) => type !== value));
     }
+  };
+
+  const handleAssignBadge = (types) => {
+    setIsAssigning(true);
+    asyncErrorHandlerWrapper(async () => {
+      await Promise.all(types.map((type) => UserService.assignBadge({ companyId, type })));
+      setIsAssigning(false);
+    });
   };
 
   return (
@@ -63,11 +74,11 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, onAssign, 
             className="mb-2"
             type="primary"
             onClick={() => {
-              onAssign(types);
+              handleAssignBadge(types);
               toggleShowForm();
             }}
-            disabled={badges.length === 0 || loading === true}
-            loading={loading}
+            disabled={badges.length === 0 || isAssigning === true}
+            loading={isAssigning}
           >
             Assign
           </Button>
