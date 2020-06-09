@@ -26,17 +26,11 @@ export const UserBadge = ({ type, value }) => {
 
 const getBadge = (type, value) => {
   switch (type) {
-    case BADGE_TYPES.STATUS_BADGE: {
-      if (value === 0) {
-        return [];
-      }
-      if (value === 1) {
-        return ["Manufactor Badge", ManuFactorBadge];
-      }
-      if (value === 2) {
-        return ["Distributor Badge", DistributorBadge];
-      }
-      break;
+    case BADGE_TYPES.DISTRIBUTOR: {
+      return ["Distributor Badge", DistributorBadge];
+    }
+    case BADGE_TYPES.MANUFACTURE: {
+      return ["Manufactor Badge", ManuFactorBadge];
     }
     case BADGE_TYPES.VALUE_BADGE: {
       if (value <= 50000) {
