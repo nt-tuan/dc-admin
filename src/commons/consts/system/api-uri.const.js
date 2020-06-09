@@ -41,6 +41,6 @@ export class ApiUriConsts {
   }
 
   static get GET_ALL_ORDERS_HISTORY() {
-    return `${this.ORDER_PREFIX}/history`;
+    return `${this.#ORDER_PREFIX}/history`;
   }
 }
