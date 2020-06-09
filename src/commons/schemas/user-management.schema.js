@@ -6,27 +6,27 @@ import { roundToHalfDecimal } from "utils/general.util";
 
 const FIELDS = {
   id: "id",
-  company: "company",
-  owner: "owner",
+  companyName: "companyName",
+  ownerName: "ownerName",
   username: "username",
   email: "email",
   country: "country",
   contact: "contact",
   reputation: "reputation",
-  reputationList: "reputationList",
-  status: "status"
+  badges: "badges",
+  userStatus: "userStatus"
 };
 
 const LABELS = {
-  [FIELDS.company]: "Company",
-  [FIELDS.owner]: "Owner",
+  [FIELDS.companyName]: "Company",
+  [FIELDS.ownerName]: "Owner",
   [FIELDS.username]: "Username",
   [FIELDS.email]: "Email",
   [FIELDS.country]: "Country",
   [FIELDS.contact]: "Contact",
   [FIELDS.reputation]: "Reputation",
-  [FIELDS.reputationList]: "Badges",
-  [FIELDS.status]: "Status"
+  [FIELDS.badges]: "Badges",
+  [FIELDS.userStatus]: "Status"
 };
 
 const USER_MGT_STATUS = {
@@ -82,26 +82,26 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
 ) => {
   const columnsSchema = [
     {
-      title: LABELS[FIELDS.company],
-      dataIndex: FIELDS.company,
-      key: FIELDS.company,
-      sorter: (a, b) => sortAlphabetically(a.company, b.company),
+      title: LABELS[FIELDS.companyName],
+      dataIndex: FIELDS.companyName,
+      key: FIELDS.companyName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.companyName], b[FIELDS.companyName]),
       sortOrder: sortedInfo.columnKey === FIELDS.company && sortedInfo.order,
-      render: (company) => <CustomHighlighter searchText={searchText} value={company} />
+      render: (companyName) => <CustomHighlighter searchText={searchText} value={companyName} />
     },
     {
-      title: LABELS[FIELDS.owner],
-      dataIndex: FIELDS.owner,
-      key: FIELDS.owner,
-      sorter: (a, b) => sortAlphabetically(a.owner, b.owner),
-      sortOrder: sortedInfo.columnKey === FIELDS.owner && sortedInfo.order,
-      render: (owner) => <CustomHighlighter searchText={searchText} value={owner} />
+      title: LABELS[FIELDS.ownerName],
+      dataIndex: FIELDS.ownerName,
+      key: FIELDS.ownerName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.ownerName], b[FIELDS.ownerName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.ownerName && sortedInfo.order,
+      render: (ownerName) => <CustomHighlighter searchText={searchText} value={ownerName} />
     },
     {
       title: LABELS[FIELDS.username],
       dataIndex: FIELDS.username,
       key: FIELDS.username,
-      sorter: (a, b) => sortAlphabetically(a.username, b.username),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.username], b[FIELDS.username]),
       sortOrder: sortedInfo.columnKey === FIELDS.username && sortedInfo.order,
       render: (username) => <CustomHighlighter searchText={searchText} value={username} />
     },
@@ -109,7 +109,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.email],
       dataIndex: FIELDS.email,
       key: FIELDS.email,
-      sorter: (a, b) => sortAlphabetically(a.email, b.email),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.email], b[FIELDS.email]),
       sortOrder: sortedInfo.columnKey === FIELDS.email && sortedInfo.order,
       render: (email) => <CustomHighlighter searchText={searchText} value={email} />
     },
@@ -117,7 +117,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.country],
       dataIndex: FIELDS.country,
       key: FIELDS.country,
-      sorter: (a, b) => sortAlphabetically(a.country, b.country),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.country], b[FIELDS.country]),
       sortOrder: sortedInfo.columnKey === FIELDS.country && sortedInfo.order,
       render: (country) => <CustomHighlighter searchText={searchText} value={country} />
     },
@@ -125,7 +125,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.contact],
       dataIndex: FIELDS.contact,
       key: FIELDS.contact,
-      sorter: (a, b) => sortAlphabetically(a.contact, b.contact),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.contact], b[FIELDS.contact]),
       sortOrder: sortedInfo.columnKey === FIELDS.contact && sortedInfo.order,
       render: (contact) => <CustomHighlighter searchText={searchText} value={contact} />
     },
@@ -134,21 +134,21 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.reputation],
       dataIndex: FIELDS.reputation,
       key: FIELDS.reputation,
-      sorter: (a, b) => a.reputation - b.reputation,
+      sorter: (a, b) => a[FIELDS.reputation] - b[FIELDS.reputation],
       sortOrder: sortedInfo.columnKey === FIELDS.reputation && sortedInfo.order,
       render: (reputation) => <Rate allowHalf value={roundToHalfDecimal(reputation)} disabled />
     },
     {
-      title: LABELS[FIELDS.reputationList],
-      dataIndex: FIELDS.reputationList,
-      key: FIELDS.reputationList,
+      title: LABELS[FIELDS.badges],
+      dataIndex: FIELDS.badges,
+      key: FIELDS.badges,
       // sorter: (a, b) => a.reputationList.value - b.reputationList.value,
       // sortOrder: sortedInfo.columnKey === FIELDS.reputationList && sortedInfo.order,
-      render: (reputationList) => (
+      render: (badges) => (
         <Fragment>
           <div className="d-flex align-items-center h-100">
-            {reputationList &&
-              reputationList
+            {badges &&
+              badges
                 .sort((a, b) => b.value - a.value)
                 .map((badge, index) => (
                   <UserBadge key={badge.type} type={badge.type} value={badge.value} />
@@ -158,12 +158,12 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       )
     },
     {
-      title: LABELS[FIELDS.status],
-      dataIndex: FIELDS.status,
-      key: FIELDS.status,
-      sorter: (a, b) => sortAlphabetically(a.status, b.status),
-      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
-      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
+      title: LABELS[FIELDS.userStatus],
+      dataIndex: FIELDS.userStatus,
+      key: FIELDS.userStatus,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.userStatus], b[FIELDS.userStatus]),
+      sortOrder: sortedInfo.columnKey === FIELDS.userStatus && sortedInfo.order,
+      render: (userStatus) => <CustomHighlighter searchText={searchText} value={userStatus} />
     },
     {
       title: "Manage",

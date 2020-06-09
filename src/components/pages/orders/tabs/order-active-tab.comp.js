@@ -8,7 +8,9 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
 import { OrderService } from "services";
 import { TIME_FIELDS, TIME_LABELS, DATETIME_FORMAT } from "commons/consts";
-import { subtractDateTime, isBetweenTwoDate } from "utils/date-time.util";
+import { DatetimeUtils } from "utils/date-time.util";
+
+const { isBetweenTwoDate, subtractDateTime } = DatetimeUtils;
 
 const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
 
