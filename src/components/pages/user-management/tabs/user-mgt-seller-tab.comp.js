@@ -1,13 +1,13 @@
-import { userMgtTableSchema } from "commons/schemas/user-management.schema";
+import { userMgtTableSchema, USER_MANAGEMENT_SCHEMA } from "commons/schemas/user-management.schema";
 import { AssignBadgesModal, ConfirmModal } from "components";
 import { DTCTable } from "components/atoms";
 import { useBooleanState } from "hooks/utilHooks";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 
-// const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
+const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
 
 export const UserManagementSellerTab = () => {
   const [data, setData] = useState([]);
@@ -26,13 +26,18 @@ export const UserManagementSellerTab = () => {
     });
   };
 
-  useEffect(() => {
+  const getListSellers = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
-      const data = await getAllRecordsFromAPI(UserService.getAllSeller);
+      let data = await getAllRecordsFromAPI(UserService.getAllSeller);
+      data = data.map((user) => ({ ...user, userStatus: STATUS_LABELS[STATUS[user.userStatus]] }));
       setData(data);
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    getListSellers();
+  }, [getListSellers]);
 
   const handleLock = (companyId) => {
     setCurrentCompanyId(companyId);
@@ -40,18 +45,20 @@ export const UserManagementSellerTab = () => {
   };
 
   const handleUnlock = (companyId) => {
+    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await UserService.unsuspendUser({ companyId });
-      const data = await getAllRecordsFromAPI(UserService.getAllSeller);
-      setData(data);
+      getListSellers();
+      toggleConfirmForm();
     });
   };
 
   const handelConfirmLock = () => {
+    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await UserService.suspendUser({ companyId: currentCompanyId });
-      const data = await getAllRecordsFromAPI(UserService.getAllSeller);
-      setData(data);
+      getListSellers();
+      toggleConfirmForm();
     });
   };
   return (
@@ -62,7 +69,7 @@ export const UserManagementSellerTab = () => {
           loading={loading}
           dataSource={data}
           schema={userMgtTableSchema({
-            onLock: handelConfirmLock,
+            onLock: handleLock,
             onUnlock: handleUnlock,
             onViewAssignBadges: toggleShowAssignBadgeFormWrapper
           })}
@@ -72,7 +79,7 @@ export const UserManagementSellerTab = () => {
       <ConfirmModal
         showForm={showConfirmForm}
         toggleShowForm={toggleConfirmForm}
-        onConfirmLock={handleLock}
+        onConfirmLock={handelConfirmLock}
         title="Please Confirm"
         innerText="Please note that if you disable the account, all the actions and processes of this user will be suspended."
       />
@@ -82,6 +89,7 @@ export const UserManagementSellerTab = () => {
         showForm={showAssignBadgeForm}
         toggleShowForm={toggleShowAssignBadgeForm}
         companyId={currentCompanyId}
+        getListUsers={getListSellers}
       />
     </Fragment>
   );

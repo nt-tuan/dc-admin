@@ -29,7 +29,9 @@ export class UserService {
   };
 
   static suspendUser = async ({ companyId }) => {
-    const result = await backendAPI.post(ApiUriConsts.SUSPEND_USER(companyId));
+    const result = await backendAPI.post(
+      ApiUriConsts.SUSPEND_USER.replace(":companyId", companyId)
+    );
     return result;
   };
 

@@ -13,7 +13,13 @@ const IMAGE_SCHEMA = {
   [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />
 };
 
-export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, companyId }) => {
+export const AssignBadgesModal = ({
+  showForm,
+  toggleShowForm,
+  badges,
+  companyId,
+  getListUsers
+}) => {
   const [types, setTypes] = useState([]);
   const [isAssigning, setIsAssigning] = useState(false);
 
@@ -33,6 +39,7 @@ export const AssignBadgesModal = ({ showForm, toggleShowForm, badges, companyId 
       await Promise.all(types.map((type) => UserService.assignBadge({ companyId, type })));
       setIsAssigning(false);
     });
+    getListUsers();
   };
 
   return (
