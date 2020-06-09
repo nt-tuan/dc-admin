@@ -21,7 +21,6 @@ export const Layout = React.memo(({ children }) => {
   const user = useSelector(selectCurrentUser);
   const lastPathRole = useRef(undefined);
   const { pathname } = location;
-  console.log(RouteConst.PRIVATE_ROUTES);
   const isPrivateRoute = useRouteMatch({
     path: RouteConst.PRIVATE_ROUTES,
     exact: true

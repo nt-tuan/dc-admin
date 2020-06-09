@@ -9,7 +9,7 @@ export const DTCHighlighter = React.memo(({ searchText, value, className }) => {
       highlightStyle={{ padding: 0 }}
       searchWords={[searchText.trim()]}
       autoEscape
-      textToHighlight={value.toString()}
+      textToHighlight={value ? value.toString() : ""}
       className={className}
       highlightClassName={styles.mark}
     />
@@ -19,5 +19,5 @@ export const DTCHighlighter = React.memo(({ searchText, value, className }) => {
 DTCHighlighter.propTypes = {
   searchText: PropTypes.string.isRequired,
   className: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };

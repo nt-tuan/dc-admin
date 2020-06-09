@@ -8,8 +8,6 @@ export class AuthService {
     const { access_token } = result;
     const { rememberMe } = values;
 
-    console.log(result);
-
     const userCredentials = {
       accessToken: access_token,
       rememberMe: rememberMe,
