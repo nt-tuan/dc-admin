@@ -40,25 +40,25 @@ export async function getUserData() {
       title: "Analytics",
       key: "Analytics",
       icon: "fe fe-pie-chart",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Marketing",
       key: "Marketing",
       icon: "fe fe-twitter",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Discounts",
       key: "Discounts",
       icon: "fe fe-tag",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Financials",
       key: "Financials",
       icon: "fe fe-trending-up",
-      url: "/"
+      url: "/notfound"
     }
   ];
 }
