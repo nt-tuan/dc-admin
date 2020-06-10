@@ -86,7 +86,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       dataIndex: FIELDS.companyName,
       key: FIELDS.companyName,
       sorter: (a, b) => sortAlphabetically(a[FIELDS.companyName], b[FIELDS.companyName]),
-      sortOrder: sortedInfo.columnKey === FIELDS.company && sortedInfo.order,
+      sortOrder: sortedInfo.columnKey === FIELDS.companyName && sortedInfo.order,
       render: (companyName) => <CustomHighlighter searchText={searchText} value={companyName} />
     },
     {
