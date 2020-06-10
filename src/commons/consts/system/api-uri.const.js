@@ -23,7 +23,7 @@ export class ApiUriConsts {
     return `${this.#USER_MANAGEMENT_PREFIX}/:companyId/suspend`;
   }
   static get UNSUSPEND_USER() {
-    return `${this.#USER_MANAGEMENT_PREFIX}/:companyId/unsuspend`;
+    return `${this.#USER_MANAGEMENT_PREFIX}/:companyId/unlockSuspend`;
   }
   static get ASSIGN_BADGE_TO_USER() {
     return `${this.#USER_MANAGEMENT_PREFIX}/:companyId/assign/badge/type`;

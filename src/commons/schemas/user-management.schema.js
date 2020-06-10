@@ -168,9 +168,9 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
     {
       title: "Manage",
       key: "manage",
-      render: ({ id, status }) => (
+      render: ({ id, suspended }) => (
         <Fragment>
-          {status === USER_MGT_STATUS_LABELS[USER_MGT_STATUS.SUSPENDED] ? (
+          {suspended === true ? (
             <Button onClick={() => onUnlock(id)} type="primary" className="dtc-min-width-50 mr-2">
               <i className="fe fe-play" style={{ verticalAlign: "middle" }}></i>
             </Button>

@@ -49,7 +49,6 @@ export const UserManagementAllUserTab = () => {
     asyncErrorHandlerWrapper(async () => {
       await UserService.unsuspendUser({ companyId });
       getListAllUsers();
-      toggleConfirmForm();
     });
   };
 

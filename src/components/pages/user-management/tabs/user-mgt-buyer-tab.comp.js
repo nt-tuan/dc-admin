@@ -50,7 +50,6 @@ export const UserManagementBuyerTab = () => {
     asyncErrorHandlerWrapper(async () => {
       await UserService.unsuspendUser({ companyId });
       getListBuyers();
-      toggleConfirmForm();
     });
   };
 
