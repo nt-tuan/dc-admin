@@ -262,16 +262,17 @@
       &__item {
         display: block;
         &__active {
+          background-color: rgba($gray-1, 1);
           > .air__menuLeft__link {
             background: $primary;
-            color: $white;
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
+            color: $primary;
+          }
+          > .air__menuLeft__icon {
+            color: $primary;
           }
           span {
             font-weight: bold;
+            color: $primary;
           }
         }
       }
@@ -883,16 +884,17 @@
       &__item {
         display: block;
         &__active {
+          background-color: rgba($gray-1, 1);
           > .air__menuLeft__link {
             background: $primary;
-            color: $white;
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
+            color: $primary;
+          }
+          > .air__menuLeft__icon {
+            color: $primary;
           }
           span {
             font-weight: bold;
+            color: $primary;
           }
         }
       }
