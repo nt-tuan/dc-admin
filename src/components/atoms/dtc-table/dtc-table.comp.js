@@ -17,7 +17,8 @@ export const DTCTable = React.memo(
     showSetting,
     onSettingClick,
     className,
-    renderFooter = () => {}
+    renderFooter = () => {},
+    onChange
   }) => {
     const [sortedInfo, setSortedInfo] = useState({});
     const [searchText, setSearchText] = useState("");
@@ -88,7 +89,10 @@ export const DTCTable = React.memo(
             rowKey={(record) => record.id}
             columns={schema(sortedInfo, DTCHighlighter, searchText, hiddenColumns)}
             dataSource={filtered}
-            onChange={(pagination, filters, sorter) => setSortedInfo(sorter)}
+            onChange={(pagination, filters, sorter, value) => {
+              onChange && onChange(value.currentDataSource);
+              setSortedInfo(sorter);
+            }}
             showLessItems={true}
           />
           {renderFooter()}
