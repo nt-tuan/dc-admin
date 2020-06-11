@@ -67,7 +67,7 @@ export async function getUserData() {
         {
           title: "Account Summary",
           key: "accountSummary",
-          url: "/notfound"
+          url: RouteConst.ACCOUNT_SUMMARY
         },
         {
           title: "Withdraw Fund",

@@ -6,7 +6,7 @@ export class RouteConst extends SharedPaths {
   }
 
   static get PRIVATE_ROUTES() {
-    return [this.HOME_ROUTE, this.USER_MANAGEMENT, this.ORDERS, this.SERVICE];
+    return [this.HOME_ROUTE, this.USER_MANAGEMENT, this.ORDERS, this.SERVICE, this.ACCOUNT_SUMMARY];
   }
 
   static ERROR_LAYOUT_ROUTES() {

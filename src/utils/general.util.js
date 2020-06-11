@@ -126,3 +126,7 @@ export const getAllRecordsFromAPI = async (serviceFn) => {
 
   return allDataRes.content;
 };
+
+export const toCurrency = (value) => {
+  return value !== undefined && !isNaN(value) ? "$ " + Number(value).toLocaleString() : value;
+};

@@ -90,6 +90,11 @@ const privateRoutes = [
     path: RouteConst.SERVICE,
     Component: loadable(() => import("components/pages/service/service.page")),
     exact: true
+  },
+  {
+    path: RouteConst.ACCOUNT_SUMMARY,
+    Component: loadable(() => import("components/pages/account-summary/account-summary.page")),
+    exact: true
   }
 ];
 
