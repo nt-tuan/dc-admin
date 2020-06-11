@@ -1,0 +1,10 @@
+@import "assets/styles/mixins.scss";
+
+:global(body.seller) {
+  @import "assets/styles/theme-seller.scss";
+  :local {
+    .small-balance-card-gradient {
+      background: linear-gradient(-146deg, $primary 0%, $primary 48%, $primary 100%);
+    }
+  }
+}

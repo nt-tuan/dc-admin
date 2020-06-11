@@ -6,6 +6,8 @@ import { ProfileMenu } from "./user-menu/user-menu.comp";
 import { isScreensize } from "utils/general.util";
 
 import styles from "./topbar-comp.module.scss";
+import { RouteConst } from "commons/consts";
+import { Link } from "react-router-dom";
 
 export const TopBar = () => {
   return (
@@ -20,7 +22,9 @@ export const TopBar = () => {
       </div>
       <div className="d-flex align-items-center">
         <i className={`${styles.icon} fa fa-bell ${styles["bell-icon"]}`} />
-        <i className={`fas fa-wallet text-primary ${styles["wallet-icon"]} mx-4`} />
+        <Link to={RouteConst.WALLET}>
+          <i className={`fas fa-wallet text-primary ${styles["wallet-icon"]} mx-4`} />
+        </Link>
         <ProfileMenu />
       </div>
     </div>

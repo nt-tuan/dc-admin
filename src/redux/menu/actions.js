@@ -62,7 +62,7 @@ export async function getUserData() {
         {
           title: "Wallet",
           key: "Wallet",
-          url: "/notfound"
+          url: RouteConst.WALLET
         },
         {
           title: "Account Summary",

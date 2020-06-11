@@ -23,6 +23,9 @@ export class SharedPaths {
   static get SERVICE() {
     return "/service";
   }
+  static get WALLET() {
+    return "/wallet";
+  }
   static get ACCOUNT_SUMMARY() {
     return "/account-summary";
   }

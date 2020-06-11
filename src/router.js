@@ -95,6 +95,11 @@ const privateRoutes = [
     path: RouteConst.ACCOUNT_SUMMARY,
     Component: loadable(() => import("components/pages/account-summary/account-summary.page")),
     exact: true
+  },
+  {
+    path: RouteConst.WALLET,
+    Component: loadable(() => import("components/pages/wallet/wallet.page")),
+    exact: true
   }
 ];
 
