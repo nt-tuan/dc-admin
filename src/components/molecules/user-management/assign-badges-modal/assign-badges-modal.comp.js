@@ -37,9 +37,9 @@ export const AssignBadgesModal = ({
     setIsAssigning(true);
     asyncErrorHandlerWrapper(async () => {
       await Promise.all(types.map((type) => UserService.assignBadge({ companyId, type })));
+      await getListUsers();
       setIsAssigning(false);
     });
-    getListUsers();
   };
 
   return (

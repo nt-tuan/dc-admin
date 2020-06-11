@@ -58,7 +58,28 @@ export async function getUserData() {
       title: "Financials",
       key: "Financials",
       icon: "fe fe-trending-up",
-      url: "/notfound"
+      children: [
+        {
+          title: "Wallet",
+          key: "Wallet",
+          url: "/notfound"
+        },
+        {
+          title: "Account Summary",
+          key: "accountSummary",
+          url: "/notfound"
+        },
+        {
+          title: "Withdraw Fund",
+          key: "Withdraw Fund",
+          url: "/notfound"
+        },
+        {
+          title: "Add Fund",
+          key: "Add Fund",
+          url: "/notfound"
+        }
+      ]
     }
   ];
 }
