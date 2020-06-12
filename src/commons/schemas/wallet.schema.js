@@ -31,9 +31,29 @@ const LABELS = {
   [FIELDS.currentTotalBalance]: "Current Total Balance"
 };
 
+const BANK_DETAILS = {
+  accountHolder: "accountHolder",
+  bankName: "name",
+  accountNumber: "accountNumber",
+  iban: "iban",
+  nationality: "nationality",
+  swiftCode: "swiftCode"
+};
+
+const BANK_DETAIL_LABELS = {
+  [BANK_DETAILS.accountHolder]: "Account holder",
+  [BANK_DETAILS.bankName]: "Bank name",
+  [BANK_DETAILS.accountNumber]: "Account No.",
+  [BANK_DETAILS.iban]: "IBAN",
+  [BANK_DETAILS.nationality]: "Nationality",
+  [BANK_DETAILS.swiftCode]: "Swift Code"
+};
+
 export const WALLET_SCHEMA = Object.freeze({
-  FIELDS: FIELDS,
-  LABELS: LABELS
+  FIELDS,
+  LABELS,
+  BANK_DETAILS,
+  BANK_DETAIL_LABELS
 });
 
 export const getAccountSummarySchema = () => (

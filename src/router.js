@@ -100,6 +100,11 @@ const privateRoutes = [
     path: RouteConst.WALLET,
     Component: loadable(() => import("components/pages/wallet/wallet.page")),
     exact: true
+  },
+  {
+    path: RouteConst.ADD_FUNDS,
+    Component: loadable(() => import("components/pages/add-funds/add-funds.page")),
+    exact: true
   }
 ];
 

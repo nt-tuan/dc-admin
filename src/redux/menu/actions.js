@@ -77,7 +77,7 @@ export async function getUserData() {
         {
           title: "Add Fund",
           key: "Add Fund",
-          url: "/notfound"
+          url: RouteConst.ADD_FUNDS
         }
       ]
     }

@@ -130,3 +130,8 @@ export const getAllRecordsFromAPI = async (serviceFn) => {
 export const toCurrency = (value) => {
   return value !== undefined && !isNaN(value) ? "$ " + Number(value).toLocaleString() : value;
 };
+
+export const areObjectValuesUndefined = (object) => {
+  const values = Object.values(object);
+  return values.every((v) => v === undefined);
+};

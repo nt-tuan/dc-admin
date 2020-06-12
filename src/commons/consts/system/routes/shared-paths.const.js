@@ -29,4 +29,7 @@ export class SharedPaths {
   static get ACCOUNT_SUMMARY() {
     return "/account-summary";
   }
+  static get ADD_FUNDS() {
+    return "/add-funds";
+  }
 }
