@@ -65,7 +65,7 @@ const parseDataToExcel = (data, labelIndex, LABELS, FIELDS) => {
   if (!Array.isArray(data) || data.length === 0) {
     return [];
   }
-  const parsedDataArray = [Object.keys(labelIndex).map((prop) => LABELS[FIELDS[prop]])];
+  const parsedDataArray = [Object.keys(labelIndex).map((prop) => LABELS[prop])];
   data.forEach((item) => {
     let parsedItem = new Array(5);
     Object.keys(item).forEach((prop) => {

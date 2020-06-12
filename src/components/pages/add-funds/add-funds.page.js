@@ -32,7 +32,7 @@ const AddFundsPage = () => {
             IMPORTANT: Please add Genko_Trading as reference while transferring the funds.
           </div>
         </div>
-        <BankDetailReadonly bankDetails={fakedData} />
+        <BankDetailReadonly bankDetails={fakedData} showTitle={false} />
       </div>
     </Fragment>
   );

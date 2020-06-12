@@ -18,7 +18,8 @@ export const AssignBadgesModal = ({
   toggleShowForm,
   badges,
   companyId,
-  getListUsers
+  getListUsers,
+  setLoading
 }) => {
   const [types, setTypes] = useState([]);
   const [isAssigning, setIsAssigning] = useState(false);
@@ -35,6 +36,7 @@ export const AssignBadgesModal = ({
 
   const handleAssignBadge = (types) => {
     setIsAssigning(true);
+    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await Promise.all(types.map((type) => UserService.assignBadge({ companyId, type })));
       await getListUsers();

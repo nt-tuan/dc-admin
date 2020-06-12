@@ -89,6 +89,7 @@ export const UserManagementSellerTab = () => {
         toggleShowForm={toggleShowAssignBadgeForm}
         companyId={currentCompanyId}
         getListUsers={getListSellers}
+        setLoading={setLoading}
       />
     </Fragment>
   );

@@ -1,7 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { WalletDashboard } from "components/organisms/containers/wallet/wallet-dashboard.container.comp";
-import { AccountSummary } from "components/organisms/containers/wallet/account-summary-container.comp";
+import { AccountSummary, WalletDashboard } from "components/organisms";
 
 const walletDashboard = {
   totalBalance: 1000,
