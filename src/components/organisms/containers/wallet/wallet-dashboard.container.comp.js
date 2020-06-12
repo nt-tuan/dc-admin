@@ -28,7 +28,7 @@ export const WalletDashboard = ({ walletDashboard }) => {
       <div className="d-flex justify-content-between flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row">
         <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Wallet Dashboard</h5>
         <div>
-          <Link to="/">
+          <Link to={RouteConst.ADD_FUNDS}>
             <Button type="primary" shape="round" className="mr-2 mb-2">
               Add Funds
             </Button>

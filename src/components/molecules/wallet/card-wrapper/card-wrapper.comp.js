@@ -5,7 +5,7 @@ export const CardsWrapper = ({ cards, currency }) => {
   return (
     <div className="row">
       {Object.values(cards).map(({ icon, title, name, value, description }) => (
-        <div className="col-12 col-sm-6 px-3" key={name}>
+        <div className="col-12 col-sm-6 px-3 mt-2 mt-sm-0" key={name}>
           <div
             className={`d-flex align-items-center p-3 text-white dtc-br-10 ${styles["small-balance-card-gradient"]}`}
             title={description}

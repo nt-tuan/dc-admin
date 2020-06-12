@@ -62,7 +62,7 @@ export const AccountSummary = () => {
 
   return (
     <section className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
-      <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Wallet Dashboard</h5>
+      <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Account Summary</h5>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <Button shape="round" className="mr-2">
           Transaction Details
