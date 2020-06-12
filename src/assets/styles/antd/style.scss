@@ -1,20 +1,10 @@
 @import "../mixins.scss";
 
-body.seller {
-  @import "../theme-seller.scss";
-  @import "import/backtop";
-  @import "import/cascader";
-  @import "import/tabs";
-  @import "import/dropdown";
-}
-
-body.buyer {
-  @import "../theme-buyer.scss";
-  @import "import/backtop";
-  @import "import/cascader";
-  @import "import/tabs";
-  @import "import/dropdown";
-}
+@import "../theme-seller.scss";
+@import "import/backtop";
+@import "import/cascader";
+@import "import/tabs";
+@import "import/dropdown";
 
 @import "import/badge";
 @import "import/calendar";

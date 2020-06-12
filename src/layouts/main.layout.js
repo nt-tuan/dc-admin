@@ -1,14 +1,13 @@
+import { RouteConst } from "commons/consts";
 import { Loader } from "components";
-import { modifyVars } from "less";
 import NProgress from "nprogress";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
-import { RouteConst } from "commons/consts";
 
 const Layouts = {
   public: PublicLayout,
@@ -19,7 +18,6 @@ const Layouts = {
 export const Layout = React.memo(({ children }) => {
   const location = useLocation();
   const user = useSelector(selectCurrentUser);
-  const lastPathRole = useRef(undefined);
   const { pathname } = location;
   const isPrivateRoute = useRouteMatch({
     path: RouteConst.PRIVATE_ROUTES,
@@ -33,16 +31,6 @@ export const Layout = React.memo(({ children }) => {
     setTimeout(() => {
       NProgress.done();
     }, 300);
-  }, [location]);
-
-  useEffect(() => {
-    const { pathname } = location;
-    const isBuyer = pathname.includes("buyer");
-    if (lastPathRole.current === undefined || lastPathRole.current !== isBuyer) {
-      lastPathRole.current = isBuyer;
-      document.getElementsByTagName("body")[0].className = isBuyer ? "buyer" : "seller";
-      modifyVars(isBuyer ? buyerThemeParams : sellerThemeParams);
-    }
   }, [location]);
 
   const getLayout = () => {
@@ -89,27 +77,3 @@ export const Layout = React.memo(({ children }) => {
     </Fragment>
   );
 });
-
-const sellerThemeParams = {
-  "@primary-color": "#005691",
-  "@info-color": "#0887c9",
-  "@success-color": "#46be8a",
-  "@error-color": "#fb434a",
-  "@highlight-color": "#fb434a",
-  "@warning-color": "#f39834",
-  "@normal-color": "#e4e9f0",
-  "@input-hover-border-color": "#005691",
-  "@input-border-color": "#005691"
-};
-
-const buyerThemeParams = {
-  "@primary-color": "#4D824B",
-  "@info-color": "#047CD8",
-  "@success-color": "#2DB541",
-  "@error-color": "#DB3052",
-  "@highlight-color": "#DB3052",
-  "@warning-color": "#BCCC0C",
-  "@normal-color": "#e4e9f0",
-  "@input-hover-border-color": "#4D824B",
-  "@input-border-color": "#4D824B"
-};

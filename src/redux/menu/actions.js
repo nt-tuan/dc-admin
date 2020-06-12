@@ -71,8 +71,8 @@ export async function getUserData() {
         },
         {
           title: "Withdraw Fund",
-          key: "Withdraw Fund",
-          url: "/notfound"
+          key: "withdrawFund",
+          url: RouteConst.WITHDRAW_FUND
         },
         {
           title: "Add Fund",

@@ -145,7 +145,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 90.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 30
   },
   {
     date: "2020-06-10",
@@ -153,7 +154,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 11.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 20
   },
   {
     date: "2020-06-10",
@@ -161,7 +163,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 100.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 50
   },
   {
     date: "2020-06-10",
@@ -169,7 +172,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 100.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 100
   },
   {
     date: "2020-06-10",
@@ -177,7 +181,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 120.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 230
   },
   {
     date: "2020-06-10",
@@ -185,7 +190,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 60.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 30
   },
   {
     date: "2020-06-10",
@@ -193,7 +199,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 100.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 123
   },
   {
     date: "2020-06-10",
@@ -201,7 +208,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 78.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 119
   },
   {
     date: "2020-06-10",
@@ -209,7 +217,8 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 45.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 80
   },
   {
     date: "2020-06-10",
@@ -217,6 +226,7 @@ const fakeData = [
     city: "Dubai",
     country: "AE",
     value: 50.0,
-    payment: 0.0
+    payment: 0.0,
+    commission: 176
   }
 ];

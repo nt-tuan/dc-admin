@@ -29,6 +29,9 @@ export class SharedPaths {
   static get ACCOUNT_SUMMARY() {
     return "/account-summary";
   }
+  static get WITHDRAW_FUND() {
+    return "/withdraw-fund";
+  }
   static get ADD_FUNDS() {
     return "/add-funds";
   }

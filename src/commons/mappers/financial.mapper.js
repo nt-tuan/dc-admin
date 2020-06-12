@@ -15,7 +15,8 @@ const parseDataToExcel = (financial) => {
     [FIELDS.city]: 2,
     [FIELDS.country]: 3,
     [FIELDS.value]: 4,
-    [FIELDS.payment]: 5
+    [FIELDS.payment]: 5,
+    [FIELDS.commission]: 6
   };
   // add first row as label
   const parsedFinancial = [Object.keys(labelIndex).map((prop) => LABELS[prop])];

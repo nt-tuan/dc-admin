@@ -4,34 +4,16 @@
 @import "assets/styles/airui/style";
 @import "assets/styles/nprogress/style";
 @import "assets/styles/font-google/font-google.css";
+@import "assets/styles/theme-seller.scss";
 
 * {
-  body.seller {
-    @import "assets/styles/theme-seller.scss";
-
-    a:hover {
-      color: $primary;
-    }
-
-    .loading-svg {
-      stroke: $primary;
-    }
-  }
-
-  body.buyer {
-    @import "assets/styles/theme-buyer.scss";
-
-    a:hover {
-      color: $primary;
-    }
-
-    .loading-svg {
-      stroke: $primary;
-    }
-  }
-
   a:hover {
+    color: $primary;
     text-decoration: none;
+  }
+
+  .loading-svg {
+    stroke: $primary;
   }
 
   font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -46,8 +28,7 @@
   }
 }
 
-body.seller,
-body.buyer {
+body {
   .bid-card .ant-card-body {
     padding-bottom: 18px !important;
   }

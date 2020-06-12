@@ -97,6 +97,11 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.WITHDRAW_FUND,
+    Component: loadable(() => import("components/pages/withdraw-fund/withdraw-fund.page")),
+    exact: true
+  },
+  {
     path: RouteConst.WALLET,
     Component: loadable(() => import("components/pages/wallet/wallet.page")),
     exact: true

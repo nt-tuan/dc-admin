@@ -4,7 +4,8 @@ const FIELDS = {
   city: "city",
   country: "country",
   value: "value",
-  payment: "payment"
+  payment: "payment",
+  commission: "commission"
 };
 
 const LABELS = {
@@ -13,7 +14,8 @@ const LABELS = {
   [FIELDS.city]: "City",
   [FIELDS.country]: "Country",
   [FIELDS.value]: "Value",
-  [FIELDS.payment]: "Payment"
+  [FIELDS.payment]: "Payment",
+  [FIELDS.commission]: "Commission"
 };
 
 export const FINANCIAL_SCHEMA = Object.freeze({

@@ -1,23 +1,10 @@
 @import "assets/styles/mixins";
+@import "assets/styles/theme-seller";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /*  NPROGRESS */
 
-body.seller {
-  @import "assets/styles/theme-seller";
-
-  #nprogress .bar {
-    background: $primary;
-  }
-  #nprogress .spinner-icon {
-    border-top-color: $primary;
-    border-left-color: $primary;
-  }
-}
-
-body.buyer {
-  @import "assets/styles/theme-buyer";
-
+body {
   #nprogress .bar {
     background: $primary;
   }
