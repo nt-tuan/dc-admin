@@ -12,7 +12,7 @@ const { FIELDS, LABELS } = WITHDRAWAL_SCHEMA;
 const fakedData = [
   {
     id: 0,
-    requestedDate: "2020-05-25T09:17:50",
+    requestedDate: "2020-05-25T19:17:50",
     processedDate: "2020-05-30T09:17:50",
     withdrawalId: 10,
     depositedAccount: "Acc No.4",
@@ -73,7 +73,6 @@ const parseDataToExcel = (dataHistory) => {
 
 export const HistoryWithdrawalTab = () => {
   const [data, setData] = useState([]);
-
   useEffect(() => {
     const formatedData = fakedData.map((order) => ({
       ...order,
@@ -116,7 +115,7 @@ export const HistoryWithdrawalTab = () => {
       <DTCTable
         showSettings={false}
         loading={false}
-        dataSource={fakedData.map((data) => ({
+        dataSource={data.map((data) => ({
           ...data,
           requestedDate: dayjs(data.requestedDate).format(DATETIME_FORMAT),
           processedDate: dayjs(data.processedDate).format(DATETIME_FORMAT)

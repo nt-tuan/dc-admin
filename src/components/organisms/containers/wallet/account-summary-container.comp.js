@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { Button } from "antd";
-import { getAccountSummarySchema, WALLET_SCHEMA } from "commons/schemas/wallet.schema";
+import { getAccountSummarySchema } from "commons/schemas/wallet.schema";
 import { DTCTable } from "components/atoms";
-import { handleDownloadExcel } from "utils/general.util";
+import { walletMapper } from "commons/mappers";
+import XLSX from "xlsx";
 
-const { FIELDS, LABELS } = WALLET_SCHEMA;
+const { parseDataToGridView, parseDataToExcel } = walletMapper;
 
 const fakedData = [
   {
     id: 1,
     timestamp: "2020-06-11 09:52 AM",
     transactionType: "N/A",
-    orderNumber: 321586508348919,
+    orderNumber: 31621211221,
     productDetails: "Apple iPhone 11 Black 64GB",
     description: "Apple iPhone 11 Black 64GB",
-    currency: "$",
+    currency: "USD",
     blocked: 4500,
     credit: 450,
     debit: 45000,
@@ -26,10 +27,10 @@ const fakedData = [
     id: 2,
     timestamp: "2020-06-12 09:52 AM",
     transactionType: "Type",
-    orderNumber: 32158650834342,
+    orderNumber: 2394384712,
     productDetails: "Samsung Galaxy S20+ Cosmic grey 256GB",
     description: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    currency: "$",
+    currency: "USD",
     blocked: 3696,
     credit: 3696,
     debit: 3696,
@@ -39,25 +40,21 @@ const fakedData = [
   }
 ];
 
-const labelIndex = {
-  [FIELDS.timestamp]: 0,
-  [FIELDS.transactionType]: 1,
-  [FIELDS.orderNumber]: 2,
-  [FIELDS.productDetails]: 3,
-  [FIELDS.description]: 4,
-  [FIELDS.currency]: 5,
-  [FIELDS.blocked]: 6,
-  [FIELDS.credit]: 7,
-  [FIELDS.debit]: 8,
-  [FIELDS.totalBlocked]: 9,
-  [FIELDS.availableBalance]: 10,
-  [FIELDS.currentTotalBalance]: 11
-};
-
 export const AccountSummary = () => {
   const [data, setData] = useState(fakedData);
+
   const handleDownload = () => {
-    handleDownloadExcel(data, labelIndex, LABELS, FIELDS, "Account Summary");
+    const parsedFinancial = parseDataToExcel(data);
+    const sheet = XLSX.utils.json_to_sheet(parsedFinancial, {
+      skipHeader: true
+    });
+    const excelBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(excelBook, sheet, "financial");
+    XLSX.writeFile(excelBook, "ExportedFinancial.xlsx", {
+      bookType: "xlsx",
+      type: "file",
+      sheet: "financial"
+    });
   };
 
   return (
@@ -74,7 +71,7 @@ export const AccountSummary = () => {
       <DTCTable
         showSettings={false}
         loading={false}
-        dataSource={data}
+        dataSource={parseDataToGridView(data)}
         schema={getAccountSummarySchema()}
         onChange={(value) => setData(value)}
       />

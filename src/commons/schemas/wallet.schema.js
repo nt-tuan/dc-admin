@@ -1,5 +1,5 @@
 import React from "react";
-import { sortAlphabetically } from "utils/sort.util";
+import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
   timestamp: "timestamp",
@@ -17,7 +17,7 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timestamp]: "Timestamp",
+  [FIELDS.timestamp]: "Time Stamp",
   [FIELDS.transactionType]: "Transaction Type",
   [FIELDS.orderNumber]: "Order Number",
   [FIELDS.productDetails]: "Product Details",
@@ -119,7 +119,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.blocked],
       dataIndex: FIELDS.blocked,
       key: FIELDS.blocked,
-      sorter: (a, b) => a[FIELDS.blocked] - b[FIELDS.blocked],
+      sorter: (a, b) => sortPrice(a[FIELDS.blocked], b[FIELDS.blocked]),
       sortOrder: sortedInfo.columnKey === FIELDS.blocked && sortedInfo.order,
       render: (blocked) => <CustomHighlighter searchText={searchText} value={blocked} />
     },
@@ -127,7 +127,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.credit],
       dataIndex: FIELDS.credit,
       key: FIELDS.credit,
-      sorter: (a, b) => a[FIELDS.credit] - b[FIELDS.credit],
+      sorter: (a, b) => sortPrice(a[FIELDS.credit], b[FIELDS.credit]),
       sortOrder: sortedInfo.columnKey === FIELDS.credit && sortedInfo.order,
       render: (credit) => <CustomHighlighter searchText={searchText} value={credit} />
     },
@@ -135,7 +135,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.debit],
       dataIndex: FIELDS.debit,
       key: FIELDS.debit,
-      sorter: (a, b) => a[FIELDS.debit] - b[FIELDS.debit],
+      sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
       sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
       render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
     },
@@ -143,7 +143,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.totalBlocked],
       dataIndex: FIELDS.totalBlocked,
       key: FIELDS.totalBlocked,
-      sorter: (a, b) => a[FIELDS.totalBlocked] - b[FIELDS.totalBlocked],
+      sorter: (a, b) => sortPrice(a[FIELDS.totalBlocked], b[FIELDS.totalBlocked]),
       sortOrder: sortedInfo.columnKey === FIELDS.totalBlocked && sortedInfo.order,
       render: (totalBlocked) => <CustomHighlighter searchText={searchText} value={totalBlocked} />
     },
@@ -151,7 +151,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.availableBalance],
       dataIndex: FIELDS.availableBalance,
       key: FIELDS.availableBalance,
-      sorter: (a, b) => a[FIELDS.availableBalance] - b[FIELDS.availableBalance],
+      sorter: (a, b) => sortPrice(a[FIELDS.availableBalance], b[FIELDS.availableBalance]),
       sortOrder: sortedInfo.columnKey === FIELDS.availableBalance && sortedInfo.order,
       render: (availableBalance) => (
         <CustomHighlighter searchText={searchText} value={availableBalance} />
@@ -161,7 +161,7 @@ export const getAccountSummarySchema = () => (
       title: LABELS[FIELDS.currentTotalBalance],
       dataIndex: FIELDS.currentTotalBalance,
       key: FIELDS.currentTotalBalance,
-      sorter: (a, b) => a[FIELDS.currentTotalBalance] - b[FIELDS.currentTotalBalance],
+      sorter: (a, b) => sortPrice(a[FIELDS.currentTotalBalance], b[FIELDS.currentTotalBalance]),
       sortOrder: sortedInfo.columnKey === FIELDS.currentTotalBalance && sortedInfo.order,
       render: (currentTotalBalance) => (
         <CustomHighlighter searchText={searchText} value={currentTotalBalance} />
