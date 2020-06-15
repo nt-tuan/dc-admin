@@ -1,5 +1,7 @@
 import React from "react";
 import { sortAlphabetically } from "utils/sort.util";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { RouteConst } from "commons/consts";
 
 const FIELDS = {
   timestamp: "createdDate",
@@ -90,7 +92,13 @@ export const orderActiveTableSchema = () => (
       key: FIELDS.orderNumber,
       sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
       sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
-      render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
+      render: (orderNumber, { id }) => (
+        <Link
+          to={`${RouteConst.ORDER_TRACK_AND_TRACE.replace(":orderNumber", orderNumber)}?oid=${id}`}
+        >
+          <CustomHighlighter searchText={searchText} value={orderNumber} />
+        </Link>
+      )
     },
     {
       title: LABELS[FIELDS.productCategory],

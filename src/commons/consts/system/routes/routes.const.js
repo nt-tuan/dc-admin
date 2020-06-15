@@ -14,7 +14,8 @@ export class RouteConst extends SharedPaths {
       this.ACCOUNT_SUMMARY,
       this.WITHDRAW_FUND,
       this.WALLET,
-      this.ADD_FUNDS
+      this.ADD_FUNDS,
+      this.ORDER_TRACK_AND_TRACE
     ];
   }
 

@@ -7175,6 +7175,18 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+leaflet-map@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet-map/-/leaflet-map-0.2.1.tgz#eb19fa8fa14e87ba7bf8e5d80a7bce2ccc448d20"
+  integrity sha1-6xn6j6FOh7p7+OXYCnvOLMxEjSA=
+  dependencies:
+    leaflet "^0.7.3"
+
+leaflet@^0.7.3:
+  version "0.7.7"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
+  integrity sha1-HjUrpU5j0HZFH6NjyQCJDLLPde4=
+
 leaflet@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.6.0.tgz#aecbb044b949ec29469eeb31c77a88e2f448f308"

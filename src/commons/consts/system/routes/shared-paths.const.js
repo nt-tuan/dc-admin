@@ -35,4 +35,7 @@ export class SharedPaths {
   static get ADD_FUNDS() {
     return "/add-funds";
   }
+  static get ORDER_TRACK_AND_TRACE() {
+    return "/orders/:orderNumber/track-and-trace";
+  }
 }

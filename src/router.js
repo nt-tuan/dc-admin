@@ -110,6 +110,13 @@ const privateRoutes = [
     path: RouteConst.ADD_FUNDS,
     Component: loadable(() => import("components/pages/add-funds/add-funds.page")),
     exact: true
+  },
+  {
+    path: RouteConst.ORDER_TRACK_AND_TRACE,
+    Component: loadable(() =>
+      import("components/pages/order-track-and-trace/order-track-and-trace.page")
+    ),
+    exact: true
   }
 ];
 
