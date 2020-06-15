@@ -85,12 +85,7 @@ const _ProfileMenu = () => {
       {/* // onVisibleChange={addCount}> */}
       <div className={styles.dropdown}>
         {/* <Badge count={count}> */}
-        <Avatar
-          className={styles.avatar}
-          shape="square"
-          size="large"
-          icon={<i className="fe fe-user" />}
-        />
+        <Avatar className={styles.avatar} shape="square" icon={<i className="fe fe-user" />} />
         {/* </Badge> */}
       </div>
     </Dropdown>

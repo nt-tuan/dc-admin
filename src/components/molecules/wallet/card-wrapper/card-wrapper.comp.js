@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import { toCurrency } from "utils/general.util";
 
-export const CardsWrapper = ({ cards, currency }) => {
+export const CardsWrapper = ({ cards }) => {
   return (
     <div className="row">
       {Object.values(cards).map(({ icon, title, name, value, description }) => (
@@ -15,9 +16,7 @@ export const CardsWrapper = ({ cards, currency }) => {
             </div>
             <div className="text-center text-xl-left text-uppercase flex-grow-1 text-truncate">
               <div className="font-size-14 text-truncate">{title}</div>
-              <div className="font-size-24 text-truncate">
-                {`${currency} `} {value}
-              </div>
+              <div className="font-size-24 text-truncate">{toCurrency(value)}</div>
             </div>
           </div>
         </div>
