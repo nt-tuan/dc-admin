@@ -40,7 +40,7 @@ export const WalletDashboard = ({ walletDashboard }) => {
           </Link>
         </div>
       </div>
-      <CardsWrapper cards={cards} currency="$" />
+      <CardsWrapper cards={cards} />
     </section>
   );
 };

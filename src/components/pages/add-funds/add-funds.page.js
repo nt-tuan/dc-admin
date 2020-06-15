@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { BankDetailsReadonly } from "components/molecules";
+import { toCurrency } from "utils/general.util";
 
 const fakedData = [
   {
@@ -17,7 +18,7 @@ const AddFundsPage = () => {
     <Fragment>
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3 d-flex align-items-center">
         <h5 className="text-primary mr-1">Total Balance: </h5>
-        <h5>$10000</h5>
+        <h5>{toCurrency(100000)}</h5>
       </div>
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
         <h5 className="text-capitalize mb-2 text-primary font-weight-bold">
