@@ -107,6 +107,7 @@ export const PendingWithdrawalTab = () => {
       <DTCTable
         showSettings={false}
         loading={false}
+        onChange={(value) => setData(value)}
         dataSource={fakedData.map((data) => ({
           ...data,
           timeStamp: dayjs(data.timeStamp).format(DATETIME_FORMAT)

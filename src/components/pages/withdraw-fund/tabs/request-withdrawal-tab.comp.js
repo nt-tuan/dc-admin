@@ -114,7 +114,7 @@ export const RequestWithdrawalTab = () => {
                 primaryText="Pending"
                 text="outbound"
                 currency={data.outbound}
-                renderIcon={() => <i className="fa fa-caret-up ml-2 font-size-21 text-success" />}
+                renderIcon={() => <i className="fa fa-caret-up ml-2 font-size-21 text-danger" />}
               />
             </Col>
             <Col xl={8} lg={12} span={24} title="Some of Sales Invoices and Seller Commissions">
@@ -122,7 +122,7 @@ export const RequestWithdrawalTab = () => {
                 primaryText="Pending"
                 text="inbound"
                 currency={data.inbound}
-                renderIcon={() => <i className="fa fa-caret-down ml-2 font-size-21 text-danger" />}
+                renderIcon={() => <i className="fa fa-caret-down ml-2 font-size-21 text-success" />}
               />
             </Col>
           </Row>

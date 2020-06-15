@@ -121,6 +121,7 @@ export const HistoryWithdrawalTab = () => {
           requestedDate: dayjs(data.requestedDate).format(DATETIME_FORMAT),
           processedDate: dayjs(data.processedDate).format(DATETIME_FORMAT)
         }))}
+        onChange={(value) => setData(value)}
         schema={columns}
       />
     </div>

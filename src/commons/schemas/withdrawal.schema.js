@@ -48,6 +48,7 @@ export const getPendingWithdrawalTableSchema = () => ({
     title: LABELS[FIELDS.withdrawalId],
     dataIndex: FIELDS.withdrawalId,
     key: FIELDS.withdrawalId,
+    sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
     makeRender: ({ searchText }) => (withdrawalId) => (
       <DTCHighlighter searchText={searchText} value={withdrawalId} />
     )
@@ -56,6 +57,7 @@ export const getPendingWithdrawalTableSchema = () => ({
     title: LABELS[FIELDS.depositedAccount],
     dataIndex: FIELDS.depositedAccount,
     key: FIELDS.depositedAccount,
+    sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
     makeRender: ({ searchText }) => (depositedAccount) => (
       <DTCHighlighter searchText={searchText} value={depositedAccount} />
     )

@@ -8,10 +8,21 @@ const { Option } = Select;
 
 export const RequestWithdrawalForm = ({ data, isDisabled }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [remainingAmount, setRemainingAmount] = useState(
+    () => data && toCurrency(data.available_withdrawal)
+  );
   const [form] = Form.useForm();
 
   const onSubmit = (values) => {
     setIsOpenPopup(true);
+  };
+
+  const handleAmountChange = (e) => {
+    const amount = e.target.value;
+    if (isNaN(amount)) {
+      setRemainingAmount(toCurrency(data.available_withdrawal));
+    }
+    setRemainingAmount(toCurrency(data.available_withdrawal - amount));
   };
 
   return (
@@ -45,7 +56,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
           >
             <Select placeholder="Select a bank account" className="w-100" disabled={isDisabled}>
               {data.bankDetails.map(({ accountNumber }, index) => (
-                <Option value={accountNumber} key={`${accountNumber}-${index}`}>
+                <Option value={accountNumber} key={accountNumber}>
                   {accountNumber}
                 </Option>
               ))}
@@ -85,16 +96,11 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
                 className="col-md-12 col-lg-5"
                 placeholder="Enter amount"
                 disabled={isDisabled}
+                onChange={handleAmountChange}
               />
               <span className="d-flex justify-content-between">
                 Remaining Account Balance:
-                <b>
-                  {toCurrency(
-                    isNaN(form.getFieldValue("amount"))
-                      ? data.available_withdrawal
-                      : data.available_withdrawal - form.getFieldValue("amount")
-                  )}
-                </b>
+                <b>{remainingAmount}</b>
               </span>
             </div>
           </Form.Item>
