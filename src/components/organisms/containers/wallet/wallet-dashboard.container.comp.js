@@ -33,7 +33,7 @@ export const WalletDashboard = ({ walletDashboard }) => {
               Add Funds
             </Button>
           </Link>
-          <Link to="/">
+          <Link to={RouteConst.WITHDRAW_FUND}>
             <Button type="primary" shape="round" className="mb-2">
               Withdraw Funds
             </Button>

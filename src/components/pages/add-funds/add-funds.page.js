@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { BankDetailReadonly } from "components/molecules/wallet/bank-details-readonly/bank-detail-readonly.comp";
+import { BankDetailsReadonly } from "components/molecules";
 
 const fakedData = [
   {
@@ -32,7 +32,7 @@ const AddFundsPage = () => {
             IMPORTANT: Please add Genko_Trading as reference while transferring the funds.
           </div>
         </div>
-        <BankDetailReadonly bankDetails={fakedData} showTitle={false} />
+        <BankDetailsReadonly bankDetails={fakedData} showTitle={false} showHeader={false} />
       </div>
     </Fragment>
   );
