@@ -5,7 +5,7 @@ import { DTCTable } from "components";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import XLSX from "xlsx";
+import { handleDownloadExcelNew } from "utils/general.util";
 
 const { parseDataToExcel, parseDataToGridView } = financialMapper;
 
@@ -18,23 +18,16 @@ const AccountSummaryPage = () => {
     });
   }, []);
 
-  const handleDownloadFinancial = () => {
-    const parsedFinancial = parseDataToExcel(accountSummary);
-    const sheet = XLSX.utils.json_to_sheet(parsedFinancial, {
-      skipHeader: true
-    });
-    const excelBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(excelBook, sheet, "financial");
-    XLSX.writeFile(excelBook, "ExportedFinancial.xlsx", {
-      bookType: "xlsx",
-      type: "file",
-      sheet: "financial"
-    });
+  const handleDownload = () => {
+    const dataExcel = parseDataToExcel(accountSummary);
+    const fileName = `AccountSummary`;
+    const fileSheet = "accountSummary";
+    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
   };
 
   return (
     <div>
-      <Helmet title="Purchase - Account Summary" />
+      <Helmet title="Account Summary" />
       <div className="air__utils__shadow bg-white p-4 dtc-br-10">
         <div className="d-flex justify-content-between">
           <div className="mb-2">
@@ -43,7 +36,7 @@ const AccountSummaryPage = () => {
             <Button className="btn btn-round btn-primary mr-2 mt-1">Print</Button>
           </div>
           <div className="mb-2">
-            <Button type="primary" className="mt-1" onClick={handleDownloadFinancial}>
+            <Button type="primary" className="mt-1" onClick={handleDownload}>
               <i className="fe fe-download mr-2" /> Download
             </Button>
           </div>
@@ -64,6 +57,10 @@ export default AccountSummaryPage;
 
 const fakeData = [
   {
+    timestamp: "2020-06-11T16:01:12",
+    number: "023771829911",
+    destinationCity: "Sydney",
+    destinationCountry: "Australia",
     paymentDueDate: "2020-06-11T15:01:12",
     originCity: "Dubai",
     originCountry: "UAE",
@@ -71,6 +68,10 @@ const fakeData = [
     commission: 150
   },
   {
+    timestamp: "2020-06-11T14:01:12",
+    number: "023771829911",
+    destinationCity: "Bangkok",
+    destinationCountry: "Thailand",
     paymentDueDate: "2020-06-12T14:01:12",
     originCity: "Sydney",
     originCountry: "Australia",
@@ -78,6 +79,10 @@ const fakeData = [
     commission: 100
   },
   {
+    timestamp: "2020-06-11T12:01:12",
+    number: "92328211916",
+    destinationCity: "Sydney",
+    destinationCountry: "Australia",
     paymentDueDate: "2020-06-13T16:01:12",
     originCity: "Abu Dhabi",
     originCountry: "UAE",
@@ -85,6 +90,10 @@ const fakeData = [
     commission: 200
   },
   {
+    timestamp: "2020-06-11T11:01:12",
+    number: "332183218712",
+    destinationCity: "Sydney",
+    destinationCountry: "Australia",
     paymentDueDate: "2020-06-13T11:02:12",
     originCity: "London",
     originCountry: "UK",

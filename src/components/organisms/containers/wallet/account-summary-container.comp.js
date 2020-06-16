@@ -1,11 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { getAccountSummarySchema } from "commons/schemas/wallet.schema";
 import { DTCTable } from "components/atoms";
 import { walletMapper } from "commons/mappers";
-import XLSX from "xlsx";
+import { handleDownloadExcelNew } from "utils/general.util";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const { parseDataToGridView, parseDataToExcel } = walletMapper;
+
+export const AccountSummary = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    asyncErrorHandlerWrapper(async () => {
+      setData(parseDataToGridView(fakedData));
+    });
+  }, []);
+
+  const handleDownload = () => {
+    const dataExcel = parseDataToExcel(data);
+    const fileName = "Wallet-account-summary";
+    const fileSheet = "WalletAccountSummary";
+    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+  };
+
+  return (
+    <section className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
+      <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Account Summary</h5>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <Button shape="round" className="mr-2">
+          Transaction Details
+        </Button>
+        <Button type="primary" onClick={handleDownload}>
+          <i className="fe fe-download mr-2" /> Download
+        </Button>
+      </div>
+      <DTCTable
+        showSettings={false}
+        loading={false}
+        dataSource={parseDataToGridView(data)}
+        schema={getAccountSummarySchema()}
+        onChange={(value) => setData(value)}
+      />
+    </section>
+  );
+};
 
 const fakedData = [
   {
@@ -39,42 +78,3 @@ const fakedData = [
     currentTotalBalance: 3696
   }
 ];
-
-export const AccountSummary = () => {
-  const [data, setData] = useState(fakedData);
-
-  const handleDownload = () => {
-    const parsedFinancial = parseDataToExcel(data);
-    const sheet = XLSX.utils.json_to_sheet(parsedFinancial, {
-      skipHeader: true
-    });
-    const excelBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(excelBook, sheet, "financial");
-    XLSX.writeFile(excelBook, "ExportedFinancial.xlsx", {
-      bookType: "xlsx",
-      type: "file",
-      sheet: "financial"
-    });
-  };
-
-  return (
-    <section className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
-      <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Account Summary</h5>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <Button shape="round" className="mr-2">
-          Transaction Details
-        </Button>
-        <Button type="primary" onClick={handleDownload}>
-          Download
-        </Button>
-      </div>
-      <DTCTable
-        showSettings={false}
-        loading={false}
-        dataSource={parseDataToGridView(data)}
-        schema={getAccountSummarySchema()}
-        onChange={(value) => setData(value)}
-      />
-    </section>
-  );
-};

@@ -1,16 +1,16 @@
-import { WALLET_SCHEMA } from "commons/schemas/wallet.schema";
-import { DatetimeUtils } from "utils/date-time.util";
 import { toCurrency, toNumber } from "utils/general.util";
+import { DatetimeUtils } from "utils/date-time.util";
+import { WALLET_SCHEMA } from "commons/schemas/wallet.schema";
 
 const { FIELDS, LABELS } = WALLET_SCHEMA;
 const { formatDateTime } = DatetimeUtils;
 
-const parseDataToExcel = (financial) => {
-  if (!Array.isArray(financial) || financial.length <= 0) {
+const parseDataToExcel = (wallet) => {
+  if (!Array.isArray(wallet) || wallet.length <= 0) {
     return [];
   }
 
-  const labelIndex = {
+  const columns = {
     [FIELDS.timestamp]: 0,
     [FIELDS.transactionType]: 1,
     [FIELDS.orderNumber]: 2,
@@ -25,13 +25,14 @@ const parseDataToExcel = (financial) => {
     [FIELDS.currentTotalBalance]: 11
   };
   // add first row as label
-  const parsedFinancial = [Object.keys(labelIndex).map((prop) => LABELS[prop])];
-  financial.forEach((product) => {
-    let parsedProduct = new Array(5);
-    Object.keys(product).forEach((prop) => {
-      if (labelIndex[prop] !== undefined) {
-        if (prop === FIELDS.timestamp) {
-          parsedProduct[labelIndex[prop]] = product[prop] ? formatDateTime(product[prop]) : "";
+  const dataExcel = [Object.keys(columns).map((field) => LABELS[field])];
+
+  wallet.forEach((item) => {
+    let row = new Array(12);
+    Object.keys(item).forEach((field) => {
+      if (columns[field] !== undefined) {
+        if (field === FIELDS.timestamp) {
+          row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
         } else if (
           [
             FIELDS.blocked,
@@ -40,17 +41,17 @@ const parseDataToExcel = (financial) => {
             FIELDS.totalBlocked,
             FIELDS.currentTotalBalance,
             FIELDS.availableBalance
-          ].includes(prop)
+          ].includes(field)
         ) {
-          parsedProduct[labelIndex[prop]] = toNumber(product[prop]);
+          row[columns[field]] = toNumber(item[field]);
         } else {
-          parsedProduct[labelIndex[prop]] = product[prop];
+          row[columns[field]] = item[field];
         }
       }
     });
-    parsedFinancial.push(parsedProduct);
+    dataExcel.push(row);
   });
-  return parsedFinancial;
+  return dataExcel;
 };
 
 const parseDataToGridView = (data) => {
