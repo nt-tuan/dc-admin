@@ -6,9 +6,9 @@ import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { USER_MANAGEMENT_SCHEMA } from "commons/schemas";
+import { userMapper } from "commons/mappers";
 
-const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
+const { parseDataToGridView } = userMapper;
 
 export const UserManagementBuyerTab = () => {
   const [data, setData] = useState([]);
@@ -29,9 +29,8 @@ export const UserManagementBuyerTab = () => {
 
   const getListBuyers = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
-      let data = await getAllRecordsFromAPI(UserService.getAllBuyer);
-      data = data.map((user) => ({ ...user, userStatus: STATUS_LABELS[STATUS[user.userStatus]] }));
-      setData(data);
+      const data = await getAllRecordsFromAPI(UserService.getAllBuyer);
+      setData(parseDataToGridView(data));
       setLoading(false);
     });
   }, []);

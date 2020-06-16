@@ -36,7 +36,7 @@ export const PendingWithdrawalTab = () => {
         showSettings={false}
         loading={false}
         onChange={(value) => setData(value)}
-        dataSource={parseDataToGridView(data)}
+        dataSource={data}
         schema={pendingWithdrawalTableSchema()}
       />
     </div>

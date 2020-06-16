@@ -34,7 +34,7 @@ export const HistoryWithdrawalTab = () => {
       <DTCTable
         showSettings={false}
         loading={false}
-        dataSource={parseDataToGridView(data)}
+        dataSource={data}
         onChange={(value) => setData(value)}
         schema={historyWithdrawalTableSchema()}
       />

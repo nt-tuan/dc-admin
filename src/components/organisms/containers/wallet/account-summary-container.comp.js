@@ -38,7 +38,7 @@ export const AccountSummary = () => {
       <DTCTable
         showSettings={false}
         loading={false}
-        dataSource={parseDataToGridView(data)}
+        dataSource={data}
         schema={getAccountSummarySchema()}
         onChange={(value) => setData(value)}
       />

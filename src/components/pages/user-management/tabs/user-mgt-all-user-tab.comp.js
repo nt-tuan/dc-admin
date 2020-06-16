@@ -1,4 +1,4 @@
-import { userMgtTableSchema, USER_MANAGEMENT_SCHEMA } from "commons/schemas/user-management.schema";
+import { userMgtTableSchema } from "commons/schemas/user-management.schema";
 import { AssignBadgesModal, ConfirmModal } from "components";
 import { DTCTable } from "components/atoms";
 import { useBooleanState } from "hooks/utilHooks";
@@ -6,8 +6,9 @@ import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
+import { userMapper } from "commons/mappers";
 
-const { STATUS, STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;
+const { parseDataToGridView } = userMapper;
 
 export const UserManagementAllUserTab = () => {
   const [data, setData] = useState([]);
@@ -28,9 +29,8 @@ export const UserManagementAllUserTab = () => {
 
   const getListAllUsers = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
-      let data = await getAllRecordsFromAPI(UserService.getAllUsers);
-      data = data.map((user) => ({ ...user, userStatus: STATUS_LABELS[STATUS[user.userStatus]] }));
-      setData(data);
+      const data = await getAllRecordsFromAPI(UserService.getAllUsers);
+      setData(parseDataToGridView(data));
       setLoading(false);
     });
   }, []);

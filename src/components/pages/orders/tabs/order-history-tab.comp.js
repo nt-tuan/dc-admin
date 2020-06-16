@@ -4,14 +4,16 @@ import { orderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcelNew } from "utils/general.util";
 import { OrderService } from "services";
-import { TIME_FIELDS, TIME_LABELS, DATETIME_FORMAT } from "commons/consts";
+import { TIME_FIELDS, TIME_LABELS } from "commons/consts";
 import { DatetimeUtils } from "utils/date-time.util";
+import { historyOrderMapper } from "commons/mappers";
 
 const { isBetweenTwoDate, subtractDateTime } = DatetimeUtils;
+const { parseDataToExcel, parseDataToGridView } = historyOrderMapper;
 
-const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
+const { FIELDS } = ORDERS_SCHEMA;
 
 const filterDays = {
   defaultValue: TIME_FIELDS.month,
@@ -20,18 +22,6 @@ const filterDays = {
     { value: TIME_FIELDS.month, name: TIME_LABELS[TIME_FIELDS.month] },
     { value: TIME_FIELDS.year, name: TIME_LABELS[TIME_FIELDS.year] }
   ]
-};
-
-const labelIndex = {
-  [FIELDS.timestamp]: 0,
-  [FIELDS.orderNumber]: 1,
-  [FIELDS.productName]: 2,
-  [FIELDS.quantity]: 3,
-  [FIELDS.unitPrice]: 4,
-  [FIELDS.totalPrice]: 5,
-  [FIELDS.buyerCompanyName]: 6,
-  [FIELDS.sellerCompanyName]: 7,
-  [FIELDS.status]: 8
 };
 
 export const OrderHistoryTab = () => {
@@ -48,19 +38,16 @@ export const OrderHistoryTab = () => {
       const filterData = res.filter((item) => {
         return isBetweenTwoDate(item[FIELDS.timestamp], dateAfterSubtract, now);
       });
-      setData([
-        ...filterData.map((item) => ({
-          ...item,
-          [FIELDS.timestamp]: dayjs(item[FIELDS.timestamp]).format(DATETIME_FORMAT),
-          status: ORDER_STATUS_LABELS[ORDER_STATUS[item.status]]
-        }))
-      ]);
+      setData(parseDataToGridView(filterData));
       setLoading(false);
     });
   }, [days]);
 
   const handleDownload = () => {
-    handleDownloadExcel(data, labelIndex, LABELS, FIELDS, "Orders");
+    const dataExcel = parseDataToExcel(data);
+    const fileName = "History-order";
+    const fileSheet = "HistoryOrder";
+    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
   };
 
   const handleChangeDays = (value) => {
@@ -85,7 +72,6 @@ export const OrderHistoryTab = () => {
         </div>
       </div>
       <DTCTable
-        showSettings={false}
         loading={loading}
         dataSource={data}
         schema={orderHistoryTableSchema()}

@@ -1,5 +1,5 @@
 import React from "react";
-import { sortAlphabetically } from "utils/sort.util";
+import { sortAlphabetically, sortPrice } from "utils/sort.util";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst } from "commons/consts";
 
@@ -148,7 +148,7 @@ export const orderActiveTableSchema = () => (
       title: LABELS[FIELDS.unitPrice],
       dataIndex: FIELDS.unitPrice,
       key: FIELDS.unitPrice,
-      sorter: (a, b) => a[FIELDS.unitPrice] - b[FIELDS.unitPrice],
+      sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
       sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
       render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
     },
@@ -156,7 +156,7 @@ export const orderActiveTableSchema = () => (
       title: LABELS[FIELDS.totalPrice],
       dataIndex: FIELDS.totalPrice,
       key: FIELDS.totalPrice,
-      sorter: (a, b) => a[FIELDS.totalPrice] - b[FIELDS.totalPrice],
+      sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
       sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
       render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
     },
@@ -237,7 +237,7 @@ export const orderHistoryTableSchema = () => (
       title: LABELS[FIELDS.unitPrice],
       dataIndex: FIELDS.unitPrice,
       key: FIELDS.unitPrice,
-      sorter: (a, b) => a[FIELDS.unitPrice] - b[FIELDS.unitPrice],
+      sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
       sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
       render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
     },
@@ -245,7 +245,7 @@ export const orderHistoryTableSchema = () => (
       title: LABELS[FIELDS.totalPrice],
       dataIndex: FIELDS.totalPrice,
       key: FIELDS.totalPrice,
-      sorter: (a, b) => a[FIELDS.totalPrice] - b[FIELDS.totalPrice],
+      sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
       sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
       render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
     },
