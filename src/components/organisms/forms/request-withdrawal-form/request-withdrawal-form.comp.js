@@ -19,10 +19,12 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
 
   const handleAmountChange = (e) => {
     const amount = e.target.value;
-    if (isNaN(amount)) {
+    const errors = form.getFieldError("amount");
+    if (isNaN(amount) || errors.length) {
       setRemainingAmount(toCurrency(data.available_withdrawal));
+    } else {
+      setRemainingAmount(toCurrency(data.available_withdrawal - amount));
     }
-    setRemainingAmount(toCurrency(data.available_withdrawal - amount));
   };
 
   return (
