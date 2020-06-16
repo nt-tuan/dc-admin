@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { DTCTable } from "components/atoms";
 import { withdrawPendingMapper } from "commons/mappers";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcelNew } from "utils/general.util";
+import { handleDownloadExcel } from "utils/general.util";
 
 const { parseDataToExcel, parseDataToGridView } = withdrawPendingMapper;
 
@@ -21,7 +21,7 @@ export const PendingWithdrawalTab = () => {
     const dataExcel = parseDataToExcel(data);
     const fileName = "Pending-withdrawal";
     const fileSheet = "PendingWithdrawal";
-    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   return (

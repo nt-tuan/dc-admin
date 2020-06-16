@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { getAccountSummarySchema } from "commons/schemas/wallet.schema";
 import { DTCTable } from "components/atoms";
 import { walletMapper } from "commons/mappers";
-import { handleDownloadExcelNew } from "utils/general.util";
+import { handleDownloadExcel } from "utils/general.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const { parseDataToGridView, parseDataToExcel } = walletMapper;
@@ -21,7 +21,7 @@ export const AccountSummary = () => {
     const dataExcel = parseDataToExcel(data);
     const fileName = "Wallet-account-summary";
     const fileSheet = "WalletAccountSummary";
-    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   return (

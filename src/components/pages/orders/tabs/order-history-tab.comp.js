@@ -4,7 +4,7 @@ import { orderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI, handleDownloadExcelNew } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
 import { OrderService } from "services";
 import { TIME_FIELDS, TIME_LABELS } from "commons/consts";
 import { DatetimeUtils } from "utils/date-time.util";
@@ -47,7 +47,7 @@ export const OrderHistoryTab = () => {
     const dataExcel = parseDataToExcel(data);
     const fileName = "History-order";
     const fileSheet = "HistoryOrder";
-    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   const handleChangeDays = (value) => {
