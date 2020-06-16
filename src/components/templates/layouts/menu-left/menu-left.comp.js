@@ -6,8 +6,8 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { selectMenuData } from "redux/menu/reducers";
 import * as SETTING_DUCK from "redux/settings/settings.duck";
 import { selectCurrentUser } from "redux/user/user.duck";
-import styles from "./menu-left-comp.module.scss";
 import { getPrefixUrl } from "utils/general.util";
+import styles from "./menu-left-comp.module.scss";
 
 const { Sider } = Layout;
 const { selectSetting } = SETTING_DUCK;
@@ -186,7 +186,7 @@ export const MenuLeft = () => {
           </span>
           {renderUserSection()}
 
-          <div id="menu-left-container" className={styles.air__menuLeft__container}>
+          <div className={styles.air__menuLeft__container} style={{ overflow: "auto" }}>
             <ul className={styles.air__menuLeft__list}>{generateMenuItems()}</ul>
           </div>
         </div>

@@ -1,7 +1,6 @@
-import { ACCOUNT_SUMMARY_SCHEMA } from "commons/schemas";
-import { toCurrency, toNumber } from "utils/general.util";
-import { DatetimeUtils } from "utils/date-time.util";
 import { WALLET_SCHEMA } from "commons/schemas/wallet.schema";
+import { DatetimeUtils } from "utils/date-time.util";
+import { toCurrency, toNumber } from "utils/general.util";
 
 const { FIELDS, LABELS } = WALLET_SCHEMA;
 const { formatDateTime } = DatetimeUtils;

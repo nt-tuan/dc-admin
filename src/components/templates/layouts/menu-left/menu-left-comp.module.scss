@@ -46,6 +46,7 @@
   // menu container
   &__container {
     padding-bottom: rem(20);
+    overflow: auto;
   }
 
   &__backdrop {
