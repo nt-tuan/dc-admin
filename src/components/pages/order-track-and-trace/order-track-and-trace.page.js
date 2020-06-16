@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { isScreensize } from "utils/general.util";
 import { OrderTimeline } from "components/organisms";
 import qs from "qs";
@@ -42,12 +42,14 @@ const data = [
 ];
 
 const OrderTrackAndTrace = () => {
-  const [orderDetail, setOrderDetail] = useState(fakedData);
+  const [orderDetail, setOrderDetail] = useState();
   const { oid: orderId } = qs.parse(location.search, { ignoreQueryPrefix: true });
   const params = useParams();
   const orderNumber = params.orderNumber;
-  console.log(orderId);
-  console.log(orderNumber);
+
+  useEffect(() => {
+    setOrderDetail(fakedData);
+  }, []);
 
   const setHeightMap = () => {
     if (isScreensize("xs") || isScreensize("sm")) {
@@ -62,6 +64,7 @@ const OrderTrackAndTrace = () => {
     }
     return "col-6 mb-4 text-dark";
   };
+
   return (
     <div className="air__utils__shadow bg-white dtc-br-10 p-3">
       <h3>Tracking Order</h3>
