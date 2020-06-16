@@ -79,7 +79,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
                 message: <FormError msg="This field is required" />
               },
               {
-                pattern: RegexConst.ONLY_INTERER_GREATER_THAN_ZERO_REGEX,
+                pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
                 message: <FormError msg="Only numberic number greater than 0" />
               },
               {
