@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { DTCTable } from "components/atoms";
 import { withdrawHistoryMapper } from "commons/mappers";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcelNew } from "utils/general.util";
+import { handleDownloadExcel } from "utils/general.util";
 
 const { parseDataToExcel, parseDataToGridView } = withdrawHistoryMapper;
 
@@ -20,7 +20,7 @@ export const HistoryWithdrawalTab = () => {
     const dataExcel = parseDataToExcel(data);
     const fileName = "History-withdrawal";
     const fileSheet = "HistoryWithdrawal";
-    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   return (
@@ -34,7 +34,7 @@ export const HistoryWithdrawalTab = () => {
       <DTCTable
         showSettings={false}
         loading={false}
-        dataSource={parseDataToGridView(data)}
+        dataSource={data}
         onChange={(value) => setData(value)}
         schema={historyWithdrawalTableSchema()}
       />

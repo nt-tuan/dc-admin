@@ -5,7 +5,7 @@ import { DTCTable } from "components";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcelNew } from "utils/general.util";
+import { handleDownloadExcel } from "utils/general.util";
 
 const { parseDataToExcel, parseDataToGridView } = financialMapper;
 
@@ -22,7 +22,7 @@ const AccountSummaryPage = () => {
     const dataExcel = parseDataToExcel(accountSummary);
     const fileName = `AccountSummary`;
     const fileSheet = "accountSummary";
-    handleDownloadExcelNew(dataExcel, fileName, fileSheet);
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   return (
@@ -44,7 +44,7 @@ const AccountSummaryPage = () => {
         <DTCTable
           showSettings={false}
           loading={false}
-          dataSource={parseDataToGridView(accountSummary)}
+          dataSource={accountSummary}
           schema={accountSummaryTableSchema()}
           onChange={(value) => setAccountSummary(value)}
         />

@@ -61,42 +61,7 @@ export const roundToHalfDecimal = (value) => {
   return 0;
 };
 
-const parseDataToExcel = (data, labelIndex, LABELS, FIELDS) => {
-  if (!Array.isArray(data) || data.length === 0) {
-    return [];
-  }
-  const parsedDataArray = [Object.keys(labelIndex).map((prop) => LABELS[prop])];
-  data.forEach((item) => {
-    let parsedItem = new Array(5);
-    Object.keys(item).forEach((prop) => {
-      if (labelIndex[prop] !== undefined) {
-        parsedItem[labelIndex[prop]] = item[prop];
-      }
-    });
-    parsedDataArray.push(parsedItem);
-  });
-  return parsedDataArray;
-};
-
-export const handleDownloadExcel = (data, labelIndex, LABELS, FIELDS, fileName) => {
-  const parsedData = parseDataToExcel(data, labelIndex, LABELS, FIELDS);
-  if (parsedData.length) {
-    const sheet = XLSX.utils.json_to_sheet(parsedData, {
-      skipHeader: true
-    });
-    const excelBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(excelBook, sheet, "orders");
-    XLSX.writeFile(excelBook, `${fileName}.xlsx`, {
-      bookType: "xlsx",
-      type: "file",
-      sheet: fileName
-    });
-  } else {
-    message.info("There is no data");
-  }
-};
-
-export const handleDownloadExcelNew = (dataExcel, fileName, fileSheet) => {
+export const handleDownloadExcel = (dataExcel, fileName, fileSheet) => {
   if (dataExcel.length) {
     const sheet = XLSX.utils.json_to_sheet(dataExcel, {
       skipHeader: true
