@@ -8,23 +8,10 @@ const { Option } = Select;
 
 export const RequestWithdrawalForm = ({ data, isDisabled }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  const [remainingAmount, setRemainingAmount] = useState(
-    () => data && toCurrency(data.available_withdrawal)
-  );
   const [form] = Form.useForm();
 
   const onSubmit = (values) => {
     setIsOpenPopup(true);
-  };
-
-  const handleAmountChange = (e) => {
-    const amount = e.target.value;
-    const errors = form.getFieldError("amount");
-    if (isNaN(amount) || errors.length) {
-      setRemainingAmount(toCurrency(data.available_withdrawal));
-    } else {
-      setRemainingAmount(toCurrency(data.available_withdrawal - amount));
-    }
   };
 
   return (
@@ -73,6 +60,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
             labelAlign="left"
             name="amount"
             initialValue={0}
+            validateFirst
             rules={[
               {
                 required: true,
@@ -98,11 +86,21 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
                 className="col-md-12 col-lg-5"
                 placeholder="Enter amount"
                 disabled={isDisabled}
-                onChange={handleAmountChange}
               />
               <span className="d-flex justify-content-between">
-                Remaining Account Balance:
-                <b>{remainingAmount}</b>
+                <Form.Item shouldUpdate>
+                  {() => {
+                    return (
+                      <Fragment>
+                        Remaining Account Balance:
+                        <b>
+                          {data &&
+                            toCurrency(data.available_withdrawal - form.getFieldValue("amount"))}
+                        </b>
+                      </Fragment>
+                    );
+                  }}
+                </Form.Item>
               </span>
             </div>
           </Form.Item>
