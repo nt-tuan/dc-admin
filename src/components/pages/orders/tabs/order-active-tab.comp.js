@@ -1,4 +1,3 @@
-import { DownloadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { orderActiveTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { DTCTable, FilterDropdown } from "components";
@@ -83,13 +82,8 @@ export const OrderActiveTab = () => {
           />
         </div>
         <div>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            className="mb-3"
-            onClick={handleDownload}
-          >
-            Download
+          <Button type="primary" className="mb-3" onClick={handleDownload}>
+            <i className="fe fe-download mr-2" /> Download
           </Button>
         </div>
       </div>

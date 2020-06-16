@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { DTCTable, FilterDropdown } from "components";
 import { orderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
@@ -80,13 +79,8 @@ export const OrderHistoryTab = () => {
           />
         </div>
         <div>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            className="mb-3"
-            onClick={handleDownload}
-          >
-            Download
+          <Button type="primary" className="mb-3" onClick={handleDownload}>
+            <i className="fe fe-download mr-2" /> Download
           </Button>
         </div>
       </div>

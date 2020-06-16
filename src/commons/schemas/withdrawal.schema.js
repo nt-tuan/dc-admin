@@ -1,9 +1,5 @@
-import { DTCHighlighter } from "components";
 import React from "react";
-import { toCurrency } from "utils";
-import dayjs from "dayjs";
-import { DATETIME_FORMAT } from "commons/consts";
-import { sortAlphabetically } from "utils/sort.util";
+import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
   timeStamp: "timeStamp",
@@ -34,124 +30,126 @@ export const WITHDRAWAL_SCHEMA = Object.freeze({
 
 // pending withdrawal
 
-export const getPendingWithdrawalTableSchema = () => ({
-  [FIELDS.timeStamp]: {
-    title: LABELS[FIELDS.timeStamp],
-    dataIndex: FIELDS.timeStamp,
-    key: FIELDS.timeStamp,
-    sorter: (a, b) => new Date(a.timeStamp) - new Date(b.timeStamp),
-    makeRender: ({ searchText }) => (timeStamp) => (
-      <DTCHighlighter searchText={searchText} value={dayjs(timeStamp).format(DATETIME_FORMAT)} />
-    )
-  },
-  [FIELDS.withdrawalId]: {
-    title: LABELS[FIELDS.withdrawalId],
-    dataIndex: FIELDS.withdrawalId,
-    key: FIELDS.withdrawalId,
-    sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
-    makeRender: ({ searchText }) => (withdrawalId) => (
-      <DTCHighlighter searchText={searchText} value={withdrawalId} />
-    )
-  },
-  [FIELDS.depositedAccount]: {
-    title: LABELS[FIELDS.depositedAccount],
-    dataIndex: FIELDS.depositedAccount,
-    key: FIELDS.depositedAccount,
-    sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
-    makeRender: ({ searchText }) => (depositedAccount) => (
-      <DTCHighlighter searchText={searchText} value={depositedAccount} />
-    )
-  },
-  [FIELDS.debit]: {
-    title: LABELS[FIELDS.debit],
-    dataIndex: FIELDS.debit,
-    key: FIELDS.debit,
-    sorter: (a, b) => a.debit - b.debit,
-    makeRender: ({ searchText }) => (debit) => (
-      <DTCHighlighter searchText={searchText} value={toCurrency(debit)} />
-    )
-  },
-  [FIELDS.currency]: {
-    title: LABELS[FIELDS.currency],
-    dataIndex: FIELDS.currency,
-    key: FIELDS.currency,
-    sorter: (a, b) => a.currency - b.currency,
-    makeRender: ({ searchText }) => (currency) => (
-      <DTCHighlighter searchText={searchText} value={currency} />
-    )
-  }
-});
+export const pendingWithdrawalTableSchema = () => (
+  sortedInfo,
+  CustomHighlighter,
+  searchText,
+  hiddenColumns
+) => {
+  const columnsSchema = [
+    {
+      title: LABELS[FIELDS.timeStamp],
+      dataIndex: FIELDS.timeStamp,
+      key: FIELDS.timeStamp,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.timeStamp], b[FIELDS.timeStamp]),
+      sortOrder: sortedInfo.columnKey === FIELDS.timeStamp && sortedInfo.order,
+      render: (timeStamp) => <CustomHighlighter searchText={searchText} value={timeStamp} />
+    },
+    {
+      title: LABELS[FIELDS.withdrawalId],
+      dataIndex: FIELDS.withdrawalId,
+      key: FIELDS.withdrawalId,
+      sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
+      sortOrder: sortedInfo.columnKey === FIELDS.withdrawalId && sortedInfo.order,
+      render: (withdrawalId) => <CustomHighlighter searchText={searchText} value={withdrawalId} />
+    },
+    {
+      title: LABELS[FIELDS.depositedAccount],
+      dataIndex: FIELDS.depositedAccount,
+      key: FIELDS.depositedAccount,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
+      sortOrder: sortedInfo.columnKey === FIELDS.depositedAccount && sortedInfo.order,
+      render: (depositedAccount) => (
+        <CustomHighlighter searchText={searchText} value={depositedAccount} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.debit],
+      dataIndex: FIELDS.debit,
+      key: FIELDS.debit,
+      sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
+      sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
+      render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
+    },
+    {
+      title: LABELS[FIELDS.currency],
+      dataIndex: FIELDS.currency,
+      key: FIELDS.currency,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.currency], b[FIELDS.currency]),
+      sortOrder: sortedInfo.columnKey === FIELDS.currency && sortedInfo.order,
+      render: (currency) => <CustomHighlighter searchText={searchText} value={currency} />
+    }
+  ];
+
+  return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
+};
 
 // history withdrawal
-
-export const getHistoryWithdrawalTableSchema = () => ({
-  [FIELDS.requestedDate]: {
-    title: LABELS[FIELDS.requestedDate],
-    dataIndex: FIELDS.requestedDate,
-    key: FIELDS.requestedDate,
-    sorter: (a, b) => new Date(a.requestedDate) - new Date(b.requestedDate),
-    makeRender: ({ searchText }) => (requestedDate) => (
-      <DTCHighlighter
-        searchText={searchText}
-        value={dayjs(requestedDate).format(DATETIME_FORMAT)}
-      />
-    )
-  },
-  [FIELDS.processedDate]: {
-    title: LABELS[FIELDS.processedDate],
-    dataIndex: FIELDS.processedDate,
-    key: FIELDS.processedDate,
-    sorter: (a, b) => new Date(a.processedDate) - new Date(b.processedDate),
-    makeRender: ({ searchText }) => (processedDate) => (
-      <DTCHighlighter
-        searchText={searchText}
-        value={dayjs(processedDate).format(DATETIME_FORMAT)}
-      />
-    )
-  },
-  [FIELDS.withdrawalId]: {
-    title: LABELS[FIELDS.withdrawalId],
-    dataIndex: FIELDS.withdrawalId,
-    key: FIELDS.withdrawalId,
-    sorter: (a, b) => a.withdrawalId - b.withdrawalId,
-    makeRender: ({ searchText }) => (withdrawalId) => (
-      <DTCHighlighter searchText={searchText} value={withdrawalId} />
-    )
-  },
-  [FIELDS.depositedAccount]: {
-    title: LABELS[FIELDS.depositedAccount],
-    dataIndex: FIELDS.depositedAccount,
-    key: FIELDS.depositedAccount,
-    sorter: (a, b) => sortAlphabetically(a.depositedAccount, b.depositedAccount),
-    makeRender: ({ searchText }) => (depositedAccount) => (
-      <DTCHighlighter searchText={searchText} value={depositedAccount} />
-    )
-  },
-  [FIELDS.debit]: {
-    title: LABELS[FIELDS.debit],
-    dataIndex: FIELDS.debit,
-    key: FIELDS.debit,
-    sorter: (a, b) => a.debit - b.debit,
-    makeRender: ({ searchText }) => (debit) => (
-      <DTCHighlighter searchText={searchText} value={toCurrency(debit)} />
-    )
-  },
-  [FIELDS.currency]: {
-    title: LABELS[FIELDS.currency],
-    dataIndex: FIELDS.currency,
-    key: FIELDS.currency,
-    sorter: (a, b) => a.currency - b.currency,
-    makeRender: ({ searchText }) => (currency) => (
-      <DTCHighlighter searchText={searchText} value={currency} />
-    )
-  },
-  [FIELDS.status]: {
-    title: LABELS[FIELDS.status],
-    dataIndex: FIELDS.status,
-    key: FIELDS.status,
-    sorter: (a, b) => a.status - b.status,
-    makeRender: ({ searchText }) => (status) => (
-      <DTCHighlighter searchText={searchText} value={status} />
-    )
-  }
-});
+export const historyWithdrawalTableSchema = () => (
+  sortedInfo,
+  CustomHighlighter,
+  searchText,
+  hiddenColumns
+) => {
+  const columnsSchema = [
+    {
+      title: LABELS[FIELDS.requestedDate],
+      dataIndex: FIELDS.requestedDate,
+      key: FIELDS.requestedDate,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.requestedDate], b[FIELDS.requestedDate]),
+      sortOrder: sortedInfo.columnKey === FIELDS.requestedDate && sortedInfo.order,
+      render: (requestedDate) => <CustomHighlighter searchText={searchText} value={requestedDate} />
+    },
+    {
+      title: LABELS[FIELDS.processedDate],
+      dataIndex: FIELDS.processedDate,
+      key: FIELDS.processedDate,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.processedDate], b[FIELDS.processedDate]),
+      sortOrder: sortedInfo.columnKey === FIELDS.processedDate && sortedInfo.order,
+      render: (processedDate) => <CustomHighlighter searchText={searchText} value={processedDate} />
+    },
+    {
+      title: LABELS[FIELDS.withdrawalId],
+      dataIndex: FIELDS.withdrawalId,
+      key: FIELDS.withdrawalId,
+      sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
+      sortOrder: sortedInfo.columnKey === FIELDS.withdrawalId && sortedInfo.order,
+      render: (withdrawalId) => <CustomHighlighter searchText={searchText} value={withdrawalId} />
+    },
+    {
+      title: LABELS[FIELDS.depositedAccount],
+      dataIndex: FIELDS.depositedAccount,
+      key: FIELDS.depositedAccount,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
+      sortOrder: sortedInfo.columnKey === FIELDS.depositedAccount && sortedInfo.order,
+      render: (depositedAccount) => (
+        <CustomHighlighter searchText={searchText} value={depositedAccount} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.debit],
+      dataIndex: FIELDS.debit,
+      key: FIELDS.debit,
+      sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
+      sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
+      render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
+    },
+    {
+      title: LABELS[FIELDS.currency],
+      dataIndex: FIELDS.currency,
+      key: FIELDS.currency,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.currency], b[FIELDS.currency]),
+      sortOrder: sortedInfo.columnKey === FIELDS.currency && sortedInfo.order,
+      render: (currency) => <CustomHighlighter searchText={searchText} value={currency} />
+    },
+    {
+      title: LABELS[FIELDS.status],
+      dataIndex: FIELDS.status,
+      key: FIELDS.status,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.status], b[FIELDS.status]),
+      sortOrder: sortedInfo.columnKey === FIELDS.currency && sortedInfo.order,
+      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
+    }
+  ];
+  return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
+};

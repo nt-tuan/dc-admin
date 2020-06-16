@@ -2,6 +2,10 @@ import React from "react";
 import { sortAlphabetically } from "utils/sort.util";
 
 const FIELDS = {
+  timestamp: "timestamp",
+  number: "number",
+  destinationCity: "destinationCity",
+  destinationCountry: "destinationCountry",
   originCity: "originCity",
   originCountry: "originCountry",
   totalPrice: "totalPrice",
@@ -10,6 +14,10 @@ const FIELDS = {
 };
 
 const LABELS = {
+  [FIELDS.timestamp]: "Order Date",
+  [FIELDS.number]: "Order Number",
+  [FIELDS.destinationCity]: "Destination City",
+  [FIELDS.destinationCountry]: "Destination Country",
   [FIELDS.originCity]: "Origin City",
   [FIELDS.originCountry]: "Origin Country",
   [FIELDS.totalPrice]: "Order Value",
@@ -29,6 +37,43 @@ export const accountSummaryTableSchema = () => (
   hiddenColumns
 ) => {
   const columnsSchema = [
+    {
+      title: LABELS[FIELDS.timestamp],
+      dataIndex: FIELDS.timestamp,
+      key: FIELDS.timestamp,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.timestamp], b[FIELDS.timestamp]),
+      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
+      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp} />
+    },
+    {
+      title: LABELS[FIELDS.number],
+      dataIndex: FIELDS.number,
+      key: FIELDS.number,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.number], b[FIELDS.number]),
+      sortOrder: sortedInfo.columnKey === FIELDS.originCountry && sortedInfo.order,
+      render: (number) => <CustomHighlighter searchText={searchText} value={number} />
+    },
+    {
+      title: LABELS[FIELDS.destinationCity],
+      dataIndex: FIELDS.destinationCity,
+      key: FIELDS.destinationCity,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.destinationCity], b[FIELDS.destinationCity]),
+      sortOrder: sortedInfo.columnKey === FIELDS.destinationCity && sortedInfo.order,
+      render: (destinationCity) => (
+        <CustomHighlighter searchText={searchText} value={destinationCity} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.destinationCountry],
+      dataIndex: FIELDS.destinationCountry,
+      key: FIELDS.destinationCountry,
+      sorter: (a, b) =>
+        sortAlphabetically(a[FIELDS.destinationCountry], b[FIELDS.destinationCountry]),
+      sortOrder: sortedInfo.columnKey === FIELDS.destinationCountry && sortedInfo.order,
+      render: (destinationCountry) => (
+        <CustomHighlighter searchText={searchText} value={destinationCountry} />
+      )
+    },
     {
       title: LABELS[FIELDS.originCity],
       dataIndex: FIELDS.originCity,

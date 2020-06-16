@@ -96,6 +96,23 @@ export const handleDownloadExcel = (data, labelIndex, LABELS, FIELDS, fileName) 
   }
 };
 
+export const handleDownloadExcelNew = (dataExcel, fileName, fileSheet) => {
+  if (dataExcel.length) {
+    const sheet = XLSX.utils.json_to_sheet(dataExcel, {
+      skipHeader: true
+    });
+    const excelBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(excelBook, sheet, fileSheet);
+    XLSX.writeFile(excelBook, `${fileName}.xlsx`, {
+      bookType: "xlsx",
+      type: "file",
+      sheet: fileSheet
+    });
+  } else {
+    message.info("There is no data");
+  }
+};
+
 export const getAllRecordsFromAPI = async (serviceFn) => {
   const maxSize = 2000;
   let page = 0;
