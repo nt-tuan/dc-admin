@@ -7,6 +7,7 @@ import { selectMenuData } from "redux/menu/reducers";
 import * as SETTING_DUCK from "redux/settings/settings.duck";
 import { selectCurrentUser } from "redux/user/user.duck";
 import { getPrefixUrl } from "utils/general.util";
+import Scrollbars from "react-custom-scrollbars";
 import styles from "./menu-left-comp.module.scss";
 
 const { Sider } = Layout;
@@ -186,9 +187,11 @@ export const MenuLeft = () => {
           </span>
           {renderUserSection()}
 
-          <div className={styles.air__menuLeft__container} style={{ overflow: "auto" }}>
+          {/* <div className={styles.air__menuLeft__container} style={{ overflow: "auto" }}> */}
+          <Scrollbars height="100%">
             <ul className={styles.air__menuLeft__list}>{generateMenuItems()}</ul>
-          </div>
+          </Scrollbars>
+          {/* </div> */}
         </div>
       </div>
       <span className={styles.air__menuLeft__backdrop} onClick={toggleMobileMenu} />
