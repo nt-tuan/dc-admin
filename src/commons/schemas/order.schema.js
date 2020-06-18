@@ -15,7 +15,7 @@ const FIELDS = {
   totalPrice: "total",
   buyerCompanyName: "buyerCompany",
   sellerCompanyName: "sellerCompany",
-  status: "status"
+  status: "process"
 };
 
 const LABELS = {
