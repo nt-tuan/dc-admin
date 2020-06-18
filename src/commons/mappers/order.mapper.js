@@ -54,12 +54,12 @@ const parseActiveOrderToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((account) => {
-      const { createdDate, status, unitPrice, total, number } = account;
+      const { createdDate, unitPrice, total, number, process } = account;
       return {
         ...account,
         id: number,
         createdDate: createdDate ? formatDateTime(createdDate) : "",
-        status: ORDER_STATUS_LABELS[status] ? ORDER_STATUS_LABELS[status] : status,
+        process: ORDER_STATUS_LABELS[process],
         unitPrice: toCurrency(unitPrice),
         total: toCurrency(total)
       };
@@ -120,12 +120,12 @@ const parseHistoryOrderToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((account) => {
-      const { createdDate, status, unitPrice, total, number } = account;
+      const { createdDate, unitPrice, total, number, process } = account;
       return {
         ...account,
         id: number,
         createdDate: createdDate ? formatDateTime(createdDate) : "",
-        status: ORDER_STATUS_LABELS[status] ? ORDER_STATUS_LABELS[status] : status,
+        process: ORDER_STATUS_LABELS[process],
         unitPrice: toCurrency(unitPrice),
         total: toCurrency(total)
       };
