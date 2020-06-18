@@ -90,12 +90,20 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
               <span className="d-flex justify-content-between">
                 <Form.Item shouldUpdate>
                   {() => {
+                    const availableAmount = data.available_withdrawal;
+                    const inputAmount = form.getFieldValue("amount");
                     return (
                       <Fragment>
                         Remaining Account Balance:
                         <b>
                           {data &&
-                            toCurrency(data.available_withdrawal - form.getFieldValue("amount"))}
+                            toCurrency(
+                              !isNaN(inputAmount) &&
+                                inputAmount > 0 &&
+                                inputAmount < availableAmount
+                                ? availableAmount - inputAmount
+                                : availableAmount
+                            )}
                         </b>
                       </Fragment>
                     );
