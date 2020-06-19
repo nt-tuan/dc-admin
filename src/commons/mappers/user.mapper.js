@@ -11,7 +11,6 @@ const parseDataToGridView = (data) => {
       const { createdDate, userStatus } = user;
       return {
         ...user,
-        id: createdDate,
         createdDate: createdDate ? formatDateTime(createdDate) : "",
         userStatus: STATUS_LABELS[userStatus] ? STATUS_LABELS[userStatus] : userStatus
       };
