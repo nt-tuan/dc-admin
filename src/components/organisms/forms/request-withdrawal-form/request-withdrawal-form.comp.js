@@ -122,7 +122,11 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
       <Modal
         visible={isOpenPopup}
         onCancel={() => setIsOpenPopup(false)}
-        footer={null}
+        footer={[
+          <Button type="primary" onClick={() => setIsOpenPopup(false)}>
+            Confirm
+          </Button>
+        ]}
         title="Confirm withdraw"
       >
         Your withdrawal request is successfully submitted. The amount will be deposited in your bank

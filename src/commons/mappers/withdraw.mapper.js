@@ -102,11 +102,10 @@ const parseWithdrawPendingToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((item) => {
-      const { timestamp, debit } = item;
+      const { timeStamp, debit } = item;
       return {
         ...item,
-        id: timestamp,
-        timestamp: timestamp ? formatDateTime(timestamp) : "",
+        timeStamp: timeStamp ? formatDateTime(timeStamp) : "",
         debit: toCurrency(debit)
       };
     });

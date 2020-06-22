@@ -96,7 +96,7 @@ export const RequestWithdrawalTab = () => {
             </Row>
           )}
 
-          <Row className="py-3" gutter={[16, 16]}>
+          <Row gutter={[16, 16]}>
             <Col
               xl={8}
               lg={12}

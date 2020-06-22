@@ -147,7 +147,7 @@ export const historyWithdrawalTableSchema = () => (
       dataIndex: FIELDS.status,
       key: FIELDS.status,
       sorter: (a, b) => sortAlphabetically(a[FIELDS.status], b[FIELDS.status]),
-      sortOrder: sortedInfo.columnKey === FIELDS.currency && sortedInfo.order,
+      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
       render: (status) => <CustomHighlighter searchText={searchText} value={status} />
     }
   ];

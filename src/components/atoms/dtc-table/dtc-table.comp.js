@@ -90,7 +90,9 @@ export const DTCTable = React.memo(
             columns={schema(sortedInfo, DTCHighlighter, searchText, hiddenColumns)}
             dataSource={filtered}
             onChange={(pagination, filters, sorter, value) => {
-              onChange && onChange(value.currentDataSource);
+              if (value.currentDataSource.length === dataSource.length) {
+                onChange && onChange(value.currentDataSource);
+              }
               setSortedInfo(sorter);
             }}
             showLessItems={true}

@@ -50,7 +50,7 @@ export const accountSummaryTableSchema = () => (
       dataIndex: FIELDS.number,
       key: FIELDS.number,
       sorter: (a, b) => sortAlphabetically(a[FIELDS.number], b[FIELDS.number]),
-      sortOrder: sortedInfo.columnKey === FIELDS.originCountry && sortedInfo.order,
+      sortOrder: sortedInfo.columnKey === FIELDS.number && sortedInfo.order,
       render: (number) => <CustomHighlighter searchText={searchText} value={number} />
     },
     {

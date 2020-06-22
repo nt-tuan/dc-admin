@@ -20,8 +20,8 @@ const AccountSummaryPage = () => {
 
   const handleDownload = () => {
     const dataExcel = parseDataToExcel(accountSummary);
-    const fileName = `AccountSummary`;
-    const fileSheet = "accountSummary";
+    const fileName = `Account-summary`;
+    const fileSheet = "AccountSummary";
     handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
