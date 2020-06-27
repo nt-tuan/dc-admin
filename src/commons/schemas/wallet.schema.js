@@ -3,32 +3,32 @@ import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
   timestamp: "timestamp",
-  transactionType: "transactionType",
-  orderNumber: "orderNumber",
+  type: "type",
+  number: "number",
   productDetails: "productDetails",
   description: "description",
   currency: "currency",
-  blocked: "blocked",
+  blockedFund: "blockedFund",
   credit: "credit",
   debit: "debit",
-  totalBlocked: "totalBlocked",
+  totalBlockFund: "totalBlockFund",
   availableBalance: "availableBalance",
-  currentTotalBalance: "currentTotalBalance"
+  currentBalance: "currentBalance"
 };
 
 const LABELS = {
   [FIELDS.timestamp]: "Time Stamp",
-  [FIELDS.transactionType]: "Transaction Type",
-  [FIELDS.orderNumber]: "Order Number",
+  [FIELDS.type]: "Transaction Type",
+  [FIELDS.number]: "Order Number",
   [FIELDS.productDetails]: "Product Details",
   [FIELDS.description]: "Description",
   [FIELDS.currency]: "Currency",
-  [FIELDS.blocked]: "Blocked",
+  [FIELDS.blockedFund]: "Blocked",
   [FIELDS.credit]: "Credit",
   [FIELDS.debit]: "Debit",
-  [FIELDS.totalBlocked]: "Total Blocked",
+  [FIELDS.totalBlockFund]: "Total Blocked",
   [FIELDS.availableBalance]: "Available Balance",
-  [FIELDS.currentTotalBalance]: "Current Total Balance"
+  [FIELDS.currentBalance]: "Current Total Balance"
 };
 
 const BANK_DETAILS = {
@@ -49,11 +49,42 @@ const BANK_DETAIL_LABELS = {
   [BANK_DETAILS.swiftCode]: "Swift Code"
 };
 
+export const WALLET_TRANSACTION_TYPES = Object.freeze({
+  ORDER_PAYMENT: "ORDER_PAYMENT",
+  // IVS: "IVS",
+  // TSF: "TSF",
+  DEPOSIT: "DEPOSIT",
+  DEPOSIT_IVS: "DEPOSIT_IVS",
+  BILLING_IVS: "BILLING_IVS",
+  BILLING_TSF: "BILLING_TSF",
+  BILLING_DC: "BILLING_DC",
+  BILLING_PCC: "BILLING_PCC"
+});
+
+export const WALLET_TRANSACTION_TYPE_LABELS = Object.freeze({
+  [WALLET_TRANSACTION_TYPES.ORDER_PAYMENT]: "Order Payment",
+  [WALLET_TRANSACTION_TYPES.DEPOSIT]: "Deposit",
+  [WALLET_TRANSACTION_TYPES.DEPOSIT_IVS]: "Deposit​",
+  [WALLET_TRANSACTION_TYPES.BILLING_DC]: "Billing",
+  [WALLET_TRANSACTION_TYPES.BILLING_PCC]: "Billing"
+});
+
+export const WALLET_DESCRIPTIONS = Object.freeze({
+  [WALLET_TRANSACTION_TYPES.ORDER_PAYMENT]: "Order Payment",
+  [WALLET_TRANSACTION_TYPES.DEPOSIT]: "Funds Deposited by User",
+  [WALLET_TRANSACTION_TYPES.DEPOSIT_IVS]: "Invoice Value Settlement​",
+  [WALLET_TRANSACTION_TYPES.BILLING_DC]: "Distichain Commission",
+  [WALLET_TRANSACTION_TYPES.BILLING_PCC]: "Marketplace Commission"
+});
+
 export const WALLET_SCHEMA = Object.freeze({
   FIELDS,
   LABELS,
   BANK_DETAILS,
-  BANK_DETAIL_LABELS
+  BANK_DETAIL_LABELS,
+  WALLET_TRANSACTION_TYPES,
+  WALLET_TRANSACTION_TYPE_LABELS,
+  WALLET_DESCRIPTIONS
 });
 
 export const getAccountSummarySchema = () => (
@@ -72,21 +103,21 @@ export const getAccountSummarySchema = () => (
       render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
     },
     {
-      title: LABELS[FIELDS.transactionType],
-      dataIndex: FIELDS.transactionType,
-      key: FIELDS.transactionType,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.transactionType], b[FIELDS.transactionType]),
-      sortOrder: sortedInfo.columnKey === FIELDS.transactionType && sortedInfo.order,
+      title: LABELS[FIELDS.type],
+      dataIndex: FIELDS.type,
+      key: FIELDS.type,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.type], b[FIELDS.type]),
+      sortOrder: sortedInfo.columnKey === FIELDS.type && sortedInfo.order,
       render: (transactionType) => (
         <CustomHighlighter searchText={searchText} value={transactionType} />
       )
     },
     {
-      title: LABELS[FIELDS.orderNumber],
-      dataIndex: FIELDS.orderNumber,
-      key: FIELDS.orderNumber,
-      sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
-      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
+      title: LABELS[FIELDS.number],
+      dataIndex: FIELDS.number,
+      key: FIELDS.number,
+      sorter: (a, b) => a[FIELDS.number] - b[FIELDS.number],
+      sortOrder: sortedInfo.columnKey === FIELDS.number && sortedInfo.order,
       render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
     },
     {
@@ -116,12 +147,12 @@ export const getAccountSummarySchema = () => (
       render: (currency) => <CustomHighlighter searchText={searchText} value={currency} />
     },
     {
-      title: LABELS[FIELDS.blocked],
-      dataIndex: FIELDS.blocked,
-      key: FIELDS.blocked,
-      sorter: (a, b) => sortPrice(a[FIELDS.blocked], b[FIELDS.blocked]),
-      sortOrder: sortedInfo.columnKey === FIELDS.blocked && sortedInfo.order,
-      render: (blocked) => <CustomHighlighter searchText={searchText} value={blocked} />
+      title: LABELS[FIELDS.blockedFund],
+      dataIndex: FIELDS.blockedFund,
+      key: FIELDS.blockedFund,
+      sorter: (a, b) => sortPrice(a[FIELDS.blockedFund], b[FIELDS.blockedFund]),
+      sortOrder: sortedInfo.columnKey === FIELDS.blockedFund && sortedInfo.order,
+      render: (blockedFund) => <CustomHighlighter searchText={searchText} value={blockedFund} />
     },
     {
       title: LABELS[FIELDS.credit],
@@ -140,12 +171,14 @@ export const getAccountSummarySchema = () => (
       render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
     },
     {
-      title: LABELS[FIELDS.totalBlocked],
-      dataIndex: FIELDS.totalBlocked,
-      key: FIELDS.totalBlocked,
-      sorter: (a, b) => sortPrice(a[FIELDS.totalBlocked], b[FIELDS.totalBlocked]),
-      sortOrder: sortedInfo.columnKey === FIELDS.totalBlocked && sortedInfo.order,
-      render: (totalBlocked) => <CustomHighlighter searchText={searchText} value={totalBlocked} />
+      title: LABELS[FIELDS.totalBlockFund],
+      dataIndex: FIELDS.totalBlockFund,
+      key: FIELDS.totalBlockFund,
+      sorter: (a, b) => sortPrice(a[FIELDS.totalBlockFund], b[FIELDS.totalBlockFund]),
+      sortOrder: sortedInfo.columnKey === FIELDS.totalBlockFund && sortedInfo.order,
+      render: (totalBlockFund) => (
+        <CustomHighlighter searchText={searchText} value={totalBlockFund} />
+      )
     },
     {
       title: LABELS[FIELDS.availableBalance],
@@ -158,13 +191,13 @@ export const getAccountSummarySchema = () => (
       )
     },
     {
-      title: LABELS[FIELDS.currentTotalBalance],
-      dataIndex: FIELDS.currentTotalBalance,
-      key: FIELDS.currentTotalBalance,
-      sorter: (a, b) => sortPrice(a[FIELDS.currentTotalBalance], b[FIELDS.currentTotalBalance]),
-      sortOrder: sortedInfo.columnKey === FIELDS.currentTotalBalance && sortedInfo.order,
-      render: (currentTotalBalance) => (
-        <CustomHighlighter searchText={searchText} value={currentTotalBalance} />
+      title: LABELS[FIELDS.currentBalance],
+      dataIndex: FIELDS.currentBalance,
+      key: FIELDS.currentBalance,
+      sorter: (a, b) => sortPrice(a[FIELDS.currentBalance], b[FIELDS.currentBalance]),
+      sortOrder: sortedInfo.columnKey === FIELDS.currentBalance && sortedInfo.order,
+      render: (currentBalance) => (
+        <CustomHighlighter searchText={searchText} value={currentBalance} />
       )
     }
   ];

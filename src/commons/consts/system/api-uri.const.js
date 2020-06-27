@@ -3,6 +3,7 @@ export class ApiUriConsts {
   static #USER_PREFIX = "/me";
   static #USER_MANAGEMENT_PREFIX = "/users";
   static #ORDER_PREFIX = "/orders";
+  static #WALLET_PREFIX = "/wallet";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -42,5 +43,13 @@ export class ApiUriConsts {
 
   static get GET_ALL_ORDERS_HISTORY() {
     return `${this.#ORDER_PREFIX}/history`;
+  }
+
+  static get GET_WALLET_DASHBOARD() {
+    return `${this.#WALLET_PREFIX}`;
+  }
+
+  static get GET_WALLET_TRANSACTION_DETAILS() {
+    return `${this.#WALLET_PREFIX}/transactions/details`;
   }
 }

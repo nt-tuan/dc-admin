@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import { getAccountSummarySchema } from "commons/schemas/wallet.schema";
 import { DTCTable } from "components/atoms";
 import { walletMapper } from "commons/mappers";
 import { handleDownloadExcel } from "utils/general.util";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
-const { parseDataToGridView, parseDataToExcel } = walletMapper;
+const { parseDataToExcel } = walletMapper;
 
-export const AccountSummary = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    asyncErrorHandlerWrapper(async () => {
-      setData(parseDataToGridView(fakedData));
-    });
-  }, []);
+export const WalletAccountSummary = ({ transactionDetails }) => {
+  const [data, setData] = useState(transactionDetails);
 
   const handleDownload = () => {
     const dataExcel = parseDataToExcel(data);
@@ -45,36 +38,3 @@ export const AccountSummary = () => {
     </section>
   );
 };
-
-const fakedData = [
-  {
-    id: 1,
-    timestamp: "2020-06-11 09:52 AM",
-    transactionType: "N/A",
-    orderNumber: 31621211221,
-    productDetails: "Apple iPhone 11 Black 64GB",
-    description: "Apple iPhone 11 Black 64GB",
-    currency: "USD",
-    blocked: 4500,
-    credit: 450,
-    debit: 45000,
-    totalBlocked: 4500,
-    availableBalance: 45,
-    currentTotalBalance: 4500
-  },
-  {
-    id: 2,
-    timestamp: "2020-06-12 09:52 AM",
-    transactionType: "Type",
-    orderNumber: 2394384712,
-    productDetails: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    description: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    currency: "USD",
-    blocked: 3696,
-    credit: 3696,
-    debit: 3696,
-    totalBlocked: 3696,
-    availableBalance: 3696,
-    currentTotalBalance: 3696
-  }
-];

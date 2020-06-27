@@ -1,8 +1,10 @@
+import React from "react";
 import { toCurrency, toNumber } from "utils/general.util";
 import { DatetimeUtils } from "utils/date-time.util";
 import { WALLET_SCHEMA } from "commons/schemas/wallet.schema";
+import { RouteConst } from "commons/consts";
 
-const { FIELDS, LABELS } = WALLET_SCHEMA;
+const { FIELDS, LABELS, WALLET_DESCRIPTIONS, WALLET_TRANSACTION_TYPE_LABELS } = WALLET_SCHEMA;
 const { formatDateTime } = DatetimeUtils;
 
 const parseDataToExcel = (wallet) => {
@@ -12,17 +14,17 @@ const parseDataToExcel = (wallet) => {
 
   const columns = {
     [FIELDS.timestamp]: 0,
-    [FIELDS.transactionType]: 1,
-    [FIELDS.orderNumber]: 2,
+    [FIELDS.type]: 1,
+    [FIELDS.number]: 2,
     [FIELDS.productDetails]: 3,
     [FIELDS.description]: 4,
     [FIELDS.currency]: 5,
-    [FIELDS.blocked]: 6,
+    [FIELDS.blockedFund]: 6,
     [FIELDS.credit]: 7,
     [FIELDS.debit]: 8,
-    [FIELDS.totalBlocked]: 9,
+    [FIELDS.totalBlockFund]: 9,
     [FIELDS.availableBalance]: 10,
-    [FIELDS.currentTotalBalance]: 11
+    [FIELDS.currentBalance]: 11
   };
   // add first row as label
   const dataExcel = [Object.keys(columns).map((field) => LABELS[field])];
@@ -35,11 +37,11 @@ const parseDataToExcel = (wallet) => {
           row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
         } else if (
           [
-            FIELDS.blocked,
+            FIELDS.blockedFund,
             FIELDS.credit,
             FIELDS.debit,
-            FIELDS.totalBlocked,
-            FIELDS.currentTotalBalance,
+            FIELDS.totalBlockFund,
+            FIELDS.currentBalance,
             FIELDS.availableBalance
           ].includes(field)
         ) {
@@ -60,24 +62,27 @@ const parseDataToGridView = (data) => {
     newData = newData.map((wallet) => {
       const {
         timestamp,
-        blocked,
+        blockedFund,
         credit,
         debit,
-        totalBlocked,
+        totalBlockFund,
         availableBalance,
-        currentTotalBalance,
-        orderNumber
+        currentBalance,
+        type,
+        id
       } = wallet;
       return {
         ...wallet,
-        id: orderNumber,
+        id: id,
         timestamp: timestamp ? formatDateTime(timestamp) : "",
-        blocked: toCurrency(blocked),
+        blockedFund: toCurrency(blockedFund),
         credit: toCurrency(credit),
         debit: toCurrency(debit),
-        totalBlocked: toCurrency(totalBlocked),
+        totalBlockFund: toCurrency(totalBlockFund),
         availableBalance: toCurrency(availableBalance),
-        currentTotalBalance: toCurrency(currentTotalBalance)
+        currentBalance: toCurrency(currentBalance),
+        description: WALLET_DESCRIPTIONS[type],
+        type: WALLET_TRANSACTION_TYPE_LABELS[type]
       };
     });
   }
@@ -85,7 +90,29 @@ const parseDataToGridView = (data) => {
   return newData;
 };
 
+const parseDataToWalletDashBoard = (data) => {
+  return {
+    totalBalance: {
+      name: "totalBalance",
+      icon: <i className="fas fa-money-check-alt"></i>,
+      title: "Current Total Balance",
+      value: data.totalBalance,
+      func: () => {},
+      description: "Current Total Balance : Total Balance in your wallet"
+    },
+    pendingWithdrawal: {
+      name: "pendingWithdrawal",
+      icon: <i className="fas fa-folder-minus"></i>,
+      title: "Pending Withdrawal",
+      value: data.pendingWithdrawal,
+      func: () => history.push(RouteConst.WALLET),
+      description: "Funds being processed for your withdrawal request"
+    }
+  };
+};
+
 export const walletMapper = {
   parseDataToExcel,
-  parseDataToGridView
+  parseDataToGridView,
+  parseDataToWalletDashBoard
 };

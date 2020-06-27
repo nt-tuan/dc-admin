@@ -4,25 +4,7 @@ import { Button } from "antd";
 import { RouteConst } from "commons/consts";
 import { CardsWrapper } from "components/molecules";
 
-export const WalletDashboard = ({ walletDashboard }) => {
-  const cards = {
-    totalBalance: {
-      name: "totalBalance",
-      icon: <i className="fas fa-money-check-alt"></i>,
-      title: "Current Total Balance",
-      value: walletDashboard.totalBalance,
-      func: () => {},
-      description: "Current Total Balance : Total Balance in your wallet"
-    },
-    pendingWithdrawal: {
-      name: "pendingWithdrawal",
-      icon: <i className="fas fa-folder-minus"></i>,
-      title: "Pending Withdrawal",
-      value: walletDashboard.withdrawal,
-      func: () => history.push(RouteConst.WALLET),
-      description: "Funds being processed for your withdrawal request"
-    }
-  };
+export const WalletDashboard = ({ cards }) => {
   return (
     <section className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
       <div className="d-flex justify-content-between flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row">
