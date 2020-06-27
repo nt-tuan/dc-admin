@@ -1,6 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BankDetailsReadonly } from "components/molecules";
 import { toCurrency } from "utils/general.util";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { FinancialService } from "services";
 
 const fakedData = [
   {
@@ -14,11 +16,19 @@ const fakedData = [
 ];
 
 const AddFundsPage = () => {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    asyncErrorHandlerWrapper(async () => {
+      const resWalletDashboard = await FinancialService.getWalletDashboard();
+      setData(resWalletDashboard);
+    });
+  }, []);
+
   return (
     <Fragment>
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3 d-flex align-items-center">
         <h5 className="text-primary mr-1">Total Balance: </h5>
-        <h5>{toCurrency(100000)}</h5>
+        <h5>{toCurrency(data.totalBalance)}</h5>
       </div>
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
         <h5 className="text-capitalize mb-2 text-primary font-weight-bold">

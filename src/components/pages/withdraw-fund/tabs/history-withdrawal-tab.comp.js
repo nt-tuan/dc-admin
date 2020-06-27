@@ -4,7 +4,9 @@ import { Button } from "antd";
 import { DTCTable } from "components/atoms";
 import { withdrawHistoryMapper } from "commons/mappers";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcel } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { FinancialService } from "services";
+import { SORT_ORDERS } from "commons/consts";
 
 const { parseDataToExcel, parseDataToGridView } = withdrawHistoryMapper;
 
@@ -12,7 +14,13 @@ export const HistoryWithdrawalTab = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      setData(parseDataToGridView(fakedData));
+      const res = await getAllRecordsFromAPI(FinancialService.getWithdrawals, {
+        sortTerm: "createdDate",
+        sortOrder: SORT_ORDERS.DESC,
+        outerParams: { status: "COMPLETED" }
+      });
+
+      setData(parseDataToGridView(res));
     });
   }, []);
 
@@ -41,26 +49,3 @@ export const HistoryWithdrawalTab = () => {
     </div>
   );
 };
-
-const fakedData = [
-  {
-    id: 0,
-    requestedDate: "2020-05-25T19:17:50",
-    processedDate: "2020-05-30T09:17:50",
-    withdrawalId: 10,
-    depositedAccount: "Acc No.4",
-    debit: 11,
-    currency: "USD",
-    status: "status"
-  },
-  {
-    id: 1,
-    requestedDate: "2020-05-22T09:17:50",
-    processedDate: "2020-05-21T09:17:50",
-    withdrawalId: 13,
-    depositedAccount: "Acc No.5",
-    debit: 14,
-    currency: "USD",
-    status: "status1"
-  }
-];

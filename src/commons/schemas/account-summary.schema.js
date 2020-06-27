@@ -2,7 +2,7 @@ import React from "react";
 import { sortAlphabetically } from "utils/sort.util";
 
 const FIELDS = {
-  timestamp: "timestamp",
+  createdDate: "createdDate",
   number: "number",
   destinationCity: "destinationCity",
   destinationCountry: "destinationCountry",
@@ -14,7 +14,7 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timestamp]: "Order Date",
+  [FIELDS.createdDate]: "Order Date",
   [FIELDS.number]: "Order Number",
   [FIELDS.destinationCity]: "Destination City",
   [FIELDS.destinationCountry]: "Destination Country",
@@ -38,11 +38,11 @@ export const accountSummaryTableSchema = () => (
 ) => {
   const columnsSchema = [
     {
-      title: LABELS[FIELDS.timestamp],
-      dataIndex: FIELDS.timestamp,
-      key: FIELDS.timestamp,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.timestamp], b[FIELDS.timestamp]),
-      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
+      title: LABELS[FIELDS.createdDate],
+      dataIndex: FIELDS.createdDate,
+      key: FIELDS.createdDate,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.createdDate], b[FIELDS.createdDate]),
+      sortOrder: sortedInfo.columnKey === FIELDS.createdDate && sortedInfo.order,
       render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp} />
     },
     {

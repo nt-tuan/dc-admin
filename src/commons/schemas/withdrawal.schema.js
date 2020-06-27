@@ -2,10 +2,10 @@ import React from "react";
 import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
-  timeStamp: "timeStamp",
-  withdrawalId: "withdrawalId",
-  depositedAccount: "depositedAccount",
-  debit: "debit",
+  timestamp: "timestamp",
+  id: "id",
+  accountNumber: "accountNumber",
+  amount: "amount",
   currency: "currency",
   requestedDate: "requestedDate",
   processedDate: "processedDate",
@@ -13,10 +13,10 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timeStamp]: "Date",
-  [FIELDS.withdrawalId]: "Withdrawal Id",
-  [FIELDS.depositedAccount]: "Deposited Account",
-  [FIELDS.debit]: "Debit",
+  [FIELDS.timestamp]: "Date",
+  [FIELDS.id]: "Withdrawal Id",
+  [FIELDS.accountNumber]: "Deposited Bank Account",
+  [FIELDS.amount]: "Debit",
   [FIELDS.currency]: "Currency",
   [FIELDS.requestedDate]: "Requested Date",
   [FIELDS.processedDate]: "Processed Date",
@@ -38,38 +38,36 @@ export const pendingWithdrawalTableSchema = () => (
 ) => {
   const columnsSchema = [
     {
-      title: LABELS[FIELDS.timeStamp],
-      dataIndex: FIELDS.timeStamp,
-      key: FIELDS.timeStamp,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.timeStamp], b[FIELDS.timeStamp]),
-      sortOrder: sortedInfo.columnKey === FIELDS.timeStamp && sortedInfo.order,
-      render: (timeStamp) => <CustomHighlighter searchText={searchText} value={timeStamp} />
+      title: LABELS[FIELDS.timestamp],
+      dataIndex: FIELDS.timestamp,
+      key: FIELDS.timestamp,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.timestamp], b[FIELDS.timestamp]),
+      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
+      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp} />
     },
     {
-      title: LABELS[FIELDS.withdrawalId],
-      dataIndex: FIELDS.withdrawalId,
-      key: FIELDS.withdrawalId,
-      sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
-      sortOrder: sortedInfo.columnKey === FIELDS.withdrawalId && sortedInfo.order,
-      render: (withdrawalId) => <CustomHighlighter searchText={searchText} value={withdrawalId} />
+      title: LABELS[FIELDS.id],
+      dataIndex: FIELDS.id,
+      key: FIELDS.id,
+      sorter: (a, b) => a[FIELDS.id] - b[FIELDS.id],
+      sortOrder: sortedInfo.columnKey === FIELDS.id && sortedInfo.order,
+      render: (id) => <CustomHighlighter searchText={searchText} value={id} />
     },
     {
-      title: LABELS[FIELDS.depositedAccount],
-      dataIndex: FIELDS.depositedAccount,
-      key: FIELDS.depositedAccount,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
-      sortOrder: sortedInfo.columnKey === FIELDS.depositedAccount && sortedInfo.order,
-      render: (depositedAccount) => (
-        <CustomHighlighter searchText={searchText} value={depositedAccount} />
-      )
+      title: LABELS[FIELDS.accountNumber],
+      dataIndex: FIELDS.accountNumber,
+      key: FIELDS.accountNumber,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.accountNumber], b[FIELDS.accountNumber]),
+      sortOrder: sortedInfo.columnKey === FIELDS.accountNumber && sortedInfo.order,
+      render: (accountNumber) => <CustomHighlighter searchText={searchText} value={accountNumber} />
     },
     {
-      title: LABELS[FIELDS.debit],
-      dataIndex: FIELDS.debit,
-      key: FIELDS.debit,
-      sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
-      sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
-      render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
+      title: LABELS[FIELDS.amount],
+      dataIndex: FIELDS.amount,
+      key: FIELDS.amount,
+      sorter: (a, b) => sortPrice(a[FIELDS.amount], b[FIELDS.amount]),
+      sortOrder: sortedInfo.columnKey === FIELDS.amount && sortedInfo.order,
+      render: (amount) => <CustomHighlighter searchText={searchText} value={amount} />
     },
     {
       title: LABELS[FIELDS.currency],
@@ -109,30 +107,28 @@ export const historyWithdrawalTableSchema = () => (
       render: (processedDate) => <CustomHighlighter searchText={searchText} value={processedDate} />
     },
     {
-      title: LABELS[FIELDS.withdrawalId],
-      dataIndex: FIELDS.withdrawalId,
-      key: FIELDS.withdrawalId,
-      sorter: (a, b) => a[FIELDS.withdrawalId] - b[FIELDS.withdrawalId],
-      sortOrder: sortedInfo.columnKey === FIELDS.withdrawalId && sortedInfo.order,
-      render: (withdrawalId) => <CustomHighlighter searchText={searchText} value={withdrawalId} />
+      title: LABELS[FIELDS.id],
+      dataIndex: FIELDS.id,
+      key: FIELDS.id,
+      sorter: (a, b) => a[FIELDS.id] - b[FIELDS.id],
+      sortOrder: sortedInfo.columnKey === FIELDS.id && sortedInfo.order,
+      render: (id) => <CustomHighlighter searchText={searchText} value={id} />
     },
     {
-      title: LABELS[FIELDS.depositedAccount],
-      dataIndex: FIELDS.depositedAccount,
-      key: FIELDS.depositedAccount,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.depositedAccount], b[FIELDS.depositedAccount]),
-      sortOrder: sortedInfo.columnKey === FIELDS.depositedAccount && sortedInfo.order,
-      render: (depositedAccount) => (
-        <CustomHighlighter searchText={searchText} value={depositedAccount} />
-      )
+      title: LABELS[FIELDS.accountNumber],
+      dataIndex: FIELDS.accountNumber,
+      key: FIELDS.accountNumber,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.accountNumber], b[FIELDS.accountNumber]),
+      sortOrder: sortedInfo.columnKey === FIELDS.accountNumber && sortedInfo.order,
+      render: (accountNumber) => <CustomHighlighter searchText={searchText} value={accountNumber} />
     },
     {
-      title: LABELS[FIELDS.debit],
-      dataIndex: FIELDS.debit,
-      key: FIELDS.debit,
-      sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
-      sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
-      render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
+      title: LABELS[FIELDS.amount],
+      dataIndex: FIELDS.amount,
+      key: FIELDS.amount,
+      sorter: (a, b) => sortPrice(a[FIELDS.amount], b[FIELDS.amount]),
+      sortOrder: sortedInfo.columnKey === FIELDS.amount && sortedInfo.order,
+      render: (amount) => <CustomHighlighter searchText={searchText} value={amount} />
     },
     {
       title: LABELS[FIELDS.currency],

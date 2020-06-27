@@ -4,7 +4,9 @@ import { Button } from "antd";
 import { DTCTable } from "components/atoms";
 import { withdrawPendingMapper } from "commons/mappers";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcel } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { FinancialService } from "services";
+import { SORT_ORDERS } from "commons/consts";
 
 const { parseDataToExcel, parseDataToGridView } = withdrawPendingMapper;
 
@@ -13,7 +15,13 @@ export const PendingWithdrawalTab = () => {
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      setData(parseDataToGridView(fakedData));
+      const res = await getAllRecordsFromAPI(FinancialService.getWithdrawals, {
+        sortTerm: "createdDate",
+        sortOrder: SORT_ORDERS.DESC,
+        outerParams: { status: "PENDING" }
+      });
+
+      setData(parseDataToGridView(res));
     });
   }, []);
 
@@ -42,22 +50,3 @@ export const PendingWithdrawalTab = () => {
     </div>
   );
 };
-
-const fakedData = [
-  {
-    id: 0,
-    timeStamp: "2020-05-26T09:17:50",
-    withdrawalId: 1,
-    depositedAccount: "Acc No.1",
-    debit: 2,
-    currency: "USD"
-  },
-  {
-    id: 1,
-    timeStamp: "2020-05-25T09:17:50",
-    withdrawalId: 4,
-    depositedAccount: "Acc No.2",
-    debit: 5,
-    currency: "USD"
-  }
-];

@@ -11,7 +11,7 @@ const parseDataToExcel = (accountSummary) => {
   }
 
   const columns = {
-    [FIELDS.timestamp]: 0,
+    [FIELDS.createdDate]: 0,
     [FIELDS.number]: 1,
     [FIELDS.destinationCity]: 2,
     [FIELDS.destinationCountry]: 3,
@@ -29,7 +29,7 @@ const parseDataToExcel = (accountSummary) => {
     let row = new Array(9);
     Object.keys(item).forEach((field) => {
       if (columns[field] !== undefined) {
-        if ([FIELDS.paymentDueDate, FIELDS.timestamp].includes(field)) {
+        if ([FIELDS.paymentDueDate, FIELDS.createdDate].includes(field)) {
           row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
         } else if ([FIELDS.totalPrice, FIELDS.commission].includes(field)) {
           row[columns[field]] = toNumber(item[field]);
@@ -47,11 +47,11 @@ const parseDataToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((account) => {
-      const { paymentDueDate, totalPrice, commission, timestamp } = account;
+      const { paymentDueDate, totalPrice, commission, createdDate } = account;
       return {
         ...account,
-        id: timestamp,
-        timestamp: timestamp ? formatDateTime(timestamp) : "",
+        id: createdDate,
+        createdDate: createdDate ? formatDateTime(createdDate) : "",
         paymentDueDate: paymentDueDate ? formatDateTime(paymentDueDate) : "",
         totalPrice: toCurrency(totalPrice),
         commission: toCurrency(commission)

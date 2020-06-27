@@ -41,3 +41,8 @@ export const TIME_LABELS = Object.freeze({
   [TIME_FIELDS.month]: "Month",
   [TIME_FIELDS.year]: "Year"
 });
+
+export const SORT_ORDERS = Object.freeze({
+  DESC: "desc",
+  ASC: "asc"
+});

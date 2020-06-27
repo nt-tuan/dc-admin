@@ -5,7 +5,9 @@ import { DTCTable } from "components";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcel } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { FinancialService } from "services";
+import { SORT_ORDERS } from "commons/consts";
 
 const { parseDataToExcel, parseDataToGridView } = financialMapper;
 
@@ -14,7 +16,11 @@ const AccountSummaryPage = () => {
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      setAccountSummary(parseDataToGridView(fakeData));
+      const resAccountSummary = await getAllRecordsFromAPI(FinancialService.getAccountSummary, {
+        sortTerm: "createdDate",
+        sortOrder: SORT_ORDERS.DESC
+      });
+      setAccountSummary(parseDataToGridView(resAccountSummary));
     });
   }, []);
 
@@ -54,50 +60,3 @@ const AccountSummaryPage = () => {
 };
 
 export default AccountSummaryPage;
-
-const fakeData = [
-  {
-    timestamp: "2020-06-11T16:01:12",
-    number: "023771829911",
-    destinationCity: "Sydney",
-    destinationCountry: "Australia",
-    paymentDueDate: "2020-06-11T15:01:12",
-    originCity: "Dubai",
-    originCountry: "UAE",
-    totalPrice: 1500.1,
-    commission: 150
-  },
-  {
-    timestamp: "2020-06-11T14:01:12",
-    number: "023771829911",
-    destinationCity: "Bangkok",
-    destinationCountry: "Thailand",
-    paymentDueDate: "2020-06-12T14:01:12",
-    originCity: "Sydney",
-    originCountry: "Australia",
-    totalPrice: 3000.3,
-    commission: 100
-  },
-  {
-    timestamp: "2020-06-11T12:01:12",
-    number: "92328211916",
-    destinationCity: "Sydney",
-    destinationCountry: "Australia",
-    paymentDueDate: "2020-06-13T16:01:12",
-    originCity: "Abu Dhabi",
-    originCountry: "UAE",
-    totalPrice: 4000.2,
-    commission: 200
-  },
-  {
-    timestamp: "2020-06-11T11:01:12",
-    number: "332183218712",
-    destinationCity: "Sydney",
-    destinationCountry: "Australia",
-    paymentDueDate: "2020-06-13T11:02:12",
-    originCity: "London",
-    originCountry: "UK",
-    totalPrice: 6300.0,
-    commission: 300
-  }
-];

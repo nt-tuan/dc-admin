@@ -13,9 +13,9 @@ const parseWithdrawHistoryToExcel = (withdraw) => {
   const columns = {
     [FIELDS.requestedDate]: 0,
     [FIELDS.processedDate]: 1,
-    [FIELDS.withdrawalId]: 2,
-    [FIELDS.depositedAccount]: 3,
-    [FIELDS.debit]: 4,
+    [FIELDS.id]: 2,
+    [FIELDS.accountNumber]: 3,
+    [FIELDS.amount]: 4,
     [FIELDS.currency]: 5,
     [FIELDS.status]: 6
   };
@@ -29,7 +29,7 @@ const parseWithdrawHistoryToExcel = (withdraw) => {
       if (columns[field] !== undefined) {
         if ([FIELDS.requestedDate, FIELDS.processedDate].includes(field)) {
           row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
-        } else if (field === FIELDS.debit) {
+        } else if (field === FIELDS.amount) {
           row[columns[field]] = toNumber(item[field]);
         } else {
           row[columns[field]] = item[field];
@@ -45,13 +45,13 @@ const parseWithdrawHistoryToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((item) => {
-      const { requestedDate, debit, processedDate } = item;
+      const { requestedDate, amount, processedDate } = item;
       return {
         ...item,
-        id: requestedDate,
         requestedDate: requestedDate ? formatDateTime(requestedDate) : "",
         processedDate: processedDate ? formatDateTime(processedDate) : "",
-        debit: toCurrency(debit)
+        amount: toCurrency(amount),
+        currency: "USD"
       };
     });
   }
@@ -70,10 +70,10 @@ const parseWithdrawPendingToExcel = (withdraw) => {
   }
 
   const columns = {
-    [FIELDS.timeStamp]: 0,
-    [FIELDS.withdrawalId]: 1,
-    [FIELDS.depositedAccount]: 2,
-    [FIELDS.debit]: 3,
+    [FIELDS.timestamp]: 0,
+    [FIELDS.id]: 1,
+    [FIELDS.accountNumber]: 2,
+    [FIELDS.amount]: 3,
     [FIELDS.currency]: 4
   };
 
@@ -84,9 +84,9 @@ const parseWithdrawPendingToExcel = (withdraw) => {
     let row = new Array(5);
     Object.keys(item).forEach((field) => {
       if (columns[field] !== undefined) {
-        if (field === FIELDS.timeStamp) {
+        if (field === FIELDS.timestamp) {
           row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
-        } else if (field === FIELDS.debit) {
+        } else if (field === FIELDS.amount) {
           row[columns[field]] = toNumber(item[field]);
         } else {
           row[columns[field]] = item[field];
@@ -102,11 +102,12 @@ const parseWithdrawPendingToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((item) => {
-      const { timeStamp, debit } = item;
+      const { processedDate, amount } = item;
       return {
         ...item,
-        timeStamp: timeStamp ? formatDateTime(timeStamp) : "",
-        debit: toCurrency(debit)
+        timestamp: processedDate ? formatDateTime(processedDate) : "",
+        amount: toCurrency(amount),
+        currency: "USD"
       };
     });
   }

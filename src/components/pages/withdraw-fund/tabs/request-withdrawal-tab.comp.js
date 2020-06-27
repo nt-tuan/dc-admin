@@ -12,6 +12,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { areObjectValuesUndefined, getPrefixUrl, toCurrency } from "utils/general.util";
+import { FinancialService } from "services";
 
 const FIELDS = KYC3_SCHEMA.BANK_DETAILS;
 const LABELS = KYC3_SCHEMA.KYC3_LABEL;
@@ -20,6 +21,7 @@ const EBankDetailsFormArr = withMultiForm({ name: "bank-details", formLimit: 2 }
 
 export const RequestWithdrawalTab = () => {
   const [data, setData] = useState({});
+  // const [bankDetails, setBankDetails] = useState([]);
   const bankDetails = [
     {
       id: "792ab728-91ce-4701-864d-022f72979ed3",
@@ -51,9 +53,12 @@ export const RequestWithdrawalTab = () => {
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      // const res = await getWithdrawalDetails();
-      const res = { available_withdrawal: 100000, outbound: 20000, inbound: 30000 };
-      setData(res);
+      const resWalletDashboard = await FinancialService.getWalletDashboard();
+      setData(resWalletDashboard);
+
+      // const resBankDetails = await CompanyService.getBankDetails();
+      // setBankDetails(resBankDetails);
+
       setLoading(false);
     });
   }, []);
@@ -89,9 +94,12 @@ export const RequestWithdrawalTab = () => {
       ) : (
         <div>
           {isDisabled && (
-            <Row className="dtc-br-10 dtc-bg-red px-4 py-3 text-white">
+            <Row className="dtc-br-10 dtc-bg-red px-4 py-3 text-white mb-3">
               Some infomation in your bank account requires review, please
-              <Link to={`${prefixUrl}/profile/bank-details`}> click here </Link>
+              <Link to={`${prefixUrl}/profile/bank-details`} className="mx-1">
+                {" "}
+                click here{" "}
+              </Link>
               to review them before requesting withdrawal
             </Row>
           )}
@@ -106,14 +114,14 @@ export const RequestWithdrawalTab = () => {
               <CustomizedCard
                 primaryText="Available"
                 text="for withdrawal"
-                currency={data.available_withdrawal}
+                currency={toCurrency(data.availableBalance > 0 ? data.availableBalance : 0)}
               />
             </Col>
             <Col xl={8} lg={12} span={24} title="Funds being processed for your withdrawal request">
               <CustomizedCard
                 primaryText="Pending"
                 text="outbound"
-                currency={data.outbound}
+                currency={toCurrency(data.pendingWithdrawal > 0 ? data.pendingWithdrawal : 0)}
                 renderIcon={() => <i className="fa fa-caret-up ml-2 font-size-21 text-danger" />}
               />
             </Col>
@@ -121,7 +129,7 @@ export const RequestWithdrawalTab = () => {
               <CustomizedCard
                 primaryText="Pending"
                 text="inbound"
-                currency={data.inbound}
+                currency={toCurrency(0)}
                 renderIcon={() => <i className="fa fa-caret-down ml-2 font-size-21 text-success" />}
               />
             </Col>

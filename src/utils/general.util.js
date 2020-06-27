@@ -78,11 +78,24 @@ export const handleDownloadExcel = (dataExcel, fileName, fileSheet) => {
   }
 };
 
-export const getAllRecordsFromAPI = async (serviceFn) => {
+export const getAllRecordsFromAPI = async (
+  serviceFn,
+  options = {
+    outerParams: null,
+    sortTerm: null,
+    sortOrder: null
+  }
+) => {
+  const { outerParams, sortTerm, sortOrder } = options;
   const maxSize = 2000;
   let page = 0;
 
-  const res = await serviceFn({ page: page, size: maxSize, sort: "updatedDate,desc" });
+  const res = await serviceFn({
+    page: page,
+    size: maxSize,
+    sort: `${sortTerm},${sortOrder}`,
+    ...outerParams
+  });
 
   let allDataRes = { ...res };
 
@@ -95,7 +108,8 @@ export const getAllRecordsFromAPI = async (serviceFn) => {
         const remainRes = await serviceFn({
           size: remainElements > maxSize ? maxSize : remainElements,
           page,
-          sort: "updatedDate,desc"
+          sort: `${sortTerm},${sortOrder}`,
+          ...outerParams
         });
         allDataRes = { ...allDataRes, content: [...allDataRes.content, ...remainRes.content] };
         remainElements = remainElements - maxSize;

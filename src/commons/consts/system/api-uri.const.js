@@ -4,6 +4,7 @@ export class ApiUriConsts {
   static #USER_MANAGEMENT_PREFIX = "/users";
   static #ORDER_PREFIX = "/orders";
   static #WALLET_PREFIX = "/wallet";
+  static #COMPANY_PREFIX = "/companies";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -51,5 +52,21 @@ export class ApiUriConsts {
 
   static get GET_WALLET_TRANSACTION_DETAILS() {
     return `${this.#WALLET_PREFIX}/transactions/details`;
+  }
+
+  static get GET_ACCOUNT_SUMMARY() {
+    return `account/summary`;
+  }
+
+  static get GET_WITHDRAWAL() {
+    return `${this.#WALLET_PREFIX}/withdrawal`;
+  }
+
+  static get BANK_DETAILS() {
+    return `${this.#COMPANY_PREFIX}/bankdetails`;
+  }
+
+  static get WALLET_WITHDRAWAL() {
+    return `${this.#WALLET_PREFIX}/withdrawal`;
   }
 }

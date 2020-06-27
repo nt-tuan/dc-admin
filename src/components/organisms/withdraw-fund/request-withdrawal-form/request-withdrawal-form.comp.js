@@ -3,6 +3,8 @@ import { Form, Select, Input, Button, Modal } from "antd";
 import { toCurrency } from "utils/general.util";
 import { RegexConst } from "commons/consts";
 import { FormError } from "components/atoms";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { FinancialService } from "services";
 
 const { Option } = Select;
 
@@ -12,6 +14,22 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
 
   const onSubmit = (values) => {
     setIsOpenPopup(true);
+  };
+
+  const handleWithdraw = async () => {
+    const bankAccount = data.bankDetails.find(
+      (account) => account.accountNumber === form.getFieldValue("account")
+    );
+    const payload = {
+      amount: Number(form.getFieldValue("amount")),
+      companyBankDetailId: bankAccount.id
+    };
+    asyncErrorHandlerWrapper(async () => {
+      await FinancialService.postRequestWithdrawal(payload);
+      await FinancialService.getWalletDashboard();
+      form.setFieldsValue({ amount: "", account: "" });
+      setIsOpenPopup(false);
+    });
   };
 
   return (
@@ -123,7 +141,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
         visible={isOpenPopup}
         onCancel={() => setIsOpenPopup(false)}
         footer={[
-          <Button type="primary" onClick={() => setIsOpenPopup(false)}>
+          <Button type="primary" onClick={handleWithdraw}>
             Confirm
           </Button>
         ]}
