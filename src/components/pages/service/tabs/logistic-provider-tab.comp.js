@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { ServiceLogisticProviderTable } from "components/molecules/service";
-import { SERVICE_SCHEMA } from "commons/schemas";
+import { SERVICE_SCHEMA, logisticProviderTableSchema } from "commons/schemas";
 import AramexLogo from "assets/images/aramex-logo.png";
 import DHLLogo from "assets/images/dhl-logo.jpg";
 import { Button } from "antd";
+import { DTCTable } from "components/atoms";
 
 const { STATUS, STATUS_LABELS } = SERVICE_SCHEMA;
 
@@ -79,16 +79,16 @@ export const ServiceLogisticProviderTab = () => {
   };
 
   return (
-    <Fragment>
-      <ServiceLogisticProviderTable
+    <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <DTCTable
+        showSettings={false}
         loading={false}
-        providers={data}
-        rowSelection={rowSelection}
-        onUnlock={handleUnlock}
-        onLock={handleLock}
+        dataSource={data}
+        schema={logisticProviderTableSchema({ onLock: handleLock, onUnlock: handleUnlock })}
         renderFooter={renderFooter}
+        rowSelection={rowSelection}
       />
-    </Fragment>
+    </div>
   );
 };
 

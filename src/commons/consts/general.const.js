@@ -1,5 +1,6 @@
 export const BADGE_TYPES = Object.freeze({
-  STATUS_BADGE: "STATUS_BADGE",
+  MANUFACTURE: "MANUFACTURE",
+  DISTRIBUTOR: "DISTRIBUTOR",
   NUMBER_BADGE: "NUMBER_BADGE",
   VALUE_BADGE: "VALUE_BADGE"
 });
@@ -39,4 +40,9 @@ export const TIME_LABELS = Object.freeze({
   [TIME_FIELDS.week]: "Week",
   [TIME_FIELDS.month]: "Month",
   [TIME_FIELDS.year]: "Year"
+});
+
+export const SORT_ORDERS = Object.freeze({
+  DESC: "desc",
+  ASC: "asc"
 });

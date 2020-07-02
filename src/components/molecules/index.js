@@ -1,2 +1,4 @@
 export * from "./user-management";
-export * from "./service";
+export * from "./add-funds";
+export * from "./wallet";
+export * from "./orders";

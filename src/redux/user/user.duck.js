@@ -47,27 +47,6 @@ export default function userReducer(state = initialState, action) {
 
 export const selectUserId = (state) => state.user.id;
 export const selectUsername = (state) => state.user.username;
-export const selectUserCountry = (state) => state.user.country;
-export const selectTimezone = (state) => state.user.company.timezone;
 export const selectLoadingState = (state) => state.user.loading;
 export const selectCurrentUser = (state) => state.user;
-export const selectCompanyLogo = (state) => state.user.logoUrl;
-export const selectCompanyStatus = (state) => state.user.companyStatus;
-export const selectUserPermissionList = (state) => state.user.permissionList;
-export const selectUserLoginStatus = (state) => state.user.authorized;
-export const selectSuccessfulTransactions = (state) => state.user.company.totalNumberOfTransaction;
-export const selectLargestTransactionValue = (state) => state.user.company.transactionValue;
-
-export const selectCompanyId = (state) => state.user.company.id;
-
-export const selectUpdateTimeZone = (state) => {
-  return {
-    workingStartTime: state.user.company.workingStartTime,
-    workingEndTime: state.user.company.workingEndTime,
-    workingDays: state.user.company.workingDays,
-    timezone: state.user.company.timezone,
-    country: state.user.country
-  };
-};
-
-export const selectCompanyName = (state) => state.user.company.name;
+export const selectUserEmail = (state) => state.user.email;

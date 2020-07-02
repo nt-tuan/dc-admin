@@ -1,11 +1,22 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { DATETIME_FORMAT } from "commons/consts";
 dayjs.extend(isBetween);
 
-export const isBetweenTwoDate = (currentDate, firstDate, lastDate) => {
-  return dayjs(currentDate).isBetween(firstDate, lastDate);
-};
+export class DatetimeUtils {
+  static isBetweenTwoDate = (currentDate, firstDate, lastDate) => {
+    return dayjs(currentDate).isBetween(firstDate, lastDate);
+  };
 
-export const subtractDateTime = (currentDate, number, type) => {
-  return dayjs(currentDate).subtract(number, type).format();
-};
+  static subtractDateTime = (currentDate, number, type) => {
+    return dayjs(currentDate).subtract(number, type).format();
+  };
+
+  static formatDateTime = (value, format = DATETIME_FORMAT) => {
+    if (dayjs(value, DATETIME_FORMAT).isValid()) {
+      return value;
+    }
+
+    return dayjs(value).format(format);
+  };
+}

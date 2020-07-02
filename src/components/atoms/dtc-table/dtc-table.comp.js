@@ -17,24 +17,32 @@ export const DTCTable = React.memo(
     showSetting,
     onSettingClick,
     className,
-    renderFooter = () => {}
+    renderFooter = () => {},
+    onChange
   }) => {
     const [sortedInfo, setSortedInfo] = useState({});
     const [searchText, setSearchText] = useState("");
     const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const filtered = (() => {
       if (searchText === "") {
         return dataSource;
       }
-      return dataSource.filter((bid) => {
+      const result = dataSource.filter((bid) => {
         return Object.entries(bid).find(([, value]) => {
           return (
             value && value.toString().toLowerCase().trim().includes(searchText.toLowerCase().trim())
           );
         });
       });
+      return result;
     })();
+
+    const handlePageSizeChange = (e) => {
+      setItemsPerPage(Number(e.key));
+      setCurrentPage(1);
+    };
 
     return (
       <div className={classNames(className)}>
@@ -45,7 +53,7 @@ export const DTCTable = React.memo(
             <Dropdown
               className="mx-2"
               overlay={
-                <Menu onClick={(e) => setItemsPerPage(Number(e.key))}>
+                <Menu onClick={handlePageSizeChange}>
                   <Menu.Item key={5}>5</Menu.Item>
                   <Menu.Item key={10}>10</Menu.Item>
                   <Menu.Item key={25}>25</Menu.Item>
@@ -76,19 +84,29 @@ export const DTCTable = React.memo(
         </div>
         <div className={`air__utils__scrollTable ${styles["custom-pagination"]}`}>
           <Table
+            showSorterTooltip={false}
             rowSelection={rowSelection}
             loading={{ indicator: <LoadingIndicator />, spinning: loading }}
             pagination={{
               pageSize: itemsPerPage,
               total: filtered.length,
               showTotal: (total, range) => `${range[0]} to ${range[1]} of ${total} entries`,
-              showLessItems: true
+              showLessItems: true,
+              onChange: (page, pageSize) => {
+                setCurrentPage(page);
+              },
+              current: currentPage
             }}
             scroll={{ x: true }}
             rowKey={(record) => record.id}
             columns={schema(sortedInfo, DTCHighlighter, searchText, hiddenColumns)}
             dataSource={filtered}
-            onChange={(pagination, filters, sorter) => setSortedInfo(sorter)}
+            onChange={(pagination, filters, sorter, value) => {
+              if (value.currentDataSource.length === dataSource.length) {
+                onChange && onChange(value.currentDataSource);
+              }
+              setSortedInfo(sorter);
+            }}
             showLessItems={true}
           />
           {renderFooter()}

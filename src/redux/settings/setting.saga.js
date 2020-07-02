@@ -3,8 +3,7 @@ import { all, takeEvery, put } from "redux-saga/effects";
 import qs from "qs";
 import store from "store";
 import * as SETTING_DUCK from "./settings.duck";
-import { UtilFacade } from "utils";
-const { isScreensize } = UtilFacade.getGeneralUtils();
+import { isScreensize } from "utils/general.util";
 
 export function* CHANGE_SETTING({ payload: { setting, value } }) {
   yield store.set(`app.settings.${setting}`, value);

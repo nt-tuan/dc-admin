@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { DTCTable, FilterDropdown } from "components";
 import { orderHistoryTableSchema, ORDERS_SCHEMA } from "commons/schemas";
 import { Button } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { ConstFacade } from "commons/consts";
-import { UtilFacade } from "utils";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+import { OrderService } from "services";
+import { TIME_FIELDS, TIME_LABELS } from "commons/consts";
+import { DatetimeUtils } from "utils/date-time.util";
+import { historyOrderMapper } from "commons/mappers";
 
-const { DATETIME_FORMAT, TIME_FIELDS, TIME_LABELS } = ConstFacade.getGeneralConst();
-const { handleDownloadExcel } = UtilFacade.getGeneralUtils();
-const { subtractDateTime, isBetweenTwoDate } = UtilFacade.getDateTimeUtils();
+const { isBetweenTwoDate, subtractDateTime } = DatetimeUtils;
+const { parseDataToExcel, parseDataToGridView } = historyOrderMapper;
 
-const { FIELDS, LABELS } = ORDERS_SCHEMA;
+const { FIELDS } = ORDERS_SCHEMA;
 
 const filterDays = {
   defaultValue: TIME_FIELDS.month,
@@ -22,38 +24,30 @@ const filterDays = {
   ]
 };
 
-const labelIndex = {
-  [FIELDS.timestamp]: 0,
-  [FIELDS.orderNumber]: 1,
-  [FIELDS.productName]: 2,
-  [FIELDS.quantity]: 3,
-  [FIELDS.unitPrice]: 4,
-  [FIELDS.totalPrice]: 5,
-  [FIELDS.buyerCompanyName]: 6,
-  [FIELDS.sellerCompanyName]: 7,
-  [FIELDS.status]: 8
-};
-
 export const OrderHistoryTab = () => {
   const [data, setData] = useState([]);
   const [days, setDays] = useState(30);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const now = dayjs().format();
-    const dateAfterSubtract = subtractDateTime(now, days, "days");
-    const filterData = fakedData.filter((item) => {
-      return isBetweenTwoDate(item.timestamp, dateAfterSubtract, now);
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      const now = dayjs().format();
+      const dateAfterSubtract = subtractDateTime(now, days, "days");
+      const res = await getAllRecordsFromAPI(OrderService.getAllOrderHistory);
+      const filterData = res.filter((item) => {
+        return isBetweenTwoDate(item[FIELDS.timestamp], dateAfterSubtract, now);
+      });
+      setData(parseDataToGridView(filterData));
+      setLoading(false);
     });
-    setData([
-      ...filterData.map((item) => ({
-        ...item,
-        timestamp: dayjs(item.timestamp).format(DATETIME_FORMAT)
-      }))
-    ]);
   }, [days]);
 
   const handleDownload = () => {
-    handleDownloadExcel(data, labelIndex, LABELS, FIELDS, "Orders");
+    const dataExcel = parseDataToExcel(data);
+    const fileName = "History-order";
+    const fileSheet = "HistoryOrder";
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
   };
 
   const handleChangeDays = (value) => {
@@ -72,19 +66,13 @@ export const OrderHistoryTab = () => {
           />
         </div>
         <div>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            className="mb-3"
-            onClick={handleDownload}
-          >
-            Download
+          <Button type="primary" className="mb-3" onClick={handleDownload}>
+            <i className="fe fe-download mr-2" /> Download
           </Button>
         </div>
       </div>
       <DTCTable
-        showSettings={false}
-        loading={false}
+        loading={loading}
         dataSource={data}
         schema={orderHistoryTableSchema()}
         onChange={(value) => setData(value)}
@@ -92,30 +80,3 @@ export const OrderHistoryTab = () => {
     </div>
   );
 };
-
-const fakedData = [
-  {
-    id: 1,
-    timestamp: "2020-05-23T17:34:08+07:00",
-    orderNumber: 12345678,
-    productName: "Apple iPhone 11 Black 64GB",
-    quantity: 200,
-    unitPrice: 3000,
-    totalPrice: 40000,
-    buyerCompanyName: "buyer",
-    sellerCompanyName: "seller",
-    status: "Order Cancelled"
-  },
-  {
-    id: 2,
-    timestamp: "2019-12-29T17:34:08+07:00",
-    orderNumber: 12345680,
-    productName: "Samsung Galaxy S20+ Cosmic grey 256GB",
-    quantity: 300,
-    unitPrice: 10000,
-    totalPrice: 600000,
-    buyerCompanyName: "buyer1",
-    sellerCompanyName: "seller1",
-    status: "Order Completed"
-  }
-];

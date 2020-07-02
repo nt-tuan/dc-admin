@@ -5,9 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
 import styles from "./style.module.scss";
-import { UtilFacade } from "utils";
-
-const { disableLinkClick } = UtilFacade.getGeneralUtils();
+import { disableLinkClick } from "utils/general.util";
 
 const AuthorizedMenuItem = ({ canView, data = {} }) => {
   const { title, iconClassesNames, url } = data;
@@ -87,12 +85,7 @@ const _ProfileMenu = () => {
       {/* // onVisibleChange={addCount}> */}
       <div className={styles.dropdown}>
         {/* <Badge count={count}> */}
-        <Avatar
-          className={styles.avatar}
-          shape="square"
-          size="large"
-          icon={<i className="fe fe-user" />}
-        />
+        <Avatar className={styles.avatar} shape="square" icon={<i className="fe fe-user" />} />
         {/* </Badge> */}
       </div>
     </Dropdown>

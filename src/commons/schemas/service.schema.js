@@ -1,9 +1,7 @@
 import { Button, Rate } from "antd";
 import React, { Fragment } from "react";
-import { UtilFacade } from "utils";
-
-const { sortAlphabetically } = UtilFacade.getSortUtils();
-const { roundToHalfDecimal } = UtilFacade.getGeneralUtils();
+import { sortAlphabetically } from "utils/sort.util";
+import { roundToHalfDecimal } from "utils/general.util";
 
 const FIELDS = {
   id: "id",

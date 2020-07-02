@@ -11,8 +11,7 @@ import { ReactComponent as TransactionSizeBadge3 } from "assets/icons/new_badges
 import { ReactComponent as TransactionSizeBadge4 } from "assets/icons/new_badges/transaction-size-4.svg";
 import { ReactComponent as TransactionSizeBadge5 } from "assets/icons/new_badges/transaction-size-5.svg";
 import React from "react";
-import { ConstFacade } from "commons/consts";
-const { BADGE_TYPES } = ConstFacade.getGeneralConst();
+import { BADGE_TYPES } from "commons/consts";
 
 export const UserBadge = ({ type, value }) => {
   const [tooltipText, Badge] = getBadge(type, value);
@@ -27,17 +26,11 @@ export const UserBadge = ({ type, value }) => {
 
 const getBadge = (type, value) => {
   switch (type) {
-    case BADGE_TYPES.STATUS_BADGE: {
-      if (value === 0) {
-        return [];
-      }
-      if (value === 1) {
-        return ["Manufactor Badge", ManuFactorBadge];
-      }
-      if (value === 2) {
-        return ["Distributor Badge", DistributorBadge];
-      }
-      break;
+    case BADGE_TYPES.DISTRIBUTOR: {
+      return ["Distributor Badge", DistributorBadge];
+    }
+    case BADGE_TYPES.MANUFACTURE: {
+      return ["Manufactor Badge", ManuFactorBadge];
     }
     case BADGE_TYPES.VALUE_BADGE: {
       if (value <= 50000) {

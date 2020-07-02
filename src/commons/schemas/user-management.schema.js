@@ -1,61 +1,77 @@
 import { Button, Rate } from "antd";
 import React, { Fragment } from "react";
 import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
-import { UtilFacade } from "utils";
-
-const { sortAlphabetically } = UtilFacade.getSortUtils();
-const { roundToHalfDecimal } = UtilFacade.getGeneralUtils();
+import { sortAlphabetically } from "utils/sort.util";
+import { roundToHalfDecimal } from "utils/general.util";
 
 const FIELDS = {
   id: "id",
-  company: "company",
-  owner: "owner",
+  companyName: "companyName",
+  ownerName: "ownerName",
   username: "username",
   email: "email",
   country: "country",
   contact: "contact",
   reputation: "reputation",
-  reputationList: "reputationList",
-  status: "status"
+  badges: "badges",
+  userStatus: "userStatus"
 };
 
 const LABELS = {
-  [FIELDS.company]: "Company",
-  [FIELDS.owner]: "Owner",
+  [FIELDS.companyName]: "Company",
+  [FIELDS.ownerName]: "Owner",
   [FIELDS.username]: "Username",
   [FIELDS.email]: "Email",
   [FIELDS.country]: "Country",
   [FIELDS.contact]: "Contact",
   [FIELDS.reputation]: "Reputation",
-  [FIELDS.reputationList]: "Badges",
-  [FIELDS.status]: "Status"
+  [FIELDS.badges]: "Badges",
+  [FIELDS.userStatus]: "Status"
 };
 
 const USER_MGT_STATUS = {
-  LIVE_SELLERS: "LIVE_SELLERS",
-  BUYING_SELLERS: "BUYING_SELLERS",
-  INACTIVE_SELLERS: "INACTIVE_SELLERS",
+  LIVE_SELLER: "LIVE_SELLER",
+  SELLING_SELLER: "SELLING_SELLER",
+  INACTIVE_SELLER: "INACTIVE_SELLER",
   SUSPENDED: "SUSPENDED",
-  LIVE_BUYERS: "LIVE_BUYERS",
-  BUYING_BUYERS: "BUYING_BUYERS",
-  INACTIVE_BUYERS: "INACTIVE_BUYERS"
+  LIVE_BUYER: "LIVE_BUYER",
+  BUYING_BUYER: "BUYING_BUYER",
+  INACTIVE_BUYER: "INACTIVE_BUYER"
 };
 
 const USER_MGT_STATUS_LABELS = {
-  [USER_MGT_STATUS.LIVE_SELLERS]: "Live Sellers",
-  [USER_MGT_STATUS.BUYING_SELLERS]: "Selling Sellers",
-  [USER_MGT_STATUS.INACTIVE_SELLERS]: "Inactive Sellers",
+  [USER_MGT_STATUS.LIVE_SELLER]: "Live Sellers",
+  [USER_MGT_STATUS.SELLING_SELLER]: "Selling Sellers",
+  [USER_MGT_STATUS.INACTIVE_SELLER]: "Inactive Sellers",
   [USER_MGT_STATUS.SUSPENDED]: "Suspended",
-  [USER_MGT_STATUS.LIVE_BUYERS]: "Live Buyers",
-  [USER_MGT_STATUS.BUYING_BUYERS]: "Selling Buyers",
-  [USER_MGT_STATUS.INACTIVE_BUYERS]: "Inactive Buyers"
+  [USER_MGT_STATUS.LIVE_BUYER]: "Live Buyers",
+  [USER_MGT_STATUS.BUYING_BUYER]: "Buying Buyers",
+  [USER_MGT_STATUS.INACTIVE_BUYER]: "Inactive Buyers"
+};
+
+const BADGE_TYPES = {
+  STATUS_BADGE: "STATUS_BADGE",
+  NUMBER_BADGE: "NUMBER_BADGE",
+  VALUE_BADGE: "VALUE_BADGE",
+  DISTRIBUTOR: "DISTRIBUTOR",
+  MANUFACTURE: "MANUFACTURE"
+};
+
+const BADGE_LABELS = {
+  [BADGE_TYPES.STATUS_BADGE]: "Status Badge",
+  [BADGE_TYPES.NUMBER_BADGE]: "Number Badge",
+  [BADGE_TYPES.VALUE_BADGE]: "Value Badge",
+  [BADGE_TYPES.DISTRIBUTOR]: "Distributor",
+  [BADGE_TYPES.MANUFACTURE]: "Manufacturer"
 };
 
 export const USER_MANAGEMENT_SCHEMA = Object.freeze({
   FIELDS: FIELDS,
   LABELS: LABELS,
   STATUS: USER_MGT_STATUS,
-  STATUS_LABELS: USER_MGT_STATUS_LABELS
+  STATUS_LABELS: USER_MGT_STATUS_LABELS,
+  BADGE_TYPES: BADGE_TYPES,
+  BADGE_LABELS: BADGE_LABELS
 });
 
 export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => (
@@ -66,26 +82,26 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
 ) => {
   const columnsSchema = [
     {
-      title: LABELS[FIELDS.company],
-      dataIndex: FIELDS.company,
-      key: FIELDS.company,
-      sorter: (a, b) => sortAlphabetically(a.company, b.company),
-      sortOrder: sortedInfo.columnKey === FIELDS.company && sortedInfo.order,
-      render: (company) => <CustomHighlighter searchText={searchText} value={company} />
+      title: LABELS[FIELDS.companyName],
+      dataIndex: FIELDS.companyName,
+      key: FIELDS.companyName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.companyName], b[FIELDS.companyName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.companyName && sortedInfo.order,
+      render: (companyName) => <CustomHighlighter searchText={searchText} value={companyName} />
     },
     {
-      title: LABELS[FIELDS.owner],
-      dataIndex: FIELDS.owner,
-      key: FIELDS.owner,
-      sorter: (a, b) => sortAlphabetically(a.owner, b.owner),
-      sortOrder: sortedInfo.columnKey === FIELDS.owner && sortedInfo.order,
-      render: (owner) => <CustomHighlighter searchText={searchText} value={owner} />
+      title: LABELS[FIELDS.ownerName],
+      dataIndex: FIELDS.ownerName,
+      key: FIELDS.ownerName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.ownerName], b[FIELDS.ownerName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.ownerName && sortedInfo.order,
+      render: (ownerName) => <CustomHighlighter searchText={searchText} value={ownerName} />
     },
     {
       title: LABELS[FIELDS.username],
       dataIndex: FIELDS.username,
       key: FIELDS.username,
-      sorter: (a, b) => sortAlphabetically(a.username, b.username),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.username], b[FIELDS.username]),
       sortOrder: sortedInfo.columnKey === FIELDS.username && sortedInfo.order,
       render: (username) => <CustomHighlighter searchText={searchText} value={username} />
     },
@@ -93,7 +109,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.email],
       dataIndex: FIELDS.email,
       key: FIELDS.email,
-      sorter: (a, b) => sortAlphabetically(a.email, b.email),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.email], b[FIELDS.email]),
       sortOrder: sortedInfo.columnKey === FIELDS.email && sortedInfo.order,
       render: (email) => <CustomHighlighter searchText={searchText} value={email} />
     },
@@ -101,7 +117,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.country],
       dataIndex: FIELDS.country,
       key: FIELDS.country,
-      sorter: (a, b) => sortAlphabetically(a.country, b.country),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.country], b[FIELDS.country]),
       sortOrder: sortedInfo.columnKey === FIELDS.country && sortedInfo.order,
       render: (country) => <CustomHighlighter searchText={searchText} value={country} />
     },
@@ -109,37 +125,30 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       title: LABELS[FIELDS.contact],
       dataIndex: FIELDS.contact,
       key: FIELDS.contact,
-      sorter: (a, b) => sortAlphabetically(a.contact, b.contact),
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.contact], b[FIELDS.contact]),
       sortOrder: sortedInfo.columnKey === FIELDS.contact && sortedInfo.order,
       render: (contact) => <CustomHighlighter searchText={searchText} value={contact} />
     },
-    {
-      title: LABELS[FIELDS.status],
-      dataIndex: FIELDS.status,
-      key: FIELDS.status,
-      sorter: (a, b) => sortAlphabetically(a.status, b.status),
-      sortOrder: sortedInfo.columnKey === FIELDS.status && sortedInfo.order,
-      render: (status) => <CustomHighlighter searchText={searchText} value={status} />
-    },
+
     {
       title: LABELS[FIELDS.reputation],
       dataIndex: FIELDS.reputation,
       key: FIELDS.reputation,
-      sorter: (a, b) => a.reputation - b.reputation,
+      sorter: (a, b) => a[FIELDS.reputation] - b[FIELDS.reputation],
       sortOrder: sortedInfo.columnKey === FIELDS.reputation && sortedInfo.order,
       render: (reputation) => <Rate allowHalf value={roundToHalfDecimal(reputation)} disabled />
     },
     {
-      title: LABELS[FIELDS.reputationList],
-      dataIndex: FIELDS.reputationList,
-      key: FIELDS.reputationList,
+      title: LABELS[FIELDS.badges],
+      dataIndex: FIELDS.badges,
+      key: FIELDS.badges,
       // sorter: (a, b) => a.reputationList.value - b.reputationList.value,
       // sortOrder: sortedInfo.columnKey === FIELDS.reputationList && sortedInfo.order,
-      render: (reputationList) => (
+      render: (badges) => (
         <Fragment>
           <div className="d-flex align-items-center h-100">
-            {reputationList &&
-              reputationList
+            {badges &&
+              badges
                 .sort((a, b) => b.value - a.value)
                 .map((badge, index) => (
                   <UserBadge key={badge.type} type={badge.type} value={badge.value} />
@@ -149,11 +158,19 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       )
     },
     {
+      title: LABELS[FIELDS.userStatus],
+      dataIndex: FIELDS.userStatus,
+      key: FIELDS.userStatus,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.userStatus], b[FIELDS.userStatus]),
+      sortOrder: sortedInfo.columnKey === FIELDS.userStatus && sortedInfo.order,
+      render: (userStatus) => <CustomHighlighter searchText={searchText} value={userStatus} />
+    },
+    {
       title: "Manage",
       key: "manage",
-      render: ({ id, status }) => (
+      render: ({ id, suspended }) => (
         <Fragment>
-          {status === USER_MGT_STATUS_LABELS[USER_MGT_STATUS.SUSPENDED] ? (
+          {suspended === true ? (
             <Button onClick={() => onUnlock(id)} type="primary" className="dtc-min-width-50 mr-2">
               <i className="fe fe-play" style={{ verticalAlign: "middle" }}></i>
             </Button>
@@ -162,7 +179,11 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
               <i className="fe fe-pause" style={{ verticalAlign: "middle" }}></i>
             </Button>
           )}
-          <Button type="primary" className="dtc-min-width-50 mr-2" onClick={onViewAssignBadges}>
+          <Button
+            type="primary"
+            className="dtc-min-width-50 mr-2"
+            onClick={() => onViewAssignBadges(id)}
+          >
             <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
           </Button>
         </Fragment>

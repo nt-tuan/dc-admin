@@ -1,5 +1,4 @@
-import { ConstFacade } from "commons/consts";
-const ROUTES = ConstFacade.getAllRoutes();
+import { RouteConst } from "commons/consts";
 
 const actions = {
   SET_STATE: "menu/SET_STATE",
@@ -23,43 +22,64 @@ export async function getUserData() {
       title: "Users",
       key: "Users",
       icon: "fe fe-users",
-      url: ROUTES.USER_MANAGEMENT
+      url: RouteConst.USER_MANAGEMENT
     },
     {
       title: "Services",
       key: "Services",
       icon: "fe fe-phone-call",
-      url: ROUTES.SERVICE
+      url: RouteConst.SERVICE
     },
     {
       title: "Orders",
       key: "Orders",
       icon: "fe fe-layers",
-      url: ROUTES.ORDERS
+      url: RouteConst.ORDERS
     },
     {
       title: "Analytics",
       key: "Analytics",
       icon: "fe fe-pie-chart",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Marketing",
       key: "Marketing",
       icon: "fe fe-twitter",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Discounts",
       key: "Discounts",
       icon: "fe fe-tag",
-      url: "/"
+      url: "/notfound"
     },
     {
       title: "Financials",
       key: "Financials",
       icon: "fe fe-trending-up",
-      url: "/"
+      children: [
+        {
+          title: "Wallet",
+          key: "Wallet",
+          url: RouteConst.WALLET
+        },
+        {
+          title: "Account Summary",
+          key: "accountSummary",
+          url: RouteConst.ACCOUNT_SUMMARY
+        },
+        {
+          title: "Withdraw Fund",
+          key: "withdrawFund",
+          url: RouteConst.WITHDRAW_FUND
+        },
+        {
+          title: "Add Fund",
+          key: "Add Fund",
+          url: RouteConst.ADD_FUNDS
+        }
+      ]
     }
   ];
 }

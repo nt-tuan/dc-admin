@@ -1,1243 +1,620 @@
 @import "assets/styles/mixins.scss";
 
-:global(body.seller) {
-  @import "assets/styles/theme-seller.scss";
-  :local {
-    .air__menuLeft {
-      flex: 0 0 240px;
-      max-width: 240px;
-      min-width: 240px;
-      width: 240px;
-      min-height: 100%;
-      background: $black;
-      overflow: hidden;
+@import "assets/styles/theme-seller.scss";
+.air__menuLeft {
+  flex: 0 0 240px;
+  max-width: 240px;
+  min-width: 240px;
+  width: 240px;
+  min-height: 100%;
+  background: $black;
+  overflow: hidden;
 
-      @media (max-width: $sm-max-width) {
-        position: fixed;
-        z-index: 1100;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        overflow: visible;
-        margin-left: -240px;
-        transition: transform 0.2s ease-in-out;
+  @media (max-width: $sm-max-width) {
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: visible;
+    margin-left: -240px;
+    transition: transform 0.2s ease-in-out;
 
-        &__mobileToggleButton {
-          display: block !important;
-        }
+    &__mobileToggleButton {
+      display: block !important;
+    }
 
-        &__toggleButton {
-          display: none;
-        }
-      }
+    &__toggleButton {
+      display: none;
+    }
+  }
 
-      // fixed container
-      &__outer {
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        height: 100%;
-        flex: 0 0 240px;
-        max-width: 240px;
-        min-width: 240px;
-        width: 240px;
-        display: flex;
-        flex-direction: column;
-      }
+  // fixed container
+  &__outer {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    height: 100%;
+    flex: 0 0 240px;
+    max-width: 240px;
+    min-width: 240px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+  }
 
-      // menu container
-      &__container {
-        padding-bottom: rem(20);
-      }
+  // menu container
+  &__container {
+    padding-bottom: rem(20);
+    overflow: auto;
+  }
 
-      &__backdrop {
-        position: fixed;
-        z-index: 998;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        background: $black;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in-out;
-      }
+  &__backdrop {
+    position: fixed;
+    z-index: 998;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: $black;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-      // mobile toggle button
-      &__mobileToggleButton {
-        position: absolute;
-        right: rem(-40);
-        top: rem(25);
-        width: rem(40);
-        height: rem(40);
-        background: $black;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
-        display: none;
-        text-align: center;
-        box-shadow: $shadow-2;
+  // mobile toggle button
+  &__mobileToggleButton {
+    position: absolute;
+    right: rem(-40);
+    top: rem(25);
+    width: rem(40);
+    height: rem(40);
+    background: $black;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    display: none;
+    text-align: center;
+    box-shadow: $shadow-2;
 
-        span {
-          display: inline-block;
-          width: 14px;
-          height: 2px;
-          position: relative;
-          background: $white;
-          transition: background 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          top: 5px;
+    span {
+      display: inline-block;
+      width: 14px;
+      height: 2px;
+      position: relative;
+      background: $white;
+      transition: background 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+      top: 5px;
 
-          &:before,
-          &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            background: $white;
-            width: 100%;
-            height: 2px;
-            transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          }
-          &:before {
-            top: -5px;
-          }
-          &:after {
-            top: 5px;
-          }
-        }
-      }
-
-      // toggle button
-      &__toggleButton {
-        display: flex;
-        position: absolute;
-        top: rem(10);
-        right: rem(10);
-        z-index: 2;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        &:hover {
-          span {
-            opacity: 1 !important;
-          }
-        }
-        span {
-          @include transition-slow();
-          opacity: 0.9;
-          &:before,
-          &:after {
-            position: absolute;
-            content: "";
-            display: block;
-            width: 12px;
-            height: 3px;
-            background: $primary;
-            border-radius: 5px;
-          }
-          &:before {
-            top: 14px;
-            left: 6px;
-            transform: rotate(-45deg);
-          }
-          &:after {
-            top: 21px;
-            left: 6px;
-            transform: rotate(45deg);
-          }
-          &:first-child {
-            position: relative;
-            left: 3px;
-          }
-          &:last-child {
-            position: relative;
-            left: 11px;
-            opacity: 0.5;
-          }
-        }
-      }
-
-      @media (max-width: $sm-max-width) {
-        &__toggleButton {
-          display: none !important;
-        }
-      }
-
-      //logo
-      &__logo {
-        display: flex;
-        align-items: center;
-        padding: rem(15) rem(20);
-        line-height: 1;
-        height: rem(64);
-        img {
-          float: left;
-          // margin-top: rem(5);
-        }
-        &__name {
-          font-weight: 900;
-          color: $white;
-          font-size: 21px;
-          margin-left: rem(40);
-        }
-        &__descr {
-          color: $white;
-          margin-left: rem(10);
-          font-size: 12px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-      }
-
-      // user
-      &__user {
-        display: flex;
-        align-items: center;
-        padding: rem(15) rem(15) 1.33rem 1.33rem;
-        height: rem(72);
-        line-height: 1.3;
-        margin-top: rem(50);
-        &__avatar {
-          float: left;
-        }
-        &__name {
-          margin-left: rem(10);
-          color: $white;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          margin-top: rem(2);
-        }
-        &__role {
-          margin-left: rem(10);
-          color: $gray-6;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-      }
-
-      // banner
-      &__banner {
-        margin: rem(40) rem(20) rem(20);
-        background: $primary;
-        background: linear-gradient(45deg, $primary 0%, lighten($primary, 10%) 100%);
-        border-radius: 6px;
-        padding: rem(20);
-        color: $white;
-        box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 1);
-      }
-
-      // menu items
-      &__list {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-
-        .air__menuLeft__list {
-          .air__menuLeft__link {
-            padding-left: rem(49);
-          }
-        }
-      }
-
-      &__category {
-        text-transform: uppercase;
-        color: $text;
-        letter-spacing: 1px;
-        font-size: rem(12);
-        padding: rem(14) rem(20);
-        overflow: hidden;
-        position: relative;
-        &:after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: rem(20);
-          right: rem(20);
-          height: 1px;
-          background: darken($text, 20%);
-          display: none;
-        }
-      }
-
-      &__item {
+      &:before,
+      &:after {
+        content: "";
         display: block;
-        &__active {
-          > .air__menuLeft__link {
-            background: $primary;
-            color: $white;
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
-          }
-          span {
-            font-weight: bold;
-          }
-        }
+        position: absolute;
+        background: $white;
+        width: 100%;
+        height: 2px;
+        transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
       }
-
-      &__submenu {
-        > .air__menuLeft__link {
-          position: relative;
-          &:before,
-          &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            top: rem(20);
-            right: rem(20);
-            width: 6px;
-            height: 2px;
-            background: $gray-6;
-            transform: rotate(-45deg);
-            @include transition-bg();
-          }
-          &:after {
-            right: rem(23);
-            transform: rotate(45deg);
-          }
-        }
-        &__active {
-          background: darken($black, 4%);
-          > .air__menuLeft__link {
-            color: $white;
-            &:before,
-            &:after {
-              background: $white;
-            }
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
-          }
-          > .air__menuLeft__list {
-            display: block !important;
-          }
-        }
-        .air__menuLeft__list {
-          display: none;
-          padding-bottom: rem(10);
-        }
-      }
-
-      &__link {
-        color: $gray-5;
-        display: block;
-        padding: rem(9) rem(40) rem(9) rem(20);
-        font-size: rem(15);
-        cursor: pointer;
-
-        &:hover,
-        &:focus {
-          color: $white;
-
-          &:before,
-          &:after {
-            background: $white;
-          }
-        }
-      }
-
-      &__icon {
-        display: inline-block;
-        width: rem(25);
-      }
-    }
-
-    @media (max-width: $sm-max-width) {
-      .air__menuLeft__mobileToggled + .air__menuLeft__backdrop {
-        opacity: 0.2;
-        visibility: visible;
-      }
-
-      .air__menuLeft__mobileToggled {
-        transform: translateX(240px);
-      }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__white {
-      .air__menuLeft__submenu__active {
-        background: $gray-1 !important;
-      }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__gray {
-      .air__menuLeft__submenu__active {
-        background: $gray-2 !important;
-      }
-    }
-
-    .air__menuLeft__mobileToggled .air__menuLeft__mobileToggleButton span {
-      background: transparent;
       &:before {
-        transform: translateY(5px) rotate(45deg);
+        top: -5px;
       }
       &:after {
-        transform: translateY(-5px) rotate(-45deg);
+        top: 5px;
       }
     }
+  }
 
-    .air__menuLeft__toggled {
-      .air__menuLeft__toggleButton {
-        transform: rotate(180deg);
+  // toggle button
+  &__toggleButton {
+    display: flex;
+    position: absolute;
+    top: rem(10);
+    right: rem(10);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    &:hover {
+      span {
+        opacity: 1 !important;
       }
     }
+    span {
+      @include transition-slow();
+      opacity: 0.9;
+      &:before,
+      &:after {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 12px;
+        height: 3px;
+        background: $primary;
+        border-radius: 5px;
+      }
+      &:before {
+        top: 14px;
+        left: 6px;
+        transform: rotate(-45deg);
+      }
+      &:after {
+        top: 21px;
+        left: 6px;
+        transform: rotate(45deg);
+      }
+      &:first-child {
+        position: relative;
+        left: 3px;
+      }
+      &:last-child {
+        position: relative;
+        left: 11px;
+        opacity: 0.5;
+      }
+    }
+  }
 
-    @media (min-width: $sm-min-width) {
-      .air__menuLeft__toggled:not(.air__menuLeft__compact) {
+  @media (max-width: $sm-max-width) {
+    &__toggleButton {
+      display: none !important;
+    }
+  }
+
+  //logo
+  &__logo {
+    display: flex;
+    align-items: center;
+    padding: rem(15) rem(20);
+    line-height: 1;
+    height: rem(64);
+    img {
+      float: left;
+      // margin-top: rem(5);
+    }
+    &__name {
+      font-weight: 900;
+      color: $white;
+      font-size: 21px;
+      margin-left: rem(40);
+    }
+    &__descr {
+      color: $white;
+      margin-left: rem(10);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  // user
+  &__user {
+    display: flex;
+    align-items: center;
+    padding: rem(15) rem(15) 1.33rem 1.33rem;
+    height: rem(72);
+    line-height: 1.3;
+    margin-top: rem(50);
+    &__avatar {
+      float: left;
+    }
+    &__name {
+      margin-left: rem(10);
+      color: $white;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: rem(2);
+    }
+    &__role {
+      margin-left: rem(10);
+      color: $gray-6;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // banner
+  &__banner {
+    margin: rem(40) rem(20) rem(20);
+    background: $primary;
+    background: linear-gradient(45deg, $primary 0%, lighten($primary, 10%) 100%);
+    border-radius: 6px;
+    padding: rem(20);
+    color: $white;
+    box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 1);
+  }
+
+  // menu items
+  &__list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+
+    .air__menuLeft__list {
+      .air__menuLeft__link {
+        padding-left: rem(49);
+      }
+    }
+  }
+
+  &__category {
+    text-transform: uppercase;
+    color: $text;
+    letter-spacing: 1px;
+    font-size: rem(12);
+    padding: rem(14) rem(20);
+    overflow: hidden;
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: rem(20);
+      right: rem(20);
+      height: 1px;
+      background: darken($text, 20%);
+      display: none;
+    }
+  }
+
+  &__item {
+    display: block;
+    &__active {
+      background-color: rgba($gray-1, 1);
+      > .air__menuLeft__link {
+        background: $primary;
+        color: $primary;
+      }
+      > .air__menuLeft__icon {
+        color: $primary;
+      }
+      span {
+        font-weight: bold;
+        color: $primary;
+      }
+    }
+  }
+
+  &__submenu {
+    > .air__menuLeft__link {
+      position: relative;
+      &:before,
+      &:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: rem(20);
+        right: rem(20);
+        width: 6px;
+        height: 2px;
+        background: $gray-6;
+        transform: rotate(-45deg);
+        @include transition-bg();
+      }
+      &:after {
+        right: rem(23);
+        transform: rotate(45deg);
+      }
+    }
+    &__active {
+      background: darken($black, 4%);
+      > .air__menuLeft__link {
+        color: $white;
+        &:before,
+        &:after {
+          background: $white;
+        }
+
+        .air__menuLeft__icon {
+          color: $white;
+        }
+      }
+      > .air__menuLeft__list {
+        display: block !important;
+      }
+    }
+    .air__menuLeft__list {
+      display: none;
+      padding-bottom: rem(10);
+    }
+  }
+
+  &__link {
+    color: $gray-5;
+    display: block;
+    padding: rem(9) rem(40) rem(9) rem(20);
+    font-size: rem(15);
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      color: $white;
+
+      &:before,
+      &:after {
+        background: $white;
+      }
+    }
+  }
+
+  &__icon {
+    display: inline-block;
+    width: rem(25);
+  }
+}
+
+@media (max-width: $sm-max-width) {
+  .air__menuLeft__mobileToggled + .air__menuLeft__backdrop {
+    opacity: 0.2;
+    visibility: visible;
+  }
+
+  .air__menuLeft__mobileToggled {
+    transform: translateX(240px);
+  }
+}
+
+.air__menuLeft__toggled.air__menuLeft__white {
+  .air__menuLeft__submenu__active {
+    background: $gray-1 !important;
+  }
+}
+
+.air__menuLeft__toggled.air__menuLeft__gray {
+  .air__menuLeft__submenu__active {
+    background: $gray-2 !important;
+  }
+}
+
+.air__menuLeft__mobileToggled .air__menuLeft__mobileToggleButton span {
+  background: transparent;
+  &:before {
+    transform: translateY(5px) rotate(45deg);
+  }
+  &:after {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+}
+
+.air__menuLeft__toggled {
+  .air__menuLeft__toggleButton {
+    transform: rotate(180deg);
+  }
+}
+
+@media (min-width: $sm-min-width) {
+  .air__menuLeft__toggled:not(.air__menuLeft__compact) {
+    flex: 0 0 80px;
+    max-width: 80px;
+    min-width: 80px;
+    width: 80px;
+
+    .air__menuLeft {
+      &__outer {
         flex: 0 0 80px;
         max-width: 80px;
         min-width: 80px;
         width: 80px;
-
-        .air__menuLeft {
-          &__outer {
-            flex: 0 0 80px;
-            max-width: 80px;
-            min-width: 80px;
-            width: 80px;
-          }
-          &__logo {
-            visibility: hidden;
-          }
-          &__toggleButton {
-            right: rem(20);
-          }
-          &__user {
-            &__name,
-            &__role {
-              display: none;
-            }
-          }
-          &__banner {
-            display: none;
-          }
-          &__submenu {
-            &__active {
-              background: $primary;
-            }
-            > .air__menuLeft__list {
-              display: none !important;
-            }
-          }
-          &__link {
-            > span {
-              display: none;
-            }
-            &:before,
-            &:after {
-              display: none;
-            }
-          }
-          &__icon {
-            width: rem(40);
-            text-align: center;
-          }
-          &__category {
-            text-indent: -999px;
-            &:after {
-              display: block;
-            }
-          }
+      }
+      &__logo {
+        visibility: hidden;
+      }
+      &__toggleButton {
+        right: rem(20);
+      }
+      &__user {
+        &__name,
+        &__role {
+          display: none;
         }
       }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__green {
-      .air__menuLeft__submenu__active {
-        background: $white !important;
+      &__banner {
+        display: none;
       }
-    }
-
-    @media (min-width: $sm-min-width) {
-      .air__menuLeft__compact {
-        flex: 0 0 150px;
-        max-width: 150px;
-        min-width: 150px;
-        width: 150px;
-
-        .air__menuLeft {
-          &__outer {
-            flex: 0 0 150px;
-            max-width: 150px;
-            min-width: 150px;
-            width: 150px;
-          }
-
-          &__logo {
-            text-align: center;
-            img {
-              float: none;
-            }
-            &__name,
-            &__descr {
-              display: none;
-            }
-          }
-          &__toggleButton {
-            display: none;
-          }
-          &__user {
-            height: auto;
-            text-align: center;
-            &__avatar {
-              float: none;
-              margin-bottom: rem(10);
-            }
-            &__name,
-            &__role {
-              display: block;
-              margin-left: 0;
-            }
-          }
-          &__banner {
-            display: none;
-          }
-          &__submenu {
-            &__active {
-              background: $primary;
-            }
-            > .air__menuLeft__list {
-              display: none !important;
-            }
-          }
-          &__link {
-            text-align: center;
-            padding: rem(9) rem(20);
-            > span {
-              display: block;
-              float: none !important;
-              &:global(.badge) {
-                display: inline-block;
-              }
-            }
-            &:before {
-              right: rem(18);
-              top: 50%;
-              margin-top: 2px;
-            }
-            &:after {
-              right: rem(18);
-              top: 50%;
-              margin-top: -1px;
-            }
-          }
-          &__icon {
-            width: rem(40);
-            display: block;
-            margin: 0 auto rem(5);
-            text-align: center;
-          }
-          &__category {
-            display: none;
-          }
+      &__submenu {
+        &__active {
+          background: $primary;
+        }
+        > .air__menuLeft__list {
+          display: none !important;
         }
       }
-    }
-
-    .air__menuLeft__unfixed {
-      display: flex;
-
-      .air__menuLeft__outer {
-        height: auto;
-        position: static;
+      &__link {
+        > span {
+          display: none;
+        }
+        &:before,
+        &:after {
+          display: none;
+        }
       }
-    }
-
-    .air__menuLeft__shadow {
-      box-shadow: $shadow-3;
-    }
-
-    // menu themes
-
-    // blue theme
-    .air__menuLeft__blue {
-      background: $primary;
-
-      .air__menuLeft {
-        &__toggleButton {
-          span:first-child {
-            &:before,
-            &:after {
-              background: $white;
-            }
-          }
-          span:last-child {
-            &:before,
-            &:after {
-              background: $white;
-            }
-          }
-        }
-
-        &__category {
-          &:after {
-            background: rgba($gray-1, 0.1);
-          }
-        }
-
-        &__link {
-          color: $gray-2;
-
-          &:hover {
-            color: $white;
-            &:before,
-            &:after {
-              background: $white !important;
-            }
-          }
-        }
-
-        &__submenu {
-          &__active {
-            background: darken($primary, 5%);
-            > .air__menuLeft__link {
-              color: $white;
-              &:before,
-              &:after {
-                background: $white !important;
-              }
-            }
-          }
-
-          > .air__menuLeft__link {
-            &:before,
-            &:after {
-              background: $gray-5;
-            }
-          }
-        }
-
-        &__category,
-        &__user__role {
-          color: $gray-5;
-        }
-
-        &__banner {
-          box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 0.3);
+      &__icon {
+        width: rem(40);
+        text-align: center;
+      }
+      &__category {
+        text-indent: -999px;
+        &:after {
+          display: block;
         }
       }
     }
   }
 }
 
-:global(body.buyer) {
-  @import "assets/styles/theme-buyer.scss";
-  :local {
+.air__menuLeft__toggled.air__menuLeft__green {
+  .air__menuLeft__submenu__active {
+    background: $white !important;
+  }
+}
+
+@media (min-width: $sm-min-width) {
+  .air__menuLeft__compact {
+    flex: 0 0 150px;
+    max-width: 150px;
+    min-width: 150px;
+    width: 150px;
+
     .air__menuLeft {
-      flex: 0 0 240px;
-      max-width: 240px;
-      min-width: 240px;
-      width: 240px;
-      min-height: 100%;
-      background: $black;
-      overflow: hidden;
-
-      @media (max-width: $sm-max-width) {
-        position: fixed;
-        z-index: 1100;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        overflow: visible;
-        margin-left: -240px;
-        transition: transform 0.2s ease-in-out;
-
-        &__mobileToggleButton {
-          display: block !important;
-        }
-
-        &__toggleButton {
-          display: none;
-        }
-      }
-
-      // fixed container
       &__outer {
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        height: 100%;
-        flex: 0 0 240px;
-        max-width: 240px;
-        min-width: 240px;
-        width: 240px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      // menu container
-      &__container {
-        padding-bottom: rem(20);
-      }
-
-      &__backdrop {
-        position: fixed;
-        z-index: 998;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        background: $black;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in-out;
-      }
-
-      // mobile toggle button
-      &__mobileToggleButton {
-        position: absolute;
-        right: rem(-40);
-        top: rem(25);
-        width: rem(40);
-        height: rem(40);
-        background: $black;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
-        display: none;
-        text-align: center;
-        box-shadow: $shadow-2;
-
-        span {
-          display: inline-block;
-          width: 14px;
-          height: 2px;
-          position: relative;
-          background: $white;
-          transition: background 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          top: 5px;
-
-          &:before,
-          &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            background: $white;
-            width: 100%;
-            height: 2px;
-            transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          }
-          &:before {
-            top: -5px;
-          }
-          &:after {
-            top: 5px;
-          }
-        }
-      }
-
-      // toggle button
-      &__toggleButton {
-        display: flex;
-        position: absolute;
-        top: rem(10);
-        right: rem(10);
-        z-index: 2;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        &:hover {
-          span {
-            opacity: 1 !important;
-          }
-        }
-        span {
-          @include transition-slow();
-          opacity: 0.9;
-          &:before,
-          &:after {
-            position: absolute;
-            content: "";
-            display: block;
-            width: 12px;
-            height: 3px;
-            background: $primary;
-            border-radius: 5px;
-          }
-          &:before {
-            top: 14px;
-            left: 6px;
-            transform: rotate(-45deg);
-          }
-          &:after {
-            top: 21px;
-            left: 6px;
-            transform: rotate(45deg);
-          }
-          &:first-child {
-            position: relative;
-            left: 3px;
-          }
-          &:last-child {
-            position: relative;
-            left: 11px;
-            opacity: 0.5;
-          }
-        }
-      }
-
-      @media (max-width: $sm-max-width) {
-        &__toggleButton {
-          display: none !important;
-        }
-      }
-
-      //logo
-      &__logo {
-        display: flex;
-        align-items: center;
-        padding: rem(15) rem(20);
-        line-height: 1;
-        height: rem(64);
-        img {
-          float: left;
-          // margin-top: rem(5);
-        }
-        &__name {
-          font-weight: 900;
-          color: $white;
-          font-size: 21px;
-          margin-left: rem(40);
-        }
-        &__descr {
-          color: $white;
-          margin-left: rem(10);
-          font-size: 12px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-      }
-
-      // user
-      &__user {
-        display: flex;
-        align-items: center;
-        padding: rem(15) rem(15) 1.33rem 1.33rem;
-        height: rem(72);
-        line-height: 1.3;
-        margin-top: rem(50);
-        &__avatar {
-          float: left;
-        }
-        &__name {
-          margin-left: rem(10);
-          color: $white;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          margin-top: rem(2);
-        }
-        &__role {
-          margin-left: rem(10);
-          color: $gray-6;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-      }
-
-      // banner
-      &__banner {
-        margin: rem(40) rem(20) rem(20);
-        background: $primary;
-        background: linear-gradient(45deg, $primary 0%, lighten($primary, 10%) 100%);
-        border-radius: 6px;
-        padding: rem(20);
-        color: $white;
-        box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 1);
-      }
-
-      // menu items
-      &__list {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-
-        .air__menuLeft__list {
-          .air__menuLeft__link {
-            padding-left: rem(49);
-          }
-        }
-      }
-
-      &__category {
-        text-transform: uppercase;
-        color: $text;
-        letter-spacing: 1px;
-        font-size: rem(12);
-        padding: rem(14) rem(20);
-        overflow: hidden;
-        position: relative;
-        &:after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: rem(20);
-          right: rem(20);
-          height: 1px;
-          background: darken($text, 20%);
-          display: none;
-        }
-      }
-
-      &__item {
-        display: block;
-        &__active {
-          > .air__menuLeft__link {
-            background: $primary;
-            color: $white;
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
-          }
-          span {
-            font-weight: bold;
-          }
-        }
-      }
-
-      &__submenu {
-        > .air__menuLeft__link {
-          position: relative;
-          &:before,
-          &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            top: rem(20);
-            right: rem(20);
-            width: 6px;
-            height: 2px;
-            background: $gray-6;
-            transform: rotate(-45deg);
-            @include transition-bg();
-          }
-          &:after {
-            right: rem(23);
-            transform: rotate(45deg);
-          }
-        }
-        &__active {
-          background: darken($black, 4%);
-          > .air__menuLeft__link {
-            color: $white;
-            &:before,
-            &:after {
-              background: $white;
-            }
-
-            .air__menuLeft__icon {
-              color: $white;
-            }
-          }
-          > .air__menuLeft__list {
-            display: block !important;
-          }
-        }
-        .air__menuLeft__list {
-          display: none;
-          padding-bottom: rem(10);
-        }
-      }
-
-      &__link {
-        color: $gray-5;
-        display: block;
-        padding: rem(9) rem(40) rem(9) rem(20);
-        font-size: rem(15);
-        cursor: pointer;
-
-        &:hover,
-        &:focus {
-          color: $white;
-
-          &:before,
-          &:after {
-            background: $white;
-          }
-        }
-      }
-
-      &__icon {
-        display: inline-block;
-        width: rem(25);
-      }
-    }
-
-    @media (max-width: $sm-max-width) {
-      .air__menuLeft__mobileToggled + .air__menuLeft__backdrop {
-        opacity: 0.2;
-        visibility: visible;
-      }
-
-      .air__menuLeft__mobileToggled {
-        transform: translateX(240px);
-      }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__white {
-      .air__menuLeft__submenu__active {
-        background: $gray-1 !important;
-      }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__gray {
-      .air__menuLeft__submenu__active {
-        background: $gray-2 !important;
-      }
-    }
-
-    .air__menuLeft__mobileToggled .air__menuLeft__mobileToggleButton span {
-      background: transparent;
-      &:before {
-        transform: translateY(5px) rotate(45deg);
-      }
-      &:after {
-        transform: translateY(-5px) rotate(-45deg);
-      }
-    }
-
-    .air__menuLeft__toggled {
-      .air__menuLeft__toggleButton {
-        transform: rotate(180deg);
-      }
-    }
-
-    @media (min-width: $sm-min-width) {
-      .air__menuLeft__toggled:not(.air__menuLeft__compact) {
-        flex: 0 0 80px;
-        max-width: 80px;
-        min-width: 80px;
-        width: 80px;
-
-        .air__menuLeft {
-          &__outer {
-            flex: 0 0 80px;
-            max-width: 80px;
-            min-width: 80px;
-            width: 80px;
-          }
-          &__logo {
-            visibility: hidden;
-          }
-          &__toggleButton {
-            right: rem(20);
-          }
-          &__user {
-            &__name,
-            &__role {
-              display: none;
-            }
-          }
-          &__banner {
-            display: none;
-          }
-          &__submenu {
-            &__active {
-              background: $primary;
-            }
-            > .air__menuLeft__list {
-              display: none !important;
-            }
-          }
-          &__link {
-            > span {
-              display: none;
-            }
-            &:before,
-            &:after {
-              display: none;
-            }
-          }
-          &__icon {
-            width: rem(40);
-            text-align: center;
-          }
-          &__category {
-            text-indent: -999px;
-            &:after {
-              display: block;
-            }
-          }
-        }
-      }
-    }
-
-    .air__menuLeft__toggled.air__menuLeft__green {
-      .air__menuLeft__submenu__active {
-        background: $white !important;
-      }
-    }
-
-    @media (min-width: $sm-min-width) {
-      .air__menuLeft__compact {
         flex: 0 0 150px;
         max-width: 150px;
         min-width: 150px;
         width: 150px;
+      }
 
-        .air__menuLeft {
-          &__outer {
-            flex: 0 0 150px;
-            max-width: 150px;
-            min-width: 150px;
-            width: 150px;
-          }
-
-          &__logo {
-            text-align: center;
-            img {
-              float: none;
-            }
-            &__name,
-            &__descr {
-              display: none;
-            }
-          }
-          &__toggleButton {
-            display: none;
-          }
-          &__user {
-            height: auto;
-            text-align: center;
-            &__avatar {
-              float: none;
-              margin-bottom: rem(10);
-            }
-            &__name,
-            &__role {
-              display: block;
-              margin-left: 0;
-            }
-          }
-          &__banner {
-            display: none;
-          }
-          &__submenu {
-            &__active {
-              background: $primary;
-            }
-            > .air__menuLeft__list {
-              display: none !important;
-            }
-          }
-          &__link {
-            text-align: center;
-            padding: rem(9) rem(20);
-            > span {
-              display: block;
-              float: none !important;
-              &:global(.badge) {
-                display: inline-block;
-              }
-            }
-            &:before {
-              right: rem(18);
-              top: 50%;
-              margin-top: 2px;
-            }
-            &:after {
-              right: rem(18);
-              top: 50%;
-              margin-top: -1px;
-            }
-          }
-          &__icon {
-            width: rem(40);
-            display: block;
-            margin: 0 auto rem(5);
-            text-align: center;
-          }
-          &__category {
-            display: none;
-          }
+      &__logo {
+        text-align: center;
+        img {
+          float: none;
+        }
+        &__name,
+        &__descr {
+          display: none;
         }
       }
-    }
-
-    .air__menuLeft__unfixed {
-      display: flex;
-
-      .air__menuLeft__outer {
+      &__toggleButton {
+        display: none;
+      }
+      &__user {
         height: auto;
-        position: static;
+        text-align: center;
+        &__avatar {
+          float: none;
+          margin-bottom: rem(10);
+        }
+        &__name,
+        &__role {
+          display: block;
+          margin-left: 0;
+        }
+      }
+      &__banner {
+        display: none;
+      }
+      &__submenu {
+        &__active {
+          background: $primary;
+        }
+        > .air__menuLeft__list {
+          display: none !important;
+        }
+      }
+      &__link {
+        text-align: center;
+        padding: rem(9) rem(20);
+        > span {
+          display: block;
+          float: none !important;
+          &:global(.badge) {
+            display: inline-block;
+          }
+        }
+        &:before {
+          right: rem(18);
+          top: 50%;
+          margin-top: 2px;
+        }
+        &:after {
+          right: rem(18);
+          top: 50%;
+          margin-top: -1px;
+        }
+      }
+      &__icon {
+        width: rem(40);
+        display: block;
+        margin: 0 auto rem(5);
+        text-align: center;
+      }
+      &__category {
+        display: none;
+      }
+    }
+  }
+}
+
+.air__menuLeft__unfixed {
+  display: flex;
+
+  .air__menuLeft__outer {
+    height: auto;
+    position: static;
+  }
+}
+
+.air__menuLeft__shadow {
+  box-shadow: $shadow-3;
+}
+
+// menu themes
+
+// blue theme
+.air__menuLeft__blue {
+  background: $primary;
+
+  .air__menuLeft {
+    &__toggleButton {
+      span:first-child {
+        &:before,
+        &:after {
+          background: $white;
+        }
+      }
+      span:last-child {
+        &:before,
+        &:after {
+          background: $white;
+        }
       }
     }
 
-    .air__menuLeft__shadow {
-      box-shadow: $shadow-3;
+    &__category {
+      &:after {
+        background: rgba($gray-1, 0.1);
+      }
     }
 
-    // menu themes
+    &__link {
+      color: $gray-2;
 
-    // blue theme
-    .air__menuLeft__blue {
-      background: $primary;
-
-      .air__menuLeft {
-        &__toggleButton {
-          span:first-child {
-            &:before,
-            &:after {
-              background: $white;
-            }
-          }
-          span:last-child {
-            &:before,
-            &:after {
-              background: $white;
-            }
-          }
+      &:hover {
+        color: $white;
+        &:before,
+        &:after {
+          background: $white !important;
         }
+      }
+    }
 
-        &__category {
+    &__submenu {
+      &__active {
+        background: darken($primary, 5%);
+        > .air__menuLeft__link {
+          color: $white;
+          &:before,
           &:after {
-            background: rgba($gray-1, 0.1);
+            background: $white !important;
           }
-        }
-
-        &__link {
-          color: $gray-2;
-
-          &:hover {
-            color: $white;
-            &:before,
-            &:after {
-              background: $white !important;
-            }
-          }
-        }
-
-        &__submenu {
-          &__active {
-            background: darken($primary, 5%);
-            > .air__menuLeft__link {
-              color: $white;
-              &:before,
-              &:after {
-                background: $white !important;
-              }
-            }
-          }
-
-          > .air__menuLeft__link {
-            &:before,
-            &:after {
-              background: $gray-5;
-            }
-          }
-        }
-
-        &__category,
-        &__user__role {
-          color: $gray-5;
-        }
-
-        &__banner {
-          box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 0.3);
         }
       }
+
+      > .air__menuLeft__link {
+        &:before,
+        &:after {
+          background: $gray-5;
+        }
+      }
+    }
+
+    &__category,
+    &__user__role {
+      color: $gray-5;
+    }
+
+    &__banner {
+      box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 0.3);
     }
   }
 }

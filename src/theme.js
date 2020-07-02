@@ -24,10 +24,6 @@ module.exports = {
   "@normal-color": "#e4e9f0",
 
   "@input-color": "#161537",
-  "@input-padding-horizontal": "13px",
-  "@input-padding-vertical-base": "7px",
-  "@input-padding-vertical-sm": "11px",
-  "@input-padding-vertical-lg": "11px",
 
   "@shadow-color": "rgba(0,0,0,.15)",
   "@box-shadow-base": "0 10px 35px -5px rgba(0,0,0,.15)",

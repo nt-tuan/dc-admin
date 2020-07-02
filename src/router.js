@@ -7,9 +7,7 @@ import { connect } from "react-redux";
 import { Route } from "react-router-dom";
 import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-
-import { ConstFacade } from "commons/consts";
-const ROUTES = ConstFacade.getAllRoutes();
+import { RouteConst } from "commons/consts";
 
 const mapStateToProps = ({ settings }) => ({ settings });
 
@@ -66,7 +64,7 @@ const loadable = (loader) => React.lazy(loader);
 
 const publicRoutes = [
   {
-    path: ROUTES.LOGIN_ROUTE,
+    path: RouteConst.LOGIN_ROUTE,
     Component: loadable(() => import("components/pages/login/login.page")),
     exact: true
   }
@@ -74,23 +72,50 @@ const publicRoutes = [
 
 const privateRoutes = [
   {
-    path: ROUTES.HOME_ROUTE,
+    path: RouteConst.HOME_ROUTE,
     Component: loadable(() => import("components/pages/home/home.page")),
     exact: true
   },
   {
-    path: ROUTES.USER_MANAGEMENT,
+    path: RouteConst.USER_MANAGEMENT,
     Component: loadable(() => import("components/pages/user-management/user-management.page")),
     exact: true
   },
   {
-    path: ROUTES.ORDERS,
+    path: RouteConst.ORDERS,
     Component: loadable(() => import("components/pages/orders/orders.page")),
     exact: true
   },
   {
-    path: ROUTES.SERVICE,
+    path: RouteConst.SERVICE,
     Component: loadable(() => import("components/pages/service/service.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ACCOUNT_SUMMARY,
+    Component: loadable(() => import("components/pages/account-summary/account-summary.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.WITHDRAW_FUND,
+    Component: loadable(() => import("components/pages/withdraw-fund/withdraw-fund.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.WALLET,
+    Component: loadable(() => import("components/pages/wallet/wallet.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ADD_FUNDS,
+    Component: loadable(() => import("components/pages/add-funds/add-funds.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ORDER_TRACK_AND_TRACE,
+    Component: loadable(() =>
+      import("components/pages/order-track-and-trace/order-track-and-trace.page")
+    ),
     exact: true
   }
 ];

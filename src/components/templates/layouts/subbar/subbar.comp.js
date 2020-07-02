@@ -1,12 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { ConstFacade } from "commons/consts";
-import { UtilFacade } from "utils";
+import { removeIdPartFromProductUrl } from "utils/general.util";
 
-const { removeIdPartFromProductUrl } = UtilFacade.getGeneralUtils();
-
-const ROUTES = ConstFacade.getAllRoutes();
 const TEXT_ONLY_PATH = [];
 
 const _SubBar = () => {
@@ -30,13 +26,13 @@ const _SubBar = () => {
   };
 
   const renderTextonlyBread = (resource) => {
-    return <span className="text-capitalize">{parseRoleText(resource).replace(/-/g, " ")}</span>;
+    return <span className="text-capitalize">{resource.replace(/-/g, " ")}</span>;
   };
 
   const renderLinkBread = (resource, path) => {
     return (
       <Link className="text-capitalize" to={path}>
-        {parseRoleText(resource).replace(/-/g, " ")}
+        {resource.replace(/-/g, " ")}
       </Link>
     );
   };
@@ -49,7 +45,7 @@ const _SubBar = () => {
 
   const renderBreadCrumbs = () => {
     return resourceNames.map((resource, index) => {
-      const path = routeMapper(resourceNames.slice(0, index + 1).join("/"));
+      const path = resourceNames.slice(0, index + 1).join("/");
       return (
         <React.Fragment key={resource}>
           {index === 0
@@ -84,34 +80,3 @@ const _SubBar = () => {
 };
 
 export const SubBar = React.memo(_SubBar);
-
-const parseRoleText = (roleText) => {
-  switch (roleText) {
-    case ROUTES.SELLER_PREFIX.replace("/", ""):
-    case ROUTES.SELLER_PREFIX:
-      return "Sales";
-    case ROUTES.BUYER_PREFIX.replace("/", ""):
-    case ROUTES.BUYER_PREFIX:
-      return "Purchase";
-    case ROUTES.ADMIN_PREFIX.replace("/", ""):
-    case ROUTES.ADMIN_PREFIX:
-      return "Admin";
-    default:
-      return roleText;
-  }
-};
-
-const routeMapper = (route) => {
-  switch (route) {
-    case "/seller":
-      return ROUTES.SELLER_DASHBOARD_ROUTE;
-    case "/seller/profile":
-      return ROUTES.SELLER_TAB_PROFILE_INFO_ROUTE;
-    case "/buyer":
-      return ROUTES.BUYER_DASHBOARD_ROUTE;
-    case "/buyer/profile":
-      return ROUTES.BUYER_TAB_PROFILE_INFO_ROUTE;
-    default:
-      return route;
-  }
-};

@@ -4,34 +4,16 @@
 @import "assets/styles/airui/style";
 @import "assets/styles/nprogress/style";
 @import "assets/styles/font-google/font-google.css";
+@import "assets/styles/theme-seller.scss";
 
 * {
-  body.seller {
-    @import "assets/styles/theme-seller.scss";
-
-    a:hover {
-      color: $primary;
-    }
-
-    .loading-svg {
-      stroke: $primary;
-    }
-  }
-
-  body.buyer {
-    @import "assets/styles/theme-buyer.scss";
-
-    a:hover {
-      color: $primary;
-    }
-
-    .loading-svg {
-      stroke: $primary;
-    }
-  }
-
   a:hover {
+    color: $primary;
     text-decoration: none;
+  }
+
+  .loading-svg {
+    stroke: $primary;
   }
 
   font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -46,8 +28,7 @@
   }
 }
 
-body.seller,
-body.buyer {
+body {
   .bid-card .ant-card-body {
     padding-bottom: 18px !important;
   }
@@ -113,10 +94,17 @@ body.buyer {
     width: 48%;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner::after {
-    border: 2px solid #fff;
-    border-top: 0;
-    border-left: 0;
+  .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::before {
+    box-shadow: none;
+  }
+  .ant-table-ping-left:not(.ant-table-has-fix-left) .ant-table-container::after {
+    box-shadow: none;
+  }
+  .ant-table-ping-right:not(.ant-table-has-fix-left) .ant-table-container::before {
+    box-shadow: none;
+  }
+  .ant-table-ping-right:not(.ant-table-has-fix-left) .ant-table-container::after {
+    box-shadow: none;
   }
 
   // --------------------------

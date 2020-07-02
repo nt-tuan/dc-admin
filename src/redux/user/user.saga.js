@@ -1,11 +1,9 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import * as USER_ACTIONS from "./user.duck";
 import { notification } from "antd";
-import { ConstFacade } from "commons/consts/const.facade";
 import { APIError } from "commons/types";
 import { AuthService, UserService } from "services";
-
-const messages = ConstFacade.getMessages();
+import { MessageConst } from "commons/consts";
 
 const { setStateAction } = USER_ACTIONS;
 
@@ -17,8 +15,8 @@ export function* LOGIN({ payload }) {
     if (isOk) {
       yield put({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT });
       notification.success({
-        message: messages.LOGIN_SUCCESS_TITLE,
-        description: messages.LOGIN_SUCCESS_MSG
+        message: MessageConst.LOGIN_SUCCESS_TITLE,
+        description: MessageConst.LOGIN_SUCCESS_MSG
       });
     }
   } catch (error) {
@@ -58,7 +56,8 @@ export function* LOGOUT({ payload }) {
 export function* LOAD_CURRENT_ACCOUNT() {
   try {
     yield put(setStateAction({ loading: true }));
-    const user = UserService.getCurrentAccount();
+    const user = yield UserService.getCurrentAccount();
+
     if (user) {
       yield put({
         type: USER_ACTIONS.SET_STATE,
