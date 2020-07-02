@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        agent { label env.agent_label }
+        label env.agent_label
     }
 
     tools {
