@@ -130,7 +130,7 @@ export const RequestWithdrawalTab = () => {
 
           <div className="dtc-br-10 air__utils__shadow bg-white px-4 py-3 mt-3">
             <RequestWithdrawalForm
-              data={{ bankDetails, available_withdrawal: 1000 }}
+              data={{ bankDetails, available_withdrawal: data.availableBalance }}
               isDisabled={isDisabled}
             />
           </div>
