@@ -89,11 +89,12 @@ export const getAllRecordsFromAPI = async (
   const { outerParams, sortTerm, sortOrder } = options;
   const maxSize = 2000;
   let page = 0;
+  const sort = sortTerm && sortOrder ? `${sortTerm},${sortOrder}` : null;
 
   const res = await serviceFn({
     page: page,
     size: maxSize,
-    sort: `${sortTerm},${sortOrder}`,
+    sort: sort,
     ...outerParams
   });
 
@@ -108,7 +109,7 @@ export const getAllRecordsFromAPI = async (
         const remainRes = await serviceFn({
           size: remainElements > maxSize ? maxSize : remainElements,
           page,
-          sort: `${sortTerm},${sortOrder}`,
+          sort: sort,
           ...outerParams
         });
         allDataRes = { ...allDataRes, content: [...allDataRes.content, ...remainRes.content] };

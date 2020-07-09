@@ -5,6 +5,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { walletMapper } from "commons/mappers";
 import { FinancialService } from "services";
+import { SORT_ORDERS } from "commons/consts";
 
 const { parseDataToGridView, parseDataToWalletDashBoard } = walletMapper;
 

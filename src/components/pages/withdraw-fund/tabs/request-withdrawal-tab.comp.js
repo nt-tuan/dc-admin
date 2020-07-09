@@ -1,4 +1,4 @@
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+// import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
 import { REQUIRED_ERR } from "commons/consts";
 import { KYC3_SCHEMA } from "commons/schemas";
@@ -12,7 +12,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { areObjectValuesUndefined, getPrefixUrl, toCurrency } from "utils/general.util";
-import { FinancialService } from "services";
+import { FinancialService, CompanyService } from "services";
 
 const FIELDS = KYC3_SCHEMA.BANK_DETAILS;
 const LABELS = KYC3_SCHEMA.KYC3_LABEL;
@@ -21,27 +21,7 @@ const EBankDetailsFormArr = withMultiForm({ name: "bank-details", formLimit: 2 }
 
 export const RequestWithdrawalTab = () => {
   const [data, setData] = useState({});
-  // const [bankDetails, setBankDetails] = useState([]);
-  const bankDetails = [
-    {
-      id: "792ab728-91ce-4701-864d-022f72979ed3",
-      accountHolder: "First Century Bank",
-      name: "US Bank",
-      accountNumber: "01234567",
-      iban: "AE82 WEST 123 4567",
-      swiftCode: "AEIUFPIRRO82",
-      nationality: "UAE"
-    },
-    {
-      id: "792bb728-91ce-4701-864d-022f72979ed3",
-      accountHolder: "First Century Bank",
-      name: "US Bank",
-      accountNumber: "251853943",
-      iban: "AE82 WEST 123 4567",
-      swiftCode: "AEIUFPIRRO82",
-      nationality: "UAE"
-    }
-  ];
+  const [bankDetails, setBankDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEdit, toggleIsEdit] = useBooleanState(false);
   const location = useLocation();
@@ -56,8 +36,8 @@ export const RequestWithdrawalTab = () => {
       const resWalletDashboard = await FinancialService.getWalletDashboard();
       setData(resWalletDashboard);
 
-      // const resBankDetails = await CompanyService.getBankDetails();
-      // setBankDetails(resBankDetails);
+      const resBankDetails = await CompanyService.getBankDetails();
+      setBankDetails(resBankDetails);
 
       setLoading(false);
     });
@@ -139,10 +119,10 @@ export const RequestWithdrawalTab = () => {
             <div className={`dtc-br-10 air__utils__shadow bg-white px-4 pt-4 ${isEdit && "pb-4"}`}>
               <div className="d-flex align-items-center mb-2">
                 <b className="mr-2 text-primary">Bank Account Details</b>
-                <Button
+                {/* <Button
                   icon={isEdit ? <CloseOutlined /> : <EditOutlined />}
                   onClick={toggleIsEdit}
-                />
+                /> */}
               </div>
               {isEdit ? renderBankEdit() : renderBankReadOnly()}
             </div>
@@ -150,7 +130,7 @@ export const RequestWithdrawalTab = () => {
 
           <div className="dtc-br-10 air__utils__shadow bg-white px-4 py-3 mt-3">
             <RequestWithdrawalForm
-              data={{ bankDetails, available_withdrawal: 100000 }}
+              data={{ bankDetails, available_withdrawal: 1000 }}
               isDisabled={isDisabled}
             />
           </div>
