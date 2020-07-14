@@ -12,13 +12,18 @@ const { parseDataToGridView, parseDataToWalletDashBoard } = walletMapper;
 const WalletPage = () => {
   const [walletDashboard, setWalletDashboard] = useState({});
   const [transactionDetails, setTransactionDetails] = useState([]);
+  // console.log("transactionDetails", transactionDetails);
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const resDashboard = await FinancialService.getWalletDashboard();
       setWalletDashboard(parseDataToWalletDashBoard(resDashboard));
       const resTransaction = await getAllRecordsFromAPI(
-        FinancialService.getWalletTransactionDetails
+        FinancialService.getWalletTransactionDetails,
+        {
+          sortTerm: "createdDate",
+          sortOrder: "desc"
+        }
       );
       setTransactionDetails(parseDataToGridView(resTransaction));
     });

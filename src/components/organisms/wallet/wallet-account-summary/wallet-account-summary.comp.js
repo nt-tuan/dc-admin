@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { getAccountSummarySchema } from "commons/schemas/wallet.schema";
 import { DTCTable } from "components/atoms";
@@ -9,6 +9,10 @@ const { parseDataToExcel } = walletMapper;
 
 export const WalletAccountSummary = ({ transactionDetails }) => {
   const [data, setData] = useState(transactionDetails);
+
+  useEffect(() => {
+    setData(transactionDetails);
+  }, [transactionDetails]);
 
   const handleDownload = () => {
     const dataExcel = parseDataToExcel(data);

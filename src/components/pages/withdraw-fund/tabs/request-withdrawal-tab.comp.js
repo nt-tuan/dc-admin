@@ -94,14 +94,14 @@ export const RequestWithdrawalTab = () => {
               <CustomizedCard
                 primaryText="Available"
                 text="for withdrawal"
-                currency={toCurrency(data.availableBalance > 0 ? data.availableBalance : 0)}
+                currency={toCurrency(data.availableBalance)}
               />
             </Col>
             <Col xl={8} lg={12} span={24} title="Funds being processed for your withdrawal request">
               <CustomizedCard
                 primaryText="Pending"
                 text="outbound"
-                currency={toCurrency(data.pendingWithdrawal > 0 ? data.pendingWithdrawal : 0)}
+                currency={toCurrency(data.pendingWithdrawal)}
                 renderIcon={() => <i className="fa fa-caret-up ml-2 font-size-21 text-danger" />}
               />
             </Col>
@@ -109,7 +109,7 @@ export const RequestWithdrawalTab = () => {
               <CustomizedCard
                 primaryText="Pending"
                 text="inbound"
-                currency={toCurrency(0)}
+                currency={toCurrency(data.pendingInBound)}
                 renderIcon={() => <i className="fa fa-caret-down ml-2 font-size-21 text-success" />}
               />
             </Col>

@@ -69,11 +69,11 @@ const parseDataToGridView = (data) => {
         availableBalance,
         currentBalance,
         type,
-        id
+        number
       } = wallet;
       return {
         ...wallet,
-        id: id,
+        id: number,
         timestamp: timestamp ? formatDateTime(timestamp) : "",
         blockedFund: toCurrency(blockedFund),
         credit: toCurrency(credit),
