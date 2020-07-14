@@ -105,7 +105,7 @@ class HttpApi {
 
 export const backendAPI = new HttpApi({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
-  timeout: 250000000,
+  timeout: 25000,
   headers: {
     "Content-Type": "application/json"
   }
