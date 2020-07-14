@@ -37,6 +37,23 @@ export async function getUserData() {
       url: RouteConst.ORDERS
     },
     {
+      title: "Product",
+      key: "Product",
+      icon: "fe fe-package",
+      children: [
+        {
+          title: "Database",
+          key: "Database",
+          url: RouteConst.PRODUCT_DATABASE
+        },
+        {
+          title: "Product Creation",
+          key: "ProductCreation",
+          url: RouteConst.PRODUCT_CREATION
+        }
+      ]
+    },
+    {
       title: "Analytics",
       key: "Analytics",
       icon: "fe fe-pie-chart",

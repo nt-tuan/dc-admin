@@ -117,6 +117,21 @@ const privateRoutes = [
       import("components/pages/order-track-and-trace/order-track-and-trace.page")
     ),
     exact: true
+  },
+  {
+    path: RouteConst.PRODUCT_DATABASE,
+    Component: loadable(() => import("components/pages/product-database/product-database.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.PRODUCT_CREATION,
+    Component: loadable(() => import("components/pages/add-product/add-product.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.PRODUCT_EDIT,
+    Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
+    exact: true
   }
 ];
 

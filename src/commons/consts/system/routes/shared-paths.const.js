@@ -38,4 +38,13 @@ export class SharedPaths {
   static get ORDER_TRACK_AND_TRACE() {
     return "/orders/:orderNumber/track-and-trace";
   }
+  static get PRODUCT_DATABASE() {
+    return "/product-database";
+  }
+  static get PRODUCT_CREATION() {
+    return "/add-product";
+  }
+  static get PRODUCT_EDIT() {
+    return "/edit-product";
+  }
 }
