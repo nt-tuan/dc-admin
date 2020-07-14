@@ -23,7 +23,7 @@ export const RequestWithdrawalTab = () => {
   const [data, setData] = useState({});
   const [bankDetails, setBankDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isEdit, toggleIsEdit] = useBooleanState(false);
+  const [isEdit] = useBooleanState(false);
   const location = useLocation();
   const prefixUrl = getPrefixUrl(location.pathname);
   // let formRefArr = [];

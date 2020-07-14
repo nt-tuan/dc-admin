@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { RouteConst } from "commons/consts";
 import { CardsWrapper } from "components/molecules";
+import { DTCSection } from "components";
 
 export const WalletDashboard = ({ cards }) => {
   return (
-    <section className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
+    <DTCSection>
       <div className="d-flex justify-content-between flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row">
         <h5 className="text-capitalize mb-2 text-primary font-weight-bold">Wallet Dashboard</h5>
         <div>
@@ -23,6 +24,6 @@ export const WalletDashboard = ({ cards }) => {
         </div>
       </div>
       <CardsWrapper cards={cards} />
-    </section>
+    </DTCSection>
   );
 };

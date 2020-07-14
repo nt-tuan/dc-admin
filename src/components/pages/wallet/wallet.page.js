@@ -1,11 +1,10 @@
+import { walletMapper } from "commons/mappers";
+import { WalletAccountSummary, WalletDashboard } from "components/organisms";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { WalletAccountSummary, WalletDashboard } from "components/organisms";
+import { FinancialService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { walletMapper } from "commons/mappers";
-import { FinancialService } from "services";
-import { SORT_ORDERS } from "commons/consts";
 
 const { parseDataToGridView, parseDataToWalletDashBoard } = walletMapper;
 
