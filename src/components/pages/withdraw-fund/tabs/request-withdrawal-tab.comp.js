@@ -8,7 +8,7 @@ import { BankDetailsReadonly } from "components/molecules";
 import { BankDetailsForm } from "components/organisms";
 import { withMultiForm } from "HOCs/withMultiForm";
 import { useBooleanState } from "hooks/utilHooks";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { areObjectValuesUndefined, getPrefixUrl, toCurrency } from "utils/general.util";
@@ -31,17 +31,23 @@ export const RequestWithdrawalTab = () => {
   const isDisabled =
     bankDetails.filter((account) => areObjectValuesUndefined(account) === false).length === 0;
 
-  useEffect(() => {
+  const getData = useCallback(() => {
+    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
-      const resWalletDashboard = await FinancialService.getWalletDashboard();
+      const [resWalletDashboard, resBankDetails] = await Promise.all([
+        FinancialService.getWalletDashboard(),
+        CompanyService.getBankDetails()
+      ]);
       setData(resWalletDashboard);
-
-      const resBankDetails = await CompanyService.getBankDetails();
       setBankDetails(resBankDetails);
 
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   const renderBankEdit = () => {
     return (
@@ -132,6 +138,7 @@ export const RequestWithdrawalTab = () => {
             <RequestWithdrawalForm
               data={{ bankDetails, available_withdrawal: data.availableBalance }}
               isDisabled={isDisabled}
+              onSubmit={getData}
             />
           </div>
         </div>

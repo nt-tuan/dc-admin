@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Form, Select, Input, Button, Modal } from "antd";
+import { Form, Select, Input, Button, Modal, message } from "antd";
 import { toCurrency } from "utils/general.util";
 import { RegexConst } from "commons/consts";
 import { FormError } from "components/atoms";
@@ -8,11 +8,11 @@ import { FinancialService } from "services";
 
 const { Option } = Select;
 
-export const RequestWithdrawalForm = ({ data, isDisabled }) => {
+export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [form] = Form.useForm();
 
-  const onSubmit = (values) => {
+  const handleSubmit = (values) => {
     setIsOpenPopup(true);
   };
 
@@ -26,9 +26,10 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
     };
     asyncErrorHandlerWrapper(async () => {
       await FinancialService.postRequestWithdrawal(payload);
-      await FinancialService.getWalletDashboard();
       form.setFieldsValue({ amount: "", account: "" });
       setIsOpenPopup(false);
+      message.success("Withdraw Successfully!");
+      onSubmit && onSubmit();
     });
   };
 
@@ -41,7 +42,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled }) => {
       <Form
         form={form}
         scrollToFirstError={true}
-        onFinish={onSubmit}
+        onFinish={handleSubmit}
         hideRequiredMark={true}
         layout="inline"
       >
