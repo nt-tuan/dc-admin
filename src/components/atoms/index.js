@@ -6,6 +6,7 @@ export * from "./filter-dropdown/filter-dropdown.comp";
 export * from "./loading-indicator/loading-indicator.comp";
 export * from "./form-error/form-error.comp";
 export * from "./timepoint/timepoint.comp";
+export * from "./stepper/stepper.comp";
 export * from "./product-card/product-card.comp";
 export * from "./search-bar/search-bar.comp";
 export * from "./dtc-section/dtc-section.comp";
