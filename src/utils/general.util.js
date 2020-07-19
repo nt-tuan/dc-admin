@@ -124,8 +124,12 @@ export const getAllRecordsFromAPI = async (
   return allDataRes.content;
 };
 
-export const toCurrency = (value) => {
-  return value !== undefined && !isNaN(value) ? "$ " + Number(value).toLocaleString() : value;
+export const toCurrency = (value, defaultCurrency = `$ `) => {
+  const currency =
+    process.env.REACT_APP_DEFAULT_CURRENCY_TYPE === "USD"
+      ? defaultCurrency
+      : process.env.REACT_APP_DEFAULT_CURRENCY_TYPE;
+  return value !== undefined && !isNaN(value) ? currency + Number(value).toLocaleString() : value;
 };
 
 export const toNumber = (value) => {
