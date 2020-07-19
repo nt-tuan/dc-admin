@@ -62,67 +62,67 @@ const getBadge = (type, value) => {
       return ["Distributor Badge", DistributorBadge];
     }
     case BADGE_TYPES.VALUE_BADGE: {
-      if (value <= valueBadgeNone) {
+      if (value <= Number(valueBadgeNone)) {
         return [];
       }
-      if (valueBadgeNone < value && value <= valueBadgelevel1) {
+      if (Number(valueBadgeNone) < value && value <= Number(valueBadgelevel1)) {
         return [
           `Largest Transaction: ${toCurrency(valueBadgeNone)} - ${toCurrency(valueBadgelevel1)}`,
           Transaction1Badge
         ];
       }
-      if (valueBadgelevel1 < value && value <= valueBadgelevel2) {
+      if (Number(valueBadgelevel1) < value && value <= Number(valueBadgelevel2)) {
         return [
           `Largest Transaction: ${toCurrency(valueBadgelevel1)} - ${toCurrency(valueBadgelevel2)}`,
           Transaction2Badge
         ];
       }
-      if (valueBadgelevel2 < value && value <= valueBadgelevel3) {
+      if (Number(valueBadgelevel2) < value && value <= Number(valueBadgelevel3)) {
         return [
           `Largest Transaction: ${toCurrency(valueBadgelevel2)} - ${toCurrency(valueBadgelevel3)}`,
           Transaction3Badge
         ];
       }
-      if (valueBadgelevel3 < value && value <= valueBadgelevel4) {
+      if (Number(valueBadgelevel3) < value && value <= Number(valueBadgelevel4)) {
         return [
           `Largest Transaction: ${toCurrency(valueBadgelevel3)} - ${toCurrency(valueBadgelevel4)}`,
           Transaction4Badge
         ];
       }
-      if (value > valueBadgelevel5) {
+      if (value > Number(valueBadgelevel5)) {
         return [`Largest Transaction: > ${toCurrency(valueBadgelevel5)}`, Transaction5Badge];
       }
       break;
     }
     case BADGE_TYPES.NUMBER_BADGE: {
-      if (value <= numberBadgeNone) {
+      if (value <= Number(numberBadgeNone)) {
         return [];
       }
-      if (value <= numberBadgeLevel1) {
+      if (value <= Number(numberBadgeLevel1)) {
         return [
           `Number of Transactions: ${Number(numberBadgeNone) + 1} - ${numberBadgeLevel1}`,
           TransactionSizeBadge1
         ];
       }
-      if (value <= numberBadgeLevel2) {
+      if (value <= Number(numberBadgeLevel2)) {
         return [
           `Number of Transactions: ${Number(numberBadgeLevel1) + 1} - ${numberBadgeLevel2}`,
           TransactionSizeBadge2
         ];
       }
-      if (value <= numberBadgeLevel3) {
+      if (value <= Number(numberBadgeLevel3)) {
         return [
           `Number of Transactions: ${Number(numberBadgeLevel2) + 1} - ${numberBadgeLevel3}`,
           TransactionSizeBadge3
         ];
       }
-      if (value <= numberBadgeLevel4) {
+      if (value <= Number(numberBadgeLevel4)) {
         return [
           `Number of Transactions: ${Number(numberBadgeLevel3) + 1} - ${numberBadgeLevel4}`,
           TransactionSizeBadge4
         ];
       }
-      if (value > numberBadgeLevel5) {
+      if (value > Number(numberBadgeLevel5)) {
         return [`Number of Transactions: > ${numberBadgeLevel5}`, TransactionSizeBadge5];
       }
       break;
