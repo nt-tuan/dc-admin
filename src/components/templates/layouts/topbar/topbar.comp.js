@@ -1,5 +1,3 @@
-import logoImgNotext from "assets/images/logo-notext.png";
-import logoImg from "assets/images/logo.png";
 import React from "react";
 import style from "./topbar-comp.module.scss";
 import { ProfileMenu } from "./user-menu/user-menu.comp";
@@ -16,8 +14,10 @@ export const TopBar = () => {
         <img
           style={{ maxHeight: 60 }}
           className="ml-md-0 ml-4"
-          src={isScreensize("sm") ? logoImgNotext : logoImg}
-          alt="Disitchain logo"
+          src={`${process.env.PUBLIC_URL}/images/${
+            isScreensize("sm") ? "logo-notext.png" : "logo.png"
+          }`}
+          alt={`${process.env.REACT_APP_COMPANY_NAME} logo`}
         />
       </div>
       <div className="d-flex align-items-center">

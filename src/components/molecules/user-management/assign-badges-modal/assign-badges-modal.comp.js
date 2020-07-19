@@ -12,7 +12,9 @@ const { BADGE_TYPES, BADGE_LABELS } = USER_MANAGEMENT_SCHEMA;
 const IMAGE_SCHEMA = {
   [BADGE_TYPES.DISTRIBUTOR]: <DistributorBadge />,
   [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />,
-  [BADGE_TYPES.VERIFIED]: <img src={UserVerifiedBadges} alt="User Verified Badge" />
+  [BADGE_TYPES.VERIFIED]: (
+    <img className="w-100" src={UserVerifiedBadges} alt="User Verified Badge" />
+  )
 };
 
 export const AssignBadgesModal = ({
