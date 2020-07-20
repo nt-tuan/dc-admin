@@ -1,6 +1,6 @@
 import { backendAPI } from "utils/httpAPI.util";
 import store from "store";
-import { ApiUriConsts } from "commons/consts/system/api-uri.const";
+import { ApiPathConsts } from "commons/consts/system/api-uri.const";
 
 export class UserService {
   static getCurrentAccount = async () => {
@@ -14,44 +14,44 @@ export class UserService {
   };
 
   static getAllUsers = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_ALL_USERS, { page, size, sort });
+    const result = await backendAPI.get(ApiPathConsts.GET_ALL_USERS, { page, size, sort });
     return result;
   };
 
   static getAllBuyer = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_ALL_BUYERS, { page, size, sort });
+    const result = await backendAPI.get(ApiPathConsts.GET_ALL_BUYERS, { page, size, sort });
     return result;
   };
 
   static getAllSeller = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_ALL_SELLERS, { page, size, sort });
+    const result = await backendAPI.get(ApiPathConsts.GET_ALL_SELLERS, { page, size, sort });
     return result;
   };
 
   static suspendUser = async ({ companyId }) => {
     const result = await backendAPI.post(
-      ApiUriConsts.SUSPEND_USER.replace(":companyId", companyId)
+      ApiPathConsts.SUSPEND_USER.replace(":companyId", companyId)
     );
     return result;
   };
 
   static unsuspendUser = async ({ companyId }) => {
     const result = await backendAPI.post(
-      ApiUriConsts.UNSUSPEND_USER.replace(":companyId", companyId)
+      ApiPathConsts.UNSUSPEND_USER.replace(":companyId", companyId)
     );
     return result;
   };
 
   static getAvailableBadges = async ({ companyId }) => {
     const result = await backendAPI.get(
-      ApiUriConsts.GET_AVAILABLE_BADGES.replace(":companyId", companyId)
+      ApiPathConsts.GET_AVAILABLE_BADGES.replace(":companyId", companyId)
     );
     return result;
   };
 
   static assignBadge = async ({ companyId, type }) => {
     const result = await backendAPI.post(
-      `${ApiUriConsts.ASSIGN_BADGE_TO_USER.replace(":companyId", companyId)}?type=${type}`
+      `${ApiPathConsts.ASSIGN_BADGE_TO_USER.replace(":companyId", companyId)}?type=${type}`
     );
     return result;
   };

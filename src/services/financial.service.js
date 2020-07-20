@@ -1,14 +1,14 @@
 import { backendAPI } from "utils/httpAPI.util";
-import { ApiUriConsts } from "commons/consts/system";
+import { ApiPathConsts } from "commons/consts/system";
 
 export class FinancialService {
   static getWalletDashboard = async () => {
-    const result = await backendAPI.get(ApiUriConsts.GET_WALLET_DASHBOARD);
+    const result = await backendAPI.get(ApiPathConsts.GET_WALLET_DASHBOARD);
     return result;
   };
 
   static getWalletTransactionDetails = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_WALLET_TRANSACTION_DETAILS, {
+    const result = await backendAPI.get(ApiPathConsts.GET_WALLET_TRANSACTION_DETAILS, {
       page,
       size,
       sort
@@ -17,16 +17,16 @@ export class FinancialService {
   };
 
   static getAccountSummary = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_ACCOUNT_SUMMARY, { page, size, sort });
+    const result = await backendAPI.get(ApiPathConsts.GET_ACCOUNT_SUMMARY, { page, size, sort });
     return result;
   };
 
   static getWithdrawals = async ({ page, size, sort, status }) => {
-    const result = await backendAPI.get(ApiUriConsts.GET_WITHDRAWAL, { page, size, sort, status });
+    const result = await backendAPI.get(ApiPathConsts.GET_WITHDRAWAL, { page, size, sort, status });
     return result;
   };
 
   static postRequestWithdrawal = async (data) => {
-    await backendAPI.post(ApiUriConsts.WALLET_WITHDRAWAL, data);
+    await backendAPI.post(ApiPathConsts.WALLET_WITHDRAWAL, data);
   };
 }

@@ -1,4 +1,4 @@
-export class ApiUriConsts {
+export class ApiPathConsts {
   static #PUBLIC_PREFIX = "/public";
   static #USER_PREFIX = "/me";
   static #USER_MANAGEMENT_PREFIX = "/users";

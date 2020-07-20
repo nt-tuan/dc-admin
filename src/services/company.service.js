@@ -1,9 +1,9 @@
 import { backendAPI } from "utils/httpAPI.util";
-import { ApiUriConsts } from "commons/consts";
+import { ApiPathConsts } from "commons/consts";
 
 export class CompanyService {
   static getBankDetails = async () => {
-    const result = await backendAPI.get(ApiUriConsts.BANK_DETAILS);
+    const result = await backendAPI.get(ApiPathConsts.BANK_DETAILS);
     return result;
   };
 }
