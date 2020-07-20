@@ -1,5 +1,10 @@
 import React, { useRef, forwardRef, useState } from "react";
-import { VitalInfoForm, ProductDescriptionForm, ProductUploadImages } from "components/organisms";
+import {
+  VitalInfoForm,
+  ProductDescriptionForm,
+  ProductUploadImages,
+  ProductReviewReadOnly
+} from "components/organisms";
 import { Button, Steps } from "antd";
 import { isScreensize } from "utils/general.util";
 
@@ -36,6 +41,10 @@ export const Stepper = forwardRef(({ title }, ref) => {
     currentStep > 0 && setCurrentStep(currentStep - 1);
   };
 
+  const handleSubmitClick = () => {
+    setCurrentStep(0);
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 1: {
@@ -45,11 +54,7 @@ export const Stepper = forwardRef(({ title }, ref) => {
         return <ProductUploadImages ref={productImgRef} />;
       }
       case 3: {
-        return (
-          <div>
-            <b>Review</b>
-          </div>
-        );
+        return <ProductReviewReadOnly />;
       }
       default: {
         return <VitalInfoForm ref={vitalFormRef} />;
@@ -84,9 +89,15 @@ export const Stepper = forwardRef(({ title }, ref) => {
               Previous
             </Button>
           )}
-          <Button className="ml-2" type="primary" onClick={handleNextClick}>
-            Next
-          </Button>
+          {currentStep === 3 ? (
+            <Button className="ml-2" type="primary" onClick={handleSubmitClick}>
+              Submit
+            </Button>
+          ) : (
+            <Button className="ml-2" type="primary" onClick={handleNextClick}>
+              Next
+            </Button>
+          )}
         </div>
       </div>
     </div>

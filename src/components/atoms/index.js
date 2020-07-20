@@ -10,3 +10,4 @@ export * from "./stepper/stepper.comp";
 export * from "./product-card/product-card.comp";
 export * from "./search-bar/search-bar.comp";
 export * from "./dtc-section/dtc-section.comp";
+export * from "./perfume-spec-table/perfume-spec-table.comp";
