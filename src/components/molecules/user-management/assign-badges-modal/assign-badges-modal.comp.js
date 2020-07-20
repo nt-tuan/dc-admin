@@ -1,6 +1,7 @@
 import { Button, Checkbox, Modal, Empty } from "antd";
-import { ReactComponent as ManuFactorBadge } from "assets/icons/distributor.svg";
-import { ReactComponent as DistributorBadge } from "assets/icons/manufactor.svg";
+import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/distributor.svg";
+import { ReactComponent as DistributorBadge } from "assets/icons/badges/manufactor.svg";
+import UserVerifiedBadges from "assets/icons/badges/user-verified-badge.png";
 import React, { useState } from "react";
 import { USER_MANAGEMENT_SCHEMA } from "commons/schemas";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
@@ -10,7 +11,10 @@ const { BADGE_TYPES, BADGE_LABELS } = USER_MANAGEMENT_SCHEMA;
 
 const IMAGE_SCHEMA = {
   [BADGE_TYPES.DISTRIBUTOR]: <DistributorBadge />,
-  [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />
+  [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />,
+  [BADGE_TYPES.VERIFIED]: (
+    <img className="w-100" src={UserVerifiedBadges} alt="User Verified Badge" />
+  )
 };
 
 export const AssignBadgesModal = ({
