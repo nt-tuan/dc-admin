@@ -125,13 +125,18 @@ const schema = [
     label: PROD_DES_LABELS[PROD_DES_FIELDS.size],
     rules: [{ required: true, message: "Size is required" }],
     makeRender: () => (
-      <Select placeholder="Choose size">
-        {sizeOptions.map(({ label, value }) => (
-          <Option key={value} value={value}>
-            {label}
-          </Option>
-        ))}
-      </Select>
+      <Input
+        placeholder="Retail Price"
+        addonAfter={
+          <Select placeholder="Choose measurement unit">
+            {sizeOptions.map(({ label, value }) => (
+              <Option key={value} value={value}>
+                {label}
+              </Option>
+            ))}
+          </Select>
+        }
+      />
     )
   },
   {
