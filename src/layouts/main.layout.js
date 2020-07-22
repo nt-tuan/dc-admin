@@ -72,7 +72,7 @@ export const Layout = React.memo(({ children }) => {
 
   return (
     <Fragment>
-      <Helmet titleTemplate="Distichain - %s" />
+      <Helmet titleTemplate={`${process.env.REACT_APP_COMPANY_NAME} - %s`} />
       {BootstrappedLayout()}
     </Fragment>
   );
