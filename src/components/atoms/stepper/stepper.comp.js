@@ -1,39 +1,18 @@
-import React, { useRef, forwardRef, useState } from "react";
-import {
-  VitalInfoForm,
-  ProductDescriptionForm,
-  ProductUploadImages,
-  ProductReviewReadOnly
-} from "components/organisms";
+import React, { useState } from "react";
 import { Button, Steps } from "antd";
 import { isScreensize } from "utils/general.util";
 
 const { Step } = Steps;
 
-const PRODUCT_STEPS = {
-  step1: {
-    title: "Vital Information"
-  },
-  step2: {
-    title: "Product Description"
-  },
-  step3: {
-    title: "Product Image"
-  },
-  step4: {
-    title: "Review"
-  }
-};
-
-export const Stepper = forwardRef(({ title }, ref) => {
+export const Stepper = ({ title, steps, renderStepContent, onSave, savedDataArray, onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const isSmallDevice = isScreensize("sm");
-  const vitalFormRef = useRef();
-  const proDesRef = useRef();
-  const productImgRef = useRef();
 
   const handleNextClick = async () => {
-    // const vitalFormRes = await vitalFormRef.current.validateFields();
+    const res = await steps[currentStep].onNext();
+    if (res) {
+      onSave(currentStep, res);
+    }
     currentStep < 3 && setCurrentStep(currentStep + 1);
   };
 
@@ -42,24 +21,7 @@ export const Stepper = forwardRef(({ title }, ref) => {
   };
 
   const handleSubmitClick = () => {
-    setCurrentStep(0);
-  };
-
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1: {
-        return <ProductDescriptionForm ref={proDesRef} />;
-      }
-      case 2: {
-        return <ProductUploadImages ref={productImgRef} />;
-      }
-      case 3: {
-        return <ProductReviewReadOnly />;
-      }
-      default: {
-        return <VitalInfoForm ref={vitalFormRef} />;
-      }
-    }
+    onSubmit();
   };
 
   return (
@@ -74,15 +36,18 @@ export const Stepper = forwardRef(({ title }, ref) => {
           direction={isSmallDevice ? "vertical" : "horizontal"}
           onChange={(value) => setCurrentStep(value)}
         >
-          {Object.values(PRODUCT_STEPS).map((step, index) => (
+          {steps.map((step, index) => (
             <Step
               key={step.title}
               description={step.title}
               icon={index === currentStep ? <i className="fe fe-edit" /> : null}
+              disabled={
+                savedDataArray.length !== steps.length - 1 && index > savedDataArray.length - 1
+              }
             />
           ))}
         </Steps>
-        <div className="my-4">{renderStepContent()}</div>
+        <div className="my-4">{renderStepContent(currentStep)}</div>
         <div className="d-flex justify-content-end">
           {currentStep > 0 && (
             <Button type="primary" onClick={handlePrevClick}>
@@ -102,4 +67,4 @@ export const Stepper = forwardRef(({ title }, ref) => {
       </div>
     </div>
   );
-});
+};

@@ -5,6 +5,9 @@ const { Option } = Select;
 
 export const VitalInfoForm = forwardRef(({ title }, ref) => {
   const [form] = Form.useForm();
+  const initialInfo = localStorage.getItem("productData")
+    ? JSON.parse(localStorage.getItem("productData"))[0]
+    : {};
 
   return (
     <Form form={form} ref={ref} hideRequiredMark={true} scrollToFirstError={true} labelAlign="left">
@@ -15,6 +18,7 @@ export const VitalInfoForm = forwardRef(({ title }, ref) => {
           labelCol={{ sm: { span: 6 }, lg: { span: 4 } }}
           rules={rules}
           key={name}
+          initialValue={initialInfo[name]}
         >
           {makeRender()}
         </Form.Item>
