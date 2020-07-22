@@ -12,22 +12,24 @@ export const ProductUploadImages = forwardRef((props, ref) => {
   );
 
   return (
-    <Form form={form} ref={ref} className="d-flex">
+    <Form form={form} ref={ref} className="row">
       <Form.Item
         name="images"
         rules={[{ required: true, message: "Please upload product image" }]}
         style={{ width: "35%" }}
+        className="col-12 col-lg-4"
       >
         <Upload
           listType="picture-card"
           fileList={imgList}
+          beforeUpload={() => false}
           // onPreview={handlePreview}
           onChange={({ fileList }) => setImgList(fileList)}
         >
           {imgList.length >= 8 ? null : uploadButton}
         </Upload>
       </Form.Item>
-      <div style={{ width: "65%" }}>
+      <div className="col-12 col-lg-8">
         Choose images that are clear, information-rich and attractive. Images must meet the
         following requirements:
         <ul className="pl-4">

@@ -9,7 +9,13 @@ export const VitalInfoForm = forwardRef(({ title }, ref) => {
   return (
     <Form form={form} ref={ref} hideRequiredMark={true} scrollToFirstError={true} labelAlign="left">
       {schema.map(({ name, label, rules, makeRender }) => (
-        <Form.Item name={name} label={label} labelCol={{ span: 3 }} rules={rules} key={name}>
+        <Form.Item
+          name={name}
+          label={label}
+          labelCol={{ sm: { span: 6 }, lg: { span: 4 } }}
+          rules={rules}
+          key={name}
+        >
           {makeRender()}
         </Form.Item>
       ))}

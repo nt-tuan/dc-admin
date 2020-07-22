@@ -11,7 +11,13 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
   return (
     <Form form={form} ref={ref} hideRequiredMark={true} scrollToFirstError={true} labelAlign="left">
       {schema.map(({ name, label, rules, makeRender }) => (
-        <Form.Item name={name} label={label} labelCol={{ span: 4 }} rules={rules} key={name}>
+        <Form.Item
+          name={name}
+          label={label}
+          labelCol={{ sm: { span: 8 }, md: { span: 8 }, lg: { span: 6 } }}
+          rules={rules}
+          key={name}
+        >
           {makeRender(form)}
         </Form.Item>
       ))}
