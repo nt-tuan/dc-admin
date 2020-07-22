@@ -90,14 +90,14 @@ export const accountSummaryTableSchema = () => (
       sortOrder: sortedInfo.columnKey === FIELDS.originCountry && sortedInfo.order,
       render: (originCountry) => <CustomHighlighter searchText={searchText} value={originCountry} />
     },
-    {
-      title: LABELS[FIELDS.totalPrice],
-      dataIndex: FIELDS.totalPrice,
-      key: FIELDS.totalPrice,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
-      sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
-      render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
-    },
+    // {
+    //   title: LABELS[FIELDS.totalPrice],
+    //   dataIndex: FIELDS.totalPrice,
+    //   key: FIELDS.totalPrice,
+    //   sorter: (a, b) => sortAlphabetically(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
+    //   sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
+    //   render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
+    // },
     {
       title: LABELS[FIELDS.commission],
       dataIndex: FIELDS.commission,

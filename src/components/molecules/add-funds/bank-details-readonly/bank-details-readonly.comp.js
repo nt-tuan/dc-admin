@@ -4,7 +4,14 @@ import { Card } from "antd";
 import { areObjectValuesUndefined } from "utils/general.util";
 const { BANK_DETAILS, KYC3_LABEL } = KYC3_SCHEMA;
 
-export const BankDetailsReadonly = ({ bankDetails, showHeader = true, showTitle = true }) => {
+export const BankDetailsReadonly = ({
+  bankDetails,
+  showHeader = true,
+  showTitle = true,
+  schema = BANK_DETAILS,
+  label = KYC3_LABEL,
+  classname = "col-12 col-lg-6 mb-4"
+}) => {
   const renderTitle = (index) => {
     switch (index) {
       case 0:
@@ -28,12 +35,12 @@ export const BankDetailsReadonly = ({ bankDetails, showHeader = true, showTitle 
         {bankDetails
           .filter((account) => areObjectValuesUndefined(account) === false)
           .map((record, index) => (
-            <div key={record.id || index} className="col-12 col-lg-6 mb-4">
+            <div key={record.id || index} className={classname}>
               <Card bodyStyle={{ padding: "10px 15px" }} hoverable={true} className="dtc-br-10">
                 {showTitle && <h5 className="text-primary">{renderTitle(index)}</h5>}
-                {Object.values(BANK_DETAILS).map((field) => (
+                {Object.values(schema).map((field) => (
                   <div key={`${record.id}-${field}`} className="d-flex justify-content-between">
-                    <b>{KYC3_LABEL[field]} </b>
+                    <b>{label[field]} </b>
                     {record[field]}
                   </div>
                 ))}

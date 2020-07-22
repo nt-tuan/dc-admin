@@ -4,14 +4,32 @@ import { toCurrency } from "utils/general.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { FinancialService } from "services";
 
-const fakedData = [
+const PCC_BANK_DETAILS = {
+  bankName: "bankName",
+  country: "country",
+  city: "city",
+  swiftCode: "swiftCode",
+  iban: "iban",
+  accountCurrency: "accountCurrency"
+};
+
+const PCC_BANK_DETAILS_LABEL = {
+  [PCC_BANK_DETAILS.bankName]: "Bank name",
+  [PCC_BANK_DETAILS.country]: "Country",
+  [PCC_BANK_DETAILS.city]: "City/ Town",
+  [PCC_BANK_DETAILS.swiftCode]: "SWIFT",
+  [PCC_BANK_DETAILS.iban]: "IBAN",
+  [PCC_BANK_DETAILS.accountCurrency]: "Account currency"
+};
+
+const getData = () => [
   {
-    accountHolder: "First Century Bank",
-    name: "US Bank",
-    accountNumber: "01234567",
-    iban: "AE82 WEST 123 4567",
-    nationality: "UAE",
-    swiftCode: "AEIUFPIRRO82"
+    bankName: "ASTROBANK LIMITED",
+    country: " CYPRUS",
+    city: "NICOSIA(LEFKOSIA)",
+    swiftCode: "PIRBCY2NXXX",
+    iban: "CY12008001700000000001801302",
+    accountCurrency: "USD"
   }
 ];
 
@@ -40,10 +58,19 @@ const AddFundsPage = () => {
             below.
           </div>
           <div className="text-danger font-weight-bold">
-            IMPORTANT: Please add Genko_Trading as reference while transferring the funds.
+            Important: Please add "Credit e-account (CY83905000010010011040010011) in favour of
+            (SECDEX DIGITAL CUSTODIAN LIMITED), in the wallet of Super_admin" as reference while
+            transferring the funds.
           </div>
         </div>
-        <BankDetailsReadonly bankDetails={fakedData} showTitle={false} showHeader={false} />
+        <BankDetailsReadonly
+          bankDetails={getData()}
+          showHeader={false}
+          showTitle={false}
+          schema={PCC_BANK_DETAILS}
+          label={PCC_BANK_DETAILS_LABEL}
+          classname="col-12 mb-4"
+        />
       </div>
     </Fragment>
   );

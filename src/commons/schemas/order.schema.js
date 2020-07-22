@@ -88,20 +88,20 @@ export const orderActiveTableSchema = () => (
       sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
       render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
     },
-    {
-      title: LABELS[FIELDS.orderNumber],
-      dataIndex: FIELDS.orderNumber,
-      key: FIELDS.orderNumber,
-      sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
-      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
-      render: (orderNumber, { id }) => (
-        <Link
-          to={`${RouteConst.ORDER_TRACK_AND_TRACE.replace(":orderNumber", orderNumber)}?oid=${id}`}
-        >
-          <CustomHighlighter searchText={searchText} value={orderNumber} />
-        </Link>
-      )
-    },
+    // {
+    //   title: LABELS[FIELDS.orderNumber],
+    //   dataIndex: FIELDS.orderNumber,
+    //   key: FIELDS.orderNumber,
+    //   sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
+    //   sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
+    //   render: (orderNumber, { id }) => (
+    //     <Link
+    //       to={`${RouteConst.ORDER_TRACK_AND_TRACE.replace(":orderNumber", orderNumber)}?oid=${id}`}
+    //     >
+    //       <CustomHighlighter searchText={searchText} value={orderNumber} />
+    //     </Link>
+    //   )
+    // },
     {
       title: LABELS[FIELDS.productCategory],
       dataIndex: FIELDS.productCategory,
@@ -136,30 +136,30 @@ export const orderActiveTableSchema = () => (
       sortOrder: sortedInfo.columnKey === FIELDS.productName && sortedInfo.order,
       render: (productName) => <CustomHighlighter searchText={searchText} value={productName} />
     },
-    {
-      title: LABELS[FIELDS.quantity],
-      dataIndex: FIELDS.quantity,
-      key: FIELDS.quantity,
-      sorter: (a, b) => a[FIELDS.quantity] - b[FIELDS.quantity],
-      sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
-      render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
-    },
-    {
-      title: LABELS[FIELDS.unitPrice],
-      dataIndex: FIELDS.unitPrice,
-      key: FIELDS.unitPrice,
-      sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
-      sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
-      render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
-    },
-    {
-      title: LABELS[FIELDS.totalPrice],
-      dataIndex: FIELDS.totalPrice,
-      key: FIELDS.totalPrice,
-      sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
-      sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
-      render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
-    },
+    // {
+    //   title: LABELS[FIELDS.quantity],
+    //   dataIndex: FIELDS.quantity,
+    //   key: FIELDS.quantity,
+    //   sorter: (a, b) => a[FIELDS.quantity] - b[FIELDS.quantity],
+    //   sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
+    //   render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
+    // },
+    // {
+    //   title: LABELS[FIELDS.unitPrice],
+    //   dataIndex: FIELDS.unitPrice,
+    //   key: FIELDS.unitPrice,
+    //   sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
+    //   sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
+    //   render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
+    // },
+    // {
+    //   title: LABELS[FIELDS.totalPrice],
+    //   dataIndex: FIELDS.totalPrice,
+    //   key: FIELDS.totalPrice,
+    //   sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
+    //   sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
+    //   render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
+    // },
     {
       title: LABELS[FIELDS.buyerCompanyName],
       dataIndex: FIELDS.buyerCompanyName,
@@ -209,14 +209,14 @@ export const orderHistoryTableSchema = () => (
       sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
       render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
     },
-    {
-      title: LABELS[FIELDS.orderNumber],
-      dataIndex: FIELDS.orderNumber,
-      key: FIELDS.orderNumber,
-      sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
-      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
-      render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
-    },
+    // {
+    //   title: LABELS[FIELDS.orderNumber],
+    //   dataIndex: FIELDS.orderNumber,
+    //   key: FIELDS.orderNumber,
+    //   sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
+    //   sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
+    //   render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
+    // },
     {
       title: LABELS[FIELDS.productName],
       dataIndex: FIELDS.productName,
@@ -225,30 +225,30 @@ export const orderHistoryTableSchema = () => (
       sortOrder: sortedInfo.columnKey === FIELDS.productName && sortedInfo.order,
       render: (productName) => <CustomHighlighter searchText={searchText} value={productName} />
     },
-    {
-      title: LABELS[FIELDS.quantity],
-      dataIndex: FIELDS.quantity,
-      key: FIELDS.quantity,
-      sorter: (a, b) => a[FIELDS.quantity] - b[FIELDS.quantity],
-      sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
-      render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
-    },
-    {
-      title: LABELS[FIELDS.unitPrice],
-      dataIndex: FIELDS.unitPrice,
-      key: FIELDS.unitPrice,
-      sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
-      sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
-      render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
-    },
-    {
-      title: LABELS[FIELDS.totalPrice],
-      dataIndex: FIELDS.totalPrice,
-      key: FIELDS.totalPrice,
-      sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
-      sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
-      render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
-    },
+    // {
+    //   title: LABELS[FIELDS.quantity],
+    //   dataIndex: FIELDS.quantity,
+    //   key: FIELDS.quantity,
+    //   sorter: (a, b) => a[FIELDS.quantity] - b[FIELDS.quantity],
+    //   sortOrder: sortedInfo.columnKey === FIELDS.quantity && sortedInfo.order,
+    //   render: (quantity) => <CustomHighlighter searchText={searchText} value={quantity} />
+    // },
+    // {
+    //   title: LABELS[FIELDS.unitPrice],
+    //   dataIndex: FIELDS.unitPrice,
+    //   key: FIELDS.unitPrice,
+    //   sorter: (a, b) => sortPrice(a[FIELDS.unitPrice], b[FIELDS.unitPrice]),
+    //   sortOrder: sortedInfo.columnKey === FIELDS.unitPrice && sortedInfo.order,
+    //   render: (unitPrice) => <CustomHighlighter searchText={searchText} value={unitPrice} />
+    // },
+    // {
+    //   title: LABELS[FIELDS.totalPrice],
+    //   dataIndex: FIELDS.totalPrice,
+    //   key: FIELDS.totalPrice,
+    //   sorter: (a, b) => sortPrice(a[FIELDS.totalPrice], b[FIELDS.totalPrice]),
+    //   sortOrder: sortedInfo.columnKey === FIELDS.totalPrice && sortedInfo.order,
+    //   render: (totalPrice) => <CustomHighlighter searchText={searchText} value={totalPrice} />
+    // },
     {
       title: LABELS[FIELDS.buyerCompanyName],
       dataIndex: FIELDS.buyerCompanyName,
