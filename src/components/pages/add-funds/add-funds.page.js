@@ -3,6 +3,7 @@ import { BankDetailsReadonly } from "components/molecules";
 import { toCurrency } from "utils/general.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { FinancialService } from "services";
+import { Button } from "antd";
 
 const PCC_BANK_DETAILS = {
   bankName: "bankName",
@@ -35,12 +36,21 @@ const getData = () => [
 
 const AddFundsPage = () => {
   const [data, setData] = useState({});
+  const [showCopySuccess, setShowCopySuccess] = useState(false);
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const resWalletDashboard = await FinancialService.getWalletDashboard();
       setData(resWalletDashboard);
     });
   }, []);
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setShowCopySuccess(true);
+    setTimeout(() => {
+      setShowCopySuccess(false);
+    }, 1000);
+  };
 
   return (
     <Fragment>
@@ -58,9 +68,19 @@ const AddFundsPage = () => {
             below.
           </div>
           <div className="text-danger font-weight-bold">
-            Important: Please add "Credit e-account (CY83905000010010011040010011) in favour of
-            (SECDEX DIGITAL CUSTODIAN LIMITED), in the wallet of Super_admin" as reference while
-            transferring the funds.
+            Important: Please add “CY83905000010010011040010011 - Super_admin"{" "}
+            {document.queryCommandSupported("copy") && (
+              <Button
+                title="Copy"
+                type="primary"
+                size="small"
+                onClick={() => handleCopy(`CY83905000010010011040010011) - Super_admin`)}
+                ghost
+              >
+                <i className={showCopySuccess ? "fe fe-check" : "fe fe-copy"} />
+              </Button>
+            )}{" "}
+            as reference while transferring the funds.
           </div>
         </div>
         <BankDetailsReadonly
