@@ -68,7 +68,7 @@ const AddFundsPage = () => {
             below.
           </div>
           <div className="text-danger font-weight-bold">
-            Important: Please add “CY83905000010010011040010011 - Super_admin"{" "}
+            Important: Please add “CY83905000010010011040010011 - AdminExtrabeaute"{" "}
             {document.queryCommandSupported("copy") && (
               <Button
                 title="Copy"
