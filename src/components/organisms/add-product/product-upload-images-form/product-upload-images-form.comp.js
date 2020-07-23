@@ -38,13 +38,14 @@ export const ProductUploadImages = forwardRef((props, ref) => {
         </Upload>
       </Form.Item>
       <div className="col-12 col-lg-8">
-        Choose images that are clear, information-rich and attractive. Images must meet the
+        Listings that are missing a main image will not appear in search or browse until you fix the
+        listing. Choose images that are clear, information-rich and attractive. Images must meet the
         following requirements:
         <ul className="pl-4">
           <li>
             ● Products must fill at least 85% of the image. Images must show only the product that
-            is for sale, with few or no props and with no logos, watermarks, or insert images.
-            Images may only contain text that is a part of the product.
+            is for sale, with few or no props and with no logos, watermarks, or inset images. Images
+            may only contain text that is a part of the product.
           </li>
           <li>
             ● Main image must have a pure white background, must be a photo (not a drawing), and
@@ -55,7 +56,7 @@ export const ProductUploadImages = forwardRef((props, ref) => {
             shortest side to be zoom-able.
           </li>
           <li>● Images must not exceed 10000 pixels on the longest side.</li>
-          <li>● JPEG is the preffered image format.</li>
+          <li>● JPEG is the preffered image format, but you also may use TIFF and GIF files.</li>
         </ul>
       </div>
     </Form>
