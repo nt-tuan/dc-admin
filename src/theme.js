@@ -2,6 +2,7 @@
 // you should restart dev server after variables changes
 // ref: https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 module.exports = {
+  "@border-radius-base": "5px",
   "@body-background": "#fff",
   "@font-size-base": "15px",
   "@font-size-sm": "13px",

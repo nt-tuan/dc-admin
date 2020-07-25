@@ -1,78 +1,62 @@
-import React, { useRef, forwardRef, useState } from "react";
-import { Helmet } from "react-helmet";
 import { Stepper } from "components/atoms";
 import {
   ProductDescriptionForm,
-  ProductUploadImages,
   ProductReviewReadOnly,
+  ProductUploadImages,
   VitalInfoForm
 } from "components/organisms";
+import React, { forwardRef, useRef } from "react";
+import { Helmet } from "react-helmet";
 
-const ProductDatabase = forwardRef((props, ref) => {
-  const [data, setData] = useState([]);
+const AddProductPage = forwardRef((props, ref) => {
   const vitalFormRef = useRef();
   const proDesRef = useRef();
   const productImgRef = useRef();
 
-  const getSteps = () => [
+  const canMoveNextTemplate = async (asyncValidateFn) => {
+    try {
+      await asyncValidateFn();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const Steps = useRef([
     {
       title: "Vital Information",
-      onNext: () => vitalFormRef.current.validateFields()
+      canMoveNext: async () => canMoveNextTemplate(vitalFormRef.current.validateFields),
+      component: <VitalInfoForm ref={vitalFormRef} />
     },
     {
       title: "Product Description",
-      onNext: () => proDesRef.current.validateFields()
+      canMoveNext: async () => canMoveNextTemplate(proDesRef.current.validateFields),
+      component: <ProductDescriptionForm ref={proDesRef} />
     },
     {
       title: "Product Image",
-      onNext: () => productImgRef.current.validateFields()
+      canMoveNext: async () => canMoveNextTemplate(productImgRef.current.validateFields),
+      component: <ProductUploadImages ref={productImgRef} />
     },
     {
       title: "Review",
-      onNext: () => {}
+      onNext: () => {},
+      component: <ProductReviewReadOnly />
     }
-  ];
-
-  const renderStepContent = (currentStep) => {
-    switch (currentStep) {
-      case 1: {
-        return <ProductDescriptionForm ref={proDesRef} />;
-      }
-      case 2: {
-        return <ProductUploadImages ref={productImgRef} />;
-      }
-      case 3: {
-        return <ProductReviewReadOnly />;
-      }
-      default: {
-        return <VitalInfoForm ref={vitalFormRef} />;
-      }
-    }
-  };
-
-  const handleSaveData = (step, value) => {
-    data[step] = value;
-    setData([...data]);
-    localStorage.setItem("productData", JSON.stringify(data));
-  };
+  ]).current;
 
   const handleSubmit = () => {
-    console.log(data);
+    console.log(vitalFormRef.current.getFieldsValue());
+    console.log(proDesRef.current.getFieldsValue());
+    console.log(productImgRef.current.getFieldsValue());
   };
 
   return (
     <article>
       <Helmet title="Add product" />
-      <Stepper
-        title="Product Creation"
-        steps={getSteps()}
-        renderStepContent={renderStepContent}
-        onSave={handleSaveData}
-        onSubmit={handleSubmit}
-        savedDataArray={data}
-      />
+      <Stepper title="Product Creation" steps={Steps} onSubmit={handleSubmit} />
     </article>
   );
 });
 
-export default ProductDatabase;
+export default AddProductPage;

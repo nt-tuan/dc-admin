@@ -7,9 +7,7 @@ const { Option } = Select;
 
 export const ProductDescriptionForm = forwardRef((props, ref) => {
   const [form] = Form.useForm();
-  const initialInfo = JSON.parse(localStorage.getItem("productData"))[1]
-    ? JSON.parse(localStorage.getItem("productData"))[1]
-    : {};
+  const initialInfo = {};
 
   return (
     <Form form={form} ref={ref} hideRequiredMark={true} scrollToFirstError={true} labelAlign="left">

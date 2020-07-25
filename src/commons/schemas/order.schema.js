@@ -1,7 +1,5 @@
 import React from "react";
-import { sortAlphabetically, sortPrice } from "utils/sort.util";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { RouteConst } from "commons/consts";
+import { sortAlphabetically } from "utils/sort.util";
 
 const FIELDS = {
   timestamp: "createdDate",

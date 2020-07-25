@@ -4,13 +4,11 @@ import { Upload, Form } from "antd";
 export const ProductUploadImages = forwardRef((props, ref) => {
   const [form] = Form.useForm();
   const [imgList, setImgList] = useState([]);
-  const initialInfo = JSON.parse(localStorage.getItem("productData"))[2]
-    ? JSON.parse(localStorage.getItem("productData"))[2]
-    : {};
+  const initialInfo = {};
 
   useEffect(() => {
     setImgList(initialInfo.images ? initialInfo.images.fileList : []);
-  }, []);
+  }, [initialInfo.images]);
 
   const uploadButton = (
     <div>

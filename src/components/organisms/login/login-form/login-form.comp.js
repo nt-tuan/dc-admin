@@ -105,15 +105,6 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
         >
           Log In
         </Button>
-        <div className="ml-2">
-          <span className="mr-2">Not a Member?</span>
-          <Link
-            to={RouteConst.REGISTER_ROUTE}
-            className="font-weight-bold air__utils__link__underlined"
-          >
-            Sign Up
-          </Link>
-        </div>
       </div>
     );
   };
