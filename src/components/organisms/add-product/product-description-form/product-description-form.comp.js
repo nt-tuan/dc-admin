@@ -25,7 +25,7 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
                 name={PROD_DES_FIELDS.currency}
                 key={name}
               >
-                <Select defaultValue={currencyOptions[0].value} style={{ width: 100 }}>
+                <Select style={{ width: 100 }}>
                   {currencyOptions.map(({ label, value }) => (
                     <Option value={value} key={value}>
                       {label}
