@@ -1,52 +1,37 @@
 import { Form, Upload } from "antd";
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useReducer } from "react";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const normFile = (e) => {
-  if (e.file.status === "done") {
-    return e && e.file.response;
-  }
-  return e && e.fileList;
+  return e && e.fileList.map((file) => (file.status === "done" ? file.response : file));
 };
 
-export const ProductUploadImagesForm = forwardRef((props, ref) => {
+export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) => {
   const [form] = Form.useForm();
-  const [imgList, setImgList] = useState([]);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  const handleOnChange = ({ fileList }) => {
-    setImgList(fileList);
+  const renderUploadButton = () => {
+    console.log(form.getFieldValue("productImageName"));
+    return form.getFieldValue("productImageName") &&
+      form.getFieldValue("productImageName").length >= 1 ? null : (
+      <UploadButton />
+    );
   };
 
   return (
     <Form name="ProductUploadImagesForm" form={form} ref={ref} className="row">
       <Form.Item
+        shouldUpdate
         name="productImageName"
         rules={[{ required: true, message: "Please upload product image" }]}
         className="col-12 col-lg-3"
-        valuePropName="file"
+        valuePropName="fileList"
         getValueFromEvent={normFile}
-        initialValue={imgList}
       >
         <Upload
           listType="picture-card"
-          fileList={imgList}
-          customRequest={async ({ onSuccess, onError, file }) => {
-            try {
-              // const res = await ImageService.uploadImage(file);
-              const res = {
-                originalName: "3b8ad2c7b1be2caf24321c852103598a.jpg",
-                name: "bb86cb00-0a88-4c65-88dc-bcc7756e9e2d.jpg",
-                url:
-                  "https://distichain-dev.s3.ap-south-1.amazonaws.com/product/import/bb86cb00-0a88-4c65-88dc-bcc7756e9e2d.jpg"
-              };
-              setTimeout(() => {
-                onSuccess({ ...res, status: "done" });
-              }, 2000);
-            } catch (error) {
-              onError(error);
-            }
-          }}
-          onChange={handleOnChange}
+          customRequest={handleUploadImage}
+          onChange={() => forceUpdate()}
           onRemove={(file) => {
             asyncErrorHandlerWrapper(async () => {
               try {
@@ -55,7 +40,7 @@ export const ProductUploadImagesForm = forwardRef((props, ref) => {
             });
           }}
         >
-          {imgList.length >= 1 ? null : <UploadButton />}
+          {renderUploadButton()}
         </Upload>
       </Form.Item>
       <div className="col-12 col-lg-9">

@@ -5,7 +5,6 @@ const { Option } = Select;
 
 export const VitalInfoForm = forwardRef(({ title }, ref) => {
   const [form] = Form.useForm();
-  const initialInfo = {};
 
   const renderFormItems = (fieldName, label) => {
     switch (fieldName) {
@@ -46,7 +45,6 @@ export const VitalInfoForm = forwardRef(({ title }, ref) => {
           labelCol={{ sm: { span: 6 }, lg: { span: 4 } }}
           rules={rules}
           key={name}
-          initialValue={initialInfo[name]}
         >
           {renderFormItems(name, label)}
         </Form.Item>

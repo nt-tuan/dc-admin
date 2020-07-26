@@ -11,7 +11,7 @@ const ListProductCard = withListItem({ xxl: 6, xl: 6, lg: 8, md: 12, sm: 12, xs:
 const ProductDatabase = () => {
   return (
     <article>
-      <Helmet title="Product database" />
+      <Helmet id="Product database" />
       <DTCSection className="d-flex justify-content-between align-items-center">
         <SearchBar />
         <Button type="primary">Add Product</Button>
@@ -35,31 +35,36 @@ const ProductDatabase = () => {
               image:
                 "https://hoanghamobile.com/Uploads/Originals/2019/11/05/201911051610300966_%C4%91een.png;width=820;height=550;watermark=logo;crop=auto;format=jpg",
               name: "IPhone 11",
-              link: ""
+              link: "",
+              id: "1"
             },
             {
               image:
                 "https://hoanghamobile.com/Uploads/Originals/2019/11/05/201911051610300966_%C4%91een.png;width=820;height=550;watermark=logo;crop=auto;format=jpg",
               name: "IPhone 11",
-              link: ""
+              link: "",
+              id: "2"
             },
             {
               image:
                 "https://hoanghamobile.com/Uploads/Originals/2019/11/05/201911051610300966_%C4%91een.png;width=820;height=550;watermark=logo;crop=auto;format=jpg",
               name: "IPhone 11",
-              link: ""
+              link: "",
+              id: "3"
             },
             {
               image:
                 "https://hoanghamobile.com/Uploads/Originals/2019/11/05/201911051610300966_%C4%91een.png;width=820;height=550;watermark=logo;crop=auto;format=jpg",
               name: "IPhone 11",
-              link: ""
+              link: "",
+              id: "4"
             },
             {
               image:
                 "https://hoanghamobile.com/Uploads/Originals/2019/11/05/201911051610300966_%C4%91een.png;width=820;height=550;watermark=logo;crop=auto;format=jpg",
               name: "IPhone 11",
-              link: ""
+              link: "",
+              id: "5"
             }
           ]}
         />
