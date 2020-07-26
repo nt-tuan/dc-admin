@@ -5,6 +5,7 @@ export class ApiPathConsts {
   static #ORDER_PREFIX = "/orders";
   static #WALLET_PREFIX = "/wallet";
   static #COMPANY_PREFIX = "/companies";
+  static #PRODUCT_PREFIX = "/products";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -68,5 +69,21 @@ export class ApiPathConsts {
 
   static get WALLET_WITHDRAWAL() {
     return `${this.#WALLET_PREFIX}/withdrawal`;
+  }
+
+  static get ADD_PRODUCT() {
+    return `${this.#PRODUCT_PREFIX}`;
+  }
+
+  static get GET_PRODUCTS() {
+    return `${this.#PRODUCT_PREFIX}/global`;
+  }
+
+  static get UPLOAD_PRODUCT_IMAGE() {
+    return `${this.#PRODUCT_PREFIX}/images`;
+  }
+
+  static get DELETE_PRODUCT_IMAGE() {
+    return `${this.#PRODUCT_PREFIX}/images`;
   }
 }

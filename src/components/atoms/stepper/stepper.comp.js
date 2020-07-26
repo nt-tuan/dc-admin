@@ -12,8 +12,8 @@ export const Stepper = ({ title, steps = [], onSubmit }) => {
 
   const handleNextClick = () => {
     asyncErrorHandlerWrapper(async () => {
-      const canMoveNext = await steps[currentStep].canMoveNext();
-      canMoveNext && currentStep < steps.length - 1 && setCurrentStep(currentStep + 1);
+      const canMove = await steps[currentStep].canMove();
+      canMove && currentStep < steps.length - 1 && setCurrentStep(currentStep + 1);
     });
   };
 
@@ -35,13 +35,22 @@ export const Stepper = ({ title, steps = [], onSubmit }) => {
           labelPlacement="vertical"
           size="default"
           direction={isSmallDevice ? "vertical" : "horizontal"}
-          onChange={(value) => setCurrentStep(value)}
+          onChange={(targetStep) => {
+            asyncErrorHandlerWrapper(async () => {
+              if (currentStep > targetStep) {
+                setCurrentStep(targetStep);
+              } else {
+                const canMove = await steps[currentStep].canMove();
+                canMove && setCurrentStep(targetStep);
+              }
+            });
+          }}
         >
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <Step
               key={step.title}
               description={step.title}
-              icon={index === currentStep ? <i className="fe fe-edit" /> : null}
+              icon={step.stepIndex === currentStep ? <i className="fe fe-edit" /> : null}
             />
           ))}
         </Steps>

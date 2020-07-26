@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles.module.scss";
 
 export const PerfumeSpecTable = React.memo(({ values }) => {
+  console.log("values", values);
   const showRetailPrice = (currency, retailPrice) => {
     if (currency === undefined || retailPrice === undefined) {
       return "";

@@ -23,9 +23,9 @@ class HttpApi {
     delete this.api.defaults.headers.common["Authorization"];
   };
 
-  get = async (uri, params) => {
+  get = async (path, params) => {
     try {
-      const result = await this.api.get(uri, {
+      const result = await this.api.get(path, {
         params: params
       });
       return result.data;
@@ -34,9 +34,9 @@ class HttpApi {
     }
   };
 
-  post = async (uri, body, params) => {
+  post = async (path, body, params) => {
     try {
-      const result = await this.api.post(uri, body, {
+      const result = await this.api.post(path, body, {
         params: params
       });
       return result.data;
@@ -45,9 +45,11 @@ class HttpApi {
     }
   };
 
-  postFile = async (uri, file, params) => {
+  postFile = async (path, file, params) => {
+    const formData = new FormData();
+    formData.append("file", file);
     try {
-      const result = await this.api.post(uri, file, {
+      const result = await this.api.post(path, formData, {
         params: params,
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -57,9 +59,9 @@ class HttpApi {
     }
   };
 
-  putFile = async (uri, file, params) => {
+  putFile = async (path, file, params) => {
     try {
-      const result = await this.api.put(uri, file, {
+      const result = await this.api.put(path, file, {
         params: params,
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -69,9 +71,9 @@ class HttpApi {
     }
   };
 
-  put = async (uri, body, params) => {
+  put = async (path, body, params) => {
     try {
-      const result = await this.api.put(uri, body, {
+      const result = await this.api.put(path, body, {
         params: params
       });
       return result.data;
@@ -80,9 +82,9 @@ class HttpApi {
     }
   };
 
-  delete = async (uri, params) => {
+  delete = async (path, params) => {
     try {
-      const result = await this.api.delete(uri, {
+      const result = await this.api.delete(path, {
         params: params
       });
       return result.data;
@@ -91,9 +93,9 @@ class HttpApi {
     }
   };
 
-  patch = async (uri, body, params) => {
+  patch = async (path, body, params) => {
     try {
-      const result = await this.api.patch(uri, body, {
+      const result = await this.api.patch(path, body, {
         params: params
       });
       return result.data;

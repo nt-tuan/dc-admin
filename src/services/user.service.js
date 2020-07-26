@@ -1,6 +1,6 @@
 import { backendAPI } from "utils/httpAPI.util";
 import store from "store";
-import { ApiPathConsts } from "commons/consts/system/api-uri.const";
+import { ApiPathConsts } from "commons/consts/system/api-paths/api-paths.const";
 
 export class UserService {
   static getCurrentAccount = async () => {
