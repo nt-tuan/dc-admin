@@ -11,7 +11,6 @@ const { parseDataToGridView, parseDataToWalletDashBoard } = walletMapper;
 const WalletPage = () => {
   const [walletDashboard, setWalletDashboard] = useState({});
   const [transactionDetails, setTransactionDetails] = useState([]);
-  // console.log("transactionDetails", transactionDetails);
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {

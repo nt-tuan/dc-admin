@@ -3,7 +3,6 @@ import { PerfumeSpecTable } from "components/atoms";
 import React from "react";
 
 export const ProductReviewReadOnly = ({ data }) => {
-  console.log(data);
   const renderImage = () => {
     return data.imgUrl ? (
       <img src={data.imgUrl} alt="iphone" className="img-fluid pt-4" />
