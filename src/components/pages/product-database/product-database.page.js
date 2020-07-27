@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { ProductService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { useDispatch } from "react-redux";
+import * as STORAGE_DUCK from "redux/storage/storage.duck";
 
 const ListProductCard = withListItem({ xxl: 6, xl: 6, lg: 8, md: 12, sm: 12, xs: 24, gutter: 30 })(
   ProductCard
@@ -16,6 +18,7 @@ const ListProductCard = withListItem({ xxl: 6, xl: 6, lg: 8, md: 12, sm: 12, xs:
 
 const ProductDatabase = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [
     { data: products, isLoading, isLoadMore, page, totalPages },
     { setIsLoading, onSearch, onLoadMore }
@@ -50,13 +53,17 @@ const ProductDatabase = () => {
             return (
               <div className="d-flex justify-content-between align-items-center">
                 <Button
-                  onClick={(e) =>
+                  onClick={(e) => {
+                    dispatch({
+                      type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
+                      payload: { pageName: "EditProductPage" }
+                    });
                     history.push(
                       `${RouteConst.EDIT_PRODUCT.replace(":id", `${product.name}`)}?uid=${
                         product.id
                       }`
-                    )
-                  }
+                    );
+                  }}
                   style={{ width: 80 }}
                 >
                   Edit
