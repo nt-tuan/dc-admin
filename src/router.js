@@ -124,7 +124,7 @@ const privateRoutes = [
     exact: true
   },
   {
-    path: RouteConst.PRODUCT_CREATION,
+    path: RouteConst.ADD_PRODUCT,
     Component: loadable(() => import("components/pages/add-product/add-product.page")),
     exact: true
   },

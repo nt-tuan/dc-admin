@@ -1,6 +1,7 @@
 import { Form, Upload } from "antd";
 import React, { forwardRef, useReducer } from "react";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ImageService } from "services";
 
 const normFile = (e) => {
   return e && e.fileList.map((file) => (file.status === "done" ? file.response : file));
@@ -33,10 +34,9 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
           customRequest={handleUploadImage}
           onChange={() => forceUpdate()}
           onRemove={(file) => {
+            console.log(file);
             asyncErrorHandlerWrapper(async () => {
-              try {
-                // const res = await ImageService.deleteImage(file.response.name);
-              } catch (error) {}
+              await ImageService.deleteImage(file.response ? file.response.name : file.name);
             });
           }}
         >

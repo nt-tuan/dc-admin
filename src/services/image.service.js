@@ -9,7 +9,7 @@ export class ImageService {
 
   static deleteImage = async (fileName) => {
     const result = await backendAPI.delete(
-      `${ApiPathConsts.UPLOAD_PRODUCT_IMAGE}?fileName=${fileName}&isImport=true`
+      `${ApiPathConsts.UPLOAD_PRODUCT_IMAGE}/${encodeURIComponent(fileName)}?isImport=true`
     );
     return result;
   };

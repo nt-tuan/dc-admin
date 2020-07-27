@@ -3,18 +3,23 @@ import { DTCSection, ProductCard, SearchBar } from "components/atoms";
 import { withListItem } from "HOCs/withListItem";
 import React from "react";
 import { Helmet } from "react-helmet";
+import { RouteConst } from "commons/consts";
+import { useHistory } from "react-router-dom";
 
 const ListProductCard = withListItem({ xxl: 6, xl: 6, lg: 8, md: 12, sm: 12, xs: 24, gutter: 30 })(
   ProductCard
 );
 
 const ProductDatabase = () => {
+  const history = useHistory();
   return (
     <article>
       <Helmet id="Product database" />
       <DTCSection className="d-flex justify-content-between align-items-center">
         <SearchBar />
-        <Button type="primary">Add Product</Button>
+        <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
+          Add Product
+        </Button>
       </DTCSection>
       <section>
         <ListProductCard

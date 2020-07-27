@@ -41,7 +41,7 @@ export class SharedPaths {
   static get PRODUCT_DATABASE() {
     return "/product-database";
   }
-  static get PRODUCT_CREATION() {
+  static get ADD_PRODUCT() {
     return "/add-product";
   }
   static get PRODUCT_EDIT() {

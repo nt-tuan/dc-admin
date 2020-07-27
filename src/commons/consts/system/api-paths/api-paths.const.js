@@ -79,6 +79,14 @@ export class ApiPathConsts {
     return `${this.#PRODUCT_PREFIX}/global`;
   }
 
+  static get GET_PRODUCT_CATEGORIES() {
+    return `${this.#PRODUCT_PREFIX}/category`;
+  }
+
+  static get DELETE_PRODUCT() {
+    return `${this.#PRODUCT_PREFIX}/:id`;
+  }
+
   static get UPLOAD_PRODUCT_IMAGE() {
     return `${this.#PRODUCT_PREFIX}/images`;
   }

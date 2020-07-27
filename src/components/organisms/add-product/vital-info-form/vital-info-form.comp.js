@@ -1,29 +1,52 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import { Form, Input, Select } from "antd";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ProductService } from "services";
 
 const { Option } = Select;
 
 export const VitalInfoForm = forwardRef(({ title }, ref) => {
   const [form] = Form.useForm();
+  const [categories, setCategories] = useState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    asyncErrorHandlerWrapper(async () => {
+      const categoriesString = await ProductService.getProductCategories();
+      setCategories(categoriesString.split(","));
+      setIsLoadingCategories(false);
+    });
+  }, []);
 
   const renderFormItems = (fieldName, label) => {
     switch (fieldName) {
       case VITAL_INFO_FIELDS.productName:
-        return <Input placeholder="Product Name" />;
-      case VITAL_INFO_FIELDS.brandName:
-        return <Input placeholder="Brand name" />;
+        return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName]} />;
+      case VITAL_INFO_FIELDS.brand:
+        return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brand]} />;
       case VITAL_INFO_FIELDS.category:
         return (
-          <Select placeholder="Choose category" allowClear>
-            {CategoryOptions.map(({ label, value }) => (
-              <Option value={value} key={value}>
-                {label}
+          <Select
+            placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.category]}
+            allowClear
+            loading={isLoadingCategories}
+          >
+            {categories.map((category) => (
+              <Option value={category} key={category}>
+                {category}
               </Option>
             ))}
           </Select>
         );
       case VITAL_INFO_FIELDS.keyword:
-        return <Input placeholder="Keyword" />;
+        return (
+          <Select
+            mode="tags"
+            placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.keyword]}
+            style={{ width: "100%" }}
+            tokenSeparators={[","]}
+          ></Select>
+        );
       default:
         return null;
     }
@@ -35,6 +58,7 @@ export const VitalInfoForm = forwardRef(({ title }, ref) => {
       form={form}
       ref={ref}
       hideRequiredMark={true}
+      colon={false}
       scrollToFirstError={true}
       labelAlign="left"
     >
@@ -55,19 +79,17 @@ export const VitalInfoForm = forwardRef(({ title }, ref) => {
 
 const VITAL_INFO_FIELDS = {
   productName: "productName",
-  brandName: "brand",
+  brand: "brand",
   category: "category",
   keyword: "keyword"
 };
 
 const VITAL_INFO_LABELS = {
   [VITAL_INFO_FIELDS.productName]: "Product Name",
-  [VITAL_INFO_FIELDS.brandName]: "Brand Name",
+  [VITAL_INFO_FIELDS.brand]: "Brand",
   [VITAL_INFO_FIELDS.category]: "Category",
-  [VITAL_INFO_FIELDS.keyword]: "Keyword"
+  [VITAL_INFO_FIELDS.keyword]: "Keywords"
 };
-
-const CategoryOptions = [{ label: "Perfume", value: "Mobile Phone" }];
 
 const SCHEMA = [
   {
@@ -76,8 +98,8 @@ const SCHEMA = [
     rules: [{ required: true, message: "Product name is required" }]
   },
   {
-    name: VITAL_INFO_FIELDS.brandName,
-    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brandName],
+    name: VITAL_INFO_FIELDS.brand,
+    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brand],
     rules: [{ required: true, message: "Brand name is required" }]
   },
   {
@@ -88,6 +110,6 @@ const SCHEMA = [
   {
     name: VITAL_INFO_FIELDS.keyword,
     label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.keyword],
-    rules: []
+    rules: [{ required: true, message: "Please input at least 1 Keyword" }]
   }
 ];

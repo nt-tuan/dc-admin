@@ -12,7 +12,7 @@ import React, { forwardRef, useEffect, useRef, useState, useReducer } from "reac
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import * as STORAGE_DUCK from "redux/storage/storage.duck";
-import { ProductService } from "services";
+import { ProductService, ImageService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst } from "commons/consts";
@@ -28,13 +28,7 @@ const canMoveTemplate = async (asyncValidateFn, setDataFn) => {
 
 const handleUploadImage = async ({ onSuccess, onError, file }) => {
   try {
-    // const res = await ImageService.uploadImage(file);
-    const res = {
-      originalName: "3b8ad2c7b1be2caf24321c852103598a.jpg",
-      name: "bb86cb00-0a88-4c65-88dc-bcc7756e9e2d.jpg",
-      url:
-        "https://distichain-dev.s3.ap-south-1.amazonaws.com/product/import/bb86cb00-0a88-4c65-88dc-bcc7756e9e2d.jpg"
-    };
+    const res = await ImageService.uploadImage(file);
     setTimeout(() => {
       onSuccess({ ...res, status: "done", uid: res.name });
     }, 2000);
@@ -61,6 +55,11 @@ const AddProductPage = forwardRef((props, ref) => {
   useEffect(() => {
     draftedFormData !== undefined && setShowSavedResult(true);
   }, [draftedFormData]);
+
+  useEffect(() => {
+    // ProductService.deleteProduct("7d64af15-0b13-48a2-b7f8-c084fa6ad6eb");
+    ProductService.getProducts();
+  }, []);
 
   useEffect(() => {
     dispatch({ type: STORAGE_DUCK.GET_FROM_STORAGE, payload: { pageName: "AddProductPage" } });
@@ -119,14 +118,16 @@ const AddProductPage = forwardRef((props, ref) => {
   const handleSubmit = () => {
     const composedData = {
       ...vitalInfoData,
-      fileName: imagesData.productImageName.name,
+      keyword: vitalInfoData.keyword.join(","),
+      fileName: imagesData.productImageName[0].name,
       variantList: Object.keys(variantData).map((field) => ({
         name: field,
         value: variantData[field]
       }))
     };
+    console.log(composedData);
     asyncErrorHandlerWrapper(async () => {
-      // await ProductService.addProduct(composedData);
+      await ProductService.addProduct(composedData);
       handleClearDraftedFormData();
       history.push(RouteConst.PRODUCT_DATABASE);
     });
@@ -189,7 +190,7 @@ const AddProductPage = forwardRef((props, ref) => {
           />
         </DTCSection>
       )}
-      <DTCSection>
+      <DTCSection hidden={showLoadSavedResult}>
         <Form.Provider onFormChange={handleFormChange}>
           <Stepper title="Product Creation" steps={Steps} onSubmit={handleSubmit} />
         </Form.Provider>

@@ -80,6 +80,7 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
       name="ProductDescriptionForm"
       form={form}
       ref={ref}
+      colon={false}
       hideRequiredMark={true}
       scrollToFirstError={true}
       labelAlign="left"

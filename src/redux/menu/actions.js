@@ -49,7 +49,7 @@ export async function getUserData() {
         {
           title: "Product Creation",
           key: "ProductCreation",
-          url: RouteConst.PRODUCT_CREATION
+          url: RouteConst.ADD_PRODUCT
         }
       ]
     },
