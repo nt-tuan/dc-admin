@@ -7,6 +7,11 @@ export class ProductService {
     return result;
   };
 
+  static editProduct = async (data, id) => {
+    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
+    return result;
+  };
+
   static getProducts = async () => {
     const result = await backendAPI.get(ApiPathConsts.GET_PRODUCTS);
     return result;
@@ -19,6 +24,11 @@ export class ProductService {
 
   static deleteProduct = async (id) => {
     const result = await backendAPI.delete(ApiPathConsts.DELETE_PRODUCT.replace(":id", id));
+    return result;
+  };
+
+  static getProductDetails = async (id) => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_DETAILS.replace(":id", id));
     return result;
   };
 }

@@ -44,7 +44,7 @@ export class SharedPaths {
   static get ADD_PRODUCT() {
     return "/add-product";
   }
-  static get PRODUCT_EDIT() {
-    return "/edit-product";
+  static get EDIT_PRODUCT() {
+    return "/edit-product/:id";
   }
 }

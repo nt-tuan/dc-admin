@@ -12,7 +12,6 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const renderUploadButton = () => {
-    console.log(form.getFieldValue("productImageName"));
     return form.getFieldValue("productImageName") &&
       form.getFieldValue("productImageName").length >= 1 ? null : (
       <UploadButton />
@@ -34,7 +33,6 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
           customRequest={handleUploadImage}
           onChange={() => forceUpdate()}
           onRemove={(file) => {
-            console.log(file);
             asyncErrorHandlerWrapper(async () => {
               await ImageService.deleteImage(file.response ? file.response.name : file.name);
             });

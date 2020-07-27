@@ -75,6 +75,10 @@ export class ApiPathConsts {
     return `${this.#PRODUCT_PREFIX}`;
   }
 
+  static get EDIT_PRODUCT() {
+    return `${this.#PRODUCT_PREFIX}/:id`;
+  }
+
   static get GET_PRODUCTS() {
     return `${this.#PRODUCT_PREFIX}/global`;
   }
@@ -84,6 +88,10 @@ export class ApiPathConsts {
   }
 
   static get DELETE_PRODUCT() {
+    return `${this.#PRODUCT_PREFIX}/:id`;
+  }
+
+  static get GET_PRODUCT_DETAILS() {
     return `${this.#PRODUCT_PREFIX}/:id`;
   }
 

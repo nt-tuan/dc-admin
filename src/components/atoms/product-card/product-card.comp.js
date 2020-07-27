@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 
 export const ProductCard = React.memo(
   ({ data = {}, renderHoverContent, disableNavigation = false }) => {
-    const { image, name, link, numberOfSales, combo } = data;
+    const { image, name, link } = data;
     const [showDetails, setShowDetails] = useState(false);
+    const [isHoverContentLoading, setIsHoverContentLoading] = useState(false);
     const transition = useTransition(showDetails, null, {
       from: { position: "absolute", opacity: 0, zIndex: 2 },
       enter: { opacity: 1, zIndex: 2 },
@@ -31,7 +32,7 @@ export const ProductCard = React.memo(
                   item && (
                     <animated.div key={key} style={props} className={styles["product-details"]}>
                       <div className={styles["product-details-content"]}>
-                        {renderHoverContent(data)}
+                        {renderHoverContent(data, isHoverContentLoading, setIsHoverContentLoading)}
                       </div>
                       <div className={styles["product-details-background"]}></div>
                     </animated.div>
@@ -39,13 +40,6 @@ export const ProductCard = React.memo(
                 );
               })}
             <div className={`${showDetails ? styles["background-blur"] : ""}`}>
-              <div
-                hidden={combo === false || combo === undefined || showDetails}
-                title="A seller is selling this product as a combo"
-                className={styles["combo"]}
-              >
-                Combo
-              </div>
               <div>
                 <div className={`${styles["image"]} height-250 pb-4`}>
                   {image ? (
@@ -61,11 +55,6 @@ export const ProductCard = React.memo(
                 <div className="mb-2 font-weight-bold text-center text-primary text-nowrap text-truncate">
                   {name}
                 </div>
-                {numberOfSales !== undefined ? (
-                  <div className="text-center font-weight-bold">
-                    Being Sold by {numberOfSales} {numberOfSales > 1 ? "users" : "user"}
-                  </div>
-                ) : null}
               </div>
             </div>
           </Card>
