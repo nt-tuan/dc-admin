@@ -129,7 +129,7 @@ const privateRoutes = [
     exact: true
   },
   {
-    path: RouteConst.PRODUCT_EDIT,
+    path: RouteConst.EDIT_PRODUCT,
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
     exact: true
   }
