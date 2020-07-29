@@ -16,8 +16,6 @@ export const VitalInfoForm = forwardRef((props, ref) => {
   const [isLoadingSaleChannels, setIsLoadingSaleChannels] = useState(true);
   const category = form.getFieldValue(VITAL_INFO_FIELDS.category);
 
-  console.log(category);
-
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const categoriesString = await ProductService.getProductCategories();
@@ -27,7 +25,6 @@ export const VitalInfoForm = forwardRef((props, ref) => {
   }, []);
 
   useEffect(() => {
-    console.log(category);
     setIsLoadingTypes(true);
     asyncErrorHandlerWrapper(async () => {
       const types = await ProductService.getProductTypes(category);
@@ -82,7 +79,6 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             allowClear
             loading={isLoadingTypes}
             disabled={isLoadingTypes}
-            onChange={() => console.log("asdasd")}
           >
             {types.map((type) => (
               <Option value={type} key={type}>
