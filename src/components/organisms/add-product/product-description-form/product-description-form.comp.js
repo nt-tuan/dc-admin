@@ -128,15 +128,12 @@ const genderOptions = [
 ];
 
 const sizeOptions = [
-  { label: "FL.", value: "fl" },
-  { label: "OZ.", value: "oz" },
-  { label: "ML", value: "ml" }
+  { label: "FL.", value: "FL" },
+  { label: "OZ.", value: "OZ" },
+  { label: "ML", value: "ML" }
 ];
 
-const currencyOptions = [
-  { label: "USD", value: "usd" },
-  { label: "VND", value: "vnd" }
-];
+const currencyOptions = [{ label: "USD", value: "USD" }];
 
 const schema = [
   {

@@ -6,7 +6,13 @@ export const PerfumeSpecTable = React.memo(({ values }) => {
     if (currency === undefined || retailPrice === undefined) {
       return "";
     }
-    return `${values["Currency"]} ${values["Retail Price"]}`;
+    return `${currency} ${retailPrice}`;
+  };
+  const showSize = (size, mesurement) => {
+    if (size === undefined || mesurement === undefined) {
+      return "";
+    }
+    return `${size} ${mesurement}`;
   };
   return (
     <div
@@ -51,7 +57,10 @@ export const PerfumeSpecTable = React.memo(({ values }) => {
         <div className="col-lg-8 col-12">
           <div className={styles["spec-title"]}>SIZE</div>
           <div className={`${styles["spec-row"]} row`}>
-            <div className="col-6 font-weight-bold">{values["Size"]}</div>
+            <div className="col-6 font-weight-bold">{`${showSize(
+              values["Size"],
+              values["Size Mesurement"]
+            )}`}</div>
           </div>
         </div>
         <div className="col-lg-8 col-12">
