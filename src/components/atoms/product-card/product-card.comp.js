@@ -9,6 +9,7 @@ export const ProductCard = React.memo(
     const { image, name, link } = data;
     const [showDetails, setShowDetails] = useState(false);
     const [isHoverContentLoading, setIsHoverContentLoading] = useState(false);
+    const [hidden, setHidden] = useState(false);
     const transition = useTransition(showDetails, null, {
       from: { position: "absolute", opacity: 0, zIndex: 2 },
       enter: { opacity: 1, zIndex: 2 },
@@ -23,7 +24,12 @@ export const ProductCard = React.memo(
     };
 
     return (
-      <Link to={link} title={name} onClick={(e) => disableNavigation && e.preventDefault()}>
+      <Link
+        to={link}
+        title={name}
+        onClick={(e) => disableNavigation && e.preventDefault()}
+        hidden={hidden}
+      >
         <div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
           <Card hoverable className="mb-3 dtc-br-10 overflow-hidden">
             {renderHoverContent &&
@@ -32,7 +38,12 @@ export const ProductCard = React.memo(
                   item && (
                     <animated.div key={key} style={props} className={styles["product-details"]}>
                       <div className={styles["product-details-content"]}>
-                        {renderHoverContent(data, isHoverContentLoading, setIsHoverContentLoading)}
+                        {renderHoverContent(
+                          data,
+                          isHoverContentLoading,
+                          setIsHoverContentLoading,
+                          setHidden
+                        )}
                       </div>
                       <div className={styles["product-details-background"]}></div>
                     </animated.div>

@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { Table, Input, Button, Popconfirm, Form, Select } from "antd";
+import { Button, Form, Popconfirm, Select, Table } from "antd";
 import { DTCSection } from "components/atoms";
+import React, { useContext, useRef, useState } from "react";
 
 const EditableContext = React.createContext();
 
