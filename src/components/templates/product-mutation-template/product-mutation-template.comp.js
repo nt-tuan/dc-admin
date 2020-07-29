@@ -125,6 +125,8 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
   const handleSubmit = () => {
     const composedData = {
       ...vitalInfoData,
+      category: undefined,
+      type: "Perfume",
       keyword: vitalInfoData.keyword.join(","),
       fileName: imagesData.productImageName[0].name,
       variantList: Object.keys(variantData).map((field) => ({

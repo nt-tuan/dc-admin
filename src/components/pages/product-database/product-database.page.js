@@ -36,6 +36,16 @@ const ProductDatabase = () => {
     });
   }, 100);
 
+  const selectImageFromProduct = (product) => {
+    if (product.images.length > 0) {
+      return product.images[0].url;
+    }
+    if (product.importImages.length > 0) {
+      return product.importImages[0].url;
+    }
+    return "";
+  };
+
   return (
     <article>
       <Helmet id="Product database" />
@@ -81,7 +91,7 @@ const ProductDatabase = () => {
           }}
           data={products.map((product) => ({
             ...product,
-            image: product.images && product.images[0].url
+            image: selectImageFromProduct(product)
           }))}
         />
         <div className="text-center mt-3 mb-5">

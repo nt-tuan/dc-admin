@@ -122,9 +122,9 @@ const PROD_DES_LABELS = {
 };
 
 const genderOptions = [
-  { label: "Unisex", value: "uinsex" },
-  { label: "Feminine", value: "feminine" },
-  { label: "Masculine", value: "masculine" }
+  { label: "Unisex", value: "UNISEX" },
+  { label: "Feminine", value: "FEMININE" },
+  { label: "Masculine", value: "MASCULINE" }
 ];
 
 const sizeOptions = [

@@ -34,7 +34,9 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
           onChange={() => forceUpdate()}
           onRemove={(file) => {
             asyncErrorHandlerWrapper(async () => {
-              await ImageService.deleteImage(file.response ? file.response.name : file.name);
+              if (file.status === "done") {
+                await ImageService.deleteImage(file.name);
+              }
             });
           }}
         >

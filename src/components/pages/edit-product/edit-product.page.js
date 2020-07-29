@@ -17,7 +17,9 @@ const EditProductPage = () => {
     const vitalInfoData = {
       brand: productDetails.brand,
       productName: productDetails.name,
-      category: "Mobile Phone",
+      type: productDetails.type,
+      salesChannel: productDetails.salesChannel,
+      category: productDetails.category,
       keyword: productDetails.keyword ? productDetails.keyword.split(",") : []
     };
     const variantData = productDetails.variants.reduce((acc, cur) => {

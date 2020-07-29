@@ -46,3 +46,10 @@ export const SORT_ORDERS = Object.freeze({
   DESC: "desc",
   ASC: "asc"
 });
+
+export const SALE_CHANNELS = Object.freeze({
+  OWN_BRAND: "Own Brand​",
+  NICHE_BRANDS: "Niche Brands",
+  WHOLESALE_BRANDS: "Wholesale Brands​",
+  WHOLESALE_MASS: "Wholesale Mass"
+});

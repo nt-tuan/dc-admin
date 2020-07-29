@@ -9,6 +9,7 @@ export const SearchBar = React.memo(
           onChange={(e) => {
             onTyping && onTyping();
             onSubmit && onSubmit(e.target.value);
+            console.log(e.target.value);
           }}
           allowClear
           className="w-100"

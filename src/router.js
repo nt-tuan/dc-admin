@@ -132,6 +132,16 @@ const privateRoutes = [
     path: RouteConst.EDIT_PRODUCT,
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
     exact: true
+  },
+  {
+    path: RouteConst.ROUTE,
+    Component: loadable(() => import("components/pages/route/route.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ADD_ROUTE,
+    Component: loadable(() => import("components/pages/add-route/add-route.page")),
+    exact: true
   }
 ];
 

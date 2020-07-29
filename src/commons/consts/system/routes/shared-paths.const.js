@@ -47,4 +47,10 @@ export class SharedPaths {
   static get EDIT_PRODUCT() {
     return "/edit-product/:id";
   }
+  static get ROUTE() {
+    return "/routes";
+  }
+  static get ADD_ROUTE() {
+    return "/add-routes";
+  }
 }

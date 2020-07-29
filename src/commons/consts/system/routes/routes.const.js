@@ -18,7 +18,9 @@ export class RouteConst extends SharedPaths {
       this.ORDER_TRACK_AND_TRACE,
       this.PRODUCT_DATABASE,
       this.ADD_PRODUCT,
-      this.EDIT_PRODUCT
+      this.EDIT_PRODUCT,
+      this.ROUTE,
+      this.ADD_ROUTE
     ];
   }
 

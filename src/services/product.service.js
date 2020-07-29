@@ -12,13 +12,23 @@ export class ProductService {
     return result;
   };
 
-  static getProducts = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCTS);
+  static getProducts = async ({ params }) => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCTS, params);
+    return result;
+  };
+
+  static getProductTypes = async (category) => {
+    const result = await backendAPI.get(`${ApiPathConsts.GET_PRODUCT_CATEGORIES}/${category}`);
     return result;
   };
 
   static getProductCategories = async () => {
     const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_CATEGORIES);
+    return result;
+  };
+
+  static getProductSaleChannels = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_SALE_CHANNEL);
     return result;
   };
 

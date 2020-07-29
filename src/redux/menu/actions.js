@@ -37,6 +37,23 @@ export async function getUserData() {
       url: RouteConst.ORDERS
     },
     {
+      title: "Routes",
+      key: "RoutesMain",
+      icon: "fe fe-map",
+      children: [
+        {
+          title: "Routes",
+          key: "Routes",
+          url: RouteConst.ROUTE
+        },
+        {
+          title: "Route Creation",
+          key: "RouteCreation",
+          url: RouteConst.ADD_ROUTE
+        }
+      ]
+    },
+    {
       title: "Product",
       key: "Product",
       icon: "fe fe-package",

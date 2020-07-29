@@ -87,6 +87,10 @@ export class ApiPathConsts {
     return `${this.#PRODUCT_PREFIX}/category`;
   }
 
+  static get GET_PRODUCT_SALE_CHANNEL() {
+    return `${this.#PRODUCT_PREFIX}/salesChannel`;
+  }
+
   static get DELETE_PRODUCT() {
     return `${this.#PRODUCT_PREFIX}/:id`;
   }
