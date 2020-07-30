@@ -1,212 +1,134 @@
-import { Button, Form, Popconfirm, Select, Table } from "antd";
+import React, { useState } from "react";
+import { EditableTable } from "components/organisms";
 import { DTCSection } from "components/atoms";
-import React, { useContext, useRef, useState } from "react";
+import { Input, Divider, Checkbox, Row, Col, Button } from "antd";
+import Modal from "antd/lib/modal/Modal";
+import { DocumentMutationForm } from "components/organisms/route/forms/document-mutation-form/document-mutation-form.comp";
+const CheckboxGroup = Checkbox.Group;
 
-const EditableContext = React.createContext();
+const AddRoutePage = () => {
+  const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
+  const [mutationTitle, setMutationTitle] = useState("");
 
-const EditableRow = ({ index, ...props }) => {
-  const [form] = Form.useForm();
   return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
+    <DTCSection>
+      <div>
+        <h3>Route Information</h3>
+        <div className="d-flex">
+          <div className="d-flex align-items-center mr-5">
+            <span className="mr-1">To</span> <Input />
+          </div>
+          <div className="d-flex align-items-center">
+            <span className="mr-1">From</span> <Input />
+          </div>
+        </div>
+      </div>
+      <Divider />
+      <div>
+        <h5>Documents</h5>
+        <p>You can either select from the document list of or create a new document</p>
+        <p>Select the documents that required for this route</p>
+        <DocumentList
+          onEdit={() => {
+            setMutationTitle("Edit Document");
+            setShowDocumentMutationModal(true);
+          }}
+          onCreate={() => {
+            setMutationTitle("Create Document");
+            setShowDocumentMutationModal(true);
+          }}
+        />
+      </div>
+      <Divider />
+      <div>
+        <h5>Document Rules</h5>
+        <EditableTable />
+      </div>
+      <Modal
+        onCancel={() => setShowDocumentMutationModal(false)}
+        title={mutationTitle}
+        visible={showDocumentMutationModal}
+      >
+        <DocumentMutationForm />
+      </Modal>
+    </DTCSection>
   );
 };
 
-const EditableCell = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  ...restProps
-}) => {
-  const [editing, setEditing] = useState(true);
-  const inputRef = useRef();
-  const form = useContext(EditableContext);
+const plainOptions = ["Commercial Invoice", "Certificate of Origin", "Packing List"];
+const defaultCheckedList = ["Commercial Invoice"];
 
-  const toggleEdit = () => {
-    setEditing(!editing);
-    form.setFieldsValue({
-      [dataIndex]: record[dataIndex]
+class DocumentList extends React.Component {
+  state = {
+    checkedList: defaultCheckedList,
+    indeterminate: true,
+    checkAll: false
+  };
+
+  onChange = (checkedList) => {
+    this.setState({
+      checkedList,
+      indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
+      checkAll: checkedList.length === plainOptions.length
     });
   };
 
-  const save = async (e) => {
-    try {
-      const values = await form.validateFields();
-      toggleEdit();
-      handleSave({ ...record, ...values });
-    } catch (errInfo) {
-      console.log("Save failed:", errInfo);
-    }
-  };
-
-  let childNode = children;
-
-  if (editable) {
-    childNode = editing ? (
-      <Form.Item
-        style={{
-          margin: 0
-        }}
-        name={dataIndex}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`
-          }
-        ]}
-      >
-        <Select ref={inputRef} onBlur={save} />
-      </Form.Item>
-    ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{
-          paddingRight: 24
-        }}
-        onClick={toggleEdit}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  return <td {...restProps}>{childNode}</td>;
-};
-
-export default class EditableTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.columns = [
-      {
-        title: "name",
-        dataIndex: "name",
-        width: "30%",
-        editable: true
-      },
-      {
-        title: "age",
-        dataIndex: "age",
-        editable: true
-      },
-      {
-        title: "address",
-        dataIndex: "address",
-        editable: true
-      },
-      {
-        title: "operation",
-        dataIndex: "operation",
-        render: (text, record) =>
-          this.state.dataSource.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-              <a>Delete</a>
-            </Popconfirm>
-          ) : null
-      }
-    ];
-    this.state = {
-      dataSource: [
-        {
-          key: "0",
-          name: "Edward King 0",
-          age: "32",
-          address: "London, Park Lane no. 0"
-        },
-        {
-          key: "1",
-          name: "Edward King 1",
-          age: "32",
-          address: "London, Park Lane no. 1"
-        }
-      ],
-      count: 2
-    };
-  }
-
-  handleDelete = (key) => {
-    const dataSource = [...this.state.dataSource];
+  onCheckAllChange = (e) => {
     this.setState({
-      dataSource: dataSource.filter((item) => item.key !== key)
-    });
-  };
-
-  handleAdd = () => {
-    const { count, dataSource } = this.state;
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: 32,
-      address: `London, Park Lane no. ${count}`
-    };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1
-    });
-  };
-
-  handleSave = (row) => {
-    const newData = [...this.state.dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, { ...item, ...row });
-    this.setState({
-      dataSource: newData
+      checkedList: e.target.checked ? plainOptions : [],
+      indeterminate: false,
+      checkAll: e.target.checked
     });
   };
 
   render() {
-    const { dataSource } = this.state;
-    const components = {
-      body: {
-        row: EditableRow,
-        cell: EditableCell
-      }
-    };
-    const columns = this.columns.map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-
-      return {
-        ...col,
-        onCell: (record) => ({
-          record,
-          editable: col.editable,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          handleSave: this.handleSave
-        })
-      };
-    });
     return (
-      <DTCSection>
-        <Button
-          onClick={this.handleAdd}
-          type="primary"
+      <div
+        style={{
+          width: "400px"
+        }}
+      >
+        <div
           style={{
-            marginBottom: 16
+            width: "400px",
+            border: "solid 1px #f1f1f1",
+            borderRadius: "5px",
+            padding: "20px"
           }}
         >
-          Add a row
-        </Button>
-        <Table
-          pagination={{
-            hideOnSinglePage: true,
-            pageSize: 1000
-          }}
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-        />
-      </DTCSection>
+          <div>
+            <Checkbox
+              indeterminate={this.state.indeterminate}
+              onChange={this.onCheckAllChange}
+              checked={this.state.checkAll}
+            >
+              <b>Select all</b>
+            </Checkbox>
+          </div>
+          <hr />
+          <CheckboxGroup onChange={this.onChange} value={this.state.checkedList}>
+            <Row>
+              {plainOptions.map((opt, idx) => (
+                <Col span={24} key={idx}>
+                  <Checkbox value={opt} className="w-100 align-items-center">
+                    <span>{opt}</span>
+                    <span title="Edit" className="float-right" onClick={this.props.onEdit}>
+                      <i className="fe fe-edit" />
+                    </span>
+                  </Checkbox>
+                </Col>
+              ))}
+            </Row>
+          </CheckboxGroup>
+        </div>
+        <div className="d-flex justify-content-end">
+          <Button type="link" onClick={this.props.onCreate}>
+            Create Document
+          </Button>
+        </div>
+      </div>
     );
   }
 }
+
+export default AddRoutePage;

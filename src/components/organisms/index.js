@@ -5,3 +5,5 @@ export * from "./order-track-and-trace";
 export * from "./withdraw-fund";
 export * from "./login";
 export * from "./add-product";
+export * from "./editable-table/editable-table.comp";
+export * from "./route/forms/document-mutation-form/document-mutation-form.comp";
