@@ -29,11 +29,13 @@ const AddRoutePage = () => {
         <p>You can either select from the document list of or create a new document</p>
         <p>Select the documents that required for this route</p>
         <DocumentList
-          onEdit={() => {
+          onEdit={(e) => {
+            e.preventDefault();
             setMutationTitle("Edit Document");
             setShowDocumentMutationModal(true);
           }}
-          onCreate={() => {
+          onCreate={(e) => {
+            e.preventDefault();
             setMutationTitle("Create Document");
             setShowDocumentMutationModal(true);
           }}
