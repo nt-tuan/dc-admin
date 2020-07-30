@@ -47,6 +47,15 @@ export class SharedPaths {
   static get EDIT_PRODUCT() {
     return "/edit-product/:id";
   }
+  static get REBATES() {
+    return "/rebates";
+  }
+  static get CREATE_REBATES() {
+    return "/create-rebates";
+  }
+  static get EDIT_REBATES() {
+    return "/edit-rebates/:id";
+  }
   static get ROUTE() {
     return "/routes";
   }

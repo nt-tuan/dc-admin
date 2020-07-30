@@ -6,6 +6,8 @@ export class ApiPathConsts {
   static #WALLET_PREFIX = "/wallet";
   static #COMPANY_PREFIX = "/companies";
   static #PRODUCT_PREFIX = "/products";
+  static #BRANDS_PREFIX = "/brands";
+  static #REBATES_PREFIX = "/rebates";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -105,5 +107,17 @@ export class ApiPathConsts {
 
   static get DELETE_PRODUCT_IMAGE() {
     return `${this.#PRODUCT_PREFIX}/images`;
+  }
+
+  static get GET_BUYER_COMPANY() {
+    return `${this.#COMPANY_PREFIX}`;
+  }
+
+  static get GET_BRANDS() {
+    return `${this.#BRANDS_PREFIX}/:id`;
+  }
+
+  static get REBATES() {
+    return `${this.#REBATES_PREFIX}`;
   }
 }

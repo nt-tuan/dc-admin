@@ -134,6 +134,21 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.REBATES,
+    Component: loadable(() => import("components/pages/rebates/rebates.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.CREATE_REBATES,
+    Component: loadable(() => import("components/pages/create-rebates/create-rebates.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.EDIT_REBATES,
+    Component: loadable(() => import("components/pages/edit-rebates/edit-rebates.page")),
+    exact: true
+  },
+  {
     path: RouteConst.ROUTE,
     Component: loadable(() => import("components/pages/route/route.page")),
     exact: true
