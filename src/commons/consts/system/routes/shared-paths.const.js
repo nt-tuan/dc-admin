@@ -62,10 +62,7 @@ export class SharedPaths {
   static get ADD_ROUTE() {
     return "/add-routes";
   }
-  static get EDIT_DOCUMENT() {
-    return "/edit-document";
-  }
   static get DOCUMENT() {
-    return "/document";
+    return "/documents";
   }
 }

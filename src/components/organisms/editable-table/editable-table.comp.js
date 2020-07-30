@@ -27,6 +27,8 @@ const EditableCell = ({
   const inputRef = useRef();
   const form = useContext(EditableContext);
 
+  console.log(dataIndex);
+
   const toggleEdit = () => {
     setEditing(!editing);
     form.setFieldsValue({
@@ -60,7 +62,23 @@ const EditableCell = ({
           }
         ]}
       >
-        <Select ref={inputRef} onBlur={save} />
+        {dataIndex === "Document" ? (
+          <Select ref={inputRef}>
+            {["Commercial Invoice", "Certificate of Origin", "Packing List"].map((item) => (
+              <Select.Option value={item} key={item}>
+                {item}
+              </Select.Option>
+            ))}
+          </Select>
+        ) : (
+          <Select ref={inputRef}>
+            {["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"].map((item) => (
+              <Select.Option value={item} key={item}>
+                {item}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
     ) : (
       <div

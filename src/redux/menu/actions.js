@@ -66,6 +66,11 @@ export async function getUserData() {
           title: "Route Creation",
           key: "RouteCreation",
           url: RouteConst.ADD_ROUTE
+        },
+        {
+          title: "Documents",
+          key: "Document",
+          url: RouteConst.DOCUMENT
         }
       ]
     },

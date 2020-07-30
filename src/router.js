@@ -157,6 +157,11 @@ const privateRoutes = [
     path: RouteConst.ADD_ROUTE,
     Component: loadable(() => import("components/pages/add-route/add-route.page")),
     exact: true
+  },
+  {
+    path: RouteConst.DOCUMENT,
+    Component: loadable(() => import("components/pages/document/document.page")),
+    exact: true
   }
 ];
 

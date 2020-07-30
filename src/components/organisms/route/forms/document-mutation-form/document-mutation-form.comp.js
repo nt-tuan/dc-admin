@@ -26,7 +26,7 @@ export const DocumentMutationForm = () => {
         rules={[{ required: true, message: "Please input your Document Type!" }]}
       >
         <Select>
-          {["Commercial Invoice", "Certificate of Origin", "Packing List"].map((item, idx) => (
+          {["PDF", "Excel"].map((item, idx) => (
             <Select.Option key={idx} value={item}>
               {item}
             </Select.Option>

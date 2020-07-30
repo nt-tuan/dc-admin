@@ -17,7 +17,12 @@ const LABELS = {
 };
 
 // active tab
-const routeTableSchema = () => (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => {
+const routeTableSchema = (onEditClick, onDeleteClick) => (
+  sortedInfo,
+  CustomHighlighter,
+  searchText,
+  hiddenColumns
+) => {
   const columnsSchema = [
     {
       title: LABELS[FIELDS.timestamp],
@@ -57,11 +62,11 @@ const routeTableSchema = () => (sortedInfo, CustomHighlighter, searchText, hidde
       render: () => (
         <React.Fragment>
           <Fragment>
-            <Button type="primary" className="dtc-min-width-50 mr-2">
-              <i className="fe fe-unlock" style={{ verticalAlign: "middle" }}></i>
+            <Button type="primary" className="dtc-min-width-50 mr-2" onClick={onEditClick}>
+              <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
             </Button>
-            <Button type="danger" className="dtc-min-width-50 mr-2">
-              <i className="fe fe-lock" style={{ verticalAlign: "middle" }}></i>
+            <Button type="danger" className="dtc-min-width-50 mr-2" onClick={onDeleteClick}>
+              <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
             </Button>
           </Fragment>
         </React.Fragment>

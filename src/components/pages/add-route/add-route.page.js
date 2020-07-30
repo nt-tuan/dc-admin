@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import { EditableTable } from "components/organisms";
+import { Checkbox, Col, Divider, Input, Row } from "antd";
 import { DTCSection } from "components/atoms";
-import { Input, Divider, Checkbox, Row, Col, Button } from "antd";
-import Modal from "antd/lib/modal/Modal";
-import { DocumentMutationForm } from "components/organisms/route/forms/document-mutation-form/document-mutation-form.comp";
+import { EditableTable } from "components/organisms";
+import React from "react";
 const CheckboxGroup = Checkbox.Group;
 
 const AddRoutePage = () => {
-  const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
-  const [mutationTitle, setMutationTitle] = useState("");
-
   return (
     <DTCSection>
       <div>
@@ -28,31 +23,13 @@ const AddRoutePage = () => {
         <h5>Documents</h5>
         <p>You can either select from the document list of or create a new document</p>
         <p>Select the documents that required for this route</p>
-        <DocumentList
-          onEdit={(e) => {
-            e.preventDefault();
-            setMutationTitle("Edit Document");
-            setShowDocumentMutationModal(true);
-          }}
-          onCreate={(e) => {
-            e.preventDefault();
-            setMutationTitle("Create Document");
-            setShowDocumentMutationModal(true);
-          }}
-        />
+        <DocumentList />
       </div>
       <Divider />
       <div>
         <h5>Document Rules</h5>
         <EditableTable />
       </div>
-      <Modal
-        onCancel={() => setShowDocumentMutationModal(false)}
-        title={mutationTitle}
-        visible={showDocumentMutationModal}
-      >
-        <DocumentMutationForm />
-      </Modal>
     </DTCSection>
   );
 };
@@ -114,19 +91,11 @@ class DocumentList extends React.Component {
                 <Col span={24} key={idx}>
                   <Checkbox value={opt} className="w-100 align-items-center">
                     <span>{opt}</span>
-                    <span title="Edit" className="float-right" onClick={this.props.onEdit}>
-                      <i className="fe fe-edit" />
-                    </span>
                   </Checkbox>
                 </Col>
               ))}
             </Row>
           </CheckboxGroup>
-        </div>
-        <div className="d-flex justify-content-end">
-          <Button type="link" onClick={this.props.onCreate}>
-            Create Document
-          </Button>
         </div>
       </div>
     );
