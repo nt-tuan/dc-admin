@@ -19,12 +19,6 @@ export async function getUserData() {
       url: "/"
     },
     {
-      title: "Users",
-      key: "Users",
-      icon: "fe fe-users",
-      url: RouteConst.USER_MANAGEMENT
-    },
-    {
       title: "Services",
       key: "Services",
       icon: "fe fe-phone-call",
@@ -35,6 +29,28 @@ export async function getUserData() {
       key: "Orders",
       icon: "fe fe-layers",
       url: RouteConst.ORDERS
+    },
+    {
+      title: "User Management",
+      key: "User Management",
+      icon: "fe fe-users",
+      children: [
+        {
+          title: "Users",
+          key: "Users",
+          url: RouteConst.USER_MANAGEMENT
+        },
+        {
+          title: "Rebates",
+          key: "Rebates",
+          url: RouteConst.REBATES
+        },
+        {
+          title: "Create Rebates",
+          key: "Create Rebates",
+          url: RouteConst.CREATE_REBATES
+        }
+      ]
     },
     {
       title: "Routes",
