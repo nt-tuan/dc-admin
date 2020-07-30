@@ -27,8 +27,6 @@ const EditableCell = ({
   const inputRef = useRef();
   const form = useContext(EditableContext);
 
-  console.log(dataIndex);
-
   const toggleEdit = () => {
     setEditing(!editing);
     form.setFieldsValue({
