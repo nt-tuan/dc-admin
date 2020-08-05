@@ -70,6 +70,8 @@ const UserDetails = () => {
               companyName={data.companyInfo.name}
               companyId={companyId}
               username={data.userInfo.username}
+              setLoading={setLoading}
+              getUserDetails={getUserDetails}
             />
           </div>
           <div className="w-50 mt-3">

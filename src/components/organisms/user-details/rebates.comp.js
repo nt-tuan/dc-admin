@@ -1,9 +1,26 @@
 import React, { Fragment } from "react";
-import { Button, Divider } from "antd";
+import { Button, Divider, message } from "antd";
 import { Link } from "react-router-dom";
 import { RouteConst } from "commons/consts";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { RebatesService } from "services";
 
-export const RebatesInfo = ({ data, companyName, companyId, username }) => {
+export const RebatesInfo = ({
+  data,
+  companyName,
+  companyId,
+  username,
+  setLoading,
+  getUserDetails
+}) => {
+  const handleDeleteRebate = (id) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await RebatesService.deleteRebates(id);
+      getUserDetails();
+      message.success("Rebates has been deleted!");
+    });
+  };
   return (
     <Fragment>
       <div className="d-flex">
@@ -24,15 +41,18 @@ export const RebatesInfo = ({ data, companyName, companyId, username }) => {
           <div className="row">
             <b className="col-4">{rebate.brand}</b>
             <div className="col-4 text-center">{rebate.value}%</div>
-            <Link
-              to={{
-                pathname: RouteConst.EDIT_REBATES.replace(":id", `${companyName}`),
-                search: `?id=${rebate.id}`,
-                state: { pathname: `${location.pathname}${location.search}` }
-              }}
-            >
-              <i className="fe fe-edit-3 col-4 text-center" />
-            </Link>
+            <div className="col-4 text-center">
+              <Link
+                to={{
+                  pathname: RouteConst.EDIT_REBATES.replace(":id", `${companyName}`),
+                  search: `?id=${rebate.id}`,
+                  state: { pathname: `${location.pathname}${location.search}` }
+                }}
+              >
+                <i className="fe fe-edit-3" />
+              </Link>
+              <i className="fe fe-trash-2 ml-2" onClick={() => handleDeleteRebate(rebate.id)} />
+            </div>
           </div>
           <Divider className="mt-1" />
         </div>
