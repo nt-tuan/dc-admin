@@ -3,6 +3,8 @@ import store from "store";
 import { ApiPathConsts } from "commons/consts/system/api-paths/api-paths.const";
 
 export class UserService {
+  static #USER_MANAGEMENT_PREFIX = "/users";
+
   static getCurrentAccount = async () => {
     const localStorageAuth = await store.get("auth");
     if (localStorageAuth) {
@@ -11,6 +13,17 @@ export class UserService {
       return true;
     }
     return false;
+  };
+
+  static getUserDetails = async (username) => {
+    const result = await backendAPI.get(
+      `${this.#USER_MANAGEMENT_PREFIX}/company-user-info?username=${username}`
+    );
+    return result;
+  };
+
+  static removeBadge = async (type, id) => {
+    await backendAPI.post(`${this.#USER_MANAGEMENT_PREFIX}/${id}/remove/badge/type?type=${type}`);
   };
 
   static getAllUsers = async ({ page, size, sort }) => {

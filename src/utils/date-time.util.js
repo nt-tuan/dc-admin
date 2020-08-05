@@ -21,4 +21,18 @@ export class DatetimeUtils {
 
     return dayjs(value).format(format);
   };
+
+  static minutesTotime = (minutes = 0, getTimeString = false) => {
+    let h = (minutes / 60) | 0,
+      m = minutes % 60 | 0;
+    if (getTimeString) {
+      const hString = h < 10 ? `0${h}` : h;
+      const mString = m < 10 ? `0${m}` : m;
+      return `${hString}:${mString}`;
+    }
+    return {
+      h: h,
+      m: m
+    };
+  };
 }

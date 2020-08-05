@@ -65,4 +65,7 @@ export class SharedPaths {
   static get DOCUMENT() {
     return "/documents";
   }
+  static get USER_DETAILS() {
+    return "/user-details";
+  }
 }

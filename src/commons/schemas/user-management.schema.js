@@ -3,6 +3,8 @@ import React, { Fragment } from "react";
 import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
 import { sortAlphabetically } from "utils/sort.util";
 import { roundToHalfDecimal } from "utils/general.util";
+import { Link } from "react-router-dom";
+import { RouteConst } from "commons/consts";
 
 const FIELDS = {
   id: "id",
@@ -170,7 +172,7 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
     {
       title: "Manage",
       key: "manage",
-      render: ({ id, suspended }) => (
+      render: ({ id, suspended, username }) => (
         <Fragment>
           {suspended === true ? (
             <Button onClick={() => onUnlock(id)} type="primary" className="dtc-min-width-50 mr-2">
@@ -188,6 +190,11 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
           >
             <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
           </Button>
+          <Link to={`${RouteConst.USER_DETAILS}?username=${username}&companyId=${id}`}>
+            <Button type="primary" className="dtc-min-width-50 mr-2">
+              <i className="fe fe-navigation" style={{ verticalAlign: "middle" }}></i>
+            </Button>
+          </Link>
         </Fragment>
       )
     }

@@ -53,3 +53,13 @@ export const SALE_CHANNELS = Object.freeze({
   WHOLESALE_BRANDS: "Wholesale Brands​",
   WHOLESALE_MASS: "Wholesale Mass"
 });
+
+export const WEEK_DAYS = Object.freeze({
+  1: "Mon",
+  2: "Tue",
+  3: "Wed",
+  4: "Thu",
+  5: "Fri",
+  6: "Sat",
+  7: "Sun"
+});

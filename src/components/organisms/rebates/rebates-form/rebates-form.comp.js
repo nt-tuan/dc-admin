@@ -11,16 +11,7 @@ const { FIELDS, LABELS } = REBATES_SCHEMA;
 
 export const RebatesForm = forwardRef(
   (
-    {
-      title,
-      isEdit = false,
-      data = null,
-      companies = [],
-      productBrand = [],
-      onSubmit,
-      loading,
-      isProcessing
-    },
+    { title, data = null, companies = [], productBrand = [], onSubmit, loading, isProcessing },
     ref
   ) => {
     const [form] = Form.useForm();
@@ -37,7 +28,7 @@ export const RebatesForm = forwardRef(
       switch (field) {
         case FIELDS.buyerCompanyName:
           return (
-            <Select mode="multiple" disabled={isEdit}>
+            <Select mode="multiple" disabled={data[FIELDS.buyerCompanyName]}>
               {companies.map((company, index) => (
                 <Option value={company.id} key={`${company}-${index}`}>
                   {company.name}
@@ -47,7 +38,7 @@ export const RebatesForm = forwardRef(
           );
         case FIELDS.productBrand:
           return (
-            <Select disabled={isEdit}>
+            <Select disabled={data[FIELDS.productBrand]}>
               {productBrand.map((brand, index) => (
                 <Option value={brand} key={`${brand}-${index}`}>
                   {brand}
@@ -99,7 +90,7 @@ export const RebatesForm = forwardRef(
                   <Button type="primary">Cancel</Button>
                 </Link>
                 <Button type="primary" htmlType="submit" className="ml-2" disabled={isProcessing}>
-                  {isEdit ? "Edit" : "Create"}
+                  {data[FIELDS.productBrand] ? "Edit" : "Create"}
                 </Button>
               </div>
             </Form>

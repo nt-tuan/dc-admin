@@ -16,6 +16,7 @@ const EditRebatesPage = () => {
   const history = useHistory();
   const location = useLocation();
   const { id } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const routeState = location.state ? location.state : null;
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -28,7 +29,7 @@ const EditRebatesPage = () => {
       setData(data);
       setLoading(false);
     });
-  }, [id]);
+  }, [id, routeState]);
 
   const handleEdit = (values) => {
     setIsEditting(true);
@@ -37,7 +38,7 @@ const EditRebatesPage = () => {
         value: values[FIELDS.rebatePercentage]
       };
       await RebatesService.editRebates(id, data);
-      history.push(RouteConst.REBATES);
+      routeState ? history.push(routeState.pathname) : history.push(RouteConst.REBATES);
     });
   };
 
@@ -45,7 +46,7 @@ const EditRebatesPage = () => {
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       <RebatesForm
         title="EDIT REBATES"
-        isEdit={true}
+        // isEdit={true}
         data={data}
         id={id}
         onSubmit={handleEdit}

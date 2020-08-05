@@ -24,7 +24,8 @@ export class RouteConst extends SharedPaths {
       this.EDIT_REBATES,
       this.ROUTE,
       this.ADD_ROUTE,
-      this.DOCUMENT
+      this.DOCUMENT,
+      this.USER_DETAILS
     ];
   }
 
