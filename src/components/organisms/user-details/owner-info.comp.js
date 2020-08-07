@@ -1,19 +1,58 @@
 import React, { Fragment } from "react";
+import countryList from "assets/country.json";
 
 export const OwnerInfo = ({ owners }) => {
   return (
     <Fragment>
       <h5 className="text-danger">Owner Information</h5>
-      {owners.map((data) => (
-        <div className="row mb-2">
-          {Object.keys(FIELDS).map((field) => (
-            <div className="d-flex col-lg-4 col-md-6 col-sm-12 mb-1" key={field}>
-              <b className="mr-1">{LABELS[field]}:</b>
-              {data[field]}
+      {owners.map((owner) => {
+        const parsedCountry = countryList.find((c) => c.alpha2Code === owner[FIELDS.country]) || {};
+        const parsedNationality =
+          countryList.find((c) => c.alpha2Code === owner[FIELDS.nationality]) || {};
+        return (
+          <Fragment>
+            <div className="row mb-2">
+              {Object.keys(FIELDS).map((field) => {
+                let value = owner[field];
+                if (field === FIELDS.nationality) {
+                  value = parsedNationality.name;
+                }
+                if (field === FIELDS.country) {
+                  value = parsedCountry.name;
+                }
+                if (field === FIELDS.gender) {
+                  value = owner[field] === "F" ? "Female" : "Male";
+                }
+                return (
+                  <div className="d-flex col-lg-4 col-md-6 col-sm-12 mb-1" key={field}>
+                    <b className="mr-1">{LABELS[field]}:</b>
+                    {value}
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
-      ))}
+            <br />
+            <h6>Owners Documents</h6>
+            <div>
+              {owner.documents &&
+                owner.documents.map((doc) => (
+                  <React.Fragment key={doc.id}>
+                    <div className="row">
+                      <div className="col-lg-4 col-md-6 col-sm-12 mb-1">
+                        <b>Type: </b>
+                        {OWNER_DOCUMENT_DETAILS_TYPES[doc.type]}
+                      </div>
+                      <div className="col-lg-8 col-md-6 col-sm-12 mb-1">
+                        <b>Document Name: </b>
+                        <a href={doc.url}>{doc.fileName}</a>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ))}
+            </div>
+          </Fragment>
+        );
+      })}
     </Fragment>
   );
 };
@@ -77,3 +116,21 @@ const LABELS = {
   visaNumber: "Visa Number",
   visaValidDate: "Visa Valid Date"
 };
+
+const OWNER_DOCUMENT_DETAILS_TYPES = Object.freeze({
+  PASSPORT_FRONT: "Passport front image",
+  PASSPORT_BACK: "Passport back image",
+  PASSPORT_LIVE: "Passport live image",
+  DRIVINGLICENCE_FRONT: "Driving Licence front image",
+  DRIVINGLICENCE_BACK: "Driving Licence back image",
+  DRIVINGLICENCE_LIVE: "Driving Licence live image",
+  IDENTITYCARD_FRONT: "Identity Card front image",
+  IDENTITYCARD_BACK: "Identity Card back image",
+  IDENTITYCARD_LIVE: "Identity Card live image",
+  RESIDENCEPERMIT_FRONT: "Resident Permit front image",
+  RESIDENCEPERMIT_BACK: "Resident Permit back image",
+  RESIDENCEPERMIT_LIVE: "Resident Permit live image",
+  VOTERID_FRONT: "Voter ID front image",
+  VOTERID_BACK: "Voter ID back image",
+  VOTERID_LIVE: "Voter ID live image"
+});

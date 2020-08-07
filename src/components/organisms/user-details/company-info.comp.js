@@ -3,6 +3,7 @@ import { Avatar, Card } from "antd";
 import styles from "./shared-styles.module.scss";
 import { DatetimeUtils } from "utils/date-time.util";
 import { WEEK_DAYS } from "commons/consts";
+import countryList from "assets/country.json";
 
 export const CompanyInfo = ({ companyInfo, companyAddress }) => {
   return (
@@ -58,14 +59,22 @@ const CompanyAddressReadonly = ({ companyAddress }) => {
         {companyAddress.map((address, index) => (
           <div className="col-12 col-lg-6 mb-4" key={address.id || index}>
             <Card bodyStyle={{ padding: "10px 15px" }} hoverable={true} className="dtc-br-10">
-              {Object.keys(ADDRESS_FIELDS).map((field) => (
-                <div className="d-flex justify-content-between" key={field}>
-                  <b>{ADDRESS_LABELS[field]}</b>
-                  <div title={address[field]} className={styles["text-ellipsis"]}>
-                    {address[field]}
+              {Object.keys(ADDRESS_FIELDS).map((field) => {
+                let value = address[field];
+                if (field === ADDRESS_FIELDS.country) {
+                  const parsedCountry =
+                    countryList.find((c) => c.alpha2Code === address[field]) || {};
+                  value = parsedCountry.name;
+                }
+                return (
+                  <div className="d-flex justify-content-between" key={field}>
+                    <b>{ADDRESS_LABELS[field]}</b>
+                    <div title={value} className={styles["text-ellipsis"]}>
+                      {value}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </Card>
           </div>
         ))}
