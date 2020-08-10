@@ -7,3 +7,4 @@ export * from "./image.service";
 export * from "./product.service";
 export * from "./storage.service";
 export * from "./rebates.service";
+export * from "./route.service";

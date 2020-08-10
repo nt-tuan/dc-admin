@@ -46,10 +46,8 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
     try {
       setIsUploading(true);
       const res = await ImageService.uploadImage(file);
-      setTimeout(() => {
-        onSuccess({ ...res, status: "done", uid: res.name });
-        setIsUploading(false);
-      }, 2000);
+      onSuccess({ ...res, status: "done", uid: res.name });
+      setIsUploading(false);
     } catch (error) {
       onError(error);
     }

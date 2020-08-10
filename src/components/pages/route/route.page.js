@@ -1,32 +1,45 @@
-import { Button } from "antd";
-import { RouteConst } from "commons/consts";
-import { ROUTE_SCHEMA } from "commons/schemas";
-import { DTCTable } from "components";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { DefaultRouteTab } from "./tabs/default-route-tab";
+import { RouteTab } from "./tabs/route-tab";
+import { Helmet } from "react-helmet";
+import { Button } from "antd";
 
-const OrderActiveTab = () => {
-  const [data, setData] = useState([]);
+const TAB_KEYS = {
+  DEFAULT_ROUTE: "DEFAULT_ROUTE",
+  ROUTE: "ROUTE"
+};
 
+const { DEFAULT_ROUTE, ROUTE } = TAB_KEYS;
+
+const renderRouteTab = () => <RouteTab />;
+const renderDefaultRouteTab = () => <DefaultRouteTab />;
+
+const RoutePage = () => {
+  const [tab, setTab] = useState(ROUTE);
+
+  const renderTabButton = (tabName, key) => {
+    return (
+      <Button
+        shape="round"
+        type={tab === key ? "primary" : "default"}
+        className="mr-2"
+        onClick={() => setTab(key)}
+      >
+        {tabName}
+      </Button>
+    );
+  };
   return (
-    <div className="air__utils__shadow bg-white p-4 dtc-br-10">
-      <div className="d-flex justify-content-end">
-        <Link to={RouteConst.ADD_ROUTE}>
-          <Button type="primary" className="mb-3">
-            Create Route
-          </Button>
-        </Link>
+    <article>
+      <Helmet title="Order Management" />
+      <div className="flex mb-3 ml-2">
+        {renderTabButton("Route", ROUTE)}
+        {renderTabButton("Default Route", DEFAULT_ROUTE)}
       </div>
-
-      <DTCTable
-        showSettings={false}
-        loading={false}
-        dataSource={data}
-        schema={ROUTE_SCHEMA.getTableSchema()}
-        onChange={(value) => setData(value)}
-      />
-    </div>
+      {tab === ROUTE && renderRouteTab()}
+      {tab === DEFAULT_ROUTE && renderDefaultRouteTab()}
+    </article>
   );
 };
 
-export default OrderActiveTab;
+export default RoutePage;

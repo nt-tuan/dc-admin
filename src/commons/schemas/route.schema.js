@@ -4,14 +4,16 @@ import { Button } from "antd";
 
 const FIELDS = {
   timestamp: "createdDate",
-  route: "route",
-  to: "to",
-  from: "from"
+  categoryName: "categoryName",
+  typeName: "typeName",
+  to: "toCountry",
+  from: "fromCountry"
 };
 
 const LABELS = {
   [FIELDS.timestamp]: "Time Stamp",
-  [FIELDS.route]: "Route",
+  [FIELDS.categoryName]: "Category",
+  [FIELDS.typeName]: "Type",
   [FIELDS.to]: "To",
   [FIELDS.from]: "From"
 };
@@ -33,12 +35,22 @@ const routeTableSchema = (onEditClick, onDeleteClick) => (
       render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
     },
     {
-      title: LABELS[FIELDS.route],
-      dataIndex: FIELDS.route,
-      key: FIELDS.route,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.route], b[FIELDS.route]),
-      sortOrder: sortedInfo.columnKey === FIELDS.route && sortedInfo.order,
-      render: (route) => <CustomHighlighter searchText={searchText} value={route || ""} />
+      title: LABELS[FIELDS.categoryName],
+      dataIndex: FIELDS.categoryName,
+      key: FIELDS.categoryName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.categoryName], b[FIELDS.categoryName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.categoryName && sortedInfo.order,
+      render: (categoryName) => (
+        <CustomHighlighter searchText={searchText} value={categoryName || ""} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.typeName],
+      dataIndex: FIELDS.typeName,
+      key: FIELDS.typeName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.typeName], b[FIELDS.typeName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.typeName && sortedInfo.order,
+      render: (typeName) => <CustomHighlighter searchText={searchText} value={typeName || ""} />
     },
     {
       title: LABELS[FIELDS.to],
@@ -59,13 +71,21 @@ const routeTableSchema = (onEditClick, onDeleteClick) => (
     {
       title: "Manage",
       key: "manage",
-      render: () => (
+      render: (record) => (
         <React.Fragment>
           <Fragment>
-            <Button type="primary" className="dtc-min-width-50 mr-2" onClick={onEditClick}>
+            <Button
+              type="primary"
+              className="dtc-min-width-50 mr-2"
+              onClick={() => onEditClick(record.id)}
+            >
               <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
             </Button>
-            <Button type="danger" className="dtc-min-width-50 mr-2" onClick={onDeleteClick}>
+            <Button
+              type="danger"
+              className="dtc-min-width-50 mr-2"
+              onClick={() => onDeleteClick(record.id)}
+            >
               <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
             </Button>
           </Fragment>

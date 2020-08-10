@@ -1,12 +1,13 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
-import { DTCSection } from "components/atoms";
+import { DTCSection, LoadingIndicator } from "components/atoms";
 import { DocumentList, DocumentRuleTable, RouteLocationForm } from "components/organisms";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom";
+import qs from "qs";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -17,15 +18,46 @@ const isFormValid = async (validateFn) => {
   }
 };
 
-const AddRoutePage = () => {
+const EditRoutePage = () => {
+  const [routeDetails, setRouteDetails] = useState();
   const [documents, setDocuments] = useState([]);
   const [defaultRoute, setDefaultRoute] = useState();
   const [defaultDocs, setDefaultDocs] = useState([]);
   const [selectedDefaultDocs, setSelectedDefaultDocs] = useState([]);
-  const [selectedCustomizedDocs, setSelectedCustomizedtDocs] = useState([]);
+  const [selectedCustomizedDocs, setSelectedCustomizedDocs] = useState([]);
+  const [isLocationFormTouched, setIsLocationFormTouched] = useState(false);
   const locationFormRef = useRef();
   const documentRuleForms = useRef(new Map());
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
+  const isDocListTouched = useRef({});
   const history = useHistory();
+  const { id: routeId } = qs.parse(location.search, { ignoreQueryPrefix: true });
+
+  const categoryIdFromDetails = useMemo(() => {
+    if (routeDetails === undefined || isLocationFormTouched) {
+      return undefined;
+    }
+    return routeDetails.categoryId;
+  }, [routeDetails, isLocationFormTouched]);
+
+  const typeIdFromDetails = useMemo(() => {
+    if (routeDetails === undefined || isLocationFormTouched) {
+      return undefined;
+    }
+    return routeDetails.typeId;
+  }, [routeDetails, isLocationFormTouched]);
+
+  const docIdsFromDetails = useMemo(() => {
+    if (routeDetails === undefined) {
+      return [];
+    }
+    const defaultRouteDocIds = defaultRoute
+      ? defaultRoute.routeDocumentTypeResponses.map((doc) => doc.id)
+      : [];
+    return routeDetails.routeDocumentTypeResponses
+      .filter((doc) => defaultRouteDocIds.includes(doc.id) === false)
+      .map((doc) => doc.id);
+  }, [routeDetails, defaultRoute]);
 
   const filteredCustomizedDocs = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -51,9 +83,44 @@ const AddRoutePage = () => {
   }, [defaultRoute]);
 
   useEffect(() => {
+    setIsLoadingLocation(true);
+    asyncErrorHandlerWrapper(async () => {
+      const details = await RouteService.get(routeId);
+      locationFormRef.current.setFieldsValue({
+        from: details.fromCountry,
+        to: details.toCountry
+      });
+      const _defaultRoute = await RouteService.getDefault({
+        categoryId: details.categoryId,
+        typeId: details.typeId
+      });
+      if (_defaultRoute) {
+        setDefaultRoute(_defaultRoute);
+        setSelectedDefaultDocs(
+          _defaultRoute.routeDocumentTypeResponses.map((doc) => ({
+            id: doc.id,
+            document: doc.name,
+            provider: ACTORS_REVERSE[doc.routeDocumentRuleDto.provider],
+            viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
+            viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
+            viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
+            disabled: true
+          }))
+        );
+      } else {
+        setDefaultRoute(undefined);
+        setSelectedDefaultDocs([]);
+      }
+      setRouteDetails(details);
+    });
+  }, [routeId]);
+
+  useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const docs = await getAllRecordsFromAPI(RouteService.getDocuments);
       setDocuments(docs);
+      const entries = docs.map((d) => [d.id, false]);
+      isDocListTouched.current = Object.fromEntries(entries);
     });
   }, []);
 
@@ -61,7 +128,7 @@ const AddRoutePage = () => {
     asyncErrorHandlerWrapper(async () => {
       const defaultDocs = await RouteService.getDefaultDocuments();
       if (selectedDefaultDocs.length === 0) {
-        setSelectedCustomizedtDocs([
+        setSelectedCustomizedDocs([
           ...defaultDocs.map((d) => ({
             id: d.id,
             document: d.name,
@@ -116,18 +183,33 @@ const AddRoutePage = () => {
               disabled: true
             };
           }
-          return {
-            document: doc.name,
-            id: doc.id,
-            disabled: false
-          };
+          const targetDocFromDetails = routeDetails.routeDocumentTypeResponses.find(
+            (dfd) => dfd.id === doc.id
+          );
+          if (targetDocFromDetails && isDocListTouched.current[targetDocFromDetails.id] === false) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer3],
+              disabled: false
+            };
+          } else {
+            return {
+              document: doc.name,
+              id: doc.id,
+              disabled: false
+            };
+          }
         });
-      setSelectedCustomizedtDocs(docs);
+      setSelectedCustomizedDocs(docs);
     },
-    [documents, defaultDocs]
+    [documents, defaultDocs, routeDetails]
   );
 
-  const handleCreate = () => {
+  const handleEdit = () => {
     asyncErrorHandlerWrapper(async () => {
       const valid = await isFormValid(async () => {
         const docFormRefs = Array.from(documentRuleForms.current.values());
@@ -158,8 +240,8 @@ const AddRoutePage = () => {
             }
           });
         });
-        await RouteService.create(composedValues);
-        message.success("Create Successfully");
+        await RouteService.edit(routeDetails.id, composedValues);
+        message.success("Edit Successfully");
         history.push(RouteConst.ROUTE);
       }
     });
@@ -169,12 +251,31 @@ const AddRoutePage = () => {
     return isDefault ? "Default Route Information" : "Route Information";
   };
 
+  const handleDocListTouch = (ids) => {
+    const entries = ids.map((id) => [id, true]);
+    const idsObj = Object.fromEntries(entries);
+    isDocListTouched.current = { ...isDocListTouched, ...idsObj };
+  };
+
   return (
     <DTCSection>
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
-        <RouteLocationForm onTypeChange={handleTypeChange} ref={locationFormRef} />
+        <div hidden={isLoadingLocation}>
+          <RouteLocationForm
+            onAfterInit={setIsLoadingLocation}
+            onTypeChange={handleTypeChange}
+            onTouch={setIsLocationFormTouched}
+            defaultCategoryId={categoryIdFromDetails}
+            defaultTypeId={typeIdFromDetails}
+            ref={locationFormRef}
+          />
+        </div>
+        <div className="text-center" hidden={isLoadingLocation === false}>
+          <LoadingIndicator />
+        </div>
       </div>
+
       <Divider />
       <div>
         <h5>Documents</h5>
@@ -192,9 +293,11 @@ const AddRoutePage = () => {
           <Col>
             <DocumentList
               title="Customized Documents"
+              defaultValue={docIdsFromDetails}
               defaultDocs={defaultDocs}
               documents={filteredCustomizedDocs}
               onChange={handleCustomizedDocListChange}
+              onTouch={handleDocListTouch}
             />
           </Col>
         </Row>
@@ -209,7 +312,7 @@ const AddRoutePage = () => {
       </div>
       <Divider />
       <div className="d-flex justify-content-center">
-        <Button className="mr-2" type="primary" onClick={handleCreate}>
+        <Button className="mr-2" type="primary" onClick={handleEdit}>
           Save
         </Button>
         <Button>Cancel</Button>
@@ -218,4 +321,4 @@ const AddRoutePage = () => {
   );
 };
 
-export default AddRoutePage;
+export default EditRoutePage;

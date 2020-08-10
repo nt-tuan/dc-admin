@@ -54,6 +54,26 @@ export const SALE_CHANNELS = Object.freeze({
   WHOLESALE_MASS: "Wholesale Mass"
 });
 
+export const DOCUMENT_RULE_ACTOR = Object.freeze({
+  SELLER: "Seller",
+  BUYER: "Buyer",
+  LOGISTIC_SERVICE_PROVIDER: "Logistic Service Provider",
+  INSPECTION_SERVICE_PROVIDER: "Inspection Provider"
+});
+
+export const ACTORS = {
+  Seller: "SELLER",
+  Buyer: "BUYER",
+  "Logistic Service Provider": "LOGISTIC_SERVICE_PROVIDER",
+  "Inspection Provider": "INSPECTION_SERVICE_PROVIDER"
+};
+
+export const ACTORS_REVERSE = {
+  SELLER: "Seller",
+  BUYER: "Buyer",
+  LOGISTIC_SERVICE_PROVIDER: "Logistic Service Provider",
+  INSPECTION_SERVICE_PROVIDER: "Inspection Provider"
+};
 export const WEEK_DAYS = Object.freeze({
   1: "Mon",
   2: "Tue",

@@ -159,6 +159,23 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.EDIT_ROUTE,
+    Component: loadable(() => import("components/pages/edit-route/edit-route.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ADD_DEFAULT_ROUTE,
+    Component: loadable(() => import("components/pages/add-default-route/add-default-route.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.EDIT_DEFAULT_ROUTE,
+    Component: loadable(() =>
+      import("components/pages/edit-default-route/edit-default-route.page")
+    ),
+    exact: true
+  },
+  {
     path: RouteConst.DOCUMENT,
     Component: loadable(() => import("components/pages/document/document.page")),
     exact: true

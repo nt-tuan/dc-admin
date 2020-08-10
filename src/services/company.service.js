@@ -6,4 +6,9 @@ export class CompanyService {
     const result = await backendAPI.get(ApiPathConsts.BANK_DETAILS);
     return result;
   };
+
+  static getCountries = async () => {
+    const result = await backendAPI.get("/companies/addresses/countries");
+    return result;
+  };
 }
