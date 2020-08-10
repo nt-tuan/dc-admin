@@ -10,6 +10,8 @@ export class UserService {
     if (localStorageAuth) {
       const { accessToken } = localStorageAuth;
       backendAPI.setAuthHeader(accessToken);
+      const curUser = await backendAPI.get("/me");
+      console.log(curUser);
       return true;
     }
     return false;

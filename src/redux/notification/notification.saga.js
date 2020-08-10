@@ -13,7 +13,7 @@ const { selectCurrentUser } = USER_DUCK;
 // eslint-disable-next-line
 function* createSocketChannel(wsClient, userId) {
   return new eventChannel((emit) => {
-    wsClient.subscribe(`/notification/${userId}`, (m) => {
+    wsClient.subscribe(`/notification/admin/${userId}`, (m) => {
       const message = JSON.parse(m.body);
       emit(message);
     });
@@ -26,7 +26,7 @@ export function* INIT() {
   _wsClient = yield WSClient.create();
   _wsClient.deactivate();
   const user = yield select(selectCurrentUser);
-  if (!user.authorized || user.companyStatus !== COMPANY_STATUSES.ACTIVE) {
+  if (user.authorized === false) {
     return;
   }
   yield put(setStateAction({ newMessage: !user.messageRead }));
