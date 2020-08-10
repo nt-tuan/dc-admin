@@ -83,3 +83,8 @@ export const WEEK_DAYS = Object.freeze({
   6: "Sat",
   7: "Sun"
 });
+
+export const NOTIFICATION_TYPE = Object.freeze({
+  ADMIN_ROUTE_ADD_NEW_USER: "ADMIN_ROUTE_ADD_NEW_USER",
+  ADMIN_ROUTE_ADD_NEW_ADDRESS: "ADMIN_ROUTE_ADD_NEW_ADDRESS"
+});

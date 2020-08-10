@@ -57,7 +57,7 @@ export function* LOAD_CURRENT_ACCOUNT() {
   try {
     yield put(setStateAction({ loading: true }));
     const user = yield UserService.getCurrentAccount();
-
+    console.log(user);
     if (user) {
       yield put({
         type: USER_ACTIONS.SET_STATE,

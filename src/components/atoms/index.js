@@ -12,3 +12,5 @@ export * from "./search-bar/search-bar.comp";
 export * from "./dtc-section/dtc-section.comp";
 export * from "./perfume-spec-table/perfume-spec-table.comp";
 export * from "./load-more-button/load-more-button.comp";
+export * from "./notification-item/notification-item.comp";
+export * from "./notification-list/notification-list.comp";

@@ -1,0 +1,43 @@
+@import "assets/styles/mixins.scss";
+@import "assets/styles/theme-seller.scss";
+
+.item {
+  &:hover {
+    cursor: pointer;
+    color: $primary;
+    transition: all 0.2s ease-in-out;
+  }
+  > p {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+  }
+  > time {
+    font-size: 11px;
+  }
+}
+
+.item-load-fund {
+  &:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  > p {
+    font-size: 14px;
+  }
+  > time {
+    font-size: 11px;
+  }
+}
+
+.click-here {
+  padding: 0;
+  > span {
+    font-weight: bold;
+    font-size: 13px;
+    font-style: italic;
+  }
+}

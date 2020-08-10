@@ -1,9 +1,11 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
 import { DATETIME_FORMAT } from "commons/consts";
 dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 export class DatetimeUtils {
   static isBetweenTwoDate = (currentDate, firstDate, lastDate) => {
@@ -20,6 +22,10 @@ export class DatetimeUtils {
     }
 
     return dayjs(value).format(format);
+  };
+
+  static fromNow = (value) => {
+    return dayjs.utc(value).fromNow();
   };
 
   static minutesTotime = (minutes = 0, getTimeString = false) => {
