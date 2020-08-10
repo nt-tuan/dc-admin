@@ -9,14 +9,16 @@ export const CompanyInfo = ({ companyInfo, companyAddress }) => {
   return (
     <Fragment>
       <h5 className="text-danger">Company Information</h5>
-      <div className="d-flex mb-4 align-items-center w-50">
-        <Avatar
-          shape="square"
-          size={100}
-          src={companyInfo && companyInfo.logoUrl}
-          icon={companyInfo.logoUrl || <i className="fe fe-user" />}
-          className="mr-3 dtc-cursor-pointer"
-        />
+      <div className="d-flex mb-4 align-items-center w-75">
+        <div style={{ width: 100, height: 100 }} className="mr-3">
+          <Avatar
+            shape="square"
+            size={100}
+            src={companyInfo && companyInfo.logoUrl}
+            icon={companyInfo.logoUrl || <i className="fe fe-user" />}
+            className="mr-3 dtc-cursor-pointer"
+          />
+        </div>
         <span className="w-100">
           <CompanyInfoReadonly companyInfo={companyInfo} />
         </span>

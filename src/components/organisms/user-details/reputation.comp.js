@@ -49,7 +49,7 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
       </div>
       <div className="d-flex align-items-center h-100 mb-2">
         <strong className="mr-1 pt-2">Reputation: </strong>
-        <span>
+        <span title={roundToHalfDecimal(data.reputation)}>
           <Rate allowHalf value={roundToHalfDecimal(data.reputation)} disabled />
         </span>
       </div>
