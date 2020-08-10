@@ -4,6 +4,7 @@ import { notification } from "antd";
 import { APIError } from "commons/types";
 import { AuthService, UserService } from "services";
 import { MessageConst } from "commons/consts";
+import * as NOTIFICATION_DUCKS from "redux/notification/notification.duck";
 
 const { setStateAction } = USER_ACTIONS;
 
@@ -66,6 +67,7 @@ export function* LOAD_CURRENT_ACCOUNT() {
           authorized: true
         }
       });
+      yield put({ type: NOTIFICATION_DUCKS.INIT });
     } else {
       yield put({
         type: USER_ACTIONS.SET_STATE,

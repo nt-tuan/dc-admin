@@ -77,4 +77,7 @@ export class SharedPaths {
   static get USER_DETAILS() {
     return "/user-details";
   }
+  static get NOTIFICATION() {
+    return "/notifications";
+  }
 }

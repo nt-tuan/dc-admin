@@ -28,7 +28,8 @@ export class RouteConst extends SharedPaths {
       this.ADD_DEFAULT_ROUTE,
       this.EDIT_DEFAULT_ROUTE,
       this.DOCUMENT,
-      this.USER_DETAILS
+      this.USER_DETAILS,
+      this.NOTIFICATION
     ];
   }
 

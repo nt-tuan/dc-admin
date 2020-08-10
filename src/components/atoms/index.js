@@ -14,3 +14,4 @@ export * from "./perfume-spec-table/perfume-spec-table.comp";
 export * from "./load-more-button/load-more-button.comp";
 export * from "./notification-item/notification-item.comp";
 export * from "./notification-list/notification-list.comp";
+export * from "./notification-popup/notification-popup.comp";

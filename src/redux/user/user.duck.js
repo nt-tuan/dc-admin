@@ -13,7 +13,7 @@ export const setStateAction = (payload) => {
 };
 
 const initialState = {
-  id: "",
+  id: "c746d9b3-bdc9-4017-beba-cb811b3eea17",
   country: "",
   email: "",
   firstName: "",

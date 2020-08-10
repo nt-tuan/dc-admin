@@ -1,18 +1,18 @@
-import React, { useEffect, useState, Fragment, useCallback } from "react";
+import { Checkbox } from "antd";
+import { LoadingIndicator } from "components/atoms";
 import {
-  UserProfile,
   CompanyInfo,
   OwnerInfo,
+  RebatesInfo,
   Reputation,
-  RebatesInfo
+  UserProfile
 } from "components/organisms/user-details";
-import { Button, Checkbox } from "antd";
-import { LoadingIndicator } from "components/atoms";
 import { useBooleanState } from "hooks/utilHooks";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { UserService } from "services";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import qs from "qs";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { UserService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const UserDetails = () => {
   const [data, setData] = useState({});

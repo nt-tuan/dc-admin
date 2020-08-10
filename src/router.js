@@ -184,6 +184,11 @@ const privateRoutes = [
     path: RouteConst.USER_DETAILS,
     Component: loadable(() => import("components/pages/user-details/user-details.page")),
     exact: true
+  },
+  {
+    path: RouteConst.NOTIFICATION,
+    Component: loadable(() => import("components/pages/notification/notification.page")),
+    exact: true
   }
 ];
 

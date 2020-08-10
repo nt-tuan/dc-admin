@@ -3,17 +3,10 @@ const AUTH_LOCALSTORAGE_KEY = "auth";
 
 export const getAccessToken = async () => {
   const authCredential = store.get(AUTH_LOCALSTORAGE_KEY);
-  if (authCredential) {
-    const { rememberMe, createdDate } = authCredential;
-    if (rememberMe === false) {
-      const curDate = new Date(createdDate);
-      let expiredDate = curDate - 2;
-      if (expiredDate < curDate) {
-        throw new Error("401");
-      }
-    }
+  if (authCredential === undefined) {
+    throw new Error("401");
   }
-  return new Promise((r) => r(authCredential ? authCredential.accessToken : undefined));
+  return new Promise((r) => r(authCredential.accessToken));
 };
 
 export const setAuthCredential = async (credential) => {

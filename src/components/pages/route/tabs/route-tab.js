@@ -82,11 +82,11 @@ export const RouteTab = () => {
       <div className="d-flex justify-content-end">
         <Link to={RouteConst.ADD_ROUTE}>
           <Button type="primary" className="mb-3">
-            Create Default Route
+            Create Route
           </Button>
         </Link>
       </div>
-      <Tabs type="card">
+      <Tabs type="line">
         <Tabs.TabPane tab="Active" key="1" forceRender>
           <DTCTable
             showSettings={false}
