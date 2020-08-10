@@ -119,7 +119,7 @@ export const RouteLocationForm = forwardRef(
             </Select>
           </Form.Item>
         )}
-        <Form.Item label="Category" name="category" className="mb-2">
+        <Form.Item label="Product Category" name="category" className="mb-2">
           <Select style={{ width: 200 }} onChange={handleCategoryChange}>
             {categories.map((c) => (
               <Select.Option value={c.id} key={c.id}>
@@ -129,7 +129,7 @@ export const RouteLocationForm = forwardRef(
           </Select>
         </Form.Item>
         <Form.Item
-          label="Type"
+          label="Product Type"
           name="type"
           className="mb-2"
           rules={[
