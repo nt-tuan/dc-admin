@@ -65,14 +65,7 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       <Form.Item
         shouldUpdate
         name="sampleFile"
-        rules={[
-          // { required: true, message: "Please upload Sample File" },
-          {
-            validator: async (rule, value) => {
-              throw new Error("Something wrong!");
-            }
-          }
-        ]}
+        rules={[]}
         valuePropName="fileList"
         getValueFromEvent={normFile}
       >
