@@ -8,6 +8,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RebatesService } from "services";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import moment from "moment";
+import { DATETIME_FORMAT } from "commons/consts";
 
 const { FIELDS, LABELS } = REBATES_SCHEMA;
 
@@ -32,7 +33,7 @@ const Rebates = () => {
       setData(
         res.map((rebate) => ({
           ...rebate,
-          createdDate: rebate.createdDate ? moment(rebate.createdDate).format("YYYY-MM-DD") : ""
+          createdDate: rebate.createdDate ? moment(rebate.createdDate).format(DATETIME_FORMAT) : ""
         }))
       );
       setLoading(false);

@@ -8,8 +8,9 @@ const FIELDS = {
   timestamp: "createdDate",
   buyerCompanyName: "toCompanyName",
   productBrand: "brand",
-  ownerNameEmail: "ownerNameEmail",
-  contact: "contact",
+  ownerName: "ownerName",
+  ownerEmail: "ownerEmail",
+  contact: "ownerPhone",
   rebatePercentage: "value"
 };
 
@@ -17,7 +18,8 @@ const LABELS = {
   [FIELDS.timestamp]: "Timestamp",
   [FIELDS.buyerCompanyName]: "Buyer company",
   [FIELDS.productBrand]: "Product brand",
-  [FIELDS.ownerNameEmail]: "Owner name email",
+  [FIELDS.ownerName]: "Owner name",
+  [FIELDS.ownerEmail]: "Owner email",
   [FIELDS.contact]: "Contact",
   [FIELDS.rebatePercentage]: "Rebate percentage"
 };
@@ -63,14 +65,20 @@ export const rebatesTableSchema = (onDelete) => (
       )
     },
     {
-      title: LABELS[FIELDS.ownerNameEmail],
-      dataIndex: FIELDS.ownerNameEmail,
-      key: FIELDS.ownerNameEmail,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.ownerNameEmail], b[FIELDS.ownerNameEmail]),
-      sortOrder: sortedInfo.columnKey === FIELDS.ownerNameEmail && sortedInfo.order,
-      render: (ownerNameEmail) => (
-        <CustomHighlighter searchText={searchText} value={ownerNameEmail || ""} />
-      )
+      title: LABELS[FIELDS.ownerName],
+      dataIndex: FIELDS.ownerName,
+      key: FIELDS.ownerName,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.ownerName], b[FIELDS.ownerName]),
+      sortOrder: sortedInfo.columnKey === FIELDS.ownerName && sortedInfo.order,
+      render: (ownerName) => <CustomHighlighter searchText={searchText} value={ownerName || ""} />
+    },
+    {
+      title: LABELS[FIELDS.ownerEmail],
+      dataIndex: FIELDS.ownerEmail,
+      key: FIELDS.ownerEmail,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.ownerEmail], b[FIELDS.ownerEmail]),
+      sortOrder: sortedInfo.columnKey === FIELDS.ownerEmail && sortedInfo.order,
+      render: (ownerEmail) => <CustomHighlighter searchText={searchText} value={ownerEmail || ""} />
     },
     {
       title: LABELS[FIELDS.contact],
