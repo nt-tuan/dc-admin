@@ -28,7 +28,6 @@ export function* INIT() {
   if (user.authorized === false) {
     return;
   }
-  yield put(setStateAction({ newMessage: !user.messageRead }));
   const { content, totalPages } = yield getNotificationList(0, 5);
   yield put(setStateAction({ popupList: content, totalPages }));
 

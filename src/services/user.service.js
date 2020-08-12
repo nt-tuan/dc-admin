@@ -11,10 +11,9 @@ export class UserService {
       const { accessToken } = localStorageAuth;
       backendAPI.setAuthHeader(accessToken);
       const curUser = await backendAPI.get("/me");
-      console.log(curUser);
-      return true;
+      return curUser;
     }
-    return false;
+    return undefined;
   };
 
   static getUserDetails = async (username) => {
