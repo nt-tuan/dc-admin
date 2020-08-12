@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { APIError } from "commons/types";
+import { APIError, CustomError } from "commons/types";
 import { removeAuthCredential } from "./auth.util";
 import { log } from "./logger.util";
 import { RouteConst } from "commons/consts";
@@ -16,7 +16,7 @@ export const axiosErrorHandler = (err) => {
     if (errors) {
       throw new APIError(errors);
     }
-    throw new Error(err.response.status);
+    throw new CustomError(err.response.status, err.response.data);
   } else if (err.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

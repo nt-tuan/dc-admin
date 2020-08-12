@@ -115,9 +115,18 @@ const EditRoutePage = () => {
             });
           }
         });
-        await RouteService.edit(routeDetails.id, composedValues);
-        message.success("Create Successfully");
-        history.push(RouteConst.ROUTE);
+
+        try {
+          await RouteService.edit(routeDetails.id, composedValues);
+          message.success("Create Successfully");
+          history.push(RouteConst.ROUTE);
+        } catch (error) {
+          if (error.message === "400") {
+            message.error(error.errMsg);
+            return;
+          }
+          throw error;
+        }
       }
     });
   };

@@ -23,7 +23,19 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
       <Form.Item
         shouldUpdate
         name="productImageName"
-        rules={[{ required: true, message: "Please upload product image" }]}
+        rules={[
+          { required: true, message: "Please upload product image" },
+          {
+            validator: async (rule, value) => {
+              if (value.length) {
+                const fileExt = value[0].name.substr(value[0].name.lastIndexOf("."));
+                if ([".png", ".jpg", ".jpeg"].includes(fileExt.toLowerCase()) === false) {
+                  throw new Error("Invalid File Type");
+                }
+              }
+            }
+          }
+        ]}
         className="col-12 col-lg-3"
         valuePropName="fileList"
         getValueFromEvent={normFile}

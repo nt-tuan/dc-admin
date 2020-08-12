@@ -54,9 +54,9 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
         rules={[{ required: true, message: "Please input your Document Type!" }]}
       >
         <Select>
-          {["PDF", "Excel"].map((item, idx) => (
-            <Select.Option key={idx} value={item}>
-              {item}
+          {fileTypes.map(({ value, label }) => (
+            <Select.Option key={value} value={value}>
+              {label}
             </Select.Option>
           ))}
         </Select>
@@ -65,7 +65,14 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       <Form.Item
         shouldUpdate
         name="sampleFile"
-        rules={[{ required: true, message: "Please upload Sample File" }]}
+        rules={[
+          // { required: true, message: "Please upload Sample File" },
+          {
+            validator: async (rule, value) => {
+              throw new Error("Something wrong!");
+            }
+          }
+        ]}
         valuePropName="fileList"
         getValueFromEvent={normFile}
       >
@@ -86,3 +93,14 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
     </Form>
   );
 });
+
+const fileTypes = [
+  {
+    label: "PDF",
+    value: "PDF"
+  },
+  {
+    value: "XLSX",
+    label: "Excel"
+  }
+];

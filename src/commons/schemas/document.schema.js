@@ -80,13 +80,19 @@ const getTableSchema = (onEditClick, onDeleteClick) => (
         <React.Fragment>
           <Fragment>
             <Button
+              disabled={doc.name === "Order Invoice"}
               type="primary"
               className="dtc-min-width-50 mr-2"
               onClick={() => onEditClick(doc.id)}
             >
               <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
             </Button>
-            <Button type="danger" className="dtc-min-width-50 mr-2" onClick={onDeleteClick}>
+            <Button
+              type="danger"
+              className="dtc-min-width-50 mr-2"
+              onClick={onDeleteClick}
+              disabled={doc.name === "Order Invoice"}
+            >
               <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
             </Button>
           </Fragment>

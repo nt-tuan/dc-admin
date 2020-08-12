@@ -43,14 +43,10 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
   const imagesData = productImgFormRef.current.getFieldsValue();
 
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
-    try {
-      setIsUploading(true);
-      const res = await ImageService.uploadImage(file);
-      onSuccess({ ...res, status: "done", uid: res.name });
-      setIsUploading(false);
-    } catch (error) {
-      onError(error);
-    }
+    setIsUploading(true);
+    const res = await ImageService.uploadImage(file);
+    onSuccess({ ...res, status: "done", uid: res.name });
+    setIsUploading(false);
   };
 
   useEffect(() => {
