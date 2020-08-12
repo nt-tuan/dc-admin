@@ -7,6 +7,7 @@ import { TableSetting } from "components/molecules";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RebatesService } from "services";
 import { getAllRecordsFromAPI } from "utils/general.util";
+import moment from "moment";
 
 const { FIELDS, LABELS } = REBATES_SCHEMA;
 
@@ -28,7 +29,12 @@ const Rebates = () => {
   const getRebatesList = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
       const res = await getAllRecordsFromAPI(RebatesService.getRebates);
-      setData(res);
+      setData(
+        res.map((rebate) => ({
+          ...rebate,
+          createdDate: rebate.createdDate ? moment(rebate.createdDate).format("YYYY-MM-DD") : ""
+        }))
+      );
       setLoading(false);
     });
   }, []);

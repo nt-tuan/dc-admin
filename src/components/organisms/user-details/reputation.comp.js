@@ -61,11 +61,15 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
               .sort((a, b) => b.value - a.value)
               .map((badge, index) => (
                 <div key={badge.type}>
-                  <Popover content={renderPopoverContent(badge.type)}>
-                    <div>
-                      <UserBadge type={badge.type} value={badge.value} />
-                    </div>
-                  </Popover>
+                  {badge.type === "VERIFIED" ? (
+                    <Popover content={renderPopoverContent(badge.type)}>
+                      <div>
+                        <UserBadge type={badge.type} value={badge.value} />
+                      </div>{" "}
+                    </Popover>
+                  ) : (
+                    <UserBadge type={badge.type} value={badge.value} />
+                  )}
                 </div>
               ))}
         </div>
