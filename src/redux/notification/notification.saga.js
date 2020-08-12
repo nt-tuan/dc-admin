@@ -31,10 +31,6 @@ export function* INIT() {
   const { content, totalPages } = yield getNotificationList(0, 5);
   yield put(setStateAction({ popupList: content, totalPages }));
 
-  if (user.byWeb === false) {
-    return;
-  }
-
   yield new Promise((r) => {
     _wsClient.onConnect = (frame) => {
       r(_wsClient.connected);
