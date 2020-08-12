@@ -9,7 +9,6 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { DatetimeUtils } from "utils/date-time.util";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import countryJson from "assets/country.json";
 
 const { confirm } = Modal;
 
@@ -27,13 +26,9 @@ export const DefaultRouteTab = () => {
         });
         setData(
           result.map((r) => {
-            const targetFromCountry = countryJson.find((c) => c.alpha2Code === r.fromCountry);
-            const targetToCountry = countryJson.find((c) => c.alpha2Code === r.toCountry);
             return {
               ...r,
-              createdDate: DatetimeUtils.formatDateTime(r.createdDate),
-              toCountry: targetToCountry.name,
-              fromCountry: targetFromCountry.name
+              createdDate: DatetimeUtils.formatDateTime(r.createdDate)
             };
           })
         );

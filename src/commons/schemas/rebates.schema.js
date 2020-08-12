@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { RouteConst } from "commons/consts";
 
 const FIELDS = {
-  timestamp: "timestamp",
+  timestamp: "createdDate",
   buyerCompanyName: "toCompanyName",
   productBrand: "brand",
   ownerNameEmail: "ownerNameEmail",
