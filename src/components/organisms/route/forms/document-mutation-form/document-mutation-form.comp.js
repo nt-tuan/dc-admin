@@ -75,7 +75,7 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
           onRemove={(file) => {
             asyncErrorHandlerWrapper(async () => {
               if (file.status === "done") {
-                await RouteService.deleteDocument(file.uid);
+                await RouteService.deleteDocumentFile(file.uid);
               }
             });
           }}

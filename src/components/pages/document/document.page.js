@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Button, Modal, message } from "antd";
 import { DOCUMENT_SCHEMA } from "commons/schemas";
 import { DTCTable } from "components";
 import { DocumentMutationForm } from "components/organisms";
@@ -45,21 +45,29 @@ const OrderActiveTab = () => {
     formRef.current.setFieldsValue({
       documentName: targetDoc.name,
       documentType: targetDoc.routeDocumentTypeEnum,
-      sampleFile: [
-        {
-          name: targetDoc.name,
-          url: targetDoc.url,
-          uid: targetDoc.fileName,
-          status: "done"
-        }
-      ]
+      sampleFile: targetDoc.url
+        ? [
+            {
+              name: targetDoc.name,
+              url: targetDoc.url,
+              uid: targetDoc.fileName,
+              status: "done"
+            }
+          ]
+        : undefined
     });
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (id) => {
     confirm({
       title: "Do you Want to delete this document?",
-      icon: <ExclamationCircleOutlined />
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => {
+        asyncErrorHandlerWrapper(async () => {
+          await RouteService.deleteDocument(id);
+          handleGetAllDocs();
+        });
+      }
     });
   };
 
@@ -78,14 +86,23 @@ const OrderActiveTab = () => {
       if (isValid) {
         const data = formRef.current.getFieldsValue();
         const composedData = {
-          fileName: data.sampleFile[0].uid,
+          fileName: data.sampleFile && data.sampleFile[0].uid,
           name: data.documentName,
           routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile[0].originalName
+          originalFileName: data.sampleFile && data.sampleFile[0].originalName
         };
-        await RouteService.createDocument(composedData);
-        setShowDocumentMutationModal(false);
-        handleGetAllDocs();
+        try {
+          await RouteService.createDocument(composedData);
+          setShowDocumentMutationModal(false);
+          message.success("Create Successfully");
+          handleGetAllDocs();
+        } catch (error) {
+          if (error.message === "400") {
+            message.error(error.errMsg);
+            return;
+          }
+          throw error;
+        }
       }
     });
   };
@@ -96,14 +113,23 @@ const OrderActiveTab = () => {
       if (isValid) {
         const data = formRef.current.getFieldsValue();
         const composedData = {
-          fileName: data.sampleFile[0].uid,
+          fileName: data.sampleFile && data.sampleFile[0].uid,
           name: data.documentName,
           routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile[0].originalName
+          originalFileName: data.sampleFile && data.sampleFile[0].originalName
         };
-        await RouteService.editDocument(selectedDocument.current.id, composedData);
-        setShowDocumentMutationModal(false);
-        handleGetAllDocs();
+        try {
+          await RouteService.editDocument(selectedDocument.current.id, composedData);
+          setShowDocumentMutationModal(false);
+          message.success("Edit Successfully");
+          handleGetAllDocs();
+        } catch (error) {
+          if (error.message === "400") {
+            message.error(error.errMsg);
+            return;
+          }
+          throw error;
+        }
       }
     });
   };

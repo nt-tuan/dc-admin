@@ -90,7 +90,7 @@ const getTableSchema = (onEditClick, onDeleteClick) => (
             <Button
               type="danger"
               className="dtc-min-width-50 mr-2"
-              onClick={onDeleteClick}
+              onClick={() => onDeleteClick(doc.id)}
               disabled={doc.name === "Order Invoice"}
             >
               <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>

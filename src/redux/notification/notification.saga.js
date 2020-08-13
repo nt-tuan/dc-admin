@@ -43,6 +43,7 @@ export function* INIT() {
   const channel = yield createSocketChannel(_wsClient, user.id);
   while (true) {
     const payload = yield take(channel);
+    yield put(setStateAction({ newMessage: true }));
     yield put(setStateAction({ isLoadingNewMessage: true }));
     yield put({ type: NOTIFICATION_DUCK.PUSH_MESSAGE, payload });
     yield put(setStateAction({ isLoadingNewMessage: false }));

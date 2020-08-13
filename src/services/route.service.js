@@ -52,8 +52,12 @@ export class RouteService {
     return result;
   };
 
-  static deleteDocument = async (fileName) => {
+  static deleteDocumentFile = async (fileName) => {
     await backendAPI.delete(`${this.#BASE_URL}/documents/aws/${fileName}`);
+  };
+
+  static deleteDocument = async (id) => {
+    await backendAPI.delete(`${this.#BASE_URL}/documents/${id}`);
   };
 
   static createDocument = async (values) => {
