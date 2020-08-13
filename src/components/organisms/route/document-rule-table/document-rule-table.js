@@ -3,13 +3,8 @@ import React, { useContext, useEffect, useRef, useState, forwardRef, useCallback
 
 const EditableContext = React.createContext();
 
-const EditableRow = ({ rowId, onMount, ...props }) => {
-  const [selectedActors, setSelectedActors] = useState({
-    Seller: undefined,
-    Buyer: undefined,
-    "Logistic Service Provider": undefined,
-    "Inspection Provider": undefined
-  });
+const EditableRow = ({ rowId, initActors, onMount, ...props }) => {
+  const [selectedActors, setSelectedActors] = useState(initActors);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -99,7 +94,6 @@ const EditableCell = ({
 
 export const DocumentRuleTable = forwardRef(({ data }, ref) => {
   const [dataSource, setDatasource] = useState(data);
-  console.log("asdasd");
   useEffect(() => {
     setDatasource(data);
   }, [data]);
@@ -171,10 +165,24 @@ export const DocumentRuleTable = forwardRef(({ data }, ref) => {
         scroll={{ x: true }}
         rowKey="id"
         components={components}
-        onRow={(record) => ({
-          rowId: record.id,
-          onMount: handleRowMount(record)
-        })}
+        onRow={(record) => {
+          let initSelectedActors = {};
+          Object.keys(record).forEach((actor) => {
+            if (
+              ["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"].includes(
+                record[actor]
+              ) === false
+            ) {
+              return;
+            }
+            initSelectedActors[record[actor]] = actor;
+          });
+          return {
+            rowId: record.id,
+            initActors: initSelectedActors,
+            onMount: handleRowMount(record)
+          };
+        }}
         rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}

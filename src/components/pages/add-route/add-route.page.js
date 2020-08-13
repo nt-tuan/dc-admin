@@ -79,7 +79,6 @@ const AddRoutePage = () => {
   }, []);
 
   const handleTypeChange = useCallback(({ categoryId, typeId }) => {
-    console.log("type change");
     asyncErrorHandlerWrapper(async () => {
       const _defaultRoute = await RouteService.getDefault({ categoryId, typeId });
       if (_defaultRoute) {
@@ -104,7 +103,6 @@ const AddRoutePage = () => {
 
   const handleDefaultDocListChange = useCallback(
     (checkedList) => {
-      console.log("default doc list change");
       const docs = documents
         .filter((doc) => checkedList.includes(doc.id))
         .map((doc) => {
@@ -127,7 +125,6 @@ const AddRoutePage = () => {
             targetDocFromDefaultRoute &&
             isDocListTouched.current[targetDocFromDefaultRoute.id] === false
           ) {
-            console.log(targetDocFromDefaultRoute);
             return {
               document: doc.name,
               id: doc.id,
@@ -158,7 +155,6 @@ const AddRoutePage = () => {
 
   const handleCustomizedDocListChange = useCallback(
     (checkedList) => {
-      console.log("customized doc list change");
       const docs = documents
         .filter((doc) => checkedList.includes(doc.id))
         .map((doc) => {

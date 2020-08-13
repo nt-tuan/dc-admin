@@ -27,7 +27,6 @@ export const DocumentList = ({
         .filter((d) => defaultDocs.some((dd) => dd.id === d.id))
         .map((d) => d.id);
       const list = uniq([...defaultDocIds, ...defaultValue]);
-      console.log(list);
       setCheckedList(list);
       setIndeterminate(list.length < documents.length && list.length > 0);
       setCheckAll(list.length === documents.length);

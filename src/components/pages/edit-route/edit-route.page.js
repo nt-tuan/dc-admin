@@ -52,7 +52,6 @@ const EditRoutePage = () => {
       )
       .map((doc) => doc.id);
   }, [defaultRoute, defaultDocs, routeDetails]);
-  console.log(defaultDocumentIds);
 
   const typeIdFromDetails = useMemo(() => {
     if (routeDetails === undefined || isLocationFormTouched) {
@@ -78,7 +77,6 @@ const EditRoutePage = () => {
       return documents;
     }
     const defaultRouteDocs = defaultRoute.routeDocumentTypeResponses;
-    console.log(defaultRouteDocs);
     return documents
       .filter((doc) => defaultRouteDocs.some((dd) => dd.id === doc.id) === false)
       .map((doc) => ({
@@ -86,8 +84,6 @@ const EditRoutePage = () => {
         name: doc.name
       }));
   }, [defaultRoute, documents]);
-
-  console.log(filteredCustomizedDocs);
 
   const defaultDocuments = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -100,7 +96,6 @@ const EditRoutePage = () => {
   }, [defaultRoute]);
 
   const docTableData = useMemo(() => {
-    console.log(selectedDefaultDocs, selectedCustomizedDocs);
     return [...selectedDefaultDocs, ...selectedCustomizedDocs];
   }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
@@ -177,8 +172,6 @@ const EditRoutePage = () => {
       }
     });
   }, []);
-
-  console.log(selectedDefaultDocs);
 
   const handleDefaultDocListChange = useCallback(
     (checkedList) => {
@@ -329,8 +322,6 @@ const EditRoutePage = () => {
       isDocListTouched.current = { ...isDocListTouched, ...idsObj };
     }
   }, []);
-
-  console.log(defaultDocumentIds);
 
   return (
     <DTCSection>
