@@ -99,7 +99,7 @@ const EditableCell = ({
 
 export const DocumentRuleTable = forwardRef(({ data }, ref) => {
   const [dataSource, setDatasource] = useState(data);
-
+  console.log("asdasd");
   useEffect(() => {
     setDatasource(data);
   }, [data]);

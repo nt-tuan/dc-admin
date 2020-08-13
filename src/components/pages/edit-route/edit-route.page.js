@@ -40,6 +40,20 @@ const EditRoutePage = () => {
     return routeDetails.categoryId;
   }, [routeDetails, isLocationFormTouched]);
 
+  const defaultDocumentIds = useMemo(() => {
+    if (defaultRoute === undefined || routeDetails === undefined) {
+      return [];
+    }
+    return defaultRoute.routeDocumentTypeResponses
+      .filter(
+        (doc) =>
+          defaultDocs.map((d) => d.id).includes(doc.id) ||
+          routeDetails.routeDocumentTypeResponses.map((d) => d.id).includes(doc.id)
+      )
+      .map((doc) => doc.id);
+  }, [defaultRoute, defaultDocs, routeDetails]);
+  console.log(defaultDocumentIds);
+
   const typeIdFromDetails = useMemo(() => {
     if (routeDetails === undefined || isLocationFormTouched) {
       return undefined;
@@ -64,6 +78,7 @@ const EditRoutePage = () => {
       return documents;
     }
     const defaultRouteDocs = defaultRoute.routeDocumentTypeResponses;
+    console.log(defaultRouteDocs);
     return documents
       .filter((doc) => defaultRouteDocs.some((dd) => dd.id === doc.id) === false)
       .map((doc) => ({
@@ -71,6 +86,8 @@ const EditRoutePage = () => {
         name: doc.name
       }));
   }, [defaultRoute, documents]);
+
+  console.log(filteredCustomizedDocs);
 
   const defaultDocuments = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -81,6 +98,11 @@ const EditRoutePage = () => {
       name: doc.name
     }));
   }, [defaultRoute]);
+
+  const docTableData = useMemo(() => {
+    console.log(selectedDefaultDocs, selectedCustomizedDocs);
+    return [...selectedDefaultDocs, ...selectedCustomizedDocs];
+  }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
   useEffect(() => {
     setIsLoadingLocation(true);
@@ -97,15 +119,17 @@ const EditRoutePage = () => {
       if (_defaultRoute) {
         setDefaultRoute(_defaultRoute);
         setSelectedDefaultDocs(
-          _defaultRoute.routeDocumentTypeResponses.map((doc) => ({
-            id: doc.id,
-            document: doc.name,
-            provider: ACTORS_REVERSE[doc.routeDocumentRuleDto.provider],
-            viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
-            viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
-            viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
-            disabled: true
-          }))
+          _defaultRoute.routeDocumentTypeResponses
+            .filter((doc) => defaultDocs.map((d) => d.id).includes(doc.id))
+            .map((doc) => ({
+              id: doc.id,
+              document: doc.name,
+              provider: ACTORS_REVERSE[doc.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
+              disabled: false
+            }))
         );
       } else {
         setDefaultRoute(undefined);
@@ -113,7 +137,7 @@ const EditRoutePage = () => {
       }
       setRouteDetails(details);
     });
-  }, [routeId]);
+  }, [routeId, defaultDocs]);
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -127,21 +151,9 @@ const EditRoutePage = () => {
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const defaultDocs = await RouteService.getDefaultDocuments();
-      if (selectedDefaultDocs.length === 0) {
-        setSelectedCustomizedDocs([
-          ...defaultDocs.map((d) => ({
-            id: d.id,
-            document: d.name,
-            provider: ACTORS_REVERSE[d.routeDocumentRuleDto.provider],
-            viewer1: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer1],
-            viewer2: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer2],
-            viewer3: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer3]
-          }))
-        ]);
-      }
       setDefaultDocs(defaultDocs);
     });
-  }, [selectedDefaultDocs]);
+  }, []);
 
   const handleTypeChange = useCallback(({ categoryId, typeId }) => {
     asyncErrorHandlerWrapper(async () => {
@@ -165,6 +177,54 @@ const EditRoutePage = () => {
       }
     });
   }, []);
+
+  console.log(selectedDefaultDocs);
+
+  const handleDefaultDocListChange = useCallback(
+    (checkedList) => {
+      const docs = documents
+        .filter((doc) => checkedList.includes(doc.id))
+        .map((doc) => {
+          const targetDefaultDoc = defaultDocs.find((dd) => dd.id === doc.id);
+          if (targetDefaultDoc) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer3],
+              disabled: true
+            };
+          }
+          const targetDocFromDefaultRoute = defaultRoute.routeDocumentTypeResponses.find(
+            (dfd) => dfd.id === doc.id
+          );
+          if (
+            targetDocFromDefaultRoute &&
+            isDocListTouched.current[targetDocFromDefaultRoute.id] === false
+          ) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer3],
+              disabled: false
+            };
+          } else {
+            return {
+              document: doc.name,
+              id: doc.id,
+              disabled: false
+            };
+          }
+        });
+      setSelectedDefaultDocs(docs);
+    },
+    [documents, defaultDocs, defaultRoute]
+  );
 
   const handleCustomizedDocListChange = useCallback(
     (checkedList) => {
@@ -230,15 +290,17 @@ const EditRoutePage = () => {
         };
         documentRuleForms.current.forEach((formRef, docId) => {
           const values = formRef.getFieldsValue();
-          composedValues.routeDocumentTypeRequests.push({
-            id: docId,
-            routeDocumentRuleDto: {
-              provider: ACTORS[values.provider],
-              viewer1: ACTORS[values.viewer1],
-              viewer2: ACTORS[values.viewer2],
-              viewer3: ACTORS[values.viewer3]
-            }
-          });
+          if (Object.keys(values).length) {
+            composedValues.routeDocumentTypeRequests.push({
+              id: docId,
+              routeDocumentRuleDto: {
+                provider: ACTORS[values.provider],
+                viewer1: ACTORS[values.viewer1],
+                viewer2: ACTORS[values.viewer2],
+                viewer3: ACTORS[values.viewer3]
+              }
+            });
+          }
         });
 
         try {
@@ -260,11 +322,15 @@ const EditRoutePage = () => {
     return isDefault ? "Default Route Information" : "Route Information";
   };
 
-  const handleDocListTouch = (ids) => {
-    const entries = ids.map((id) => [id, true]);
-    const idsObj = Object.fromEntries(entries);
-    isDocListTouched.current = { ...isDocListTouched, ...idsObj };
-  };
+  const handleDocListTouch = useMemo((ids) => {
+    if (ids) {
+      const entries = ids.map((id) => [id, true]);
+      const idsObj = Object.fromEntries(entries);
+      isDocListTouched.current = { ...isDocListTouched, ...idsObj };
+    }
+  }, []);
+
+  console.log(defaultDocumentIds);
 
   return (
     <DTCSection>
@@ -294,9 +360,11 @@ const EditRoutePage = () => {
           <Col>
             <DocumentList
               title="Default Documents"
-              defaultDocs={defaultDocuments}
+              defaultDocs={defaultDocs}
               documents={defaultDocuments}
-              disableCheckall={true}
+              defaultValue={defaultDocumentIds}
+              onChange={handleDefaultDocListChange}
+              onTouch={handleDocListTouch}
             />
           </Col>
           <Col>
@@ -314,10 +382,7 @@ const EditRoutePage = () => {
       <Divider />
       <div>
         <h5>Document Rules</h5>
-        <DocumentRuleTable
-          ref={documentRuleForms}
-          data={[...selectedDefaultDocs, ...selectedCustomizedDocs]}
-        />
+        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
       </div>
       <Divider />
       <div className="d-flex justify-content-center">

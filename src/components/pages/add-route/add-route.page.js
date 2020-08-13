@@ -23,6 +23,7 @@ const AddRoutePage = () => {
   const [defaultDocs, setDefaultDocs] = useState([]);
   const [selectedDefaultDocs, setSelectedDefaultDocs] = useState([]);
   const [selectedCustomizedDocs, setSelectedCustomizedtDocs] = useState([]);
+  const isDocListTouched = useRef({});
   const locationFormRef = useRef();
   const documentRuleForms = useRef(new Map());
   const history = useHistory();
@@ -50,33 +51,35 @@ const AddRoutePage = () => {
     }));
   }, [defaultRoute]);
 
+  // const defaultDocumentIds = useMemo(() => {
+  //   if (defaultRoute === undefined) {
+  //     return [];
+  //   }
+  //   return defaultRoute.routeDocumentTypeResponses.map((doc) => doc.id);
+  // }, [defaultRoute]);
+
+  const docTableData = useMemo(() => {
+    return [...selectedDefaultDocs, ...selectedCustomizedDocs];
+  }, [selectedDefaultDocs, selectedCustomizedDocs]);
+
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const docs = await getAllRecordsFromAPI(RouteService.getDocuments);
       setDocuments(docs);
+      const entries = docs.map((d) => [d.id, false]);
+      isDocListTouched.current = Object.fromEntries(entries);
     });
   }, []);
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const defaultDocs = await RouteService.getDefaultDocuments();
-      if (selectedDefaultDocs.length === 0) {
-        setSelectedCustomizedtDocs([
-          ...defaultDocs.map((d) => ({
-            id: d.id,
-            document: d.name,
-            provider: ACTORS_REVERSE[d.routeDocumentRuleDto.provider],
-            viewer1: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer1],
-            viewer2: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer2],
-            viewer3: ACTORS_REVERSE[d.routeDocumentRuleDto.viewer3]
-          }))
-        ]);
-      }
       setDefaultDocs(defaultDocs);
     });
-  }, [selectedDefaultDocs]);
+  }, []);
 
   const handleTypeChange = useCallback(({ categoryId, typeId }) => {
+    console.log("type change");
     asyncErrorHandlerWrapper(async () => {
       const _defaultRoute = await RouteService.getDefault({ categoryId, typeId });
       if (_defaultRoute) {
@@ -89,7 +92,7 @@ const AddRoutePage = () => {
             viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
             viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
             viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
-            disabled: true
+            disabled: false
           }))
         );
       } else {
@@ -99,8 +102,63 @@ const AddRoutePage = () => {
     });
   }, []);
 
+  const handleDefaultDocListChange = useCallback(
+    (checkedList) => {
+      console.log("default doc list change");
+      const docs = documents
+        .filter((doc) => checkedList.includes(doc.id))
+        .map((doc) => {
+          const targetDefaultDoc = defaultDocs.find((dd) => dd.id === doc.id);
+          if (targetDefaultDoc) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDefaultDoc.routeDocumentRuleDto.viewer3],
+              disabled: true
+            };
+          }
+          const targetDocFromDefaultRoute = defaultRoute.routeDocumentTypeResponses.find(
+            (dfd) => dfd.id === doc.id
+          );
+          if (
+            targetDocFromDefaultRoute &&
+            isDocListTouched.current[targetDocFromDefaultRoute.id] === false
+          ) {
+            console.log(targetDocFromDefaultRoute);
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDocFromDefaultRoute.routeDocumentRuleDto.viewer3],
+              disabled: false
+            };
+          } else {
+            return {
+              document: doc.name,
+              id: doc.id,
+              disabled: false
+            };
+          }
+        });
+      setSelectedDefaultDocs(docs);
+    },
+    [documents, defaultDocs, defaultRoute]
+  );
+
+  const handleDocListTouch = useCallback((ids) => {
+    const entries = ids.map((id) => [id, true]);
+    const idsObj = Object.fromEntries(entries);
+    isDocListTouched.current = { ...isDocListTouched, ...idsObj };
+  }, []);
+
   const handleCustomizedDocListChange = useCallback(
     (checkedList) => {
+      console.log("customized doc list change");
       const docs = documents
         .filter((doc) => checkedList.includes(doc.id))
         .map((doc) => {
@@ -192,9 +250,10 @@ const AddRoutePage = () => {
           <Col>
             <DocumentList
               title="Default Documents"
-              defaultDocs={defaultDocuments}
+              defaultDocs={defaultDocs}
               documents={defaultDocuments}
-              disableCheckall={true}
+              onChange={handleDefaultDocListChange}
+              onTouch={handleDocListTouch}
             />
           </Col>
           <Col>
@@ -210,10 +269,7 @@ const AddRoutePage = () => {
       <Divider />
       <div>
         <h5>Document Rules</h5>
-        <DocumentRuleTable
-          ref={documentRuleForms}
-          data={[...selectedDefaultDocs, ...selectedCustomizedDocs]}
-        />
+        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
       </div>
       <Divider />
       <div className="d-flex justify-content-center">

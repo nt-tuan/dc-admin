@@ -113,10 +113,10 @@ const OrderActiveTab = () => {
       if (isValid) {
         const data = formRef.current.getFieldsValue();
         const composedData = {
-          fileName: data.sampleFile && data.sampleFile[0].uid,
+          fileName: data.sampleFile && data.sampleFile[0] && data.sampleFile[0].uid,
           name: data.documentName,
           routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile && data.sampleFile[0].originalName
+          originalFileName: data.sampleFile && data.sampleFile[0] && data.sampleFile[0].originalName
         };
         try {
           await RouteService.editDocument(selectedDocument.current.id, composedData);
