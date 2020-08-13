@@ -98,7 +98,12 @@ export const RouteLocationForm = forwardRef(
         ref={ref}
       >
         {hiddenFields.includes("from") || (
-          <Form.Item label="From" name="from" className="mb-2">
+          <Form.Item
+            label="From"
+            name="from"
+            className="mb-2"
+            rules={[{ required: true, message: "Please input From Country" }]}
+          >
             <Select style={{ width: 200 }} onChange={onFromChange}>
               {countriesFrom.map((c) => (
                 <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
@@ -109,7 +114,12 @@ export const RouteLocationForm = forwardRef(
           </Form.Item>
         )}
         {hiddenFields.includes("to") || (
-          <Form.Item label="To" name="to" className="mb-2">
+          <Form.Item
+            label="To"
+            name="to"
+            className="mb-2"
+            rules={[{ required: true, message: "Please input To Country" }]}
+          >
             <Select style={{ width: 200 }} onChange={onToChange}>
               {countriesTo.map((c) => (
                 <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
