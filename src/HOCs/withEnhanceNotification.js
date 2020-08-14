@@ -40,7 +40,12 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
     }
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_ADDRESS:
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER: {
-      targetRoute = `${RouteConst.ADD_ROUTE}?tab=pending`;
+      targetRoute = `${RouteConst.ROUTE}?tab=pending`;
+      break;
+    }
+    case NOTIFICATION_TYPE.ADMIN_REBATE_CREDIT_ADD_NEW_USER: {
+      const [username, companyId] = subjectId.split("--");
+      targetRoute = `${RouteConst.USER_DETAILS}?username=${username}&companyId=${companyId}`;
       break;
     }
     default: {

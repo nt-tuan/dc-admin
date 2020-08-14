@@ -8,6 +8,10 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RouteService } from "services";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { DatetimeUtils } from "utils/date-time.util";
+import { useLocation } from "react-router-dom";
+import qs from "qs";
+import { RouteConst } from "commons/consts";
+import { useHistory } from "react-router-dom";
 
 const { confirm } = Modal;
 
@@ -19,6 +23,15 @@ const OrderActiveTab = () => {
   const formRef = useRef();
   const isEdit = useRef(false);
   const selectedDocument = useRef({});
+  const location = useLocation();
+  const { showCreateDocument } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      showCreateDocument && setShowDocumentMutationModal(true);
+    });
+  }, [showCreateDocument]);
 
   const handleGetAllDocs = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -94,8 +107,12 @@ const OrderActiveTab = () => {
         try {
           await RouteService.createDocument(composedData);
           setShowDocumentMutationModal(false);
-          message.success("Create Successfully");
-          handleGetAllDocs();
+          if (showCreateDocument) {
+            history.push(RouteConst.ADD_ROUTE);
+          } else {
+            message.success("Create Successfully");
+            handleGetAllDocs();
+          }
         } catch (error) {
           if (error.message === "400") {
             message.error(error.errMsg);
@@ -134,6 +151,13 @@ const OrderActiveTab = () => {
     });
   };
 
+  const handleCancelDocumentMutation = () => {
+    if (showCreateDocument) {
+      history.push(RouteConst.ADD_ROUTE);
+    }
+    setShowDocumentMutationModal(false);
+  };
+
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       <div className="d-flex justify-content-end">
@@ -158,7 +182,7 @@ const OrderActiveTab = () => {
         schema={DOCUMENT_SCHEMA.getTableSchema(handleEditClick, handleDeleteClick)}
       />
       <Modal
-        onCancel={() => setShowDocumentMutationModal(false)}
+        onCancel={handleCancelDocumentMutation}
         onOk={isEdit.current ? handleEditDocument : handleCreateDocument}
         title={mutationTitle}
         visible={showDocumentMutationModal}

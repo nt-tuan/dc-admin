@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -240,7 +240,12 @@ const AddRoutePage = () => {
       <Divider />
       <div>
         <h5>Documents</h5>
-        <p>You can either select from the document list of or create a new document</p>
+        <p>
+          You can either select from the document list of or{" "}
+          <Link to={`${RouteConst.DOCUMENT}?showCreateDocument=true`} className="text-primary">
+            create a new document
+          </Link>
+        </p>
         <p>Select the documents that required for this route</p>
         <Row gutter={[30, 0]}>
           <Col>

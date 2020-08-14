@@ -4,12 +4,13 @@ import { RouteConst } from "commons/consts";
 import { ROUTE_SCHEMA } from "commons/schemas";
 import { DTCTable } from "components";
 import React, { useCallback, useEffect, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import { RouteService } from "services";
 import { DatetimeUtils } from "utils/date-time.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import countryJson from "assets/country.json";
+import qs from "qs";
 
 const { confirm } = Modal;
 
@@ -17,6 +18,8 @@ export const RouteTab = () => {
   const [activeData, setActiveData] = useState([]);
   const [pendingData, setPendingData] = useState([]);
   const history = useHistory();
+  const location = useLocation();
+  const { tab } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   const getData = useCallback(
     (status, setFn) =>
@@ -86,7 +89,7 @@ export const RouteTab = () => {
           </Button>
         </Link>
       </div>
-      <Tabs type="line">
+      <Tabs defaultActiveKey={tab ? "2" : "1"} type="line">
         <Tabs.TabPane tab="Active" key="1" forceRender>
           <DTCTable
             showSettings={false}
