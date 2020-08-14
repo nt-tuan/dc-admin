@@ -59,12 +59,16 @@ const EditableCell = ({
         }}
         name={dataIndex}
         initialValue={record[dataIndex]}
-        rules={[
-          {
-            required: true,
-            message: `${title} is required.`
-          }
-        ]}
+        rules={
+          ["Viewer 2", "Viewer 3"].includes(title)
+            ? null
+            : [
+                {
+                  required: true,
+                  message: `${title} is required.`
+                }
+              ]
+        }
       >
         {dataIndex === "document" ? (
           <div>{record[dataIndex]}</div>

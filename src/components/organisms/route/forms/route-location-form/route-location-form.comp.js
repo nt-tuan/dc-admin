@@ -97,66 +97,70 @@ export const RouteLocationForm = forwardRef(
         layout="inline"
         ref={ref}
       >
-        {hiddenFields.includes("from") || (
-          <Form.Item
-            label="From"
-            name="from"
-            className="mb-2"
-            rules={[{ required: true, message: "Please input From Country" }]}
-          >
-            <Select style={{ width: 200 }} onChange={onFromChange}>
-              {countriesFrom.map((c) => (
-                <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
+        <div className="row px-2 w-100">
+          {hiddenFields.includes("from") || (
+            <Form.Item
+              label="From"
+              name="from"
+              className="col-12 col-lg-6 mx-0 mt-2"
+              rules={[{ required: true, message: "Please input From Country" }]}
+            >
+              <Select style={{ width: 200 }} onChange={onFromChange}>
+                {countriesFrom.map((c) => (
+                  <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
+                    {c.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+          {hiddenFields.includes("to") || (
+            <Form.Item
+              label="To"
+              name="to"
+              className="col-12 col-lg-6 mx-0 mt-2"
+              rules={[{ required: true, message: "Please input To Country" }]}
+            >
+              <Select style={{ width: 200 }} onChange={onToChange}>
+                {countriesTo.map((c) => (
+                  <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
+                    {c.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+        </div>
+        <div className="row px-2 w-100">
+          <Form.Item label="Product Category" name="category" className="col-12 col-lg-6 mx-0 mt-2">
+            <Select style={{ width: 200 }} onChange={handleCategoryChange}>
+              {categories.map((c) => (
+                <Select.Option value={c.id} key={c.id}>
                   {c.name}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
-        )}
-        {hiddenFields.includes("to") || (
           <Form.Item
-            label="To"
-            name="to"
-            className="mb-2"
-            rules={[{ required: true, message: "Please input To Country" }]}
+            label="Product Type"
+            name="type"
+            className="col-12 col-lg-6 mx-0 mt-2"
+            rules={[
+              {
+                required: true,
+                message: "Type is required"
+              }
+            ]}
           >
-            <Select style={{ width: 200 }} onChange={onToChange}>
-              {countriesTo.map((c) => (
-                <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
-                  {c.name}
+            <Select style={{ width: 200 }} onChange={handleTypeChange}>
+              {types.map((t) => (
+                <Select.Option value={t.id} key={t.id}>
+                  {t.name}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
-        )}
-        <Form.Item label="Product Category" name="category" className="mb-2">
-          <Select style={{ width: 200 }} onChange={handleCategoryChange}>
-            {categories.map((c) => (
-              <Select.Option value={c.id} key={c.id}>
-                {c.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          label="Product Type"
-          name="type"
-          className="mb-2"
-          rules={[
-            {
-              required: true,
-              message: "Type is required"
-            }
-          ]}
-        >
-          <Select style={{ width: 200 }} onChange={handleTypeChange}>
-            {types.map((t) => (
-              <Select.Option value={t.id} key={t.id}>
-                {t.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
+        </div>
       </Form>
     );
   }
