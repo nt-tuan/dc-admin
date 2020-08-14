@@ -71,7 +71,6 @@ export const RebatesForm = forwardRef(
         ) : (
           <div>
             <h5>{title}</h5>
-            <div>Explanation text</div>
             <Form
               ref={ref}
               name="CreateRebatesForm"

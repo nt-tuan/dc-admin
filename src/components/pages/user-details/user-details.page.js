@@ -5,7 +5,8 @@ import {
   OwnerInfo,
   RebatesInfo,
   Reputation,
-  UserProfile
+  UserProfile,
+  CompanyLogo
 } from "components/organisms/user-details";
 import { useBooleanState } from "hooks/utilHooks";
 import qs from "qs";
@@ -41,18 +42,30 @@ const UserDetails = () => {
         </div>
       ) : (
         <div className="air__utils__shadow bg-white p-4 dtc-br-10">
-          <div className="w-50">
+          {data.companyInfo.logoUrl && (
+            <>
+              <div>
+                <CompanyLogo companyInfo={data.companyInfo} />
+              </div>
+              <hr />
+            </>
+          )}
+
+          <div className="mt-3">
             <UserProfile data={data.userInfo} />
           </div>
+          <hr />
           <div className="mt-3">
             <CompanyInfo
               companyInfo={data.companyInfo}
               companyAddress={data.companyAddressInfoList}
             />
           </div>
+          <hr />
           <div className="mt-3">
             <OwnerInfo owners={data.ownerDTOS.map((data) => ({ ...data, ...data.address }))} />
           </div>
+          <hr />
           <div className="mt-3">
             <Reputation
               data={{
@@ -75,9 +88,9 @@ const UserDetails = () => {
             />
           </div>
           <div className="w-50 mt-3">
-            <h5 className="text-danger">Credit Terms</h5>
+            <h5 className="text-danger">Marketplace Credit</h5>
             <Checkbox checked={isCheckCreditTerms} onClick={() => toggleIsCheckCreditTerms()}>
-              Enable Trade Finance for the user
+              Enable Marketplace credit for the user
             </Checkbox>
           </div>
         </div>
