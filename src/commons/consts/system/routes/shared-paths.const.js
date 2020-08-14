@@ -77,6 +77,18 @@ export class SharedPaths {
   static get USER_DETAILS() {
     return "/user-details";
   }
+  static get CREDIT_REQUEST() {
+    return "/credit-request";
+  }
+  static get CREDIT_STATUS() {
+    return "/credit-status";
+  }
+  static get CREDIT_USERS() {
+    return "/credit-users";
+  }
+  static get PURCHASE_ORDER() {
+    return "/purchase-order";
+  }
   static get NOTIFICATION() {
     return "/notifications";
   }

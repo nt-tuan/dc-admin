@@ -15,3 +15,4 @@ export * from "./load-more-button/load-more-button.comp";
 export * from "./notification-item/notification-item.comp";
 export * from "./notification-list/notification-list.comp";
 export * from "./notification-popup/notification-popup.comp";
+export * from "./export-pdf-btn/export-pdf-btn.comp";

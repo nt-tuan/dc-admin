@@ -69,4 +69,10 @@ export class UserService {
     );
     return result;
   };
+
+  static manageMarketplaceCredit = async (companyId, isEnable) => {
+    await backendAPI.post(
+      `${this.#USER_MANAGEMENT_PREFIX}/${companyId}/update/marketplace-credit?isEnable=${isEnable}`
+    );
+  };
 }

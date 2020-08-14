@@ -4,6 +4,8 @@ import { UserManagementBuyerTab } from "./tabs/user-mgt-buyer-tab.comp";
 import { UserManagementSellerTab } from "./tabs/user-mgt-seller-tab.comp";
 import { Helmet } from "react-helmet";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
+import { RouteConst } from "commons/consts";
 
 const TAB_KEYS = {
   BUYER: "BUYER",
@@ -35,10 +37,19 @@ export const UserManagementPage = () => {
   return (
     <article>
       <Helmet title="User Management" />
-      <div className="flex mb-3 ml-2">
-        {renderTabButton("Buyer", BUYER)}
-        {renderTabButton("Seller", SELLER)}
-        {renderTabButton("All User", ALL_USER)}
+      <div className="d-flex justify-content-between mb-3 ml-2">
+        <div>
+          {renderTabButton("Buyer", BUYER)}
+          {renderTabButton("Seller", SELLER)}
+          {renderTabButton("All User", ALL_USER)}
+        </div>
+        <div title="Marketplace credit">
+          <Link to={RouteConst.CREDIT_USERS}>
+            <Button type="primary" className="mr-4">
+              Assign credit
+            </Button>
+          </Link>
+        </div>
       </div>
       {tab === BUYER && renderBuyer()}
       {tab === SELLER && renderSeller()}

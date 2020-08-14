@@ -186,6 +186,26 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.CREDIT_REQUEST,
+    Component: loadable(() => import("components/pages/credit-request/credit-request.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.CREDIT_STATUS,
+    Component: loadable(() => import("components/pages/credit-status/credit-status.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.CREDIT_USERS,
+    Component: loadable(() => import("components/pages/credit-users/credit-users.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.PURCHASE_ORDER,
+    Component: loadable(() => import("components/pages/purchase-order/purchase-order.page")),
+    exact: true
+  },
+  {
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
     exact: true

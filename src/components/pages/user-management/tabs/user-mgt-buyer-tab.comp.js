@@ -39,6 +39,14 @@ export const UserManagementBuyerTab = () => {
     getListBuyers();
   }, [getListBuyers]);
 
+  const handleMarketplaceCredit = (id, isEnable) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await UserService.manageMarketplaceCredit(id, isEnable);
+      getListBuyers();
+    });
+  };
+
   const handleLock = (companyId) => {
     setCurrentCompanyId(companyId);
     toggleConfirmForm();
@@ -71,7 +79,8 @@ export const UserManagementBuyerTab = () => {
           schema={userMgtTableSchema({
             onLock: handleLock,
             onUnlock: handleUnlock,
-            onViewAssignBadges: toggleShowAssignBadgeFormWrapper
+            onViewAssignBadges: toggleShowAssignBadgeFormWrapper,
+            onHandleMarketplaceCredit: handleMarketplaceCredit
           })}
         />
       </div>
@@ -95,21 +104,3 @@ export const UserManagementBuyerTab = () => {
     </Fragment>
   );
 };
-
-// const users = [
-//   {
-//     id: "d1ca52db-b4b9-41d6-b4aa-79a2b995685b",
-//     companyName: "qa_seller",
-//     username: "qa_seller",
-//     email: "zec82993@gmail.com",
-//     country: "vn",
-//     contact: "123456789",
-//     reputation: 0.0,
-//     badges: [
-//       { type: "NUMBER_BADGE", value: 15.0 },
-//       { type: "VALUE_BADGE", value: 5000.0 },
-//       { type: "MANUFACTURE", value: 0.0 },
-//       { type: "DISTRIBUTOR", value: 0.0 }
-//     ]
-//   }
-// ];

@@ -7,6 +7,7 @@ export * from "./login";
 export * from "./add-product";
 export * from "./route/forms/document-mutation-form/document-mutation-form.comp";
 export * from "./rebates";
+export * from "./marketplace-credit";
 export * from "./route/forms/route-location-form/route-location-form.comp";
 export * from "./route/document-rule-table/document-rule-table";
 export * from "./route/document-list/document-list.comp";

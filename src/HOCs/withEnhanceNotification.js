@@ -30,10 +30,20 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
   let targetRoute = "";
 
   switch (notificationType) {
+    case NOTIFICATION_TYPE.ADMIN_PROMPT_PCC_PAYMENT_FOR_BUYER: {
+      targetRoute = RouteConst.ADD_FUNDS;
+      break;
+    }
+    case NOTIFICATION_TYPE.ADMIN_MARKETPLACE_CREDIT_REQUEST_PCC: {
+      targetRoute = RouteConst.CREDIT_REQUEST;
+      break;
+    }
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_ADDRESS:
-    case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER:
-    default: {
+    case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER: {
       targetRoute = `${RouteConst.ADD_ROUTE}?tab=pending`;
+      break;
+    }
+    default: {
       break;
     }
   }

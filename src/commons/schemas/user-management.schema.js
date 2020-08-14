@@ -1,8 +1,7 @@
-import { Button, Rate } from "antd";
+import { Button, Switch } from "antd";
 import React, { Fragment } from "react";
 import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
 import { sortAlphabetically } from "utils/sort.util";
-import { roundToHalfDecimal } from "utils/general.util";
 import { Link } from "react-router-dom";
 import { RouteConst } from "commons/consts";
 
@@ -16,7 +15,8 @@ const FIELDS = {
   contact: "contact",
   reputation: "reputation",
   badges: "badges",
-  userStatus: "userStatus"
+  userStatus: "userStatus",
+  enableMarketplaceCredit: "enableMarketplaceCredit"
 };
 
 const LABELS = {
@@ -26,9 +26,10 @@ const LABELS = {
   [FIELDS.email]: "Email",
   [FIELDS.country]: "Country",
   [FIELDS.contact]: "Contact",
-  [FIELDS.reputation]: "Reputation",
+  [FIELDS.reputation]: "Scores",
   [FIELDS.badges]: "Badges",
-  [FIELDS.userStatus]: "Status"
+  [FIELDS.userStatus]: "Status",
+  [FIELDS.enableMarketplaceCredit]: "Marketplace credit"
 };
 
 const USER_MGT_STATUS = {
@@ -78,12 +79,12 @@ export const USER_MANAGEMENT_SCHEMA = Object.freeze({
   BADGE_LABELS: BADGE_LABELS
 });
 
-export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => (
-  sortedInfo,
-  CustomHighlighter,
-  searchText,
-  hiddenColumns
-) => {
+export const userMgtTableSchema = ({
+  onUnlock,
+  onLock,
+  onViewAssignBadges,
+  onHandleMarketplaceCredit
+}) => (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => {
   const columnsSchema = [
     {
       title: LABELS[FIELDS.companyName],
@@ -140,7 +141,9 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       key: FIELDS.reputation,
       sorter: (a, b) => a[FIELDS.reputation] - b[FIELDS.reputation],
       sortOrder: sortedInfo.columnKey === FIELDS.reputation && sortedInfo.order,
-      render: (reputation) => <Rate allowHalf value={roundToHalfDecimal(reputation)} disabled />
+      render: (reputation) => (
+        <CustomHighlighter searchText={searchText} value={reputation || "0"} />
+      )
     },
     {
       title: LABELS[FIELDS.badges],
@@ -168,6 +171,14 @@ export const userMgtTableSchema = ({ onUnlock, onLock, onViewAssignBadges }) => 
       sorter: (a, b) => sortAlphabetically(a[FIELDS.userStatus], b[FIELDS.userStatus]),
       sortOrder: sortedInfo.columnKey === FIELDS.userStatus && sortedInfo.order,
       render: (userStatus) => <CustomHighlighter searchText={searchText} value={userStatus} />
+    },
+    {
+      title: LABELS[FIELDS.enableMarketplaceCredit],
+      dataIndex: FIELDS.enableMarketplaceCredit,
+      key: FIELDS.enableMarketplaceCredit,
+      render: (isEnabled, { id }) => (
+        <Switch checked={isEnabled} onChange={() => onHandleMarketplaceCredit(id, !isEnabled)} />
+      )
     },
     {
       title: "Manage",

@@ -53,6 +53,28 @@ export async function getUserData() {
       ]
     },
     {
+      title: "Marketplace Credit",
+      key: "Marketplace Credit",
+      icon: "fe fe-credit-card",
+      children: [
+        {
+          title: "Credit Request",
+          key: "Credit Request",
+          url: RouteConst.CREDIT_REQUEST
+        },
+        {
+          title: "Credit Status",
+          key: "Credit Status",
+          url: RouteConst.CREDIT_STATUS
+        },
+        {
+          title: "Users",
+          key: "Users",
+          url: RouteConst.CREDIT_USERS
+        }
+      ]
+    },
+    {
       title: "Routes",
       key: "RoutesMain",
       icon: "fe fe-map",

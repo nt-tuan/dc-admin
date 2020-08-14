@@ -8,7 +8,6 @@ import {
   UserProfile,
   CompanyLogo
 } from "components/organisms/user-details";
-import { useBooleanState } from "hooks/utilHooks";
 import qs from "qs";
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
@@ -18,7 +17,6 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 const UserDetails = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [isCheckCreditTerms, toggleIsCheckCreditTerms] = useBooleanState(false);
   const location = useLocation();
   const { username, companyId } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
@@ -33,6 +31,14 @@ const UserDetails = () => {
   useEffect(() => {
     getUserDetails();
   }, [getUserDetails]);
+
+  const handleMarketplaceCredit = (id, isEnable) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await UserService.manageMarketplaceCredit(id, isEnable);
+      getUserDetails();
+    });
+  };
 
   return (
     <Fragment>
@@ -88,9 +94,17 @@ const UserDetails = () => {
             />
           </div>
           <div className="w-50 mt-3">
-            <h5 className="text-danger">Marketplace Credit</h5>
-            <Checkbox checked={isCheckCreditTerms} onClick={() => toggleIsCheckCreditTerms()}>
-              Enable Marketplace credit for the user
+            <h5 className="text-danger">Credit Terms</h5>
+            <Checkbox
+              checked={data.companyInfo.enableMarketplaceCredit}
+              onClick={() =>
+                handleMarketplaceCredit(
+                  data.companyInfo.id,
+                  !data.companyInfo.enableMarketplaceCredit
+                )
+              }
+            >
+              Enable Trade Finance for the user
             </Checkbox>
           </div>
         </div>
