@@ -33,7 +33,7 @@ const CreateRebatesPage = () => {
         };
         setData(data);
       }
-      setCompanies(companies);
+      setCompanies(companies.filter((com) => com.name !== "DHL Company"));
       setBrands(brands.map(({ brand }) => brand));
       setLoading(false);
     });
@@ -89,6 +89,7 @@ const CreateRebatesPage = () => {
         loading={loading}
         isProcessing={isCreating}
         ref={rebatesFormRef}
+        routeState={routeState}
       />
     </div>
   );

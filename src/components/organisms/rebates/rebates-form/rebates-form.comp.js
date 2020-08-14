@@ -11,7 +11,16 @@ const { FIELDS, LABELS } = REBATES_SCHEMA;
 
 export const RebatesForm = forwardRef(
   (
-    { title, data = null, companies = [], productBrand = [], onSubmit, loading, isProcessing },
+    {
+      title,
+      data = null,
+      companies = [],
+      productBrand = [],
+      onSubmit,
+      loading,
+      isProcessing,
+      routeState
+    },
     ref
   ) => {
     const [form] = Form.useForm();
@@ -86,7 +95,13 @@ export const RebatesForm = forwardRef(
                 </Form.Item>
               ))}
               <div className="d-flex justify-content-center mt-4">
-                <Link to={RouteConst.REBATES}>
+                <Link
+                  to={
+                    routeState
+                      ? `${RouteConst.USER_DETAILS}?username=${routeState.username}&companyId=${routeState.companyId}`
+                      : RouteConst.REBATES
+                  }
+                >
                   <Button type="primary">Cancel</Button>
                 </Link>
                 <Button type="primary" htmlType="submit" className="ml-2" disabled={isProcessing}>
