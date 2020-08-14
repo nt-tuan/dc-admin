@@ -100,12 +100,12 @@ export const rebatesTableSchema = (onDelete) => (
     },
     {
       title: "Manage",
-      render: ({ id, toCompanyName }) => (
+      render: ({ id, toCompanyName, ownerName, category }) => (
         <Fragment>
           <Link to={RouteConst.EDIT_REBATES.replace(":id", `${toCompanyName}?id=${id}`)}>
             <Button type="primary">Edit</Button>
           </Link>
-          <Button type="primary" className="ml-2" onClick={() => onDelete(id)}>
+          <Button type="primary" className="ml-2" onClick={() => onDelete(id, ownerName, category)}>
             Delete
           </Button>
         </Fragment>

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Avatar, Card } from "antd";
+import { Card } from "antd";
 import styles from "./shared-styles.module.scss";
 import { DatetimeUtils } from "utils/date-time.util";
 import { WEEK_DAYS } from "commons/consts";
@@ -7,18 +7,9 @@ import countryList from "assets/country.json";
 
 export const CompanyInfo = ({ companyInfo, companyAddress }) => {
   return (
-    <Fragment>
+    <Fragment bodyStyle={{ padding: "10px 15px" }} hoverable={true} className="dtc-br-10 w-50">
       <h5 className="text-danger">Company Information</h5>
-      <div className="d-flex mb-4 align-items-center w-75">
-        <div style={{ width: 100, height: 100 }} className="mr-3">
-          <Avatar
-            shape="square"
-            size={100}
-            src={companyInfo && companyInfo.logoUrl}
-            icon={companyInfo.logoUrl || <i className="fe fe-user" />}
-            className="mr-3 dtc-cursor-pointer"
-          />
-        </div>
+      <div className="d-flex mb-4 align-items-center w-50">
         <span className="w-100">
           <CompanyInfoReadonly companyInfo={companyInfo} />
         </span>

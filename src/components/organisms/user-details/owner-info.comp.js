@@ -32,7 +32,7 @@ export const OwnerInfo = ({ owners }) => {
               })}
             </div>
             <br />
-            <h6>Owners Documents</h6>
+            {/* <h6>Owners Documents</h6>
             <div>
               {owner.documents &&
                 owner.documents.map((doc) => (
@@ -49,7 +49,7 @@ export const OwnerInfo = ({ owners }) => {
                     </div>
                   </React.Fragment>
                 ))}
-            </div>
+            </div> */}
           </Fragment>
         );
       })}
@@ -117,20 +117,20 @@ const LABELS = {
   visaValidDate: "Visa Valid Date"
 };
 
-const OWNER_DOCUMENT_DETAILS_TYPES = Object.freeze({
-  PASSPORT_FRONT: "Passport front image",
-  PASSPORT_BACK: "Passport back image",
-  PASSPORT_LIVE: "Passport live image",
-  DRIVINGLICENCE_FRONT: "Driving Licence front image",
-  DRIVINGLICENCE_BACK: "Driving Licence back image",
-  DRIVINGLICENCE_LIVE: "Driving Licence live image",
-  IDENTITYCARD_FRONT: "Identity Card front image",
-  IDENTITYCARD_BACK: "Identity Card back image",
-  IDENTITYCARD_LIVE: "Identity Card live image",
-  RESIDENCEPERMIT_FRONT: "Resident Permit front image",
-  RESIDENCEPERMIT_BACK: "Resident Permit back image",
-  RESIDENCEPERMIT_LIVE: "Resident Permit live image",
-  VOTERID_FRONT: "Voter ID front image",
-  VOTERID_BACK: "Voter ID back image",
-  VOTERID_LIVE: "Voter ID live image"
-});
+// const OWNER_DOCUMENT_DETAILS_TYPES = Object.freeze({
+//   PASSPORT_FRONT: "Passport front image",
+//   PASSPORT_BACK: "Passport back image",
+//   PASSPORT_LIVE: "Passport live image",
+//   DRIVINGLICENCE_FRONT: "Driving Licence front image",
+//   DRIVINGLICENCE_BACK: "Driving Licence back image",
+//   DRIVINGLICENCE_LIVE: "Driving Licence live image",
+//   IDENTITYCARD_FRONT: "Identity Card front image",
+//   IDENTITYCARD_BACK: "Identity Card back image",
+//   IDENTITYCARD_LIVE: "Identity Card live image",
+//   RESIDENCEPERMIT_FRONT: "Resident Permit front image",
+//   RESIDENCEPERMIT_BACK: "Resident Permit back image",
+//   RESIDENCEPERMIT_LIVE: "Resident Permit live image",
+//   VOTERID_FRONT: "Voter ID front image",
+//   VOTERID_BACK: "Voter ID back image",
+//   VOTERID_LIVE: "Voter ID live image"
+// });

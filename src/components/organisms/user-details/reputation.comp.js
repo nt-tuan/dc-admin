@@ -44,7 +44,7 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
       <div className="d-flex">
         <h5 className="text-danger">Reputation</h5>
         <Button className="px-2 ml-2" onClick={() => toggleIsEdit()} title="Add badges">
-          <i className="fe fe-plus" />
+          <i className="fe fe-edit" />
         </Button>
       </div>
       <div className="d-flex align-items-center h-100 mb-2">

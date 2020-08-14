@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { DTCTable } from "components/atoms";
+import { DTCTable, ConfirmModal } from "components/atoms";
 import { rebatesTableSchema, REBATES_SCHEMA } from "commons/schemas";
 import { useBooleanState } from "hooks/utilHooks";
 import { Modal, message } from "antd";
@@ -26,6 +26,12 @@ const Rebates = () => {
   const [loading, setLoading] = useState(true);
   const [showTableSettings, toggleShowTableSettings] = useBooleanState(false);
   const [hiddenColumns, setHiddenColumns] = useState([]);
+  const [showConfirmForm, toggleConfirmForm] = useBooleanState(false);
+  const [productWillDelete, setProductWillDelete] = useState({
+    id: "",
+    ownerName: "",
+    category: ""
+  });
 
   const getRebatesList = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -43,15 +49,6 @@ const Rebates = () => {
   useEffect(() => {
     getRebatesList();
   }, [getRebatesList]);
-
-  const handleDeleteRebate = (id) => {
-    setLoading(true);
-    asyncErrorHandlerWrapper(async () => {
-      await RebatesService.deleteRebates(id);
-      getRebatesList();
-      message.success("Rebates has been deleted!");
-    });
-  };
 
   const handleSettingChange = (e) => {
     const { checked, option } = e.target;
@@ -84,18 +81,47 @@ const Rebates = () => {
     );
   };
 
+  const handleConfirmDeleteRebate = (id, ownerName, category) => {
+    setProductWillDelete({ id, ownerName, category });
+    toggleConfirmForm();
+  };
+
+  const handleDeleteRebate = (id) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await RebatesService.deleteRebates(id);
+      getRebatesList();
+      message.success("Rebates has been deleted!");
+    });
+    toggleConfirmForm();
+  };
+
+  const renderConfirmModal = (productWillDelete) => {
+    const { id, ownerName, category } = productWillDelete;
+    return (
+      <ConfirmModal
+        showForm={showConfirmForm}
+        toggleShowForm={toggleConfirmForm}
+        onConfirmLock={() => handleDeleteRebate(id)}
+        title="Please Confirm"
+        innerText={`Do you want to delete the rebate that is set for ${ownerName} for ${category}`}
+      />
+    );
+  };
+
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       <DTCTable
         showSettings={false}
         loading={loading}
         dataSource={data}
-        schema={rebatesTableSchema(handleDeleteRebate)}
+        schema={rebatesTableSchema(handleConfirmDeleteRebate)}
         showSetting={true}
         onSettingClick={toggleShowTableSettings}
         hiddenColumns={hiddenColumns}
       />
       {renderTableSettingModal()}
+      {renderConfirmModal(productWillDelete)}
     </div>
   );
 };
