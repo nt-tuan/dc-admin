@@ -12,14 +12,7 @@ import { DATETIME_FORMAT } from "commons/consts";
 
 const { FIELDS, LABELS } = REBATES_SCHEMA;
 
-const columnOptions = [
-  FIELDS.timestamp,
-  FIELDS.buyerCompanyName,
-  FIELDS.productBrand,
-  FIELDS.ownerNameEmail,
-  FIELDS.contact,
-  FIELDS.rebatePercentage
-];
+const columnOptions = [FIELDS.ownerName, FIELDS.ownerEmail, FIELDS.contact];
 
 const Rebates = () => {
   const [data, setData] = useState([]);
