@@ -32,7 +32,7 @@ export const RebatesInfo = ({
           }}
         >
           <Button className="px-2 ml-2">
-            <i className="fe fe-plus" />
+            <i className="fe fe-edit" />
           </Button>
         </Link>
       </div>

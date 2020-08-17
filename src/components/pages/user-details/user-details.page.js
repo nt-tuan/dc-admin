@@ -94,7 +94,7 @@ const UserDetails = () => {
             />
           </div>
           <div className="w-50 mt-3">
-            <h5 className="text-danger">Credit Terms</h5>
+            <h5 className="text-danger">Marketplace Credit</h5>
             <Checkbox
               checked={data.companyInfo.enableMarketplaceCredit}
               onClick={() =>
@@ -104,7 +104,7 @@ const UserDetails = () => {
                 )
               }
             >
-              Enable Trade Finance for the user
+              Enable Marketplace Credit for the user
             </Checkbox>
           </div>
         </div>

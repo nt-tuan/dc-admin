@@ -29,7 +29,10 @@ const OrderActiveTab = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      showCreateDocument && setShowDocumentMutationModal(true);
+      if (showCreateDocument) {
+        setMutationTitle("Create Document");
+        setShowDocumentMutationModal(true);
+      }
     });
   }, [showCreateDocument]);
 
