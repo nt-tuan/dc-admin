@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { toCurrency } from "utils/general.util";
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "commons/consts";
+import { DATE_FORMAT, PHONE_CREDIT_TYPE_LABELS } from "commons/consts";
 import styles from "./styles.module.scss";
 import utc from "dayjs/plugin/utc";
 import { useLocation } from "react-router-dom";
@@ -242,7 +242,7 @@ const PurchaseOrderPage = () => {
                               <span>{data.originCity}</span>
                             </td>
                             <td>
-                              <span>{data.credit}</span>
+                              <span>{PHONE_CREDIT_TYPE_LABELS[data.credit]}</span>
                             </td>
                           </tr>
                         </tbody>
