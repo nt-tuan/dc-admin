@@ -20,6 +20,7 @@ const OrderActiveTab = () => {
   const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
   const [mutationTitle, setMutationTitle] = useState("");
   const [documents, setDocuments] = useState([]);
+  const [forceRender, setForceRender] = useState(true);
   const formRef = useRef();
   const isEdit = useRef(false);
   const selectedDocument = useRef({});
@@ -28,12 +29,11 @@ const OrderActiveTab = () => {
   const history = useHistory();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (showCreateDocument) {
-        setMutationTitle("Create Document");
-        setShowDocumentMutationModal(true);
-      }
-    });
+    if (showCreateDocument) {
+      setMutationTitle("Create Document");
+      setForceRender(false);
+      setShowDocumentMutationModal(true);
+    }
   }, [showCreateDocument]);
 
   const handleGetAllDocs = useCallback(() => {
@@ -189,7 +189,7 @@ const OrderActiveTab = () => {
         onOk={isEdit.current ? handleEditDocument : handleCreateDocument}
         title={mutationTitle}
         visible={showDocumentMutationModal}
-        forceRender
+        forceRender={forceRender}
       >
         <DocumentMutationForm ref={formRef} />
       </Modal>
