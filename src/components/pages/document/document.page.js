@@ -118,7 +118,7 @@ const OrderActiveTab = () => {
           }
         } catch (error) {
           if (error.message === "400") {
-            message.error(error.errMsg);
+            message.warning(error.errMsg);
             return;
           }
           throw error;
