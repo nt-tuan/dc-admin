@@ -85,17 +85,18 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
       scrollToFirstError={true}
       labelAlign="left"
     >
-      {schema.map(({ name, label, rules, defaultValue }) => (
-        <Form.Item
-          name={name}
-          label={label}
-          labelCol={{ sm: { span: 8 }, md: { span: 8 }, lg: { span: 6 } }}
-          rules={rules}
-          key={name}
-          initialValue={defaultValue}
-        >
-          {renderFormItems(name)}
-        </Form.Item>
+      {schema.map(({ name, label, rules, defaultValue, title }) => (
+        <div title={title} key={name}>
+          <Form.Item
+            name={name}
+            label={<div title={title}>{label}</div>}
+            labelCol={{ sm: { span: 8 }, md: { span: 8 }, lg: { span: 6 } }}
+            rules={rules}
+            initialValue={defaultValue}
+          >
+            {renderFormItems(name)}
+          </Form.Item>
+        </div>
       ))}
     </Form>
   );
@@ -147,7 +148,8 @@ const schema = [
         max: 255,
         message: "Short Description cannot be longer than 255 characters"
       }
-    ]
+    ],
+    title: "A short text description of the product"
   },
   {
     name: PROD_DES_FIELDS.longDes,
@@ -160,7 +162,8 @@ const schema = [
         max: 4000,
         message: "Long Description cannot be longer than 4000 characters"
       }
-    ]
+    ],
+    title: "A long text description of the product"
   },
   {
     name: PROD_DES_FIELDS.retailPrice,
@@ -172,24 +175,35 @@ const schema = [
         pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
         message: "Retail price is number larger than zero with two decimal points only"
       }
-    ]
+    ],
+    title: "The market retail price for the product"
   },
   {
     name: PROD_DES_FIELDS.gender,
     label: PROD_DES_LABELS[PROD_DES_FIELDS.gender],
     defaultValue: genderOptions[0].value,
-    rules: [{ required: true, message: "Gender is required" }]
+    rules: [{ required: true, message: "Gender is required" }],
+    title: "The gender for which the product is intended"
   },
   {
     name: PROD_DES_FIELDS.size,
     defaultValue: null,
     label: PROD_DES_LABELS[PROD_DES_FIELDS.size],
-    rules: [{ required: true, message: "Size is required" }]
+    rules: [
+      { required: true, message: "Size is required" },
+      {
+        pattern: RegexConst.ONLY_INTERER_GREATER_THAN_ZERO_REGEX,
+        message: "Size is number larger than zero"
+      }
+    ],
+    title: "The size of the product"
   },
   {
     name: PROD_DES_FIELDS.type,
     defaultValue: null,
     label: PROD_DES_LABELS[PROD_DES_FIELDS.type],
-    rules: [{ required: true, message: "Type is required" }]
+    rules: [{ required: true, message: "Type is required" }],
+    title:
+      "The Type of product such as, Perfume, Eau de Perfume, Eau de Toilette, Eau de Cologne, and Eau Fraiche"
   }
 ];
