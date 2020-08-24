@@ -27,10 +27,10 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
           { required: true, message: "Please upload product image" },
           {
             validator: async (rule, value) => {
-              if (value.length) {
+              if (value && value.length) {
                 const fileExt = value[0].name.substr(value[0].name.lastIndexOf("."));
                 if ([".png", ".jpg", ".jpeg"].includes(fileExt.toLowerCase()) === false) {
-                  throw new Error("Invalid File Type");
+                  throw new Error("Invalid File Type. Accepted type: .png, .jpg, .jpeg");
                 }
               }
             }
