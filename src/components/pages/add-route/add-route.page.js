@@ -7,6 +7,7 @@ import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory, Link } from "react-router-dom";
+import uniqBy from "lodash/uniqBy";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -51,15 +52,16 @@ const AddRoutePage = () => {
     }));
   }, [defaultRoute]);
 
-  // const defaultDocumentIds = useMemo(() => {
-  //   if (defaultRoute === undefined) {
-  //     return [];
-  //   }
-  //   return defaultRoute.routeDocumentTypeResponses.map((doc) => doc.id);
-  // }, [defaultRoute]);
+  const defaultDocumentIds = useMemo(() => {
+    if (defaultRoute === undefined) {
+      return [];
+    }
+    return defaultRoute.routeDocumentTypeResponses.map((doc) => doc.id);
+  }, [defaultRoute]);
 
   const docTableData = useMemo(() => {
-    return [...selectedDefaultDocs, ...selectedCustomizedDocs];
+    console.log([...selectedDefaultDocs, ...selectedCustomizedDocs]);
+    return uniqBy([...selectedDefaultDocs, ...selectedCustomizedDocs], "id");
   }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
   useEffect(() => {
@@ -74,32 +76,37 @@ const AddRoutePage = () => {
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const defaultDocs = await RouteService.getDefaultDocuments();
+      console.log("AddRoutePage -> defaultDocs", defaultDocs);
       setDefaultDocs(defaultDocs);
     });
   }, []);
 
-  const handleTypeChange = useCallback(({ categoryId, typeId }) => {
-    asyncErrorHandlerWrapper(async () => {
-      const _defaultRoute = await RouteService.getDefault({ categoryId, typeId });
-      if (_defaultRoute) {
-        setDefaultRoute(_defaultRoute);
-        setSelectedDefaultDocs(
-          _defaultRoute.routeDocumentTypeResponses.map((doc) => ({
-            id: doc.id,
-            document: doc.name,
-            provider: ACTORS_REVERSE[doc.routeDocumentRuleDto.provider],
-            viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
-            viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
-            viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
-            disabled: false
-          }))
-        );
-      } else {
-        setDefaultRoute(undefined);
-        setSelectedDefaultDocs([]);
-      }
-    });
-  }, []);
+  const handleTypeChange = useCallback(
+    ({ categoryId, typeId }) => {
+      asyncErrorHandlerWrapper(async () => {
+        const _defaultRoute = await RouteService.getDefault({ categoryId, typeId });
+        if (_defaultRoute) {
+          setDefaultRoute(_defaultRoute);
+          console.log(defaultDocs);
+          setSelectedDefaultDocs(
+            _defaultRoute.routeDocumentTypeResponses.map((doc) => ({
+              id: doc.id,
+              document: doc.name,
+              provider: ACTORS_REVERSE[doc.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[doc.routeDocumentRuleDto.viewer3],
+              disabled: defaultDocs.map((dd) => dd.id).includes(doc.id)
+            }))
+          );
+        } else {
+          setDefaultRoute(undefined);
+          setSelectedDefaultDocs([]);
+        }
+      });
+    },
+    [defaultDocs]
+  );
 
   const handleDefaultDocListChange = useCallback(
     (checkedList) => {
@@ -142,6 +149,7 @@ const AddRoutePage = () => {
             };
           }
         });
+      console.log(docs);
       setSelectedDefaultDocs(docs);
     },
     [documents, defaultDocs, defaultRoute]
@@ -176,6 +184,7 @@ const AddRoutePage = () => {
             disabled: false
           };
         });
+      console.log(docs);
       setSelectedCustomizedtDocs(docs);
     },
     [documents, defaultDocs]
@@ -253,6 +262,7 @@ const AddRoutePage = () => {
             <DocumentList
               title="Default Documents"
               defaultDocs={defaultDocs}
+              defaultValue={defaultDocumentIds}
               documents={defaultDocuments}
               onChange={handleDefaultDocListChange}
               onTouch={handleDocListTouch}

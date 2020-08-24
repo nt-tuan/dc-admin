@@ -230,7 +230,7 @@ const EditRoutePage = () => {
         });
       setSelectedDefaultDocs(docs);
     },
-    [documents, defaultDocs, defaultRoute]
+    [documents, defaultDocs, defaultRoute, routeDetails]
   );
 
   const handleCustomizedDocListChange = useCallback(
