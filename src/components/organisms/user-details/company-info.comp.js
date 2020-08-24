@@ -29,9 +29,11 @@ const CompanyInfoReadonly = ({ companyInfo }) => {
         }
         if (field === FIELDS.workingDays) {
           value = value
-            .split(",")
-            .map((workDay) => WEEK_DAYS[workDay])
-            .join(", ");
+            ? value
+                .split(",")
+                .map((workDay) => WEEK_DAYS[workDay])
+                .join(", ")
+            : "Unset";
         }
         return (
           <div className="d-flex justify-content-between" key={field}>

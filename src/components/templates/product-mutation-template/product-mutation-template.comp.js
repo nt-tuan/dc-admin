@@ -183,9 +183,7 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
             status="info"
             title={
               draftedFormData.timestamp
-                ? `Do you want to restore what you have input ${dayjs(
-                    draftedFormData.timestamp
-                  ).fromNow()}`
+                ? "Do you want to restore your unfinished product creation from the previous session?"
                 : ""
             }
             extra={[

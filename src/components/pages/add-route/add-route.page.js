@@ -218,7 +218,8 @@ const AddRoutePage = () => {
           history.push(RouteConst.ROUTE);
         } catch (error) {
           if (error.message === "400") {
-            message.warning(error.errMsg);
+            const err = error.errors;
+            message.warning(err.errMsg);
             return;
           }
           throw error;

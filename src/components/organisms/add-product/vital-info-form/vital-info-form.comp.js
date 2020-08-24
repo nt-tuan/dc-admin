@@ -126,17 +126,18 @@ export const VitalInfoForm = forwardRef((props, ref) => {
       scrollToFirstError={true}
       labelAlign="left"
     >
-      {SCHEMA.map(({ name, label, rules, dependencies }) => (
-        <Form.Item
-          name={name}
-          label={label}
-          labelCol={{ sm: { span: 6 }, lg: { span: 4 } }}
-          rules={rules}
-          key={name}
-          dependencies={dependencies}
-        >
-          {renderFormItems(name, label)}
-        </Form.Item>
+      {SCHEMA.map(({ name, label, rules, dependencies, title }) => (
+        <div title={title} key={name}>
+          <Form.Item
+            name={name}
+            label={<div title={title}>{label}</div>}
+            labelCol={{ sm: { span: 6 }, lg: { span: 4 } }}
+            rules={rules}
+            dependencies={dependencies}
+          >
+            {renderFormItems(name, label)}
+          </Form.Item>
+        </div>
       ))}
     </Form>
   );
@@ -146,50 +147,55 @@ const VITAL_INFO_FIELDS = {
   productName: "productName",
   brand: "brand",
   category: "category",
-  keyword: "keyword",
-  type: "type",
-  saleChannel: "salesChannel"
+  keyword: "keyword"
+  // type: "type",
+  // saleChannel: "salesChannel"
 };
 
 const VITAL_INFO_LABELS = {
   [VITAL_INFO_FIELDS.productName]: "Product Name",
-  [VITAL_INFO_FIELDS.brand]: "Brand",
-  [VITAL_INFO_FIELDS.category]: "Category",
-  [VITAL_INFO_FIELDS.keyword]: "Keywords",
-  [VITAL_INFO_FIELDS.type]: "Type",
-  [VITAL_INFO_FIELDS.saleChannel]: "Sales Channels"
+  [VITAL_INFO_FIELDS.brand]: "Product Brand",
+  [VITAL_INFO_FIELDS.category]: "Product Category",
+  [VITAL_INFO_FIELDS.keyword]: "Keywords"
+  // [VITAL_INFO_FIELDS.type]: "Type",
+  // [VITAL_INFO_FIELDS.saleChannel]: "Sales Channels"
 };
 
 const SCHEMA = [
   {
     name: VITAL_INFO_FIELDS.productName,
     label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName],
-    rules: [{ required: true, message: "Product name is required" }]
+    rules: [{ required: true, message: "Product name is required" }],
+    title:
+      "A short title for the product. This will be displayed in bold on the product page and in the title bar of the Marketplace window"
   },
   {
     name: VITAL_INFO_FIELDS.brand,
     label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brand],
-    rules: [{ required: true, message: "Brand name is required" }]
+    rules: [{ required: true, message: "Brand name is required" }],
+    title: "The brand of the product"
   },
   {
     name: VITAL_INFO_FIELDS.category,
     label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.category],
-    rules: [{ required: true, message: "Category is required" }]
+    rules: [{ required: true, message: "Category is required" }],
+    title: "The category of the product"
   },
-  {
-    name: VITAL_INFO_FIELDS.type,
-    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
-    rules: [{ required: true, message: "Type is required" }],
-    dependencies: [VITAL_INFO_FIELDS.category]
-  },
-  {
-    name: VITAL_INFO_FIELDS.saleChannel,
-    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel],
-    rules: [{ required: true, message: "Category is required" }]
-  },
+  // {
+  //   name: VITAL_INFO_FIELDS.type,
+  //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
+  //   rules: [{ required: true, message: "Type is required" }],
+  //   dependencies: [VITAL_INFO_FIELDS.category]
+  // },
+  // {
+  //   name: VITAL_INFO_FIELDS.saleChannel,
+  //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel],
+  //   rules: [{ required: true, message: "Category is required" }]
+  // },
   {
     name: VITAL_INFO_FIELDS.keyword,
     label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.keyword],
-    rules: [{ required: true, message: "Please input at least 1 Keyword" }]
+    rules: [{ required: true, message: "Please input at least 1 Keyword" }],
+    title: "Search terms that describe your product: no repetition, no competitor brand names"
   }
 ];
