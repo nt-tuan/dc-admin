@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import qs from "qs";
 import { RouteConst } from "commons/consts";
 import { useHistory } from "react-router-dom";
+import { APIError } from "commons/types";
 
 const { confirm } = Modal;
 
@@ -102,12 +103,13 @@ const OrderActiveTab = () => {
       if (isValid) {
         const data = formRef.current.getFieldsValue();
         const composedData = {
-          fileName: data.sampleFile && data.sampleFile[0].uid,
+          fileName: data?.sampleFile[0]?.uid,
           name: data.documentName,
           routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile && data.sampleFile[0].originalName
+          originalFileName: data?.sampleFile[0]?.originalName
         };
         try {
+          console.log("fdferter");
           await RouteService.createDocument(composedData);
           setShowDocumentMutationModal(false);
           if (showCreateDocument) {
@@ -117,11 +119,12 @@ const OrderActiveTab = () => {
             handleGetAllDocs();
           }
         } catch (error) {
-          if (error.message === "400") {
-            message.warning(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     });

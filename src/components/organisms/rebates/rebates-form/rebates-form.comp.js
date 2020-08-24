@@ -47,7 +47,7 @@ export const RebatesForm = forwardRef(
           );
         case FIELDS.productBrand:
           return (
-            <Select disabled={data[FIELDS.productBrand]}>
+            <Select disabled={data[FIELDS.productBrand]} showSearch>
               {productBrand.map((brand, index) => (
                 <Option value={brand} key={`${brand}-${index}`}>
                   {brand}
