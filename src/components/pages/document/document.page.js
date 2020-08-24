@@ -147,11 +147,12 @@ const OrderActiveTab = () => {
           message.success("Edit Successfully");
           handleGetAllDocs();
         } catch (error) {
-          if (error.message === "400") {
-            message.error(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     });
