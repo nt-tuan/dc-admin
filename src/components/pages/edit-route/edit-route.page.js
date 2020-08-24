@@ -190,6 +190,20 @@ const EditRoutePage = () => {
               disabled: true
             };
           }
+          const targetDocFromDetails = routeDetails.routeDocumentTypeResponses.find(
+            (dfd) => dfd.id === doc.id
+          );
+          if (targetDocFromDetails && isDocListTouched.current[targetDocFromDetails.id] === false) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer3],
+              disabled: false
+            };
+          }
           const targetDocFromDefaultRoute = defaultRoute.routeDocumentTypeResponses.find(
             (dfd) => dfd.id === doc.id
           );
