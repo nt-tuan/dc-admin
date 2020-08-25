@@ -8,6 +8,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom";
 import qs from "qs";
+import { APIError } from "commons/types";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -315,9 +316,11 @@ const EditRoutePage = () => {
           message.success("Edit Successfully");
           history.push(RouteConst.ROUTE);
         } catch (error) {
-          if (error.message === "400") {
-            message.warning(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
           throw error;
         }

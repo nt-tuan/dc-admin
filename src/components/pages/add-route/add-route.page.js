@@ -8,6 +8,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory, Link } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
+import { APIError } from "commons/types";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -226,10 +227,11 @@ const AddRoutePage = () => {
           message.success("Create Successfully");
           history.push(RouteConst.ROUTE);
         } catch (error) {
-          if (error.message === "400") {
+          if (error instanceof APIError) {
             const err = error.errors;
-            message.warning(err.errMsg);
-            return;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
           throw error;
         }
