@@ -9,6 +9,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom";
 import qs from "qs";
 import { APIError } from "commons/types";
+import uniqBy from "lodash/uniqBy";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -97,7 +98,7 @@ const EditRoutePage = () => {
   }, [defaultRoute]);
 
   const docTableData = useMemo(() => {
-    return [...selectedDefaultDocs, ...selectedCustomizedDocs];
+    return uniqBy([...selectedDefaultDocs, ...selectedCustomizedDocs], "id");
   }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
   useEffect(() => {
