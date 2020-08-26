@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import qs from "qs";
 import { APIError } from "commons/types";
 import uniqBy from "lodash/uniqBy";
@@ -398,7 +398,9 @@ const EditRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleEdit}>
           Save
         </Button>
-        <Button>Cancel</Button>
+        <Link to={RouteConst.ROUTE}>
+          <Button>Cancel</Button>
+        </Link>
       </div>
     </DTCSection>
   );
