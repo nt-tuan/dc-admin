@@ -323,7 +323,6 @@ const EditRoutePage = () => {
           } else {
             throw error;
           }
-          throw error;
         }
       }
     });

@@ -61,7 +61,6 @@ const AddRoutePage = () => {
   }, [defaultRoute]);
 
   const docTableData = useMemo(() => {
-    console.log([...selectedDefaultDocs, ...selectedCustomizedDocs]);
     return uniqBy([...selectedDefaultDocs, ...selectedCustomizedDocs], "id");
   }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
@@ -77,7 +76,6 @@ const AddRoutePage = () => {
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const defaultDocs = await RouteService.getDefaultDocuments();
-      console.log("AddRoutePage -> defaultDocs", defaultDocs);
       setDefaultDocs(defaultDocs);
     });
   }, []);
@@ -88,7 +86,6 @@ const AddRoutePage = () => {
         const _defaultRoute = await RouteService.getDefault({ categoryId, typeId });
         if (_defaultRoute) {
           setDefaultRoute(_defaultRoute);
-          console.log(defaultDocs);
           setSelectedDefaultDocs(
             _defaultRoute.routeDocumentTypeResponses.map((doc) => ({
               id: doc.id,
@@ -150,7 +147,6 @@ const AddRoutePage = () => {
             };
           }
         });
-      console.log(docs);
       setSelectedDefaultDocs(docs);
     },
     [documents, defaultDocs, defaultRoute]
@@ -185,7 +181,6 @@ const AddRoutePage = () => {
             disabled: false
           };
         });
-      console.log(docs);
       setSelectedCustomizedtDocs(docs);
     },
     [documents, defaultDocs]
@@ -233,7 +228,6 @@ const AddRoutePage = () => {
           } else {
             throw error;
           }
-          throw error;
         }
       }
     });
