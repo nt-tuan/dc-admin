@@ -352,6 +352,7 @@ const EditRoutePage = () => {
             defaultCategoryId={categoryIdFromDetails}
             defaultTypeId={typeIdFromDetails}
             ref={locationFormRef}
+            isEdit={true}
           />
         </div>
         <div className="text-center" hidden={isLoadingLocation === false}>

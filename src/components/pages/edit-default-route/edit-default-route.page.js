@@ -194,6 +194,7 @@ const EditRoutePage = () => {
           onTouch={setIsLocationFormTouched}
           defaultCategoryId={categoryIdFromDetails}
           defaultTypeId={typeIdFromDetails}
+          isEdit={true}
         />
       </div>
       <Divider />

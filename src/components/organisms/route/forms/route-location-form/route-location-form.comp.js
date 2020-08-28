@@ -6,7 +6,15 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 export const RouteLocationForm = forwardRef(
   (
-    { hiddenFields = [], defaultCategoryId, defaultTypeId, onTypeChange, onTouch, onAfterInit },
+    {
+      hiddenFields = [],
+      defaultCategoryId,
+      defaultTypeId,
+      onTypeChange,
+      onTouch,
+      onAfterInit,
+      isEdit = false
+    },
     ref
   ) => {
     const [countriesFrom, setCountriesFrom] = useState([]);
@@ -15,6 +23,7 @@ export const RouteLocationForm = forwardRef(
     const [types, setTypes] = useState([]);
     const [form] = Form.useForm();
     const countries = useRef([]);
+    console.log("value", form.getFieldsValue());
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
@@ -25,10 +34,11 @@ export const RouteLocationForm = forwardRef(
           setCategories(categoriesRes);
           setTypes(typeRes);
 
-          form.setFieldsValue({
-            category: categoriesRes[0].id,
-            type: typeRes[0] ? typeRes[0].id : undefined
-          });
+          isEdit &&
+            form.setFieldsValue({
+              category: categoriesRes[0].id,
+              type: typeRes[0] ? typeRes[0].id : undefined
+            });
         } else {
           const categoriesRes = await RouteService.getCategories();
           const typeRes = await RouteService.getTypes(defaultCategoryId);
@@ -36,14 +46,15 @@ export const RouteLocationForm = forwardRef(
           setCategories(categoriesRes);
           setTypes(typeRes);
 
-          form.setFieldsValue({
-            category: defaultCategoryId,
-            type: defaultTypeId
-          });
+          isEdit &&
+            form.setFieldsValue({
+              category: defaultCategoryId,
+              type: defaultTypeId
+            });
         }
         onAfterInit && onAfterInit(false);
       });
-    }, [form, defaultCategoryId, defaultTypeId, onAfterInit]);
+    }, [form, defaultCategoryId, defaultTypeId, onAfterInit, isEdit]);
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
@@ -132,7 +143,17 @@ export const RouteLocationForm = forwardRef(
           )}
         </div>
         <div className="row px-2 w-100">
-          <Form.Item label="Product Category" name="category" className="col-12 col-lg-6 mx-0 mt-2">
+          <Form.Item
+            label="Product Category"
+            name="category"
+            className="col-12 col-lg-6 mx-0 mt-2"
+            rules={[
+              {
+                required: true,
+                message: "Category is required"
+              }
+            ]}
+          >
             <Select style={{ width: 200 }} onChange={handleCategoryChange}>
               {categories.map((c) => (
                 <Select.Option value={c.id} key={c.id}>
