@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import qs from "qs";
 import { RouteConst } from "commons/consts";
 import { useHistory } from "react-router-dom";
+import { APIError } from "commons/types";
 
 const { confirm } = Modal;
 
@@ -20,6 +21,7 @@ const OrderActiveTab = () => {
   const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
   const [mutationTitle, setMutationTitle] = useState("");
   const [documents, setDocuments] = useState([]);
+  const [forceRender, setForceRender] = useState(true);
   const formRef = useRef();
   const isEdit = useRef(false);
   const selectedDocument = useRef({});
@@ -28,12 +30,11 @@ const OrderActiveTab = () => {
   const history = useHistory();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (showCreateDocument) {
-        setMutationTitle("Create Document");
-        setShowDocumentMutationModal(true);
-      }
-    });
+    if (showCreateDocument) {
+      setMutationTitle("Create Document");
+      setForceRender(false);
+      setShowDocumentMutationModal(true);
+    }
   }, [showCreateDocument]);
 
   const handleGetAllDocs = useCallback(() => {
@@ -102,12 +103,13 @@ const OrderActiveTab = () => {
       if (isValid) {
         const data = formRef.current.getFieldsValue();
         const composedData = {
-          fileName: data.sampleFile && data.sampleFile[0].uid,
+          fileName: data?.sampleFile[0]?.uid,
           name: data.documentName,
           routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile && data.sampleFile[0].originalName
+          originalFileName: data?.sampleFile[0]?.originalName
         };
         try {
+          console.log("fdferter");
           await RouteService.createDocument(composedData);
           setShowDocumentMutationModal(false);
           if (showCreateDocument) {
@@ -117,11 +119,12 @@ const OrderActiveTab = () => {
             handleGetAllDocs();
           }
         } catch (error) {
-          if (error.message === "400") {
-            message.error(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     });
@@ -144,11 +147,12 @@ const OrderActiveTab = () => {
           message.success("Edit Successfully");
           handleGetAllDocs();
         } catch (error) {
-          if (error.message === "400") {
-            message.error(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     });
@@ -189,7 +193,7 @@ const OrderActiveTab = () => {
         onOk={isEdit.current ? handleEditDocument : handleCreateDocument}
         title={mutationTitle}
         visible={showDocumentMutationModal}
-        forceRender
+        forceRender={forceRender}
       >
         <DocumentMutationForm ref={formRef} />
       </Modal>

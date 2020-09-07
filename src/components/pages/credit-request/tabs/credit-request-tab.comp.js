@@ -145,7 +145,7 @@ export const CreditRequestTab = () => {
             hiddenColumns={hiddenColumns}
             rowSelection={rowSelection}
             renderFooter={() =>
-              data.length && (
+              data.length > 0 && (
                 <div className="text-center">
                   <Button
                     type="primary"

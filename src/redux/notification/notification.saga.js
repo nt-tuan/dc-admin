@@ -29,6 +29,7 @@ export function* INIT() {
     return;
   }
   const { content, totalPages } = yield getNotificationList(0, 5);
+  yield put(setStateAction({ newMessage: user && user.messageRead }));
   yield put(setStateAction({ popupList: content, totalPages }));
 
   yield new Promise((r) => {

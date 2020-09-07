@@ -47,7 +47,7 @@ export const RebatesForm = forwardRef(
           );
         case FIELDS.productBrand:
           return (
-            <Select disabled={data[FIELDS.productBrand]}>
+            <Select disabled={data[FIELDS.productBrand]} showSearch>
               {productBrand.map((brand, index) => (
                 <Option value={brand} key={`${brand}-${index}`}>
                   {brand}
@@ -133,8 +133,18 @@ const schema = [
       { required: true, message: <FormError msg="Rebate Percentage is required" /> },
       {
         pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
-        message: <FormError msg="Only numberic number greater than 0" />
-      }
+        message: (
+          <FormError msg="Rebate percentage is only numberic number greater than 0 with two decimal positions" />
+        )
+      },
+      () => ({
+        validator(rule, value) {
+          if (value <= 100) {
+            return Promise.resolve();
+          }
+          return Promise.reject(<FormError msg="Rebate percentage must be less than 100" />);
+        }
+      })
     ]
   }
 ];

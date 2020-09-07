@@ -6,8 +6,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import qs from "qs";
+import { APIError } from "commons/types";
+import uniqBy from "lodash/uniqBy";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -96,7 +98,7 @@ const EditRoutePage = () => {
   }, [defaultRoute]);
 
   const docTableData = useMemo(() => {
-    return [...selectedDefaultDocs, ...selectedCustomizedDocs];
+    return uniqBy([...selectedDefaultDocs, ...selectedCustomizedDocs], "id");
   }, [selectedDefaultDocs, selectedCustomizedDocs]);
 
   useEffect(() => {
@@ -190,6 +192,20 @@ const EditRoutePage = () => {
               disabled: true
             };
           }
+          const targetDocFromDetails = routeDetails.routeDocumentTypeResponses.find(
+            (dfd) => dfd.id === doc.id
+          );
+          if (targetDocFromDetails && isDocListTouched.current[targetDocFromDetails.id] === false) {
+            return {
+              document: doc.name,
+              id: doc.id,
+              provider: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.provider],
+              viewer1: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer1],
+              viewer2: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer2],
+              viewer3: ACTORS_REVERSE[targetDocFromDetails.routeDocumentRuleDto.viewer3],
+              disabled: false
+            };
+          }
           const targetDocFromDefaultRoute = defaultRoute.routeDocumentTypeResponses.find(
             (dfd) => dfd.id === doc.id
           );
@@ -216,7 +232,7 @@ const EditRoutePage = () => {
         });
       setSelectedDefaultDocs(docs);
     },
-    [documents, defaultDocs, defaultRoute]
+    [documents, defaultDocs, defaultRoute, routeDetails]
   );
 
   const handleCustomizedDocListChange = useCallback(
@@ -301,11 +317,12 @@ const EditRoutePage = () => {
           message.success("Edit Successfully");
           history.push(RouteConst.ROUTE);
         } catch (error) {
-          if (error.message === "400") {
-            message.warning(error.errMsg);
-            return;
+          if (error instanceof APIError) {
+            const err = error.errors;
+            message.warning(err[0][1]);
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     });
@@ -335,6 +352,7 @@ const EditRoutePage = () => {
             defaultCategoryId={categoryIdFromDetails}
             defaultTypeId={typeIdFromDetails}
             ref={locationFormRef}
+            isEdit={true}
           />
         </div>
         <div className="text-center" hidden={isLoadingLocation === false}>
@@ -380,7 +398,9 @@ const EditRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleEdit}>
           Save
         </Button>
-        <Button>Cancel</Button>
+        <Link to={RouteConst.ROUTE}>
+          <Button>Cancel</Button>
+        </Link>
       </div>
     </DTCSection>
   );

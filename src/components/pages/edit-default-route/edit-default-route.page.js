@@ -8,6 +8,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst, ACTORS, ACTORS_REVERSE } from "commons/consts";
 import qs from "qs";
+import { Link } from "react-router-dom";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -193,6 +194,7 @@ const EditRoutePage = () => {
           onTouch={setIsLocationFormTouched}
           defaultCategoryId={categoryIdFromDetails}
           defaultTypeId={typeIdFromDetails}
+          isEdit={true}
         />
       </div>
       <Divider />
@@ -220,7 +222,9 @@ const EditRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleEdit}>
           Save
         </Button>
-        <Button>Cancel</Button>
+        <Link to={RouteConst.ROUTE}>
+          <Button>Cancel</Button>
+        </Link>
       </div>
     </DTCSection>
   );

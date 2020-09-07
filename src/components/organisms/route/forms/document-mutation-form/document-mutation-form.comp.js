@@ -1,4 +1,4 @@
-import React, { forwardRef, useReducer } from "react";
+import React, { forwardRef, useReducer, useState } from "react";
 import { Form, Input, Select, Upload, Button } from "antd";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RouteService } from "services";
@@ -9,6 +9,7 @@ const normFile = (e) => {
 
 export const DocumentMutationForm = forwardRef((props, ref) => {
   const [form] = Form.useForm();
+  const [documentType, setDocumentType] = useState();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const renderUploadButton = () => {
@@ -53,7 +54,12 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
         name="documentType"
         rules={[{ required: true, message: "Please input your Document Type!" }]}
       >
-        <Select>
+        <Select
+          onChange={(value) => {
+            form.setFieldsValue({ sampleFile: [] });
+            setDocumentType(acceptTypes[value]);
+          }}
+        >
           {fileTypes.map(({ value, label }) => (
             <Select.Option key={value} value={value}>
               {label}
@@ -79,6 +85,7 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
               }
             });
           }}
+          accept={documentType}
         >
           {renderUploadButton()}
         </Upload>
@@ -97,3 +104,8 @@ const fileTypes = [
     label: "Excel"
   }
 ];
+
+const acceptTypes = {
+  PDF: ".pdf",
+  XLSX: ".xlsx"
+};
