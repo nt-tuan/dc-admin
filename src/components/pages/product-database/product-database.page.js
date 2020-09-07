@@ -24,7 +24,7 @@ const ProductDatabase = () => {
   const dispatch = useDispatch();
   const [
     { data: products, isLoading, isLoadMore, page, totalPages },
-    { setIsLoading, onSearch, onLoadMore }
+    { setIsLoading, onSearch, onReFetch, onLoadMore }
   ] = usePaginatedApiService(ProductService.getProducts, {
     itemPerPage: 8
   });
@@ -37,6 +37,7 @@ const ProductDatabase = () => {
         setLoading(true);
         asyncErrorHandlerWrapper(async () => {
           await ProductService.deleteProduct(id);
+          onReFetch();
           setLoading(false);
           setHidden(true);
           message.success("Successful");
