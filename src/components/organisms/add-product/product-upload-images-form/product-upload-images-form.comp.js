@@ -18,6 +18,11 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
     );
   };
 
+  const beforeUpload = (file) => {
+    form.validateFields();
+    return file.size / 1024 / 1024 < 5;
+  };
+
   return (
     <Form name="ProductUploadImagesForm" form={form} ref={ref} className="row">
       <Form.Item
@@ -29,6 +34,9 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
             validator: async (rule, value) => {
               if (value && value.length) {
                 const fileExt = value[0].name.substr(value[0].name.lastIndexOf("."));
+                if (value[0].size / 1024 / 1024 >= 5) {
+                  throw new Error("Please upload an image file with size less than 5 mb");
+                }
                 if ([".png", ".jpg", ".jpeg"].includes(fileExt.toLowerCase()) === false) {
                   throw new Error("Invalid File Type. Accepted type: .png, .jpg, .jpeg");
                 }
@@ -44,6 +52,7 @@ export const ProductUploadImagesForm = forwardRef(({ handleUploadImage }, ref) =
           listType="picture-card"
           customRequest={handleUploadImage}
           onChange={() => forceUpdate()}
+          beforeUpload={beforeUpload}
           onRemove={(file) => {
             asyncErrorHandlerWrapper(async () => {
               if (file.status === "done") {
