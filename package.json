@@ -6,6 +6,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "build-dev": "env-cmd -f .env.dev react-app-rewired build",
+    "build-qat": "env-cmd -f .env.qat react-app-rewired build",
     "build-staging": "env-cmd -f .env.staging react-app-rewired build",
     "build-prod": "env-cmd -f .env.prod react-app-rewired build",
     "test": "react-app-rewired test",
