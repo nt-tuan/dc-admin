@@ -50,7 +50,11 @@ export const usePaginatedApiService = (
       asyncErrorHandlerWrapper(async () => {
         const req = await serviceFn({ params, ...outerParams });
         data.current =
-          setLoadingState === setIsLoading ? req.content : [...data.current, ...req.content];
+          setLoadingState === setIsLoading
+            ? req.content
+            : [...data.current, ...req.content].filter(
+                (obj, index, self) => index === self.findIndex((val) => val.id === obj.id)
+              );
         totalPages.current = req.totalPages;
         onAfterFetch && onAfterFetch(data.current);
         setLoadingState(false);
@@ -71,16 +75,14 @@ export const usePaginatedApiService = (
   }, [fetchData, itemPerPage, sortOrder, sortTerm, options]);
 
   const reFetch = useCallback(() => {
-    const params = { page: 0, size: itemPerPage };
+    const params = { page: page.current, size: itemPerPage };
     if (sortTerm && sortOrder) {
       params.sort = `${sortTerm},${sortOrder}`;
     }
     fetchData(params, setIsLoading);
     setSortTerm(defaultSortTerm);
     setSortOrder(defaultSortOrder);
-    page.current = 0;
     searchStr.current = "";
-    totalPages.current = 0;
   }, [fetchData, itemPerPage, sortOrder, sortTerm, defaultSortOrder, defaultSortTerm]);
 
   const handleLoadMore = () => {
