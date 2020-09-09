@@ -83,9 +83,10 @@ export const userMgtTableSchema = ({
   onUnlock,
   onLock,
   onViewAssignBadges,
-  onHandleMarketplaceCredit
+  onHandleMarketplaceCredit,
+  hiddenStatus = false
 }) => (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => {
-  const columnsSchema = [
+  let columnsSchema = [
     {
       title: LABELS[FIELDS.companyName],
       dataIndex: FIELDS.companyName,
@@ -210,5 +211,8 @@ export const userMgtTableSchema = ({
       )
     }
   ];
+
+  if (hiddenStatus) columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.userStatus);
+
   return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
 };
