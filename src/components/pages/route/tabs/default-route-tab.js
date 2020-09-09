@@ -79,7 +79,7 @@ export const DefaultRouteTab = () => {
         showSettings={false}
         loading={false}
         dataSource={data}
-        schema={ROUTE_SCHEMA.getTableSchema(handleEditClick, handleDeleteClick)}
+        schema={ROUTE_SCHEMA.getTableSchema(handleEditClick, handleDeleteClick, true)}
         onChange={(value) => setData(value)}
       />
     </div>

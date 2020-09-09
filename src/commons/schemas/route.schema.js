@@ -12,20 +12,20 @@ const FIELDS = {
 
 const LABELS = {
   [FIELDS.timestamp]: "Time Stamp",
-  [FIELDS.categoryName]: "Category",
-  [FIELDS.typeName]: "Type",
+  [FIELDS.categoryName]: "Product Category",
+  [FIELDS.typeName]: "Product Type",
   [FIELDS.to]: "To",
   [FIELDS.from]: "From"
 };
 
 // active tab
-const routeTableSchema = (onEditClick, onDeleteClick) => (
+const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false) => (
   sortedInfo,
   CustomHighlighter,
   searchText,
   hiddenColumns
 ) => {
-  const columnsSchema = [
+  let columnsSchema = [
     {
       title: LABELS[FIELDS.timestamp],
       dataIndex: FIELDS.timestamp,
@@ -53,20 +53,20 @@ const routeTableSchema = (onEditClick, onDeleteClick) => (
       render: (typeName) => <CustomHighlighter searchText={searchText} value={typeName || ""} />
     },
     {
-      title: LABELS[FIELDS.to],
-      dataIndex: FIELDS.to,
-      key: FIELDS.to,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
-      sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
-      render: (to) => <CustomHighlighter searchText={searchText} value={to || ""} />
-    },
-    {
       title: LABELS[FIELDS.from],
       dataIndex: FIELDS.from,
       key: FIELDS.from,
       sorter: (a, b) => sortAlphabetically(a[FIELDS.from], b[FIELDS.from]),
       sortOrder: sortedInfo.columnKey === FIELDS.from && sortedInfo.order,
       render: (from) => <CustomHighlighter searchText={searchText} value={from || ""} />
+    },
+    {
+      title: LABELS[FIELDS.to],
+      dataIndex: FIELDS.to,
+      key: FIELDS.to,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
+      sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
+      render: (to) => <CustomHighlighter searchText={searchText} value={to || ""} />
     },
     {
       title: "Manage",
@@ -93,6 +93,10 @@ const routeTableSchema = (onEditClick, onDeleteClick) => (
       )
     }
   ];
+
+  if (hiddenFromToFields)
+    columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.from && col.key !== FIELDS.to);
+
   return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
 };
 
