@@ -80,7 +80,8 @@ export const UserManagementAllUserTab = () => {
             onLock: handleLock,
             onUnlock: handleUnlock,
             onViewAssignBadges: toggleShowAssignBadgeFormWrapper,
-            onHandleMarketplaceCredit: handleMarketplaceCredit
+            onHandleMarketplaceCredit: handleMarketplaceCredit,
+            hiddenStatus: true
           })}
         />
       </div>

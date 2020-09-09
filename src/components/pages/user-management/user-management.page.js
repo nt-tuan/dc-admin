@@ -16,7 +16,7 @@ const TAB_KEYS = {
 const { SELLER, BUYER, ALL_USER } = TAB_KEYS;
 
 export const UserManagementPage = () => {
-  const [tab, setTab] = useState(BUYER);
+  const [tab, setTab] = useState(ALL_USER);
   const renderBuyer = () => <UserManagementBuyerTab />;
   const renderSeller = () => <UserManagementSellerTab />;
   const renderAllUser = () => <UserManagementAllUserTab />;
@@ -39,9 +39,9 @@ export const UserManagementPage = () => {
       <Helmet title="User Management" />
       <div className="d-flex justify-content-between mb-3 ml-2">
         <div>
+          {renderTabButton("All User", ALL_USER)}
           {renderTabButton("Buyer", BUYER)}
           {renderTabButton("Seller", SELLER)}
-          {renderTabButton("All User", ALL_USER)}
         </div>
         <div title="Marketplace credit">
           <Link to={RouteConst.CREDIT_USERS}>
@@ -51,9 +51,9 @@ export const UserManagementPage = () => {
           </Link>
         </div>
       </div>
+      {tab === ALL_USER && renderAllUser()}
       {tab === BUYER && renderBuyer()}
       {tab === SELLER && renderSeller()}
-      {tab === ALL_USER && renderAllUser()}
     </article>
   );
 };
