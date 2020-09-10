@@ -59,7 +59,6 @@ export const CreditRequestTab = () => {
   };
 
   const handleAccept = (id) => {
-    console.log("handleAccept -> id", id);
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await CreditService.manageCredit(id, true);
@@ -68,7 +67,6 @@ export const CreditRequestTab = () => {
   };
 
   const handleReject = (id) => {
-    console.log("handleReject -> id", id);
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await CreditService.manageCredit(id, false);
@@ -103,6 +101,10 @@ export const CreditRequestTab = () => {
         setHiddenColumns([...hiddenColumns, option]);
       }
     }
+  };
+
+  const checkEnabledBtn = () => {
+    return data.length === 1 ? selectedRowKeys.length === 1 : selectedRowKeys.length >= 2;
   };
 
   const renderTableSettingModal = () => {
@@ -147,17 +149,13 @@ export const CreditRequestTab = () => {
             renderFooter={() =>
               data.length > 0 && (
                 <div className="text-center">
-                  <Button
-                    type="primary"
-                    disabled={selectedRowKeys.length < 2}
-                    onClick={handleAcceptAll}
-                  >
+                  <Button type="primary" disabled={!checkEnabledBtn()} onClick={handleAcceptAll}>
                     Accept Requests Selected
                   </Button>
                   <Button
                     type="danger"
                     className="ml-2"
-                    disabled={selectedRowKeys.length < 2}
+                    disabled={!checkEnabledBtn()}
                     onClick={handleRejectAll}
                   >
                     Reject Requests Selected
