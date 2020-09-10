@@ -7,6 +7,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst, ACTORS, ACTORS_REVERSE } from "commons/consts";
+import { Link } from "react-router-dom";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -154,7 +155,9 @@ const AddRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleCreate}>
           Save
         </Button>
-        <Button>Cancel</Button>
+        <Link to={RouteConst.ROUTE}>
+          <Button>Cancel</Button>
+        </Link>
       </div>
     </DTCSection>
   );

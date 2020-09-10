@@ -284,7 +284,9 @@ const AddRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleCreate}>
           Save
         </Button>
-        <Button>Cancel</Button>
+        <Link to={RouteConst.ROUTE}>
+          <Button>Cancel</Button>
+        </Link>
       </div>
     </DTCSection>
   );
