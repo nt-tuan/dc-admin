@@ -23,7 +23,6 @@ export const RouteLocationForm = forwardRef(
     const [types, setTypes] = useState([]);
     const [form] = Form.useForm();
     const countries = useRef([]);
-    console.log("value", form.getFieldsValue());
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {

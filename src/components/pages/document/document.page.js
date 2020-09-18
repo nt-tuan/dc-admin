@@ -10,7 +10,6 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import { DatetimeUtils } from "utils/date-time.util";
 import { useLocation } from "react-router-dom";
 import qs from "qs";
-import { RouteConst } from "commons/consts";
 import { useHistory } from "react-router-dom";
 import { APIError } from "commons/types";
 
@@ -26,6 +25,7 @@ const OrderActiveTab = () => {
   const isEdit = useRef(false);
   const selectedDocument = useRef({});
   const location = useLocation();
+  const routeState = location.state ? location.state : null;
   const { showCreateDocument } = qs.parse(location.search, { ignoreQueryPrefix: true });
   const history = useHistory();
 
@@ -109,11 +109,10 @@ const OrderActiveTab = () => {
           originalFileName: data?.sampleFile[0]?.originalName
         };
         try {
-          console.log("fdferter");
           await RouteService.createDocument(composedData);
           setShowDocumentMutationModal(false);
-          if (showCreateDocument) {
-            history.push(RouteConst.ADD_ROUTE);
+          if (showCreateDocument && routeState) {
+            history.push(routeState.previousPage);
           } else {
             message.success("Create Successfully");
             handleGetAllDocs();
@@ -159,8 +158,8 @@ const OrderActiveTab = () => {
   };
 
   const handleCancelDocumentMutation = () => {
-    if (showCreateDocument) {
-      history.push(RouteConst.ADD_ROUTE);
+    if (showCreateDocument && routeState) {
+      history.push(routeState.previousPage);
     }
     setShowDocumentMutationModal(false);
   };

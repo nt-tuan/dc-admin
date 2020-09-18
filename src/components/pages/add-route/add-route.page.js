@@ -248,9 +248,17 @@ const AddRoutePage = () => {
         <h5>Documents</h5>
         <p>
           You can either select from the document list of or{" "}
-          <Link to={`${RouteConst.DOCUMENT}?showCreateDocument=true`} className="text-primary">
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              history.push(`${RouteConst.DOCUMENT}?showCreateDocument=true`, {
+                previousPage: RouteConst.ADD_ROUTE
+              })
+            }
+            className="text-primary"
+          >
             create a new document
-          </Link>
+          </span>
         </p>
         <p>Select the documents that required for this route</p>
         <Row gutter={[30, 0]}>
