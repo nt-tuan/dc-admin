@@ -2,7 +2,7 @@ import { Document, Page, StyleSheet, Text, View, Font, Image } from "@react-pdf/
 import font from "assets/styles/font-pdf/Roboto-Light.ttf";
 import React from "react";
 import { toCurrency } from "utils/general.util";
-import { DATE_FORMAT } from "commons/consts";
+import { DATE_FORMAT, PHONE_CREDIT_TYPE_LABELS } from "commons/consts";
 import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
 
@@ -125,7 +125,7 @@ export const PurchaseOrderPDF = ({ data, isSeller, products }) => {
         data.destinationCity,
         data.originCountry,
         data.originCity,
-        data.credit
+        PHONE_CREDIT_TYPE_LABELS[data.credit]
       ]
     ];
   };
