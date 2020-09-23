@@ -51,7 +51,7 @@ export const AssignBadgesModal = ({
   return (
     <Modal
       width={620}
-      title="Choose Badges and Assign badges to your User"
+      title="Choose and assign badges to your user"
       visible={showForm}
       footer={null}
       onCancel={toggleShowForm}
