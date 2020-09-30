@@ -89,13 +89,13 @@ export const RouteLocationForm = forwardRef(
       onTouch && onTouch(true);
     };
 
-    const onFromChange = (countryCode) => {
-      setCountriesTo(countries.current.filter((c) => c.alpha2Code !== countryCode));
-    };
+    // const onFromChange = (countryCode) => {
+    //   setCountriesTo(countries.current.filter((c) => c.alpha2Code !== countryCode));
+    // };
 
-    const onToChange = (countryCode) => {
-      setCountriesFrom(countries.current.filter((c) => c.alpha2Code !== countryCode));
-    };
+    // const onToChange = (countryCode) => {
+    //   setCountriesFrom(countries.current.filter((c) => c.alpha2Code !== countryCode));
+    // };
 
     return (
       <Form
@@ -115,7 +115,7 @@ export const RouteLocationForm = forwardRef(
               className="col-12 col-lg-6 mx-0 mt-2"
               rules={[{ required: true, message: "Please input From Country" }]}
             >
-              <Select style={{ width: 200 }} onChange={onFromChange}>
+              <Select style={{ width: 200 }}>
                 {countriesFrom.map((c) => (
                   <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
                     {c.name}
@@ -131,7 +131,7 @@ export const RouteLocationForm = forwardRef(
               className="col-12 col-lg-6 mx-0 mt-2"
               rules={[{ required: true, message: "Please input To Country" }]}
             >
-              <Select style={{ width: 200 }} onChange={onToChange}>
+              <Select style={{ width: 200 }}>
                 {countriesTo.map((c) => (
                   <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
                     {c.name}
