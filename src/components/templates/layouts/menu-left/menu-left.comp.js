@@ -6,7 +6,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { selectMenuData } from "redux/menu/reducers";
 import * as SETTING_DUCK from "redux/settings/settings.duck";
 import { selectCurrentUser } from "redux/user/user.duck";
-import { getPrefixUrl } from "utils/general.util";
+import { getMenuData, getPrefixUrl } from "utils/general.util";
 import Scrollbars from "react-custom-scrollbars";
 import styles from "./menu-left-comp.module.scss";
 
@@ -33,7 +33,7 @@ export const MenuLeft = () => {
   const dispatch = useDispatch();
   const settings = useSelector(selectSetting);
   const user = useSelector(selectCurrentUser);
-  const menuData = useSelector(selectMenuData);
+  const menuData = getMenuData(useSelector(selectMenuData));
 
   const urlPrefix = getPrefixUrl(location.pathname);
   const role = urlPrefix.replace("/", "");

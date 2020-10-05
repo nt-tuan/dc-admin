@@ -1,20 +1,21 @@
 import XLSX from "xlsx";
 import { message } from "antd";
+import { MARKETPLACE_NAME } from "commons/consts";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
   switch (size) {
     case "xs":
-      _isTrue = window.outerWidth < 400 ? true : false;
+      _isTrue = window.outerWidth <= 400 ? true : false;
       break;
     case "sm":
-      _isTrue = window.outerWidth < 768 ? true : false;
+      _isTrue = window.outerWidth <= 768 ? true : false;
       break;
     case "md":
-      _isTrue = window.outerWidth < 992 ? true : false;
+      _isTrue = window.outerWidth <= 992 ? true : false;
       break;
     case "lg":
-      _isTrue = window.outerWidth < 1200 ? true : false;
+      _isTrue = window.outerWidth <= 1200 ? true : false;
       break;
     case "xl":
       _isTrue = window.outerWidth >= 1200 ? true : false;
@@ -141,4 +142,18 @@ export const toNumber = (value) => {
 export const areObjectValuesUndefined = (object) => {
   const values = Object.values(object);
   return values.every((v) => v === undefined);
+};
+
+export const getMenuData = (data) => {
+  let menuData = data;
+  switch (process.env.REACT_APP_COMPANY_NAME) {
+    case MARKETPLACE_NAME["8Corners"]: {
+      return menuData;
+    }
+    case MARKETPLACE_NAME.Extravaganza:
+    default: {
+      // menuData = menuData.filter((item) => item.title !== "Introducer");
+      return menuData;
+    }
+  }
 };

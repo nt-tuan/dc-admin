@@ -209,6 +209,16 @@ const privateRoutes = [
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
     exact: true
+  },
+  {
+    path: RouteConst.CREATE_INTRODUCER,
+    Component: loadable(() => import("components/pages/create-introducer/create-introducer.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.INTRODUCERS,
+    Component: loadable(() => import("components/pages/introducers/introducers.page")),
+    exact: true
   }
 ];
 

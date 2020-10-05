@@ -1,3 +1,9 @@
+export const MARKETPLACE_NAME = Object.freeze({
+  Distichain: "Distichain",
+  Extravaganza: "Extravaganza",
+  "8Corners": "8Corners"
+});
+
 export const BADGE_TYPES = Object.freeze({
   MANUFACTURE: "MANUFACTURE",
   DISTRIBUTOR: "DISTRIBUTOR",

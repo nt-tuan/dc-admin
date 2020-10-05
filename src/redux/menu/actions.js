@@ -53,6 +53,23 @@ export async function getUserData() {
       ]
     },
     {
+      title: "Introducer",
+      key: "Introducer",
+      icon: "fe fe-award",
+      children: [
+        {
+          title: "Create Introducer",
+          key: "Create Introducer",
+          url: RouteConst.CREATE_INTRODUCER
+        },
+        {
+          title: "Introducers",
+          key: "Introducers",
+          url: RouteConst.INTRODUCERS
+        }
+      ]
+    },
+    {
       title: "Marketplace Credit",
       key: "Marketplace Credit",
       icon: "fe fe-credit-card",
