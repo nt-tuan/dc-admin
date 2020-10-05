@@ -4,7 +4,12 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RouteService } from "services";
 
 const normFile = (e) => {
-  return e && e.fileList.map((file) => (file.status === "done" ? file.response : file));
+  return (
+    e &&
+    e.fileList.map((file) =>
+      file.status === "done" ? { ...file.response, type: file.type } : file
+    )
+  );
 };
 
 export const DocumentMutationForm = forwardRef((props, ref) => {
@@ -71,7 +76,19 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       <Form.Item
         shouldUpdate
         name="sampleFile"
-        rules={[]}
+        rules={[
+          {
+            validator: (rule, fileList) => {
+              if (fileList === undefined || fileList.length === 0) {
+                return Promise.resolve();
+              }
+              const documentType = form.getFieldValue("documentType");
+              return fileList[0].type === documentType
+                ? Promise.resolve()
+                : Promise.reject("Please upload file with type as Document Type");
+            }
+          }
+        ]}
         valuePropName="fileList"
         getValueFromEvent={normFile}
       >
