@@ -3,7 +3,7 @@ const FIELDS = {
   firstName: "firstName",
   middleName: "middleName",
   lastName: "lastName",
-  contractExpiryDate: "contractExpiryDate",
+  contractExpiryDate: "expiryDate",
   companyName: "companyName",
   country: "country",
   email: "email",
