@@ -14,138 +14,160 @@ import { IntroducerService } from "services";
 const { FIELDS, LABELS } = USER_SCHEMA;
 const isSmallDevice = isScreensize("md");
 
-export const CreateIntroducerForm = memo(({ name }) => {
-  const [form] = Form.useForm();
-  const [phonePrefixList, setPhonePrefixList] = useState([]);
-  const [traderList, setTraderList] = useState([]);
-  const [usernames, setUsernames] = useState([]);
-  const [companyNames, setCompanyNames] = useState([]);
+export const CreateIntroducerForm = memo(
+  ({ name, initialValues, isView = false, isEdit = false, id = "" }) => {
+    const [form] = Form.useForm();
+    const [phonePrefixList, setPhonePrefixList] = useState([]);
+    const [traderList, setTraderList] = useState([]);
+    const [usernames, setUsernames] = useState([]);
+    const [companyNames, setCompanyNames] = useState([]);
 
-  useEffect(() => {
-    asyncErrorHandlerWrapper(async () => {
-      let res = await IntroducerService.getTraderList();
-      res = [
-        { companyName: "Company 1", username: "Trader 1" },
-        { companyName: "Company 2", username: "Trader 2" },
-        { companyName: "Company 3", username: "Trader 3" }
-      ];
-      setUsernames(res);
-      setCompanyNames(res);
-      setTraderList(res);
-    });
-  }, []);
+    useEffect(() => {
+      asyncErrorHandlerWrapper(async () => {
+        let res = await IntroducerService.getTraderList();
+        res = [
+          { companyName: "Company 1", username: "Trader 1" },
+          { companyName: "Company 2", username: "Trader 2" },
+          { companyName: "Company 3", username: "Trader 3" }
+        ];
+        setUsernames(res);
+        setCompanyNames(res);
+        setTraderList(res);
+      });
+    }, []);
 
-  const handleSubmit = (values) => {
-    const traderNames = traderList.filter((item) => values.traderUserName.includes(item.username));
-    const traderCompanyName = traderList.filter((item) =>
-      values.traderCompanyName.includes(item.companyName)
-    );
-    const request = {
-      username: values.username,
-      companyName: values.companyName,
-      country: values.country,
-      email: values.email,
-      expiryDate: moment(values.expiryDate).format("YYYY-MM-DDTHH:mm:ss"),
-      firstName: values.firstName,
-      lastName: values.lastName,
-      middleName: values.middleName,
-      phone: `${values.phonePrefix} ${values.phone}`,
-      traderDTOList: [...traderNames, ...traderCompanyName]
+    const handleSubmit = (values) => {
+      const traderNames = traderList.filter((item) =>
+        values.traderUserName.includes(item.username)
+      );
+      const traderCompanyName = traderList.filter((item) =>
+        values.traderCompanyName.includes(item.companyName)
+      );
+      const request = {
+        username: values.username,
+        companyName: values.companyName,
+        country: values.country,
+        email: values.email,
+        expiryDate: moment(values.expiryDate).format("YYYY-MM-DDTHH:mm:ss"),
+        firstName: values.firstName,
+        lastName: values.lastName,
+        middleName: values.middleName,
+        phone: `${values.phonePrefix} ${values.phone}`,
+        traderDTOList: [...traderNames, ...traderCompanyName]
+      };
+      asyncErrorHandlerWrapper(async () => {
+        await IntroducerService.addIntroducer(request);
+      });
     };
-    asyncErrorHandlerWrapper(async () => {
-      await IntroducerService.addIntroducer(request);
-    });
-  };
 
-  const handleSelectChange = (valArr, setStateFunc, type) => {
-    const newArr = traderList.filter((item) => !valArr.includes(item[type]));
-    setStateFunc(newArr);
-  };
+    const handleSelectChange = (valArr, setStateFunc, type) => {
+      const newArr = traderList.filter((item) => !valArr.includes(item[type]));
+      setStateFunc(newArr);
+    };
 
-  const renderPhonePrefix = () => {
+    const renderPhonePrefix = () => {
+      return (
+        <Form.Item
+          name="phonePrefix"
+          noStyle
+          style={{ height: 30 }}
+          initialValue={phonePrefixList[0]}
+        >
+          <Select
+            notFoundContent={<div />}
+            style={{ width: 90 }}
+            disabled={phonePrefixList.length === 0}
+          >
+            {phonePrefixList.map((code) => (
+              <Select.Option value={code} key={code}>
+                +{code}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+      );
+    };
+
     return (
-      <Form.Item
-        name="phonePrefix"
-        noStyle
-        style={{ height: 30 }}
-        initialValue={phonePrefixList[0]}
+      <Form
+        form={form}
+        hideRequiredMark={true}
+        colon={false}
+        scrollToFirstError={true}
+        labelAlign="left"
+        onFinish={handleSubmit}
+        initialValues={initialValues}
       >
-        <Select
-          notFoundContent={<div />}
-          style={{ width: 90 }}
-          disabled={phonePrefixList.length === 0}
-        >
-          {phonePrefixList.map((code) => (
-            <Select.Option value={code} key={code}>
-              +{code}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-    );
-  };
-
-  return (
-    <Form
-      form={form}
-      hideRequiredMark={true}
-      colon={false}
-      scrollToFirstError={true}
-      labelAlign="left"
-      onFinish={handleSubmit}
-    >
-      <h5>{name}</h5>
-      {SCHEMA.map((item) => (
-        <div className={`${isSmallDevice ? null : "my-3"} row`} key={item[0].name}>
-          {item.map(({ name, label, rules }) => {
-            if (name === FIELDS.contractExpiryDate) {
-              return (
-                <Form.Item
-                  name={name}
-                  label={label}
-                  rules={rules}
-                  key={name}
-                  className="col-12 col-sm-12 col-md-12 col-lg-4"
-                >
-                  <DatePicker
-                    style={{ width: "100%" }}
-                    disabledDate={(current) => current && current < moment().endOf("day")}
-                  />
-                </Form.Item>
-              );
-            }
-            if (name === FIELDS.country) {
-              return (
-                <Form.Item
-                  name={name}
-                  label={label}
-                  rules={rules}
-                  key={name}
-                  className="col-12 col-sm-12 col-md-12 col-lg-4"
-                >
-                  <Select
-                    showSearch
-                    placeholder="Search Country"
-                    onChange={(countryCode) => {
-                      const prefixList = countryList.find(
-                        (country) => country.alpha2Code === countryCode
-                      );
-                      if (prefixList) {
-                        setPhonePrefixList(prefixList.callingCodes);
-                        form.setFieldsValue({ phonePrefix: prefixList.callingCodes[0] });
-                      }
-                    }}
+        <h5>{name}</h5>
+        {SCHEMA.map((item) => (
+          <div className={`${isSmallDevice ? null : "my-3"} row`} key={item[0].name}>
+            {item.map(({ name, label, rules }) => {
+              if (name === FIELDS.contractExpiryDate) {
+                return (
+                  <Form.Item
+                    name={name}
+                    label={label}
+                    rules={rules}
+                    key={name}
+                    className="col-12 col-sm-12 col-md-12 col-lg-4"
                   >
-                    {countryList.map((item) => (
-                      <Select.Option key={item.name} value={item.alpha2Code}>
-                        {item.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              );
-            }
-            if (name === FIELDS.phone) {
+                    <DatePicker
+                      disabled={isView}
+                      style={{ width: "100%" }}
+                      disabledDate={(current) => current && current < moment().endOf("day")}
+                    />
+                  </Form.Item>
+                );
+              }
+              if (name === FIELDS.country) {
+                return (
+                  <Form.Item
+                    name={name}
+                    label={label}
+                    rules={rules}
+                    key={name}
+                    className="col-12 col-sm-12 col-md-12 col-lg-4"
+                  >
+                    <Select
+                      disabled={isView || isEdit}
+                      showSearch
+                      placeholder="Search Country"
+                      onChange={(countryCode) => {
+                        const prefixList = countryList.find(
+                          (country) => country.alpha2Code === countryCode
+                        );
+                        if (prefixList) {
+                          setPhonePrefixList(prefixList.callingCodes);
+                          form.setFieldsValue({ phonePrefix: prefixList.callingCodes[0] });
+                        }
+                      }}
+                    >
+                      {countryList.map((item) => (
+                        <Select.Option key={item.name} value={item.alpha2Code}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                );
+              }
+              if (name === FIELDS.phone) {
+                return (
+                  <Form.Item
+                    name={name}
+                    label={label}
+                    rules={rules}
+                    key={name}
+                    className="col-12 col-sm-12 col-md-12 col-lg-4"
+                  >
+                    <Input
+                      addonBefore={renderPhonePrefix()}
+                      style={{ width: "100%", height: 30 }}
+                      disabled={isView || isEdit}
+                    />
+                  </Form.Item>
+                );
+              }
               return (
                 <Form.Item
                   name={name}
@@ -154,72 +176,71 @@ export const CreateIntroducerForm = memo(({ name }) => {
                   key={name}
                   className="col-12 col-sm-12 col-md-12 col-lg-4"
                 >
-                  <Input addonBefore={renderPhonePrefix()} style={{ width: "100%", height: 30 }} />
+                  <Input disabled={isView || isEdit} />
                 </Form.Item>
               );
-            }
-            return (
-              <Form.Item
-                name={name}
-                label={label}
-                rules={rules}
-                key={name}
-                className="col-12 col-sm-12 col-md-12 col-lg-4"
-              >
-                <Input />
-              </Form.Item>
-            );
-          })}
+            })}
+          </div>
+        ))}
+        <h5>Assign Traders</h5>
+        <h6>Please assign Traders to the Introducer</h6>
+        <Form.Item
+          name={FIELDS.traderUserName}
+          label={LABELS[FIELDS.traderUserName]}
+          className="my-3 col-12 col-lg-6 p-0"
+        >
+          <Select
+            disabled={isView}
+            mode="multiple"
+            placeholder="Choose username"
+            onChange={(val) => handleSelectChange(val, setCompanyNames, "username")}
+          >
+            {usernames.map(({ username }) => (
+              <Select.Option key={username} value={username}>
+                {username}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <div className="text-center col-12 col-lg-6 p-0">Or</div>
+        <Form.Item
+          name={FIELDS.traderCompanyName}
+          label={LABELS[FIELDS.traderCompanyName]}
+          className="my-3 col-12 col-lg-6 p-0"
+        >
+          <Select
+            disabled={isView}
+            mode="multiple"
+            placeholder="Choose company name"
+            onChange={(val) => handleSelectChange(val, setUsernames, "companyName")}
+          >
+            {companyNames.map(({ companyName }) => (
+              <Select.Option key={companyName} value={companyName}>
+                {companyName}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <div className="text-center">
+          <Link to={RouteConst.INTRODUCERS}>
+            <Button type="primary" className="mr-3">
+              Cancel
+            </Button>
+          </Link>
+          {isView ? (
+            <Link to={`${RouteConst.INTRODUCER_EDIT}?id=${id}`}>
+              <Button type="primary">Edit</Button>
+            </Link>
+          ) : (
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          )}
         </div>
-      ))}
-      <h5>Assign Traders</h5>
-      <h6>Please assign Traders to the Introducer</h6>
-      <Form.Item
-        name={FIELDS.traderUserName}
-        label={LABELS[FIELDS.traderUserName]}
-        className="my-3 col-12 col-lg-6 p-0"
-      >
-        <Select
-          mode="multiple"
-          placeholder="Choose username"
-          onChange={(val) => handleSelectChange(val, setCompanyNames, "username")}
-        >
-          {usernames.map(({ username }) => (
-            <Select.Option key={username} value={username}>
-              {username}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <div className="text-center col-12 col-lg-6 p-0">Or</div>
-      <Form.Item
-        name={FIELDS.traderCompanyName}
-        label={LABELS[FIELDS.traderCompanyName]}
-        className="my-3 col-12 col-lg-6 p-0"
-      >
-        <Select
-          mode="multiple"
-          placeholder="Choose company name"
-          onChange={(val) => handleSelectChange(val, setUsernames, "companyName")}
-        >
-          {companyNames.map(({ companyName }) => (
-            <Select.Option key={companyName} value={companyName}>
-              {companyName}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <div className="text-center">
-        <Link to={RouteConst.INTRODUCERS}>
-          <Button type="primary">Cancel</Button>
-        </Link>
-        <Button type="primary" className="ml-3" htmlType="submit">
-          Submit
-        </Button>
-      </div>
-    </Form>
-  );
-});
+      </Form>
+    );
+  }
+);
 
 const SCHEMA = [
   [
