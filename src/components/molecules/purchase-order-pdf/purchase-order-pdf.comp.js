@@ -132,7 +132,6 @@ export const PurchaseOrderPDF = ({ data, isSeller, products }) => {
 
   const getProductData = () => {
     const productData = products.map((product, index) => parseProductDetails(product, index));
-    console.log("getProductData -> productData", productData);
     return [["SL NO", "PRODUCT DESCRIPTION", "QTY", "UNIT PRICE", "TOTAL"], ...productData];
   };
 

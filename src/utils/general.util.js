@@ -1,5 +1,6 @@
 import XLSX from "xlsx";
 import { message } from "antd";
+import { MARKETPLACE_NAME } from "commons/consts";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -141,4 +142,18 @@ export const toNumber = (value) => {
 export const areObjectValuesUndefined = (object) => {
   const values = Object.values(object);
   return values.every((v) => v === undefined);
+};
+
+export const getMenuData = (data) => {
+  let menuData = data;
+  switch (process.env.REACT_APP_COMPANY_NAME) {
+    case MARKETPLACE_NAME["8Corners"]: {
+      return menuData;
+    }
+    case MARKETPLACE_NAME.Extravaganza:
+    default: {
+      menuData = menuData.filter((item) => item.title !== "Introducer");
+      return menuData;
+    }
+  }
 };
