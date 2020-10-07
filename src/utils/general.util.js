@@ -152,7 +152,7 @@ export const getMenuData = (data) => {
     }
     case MARKETPLACE_NAME.Extravaganza:
     default: {
-      // menuData = menuData.filter((item) => item.title !== "Introducer");
+      menuData = menuData.filter((item) => item.title !== "Introducer");
       return menuData;
     }
   }
