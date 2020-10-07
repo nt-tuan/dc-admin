@@ -98,4 +98,10 @@ export class SharedPaths {
   static get INTRODUCERS() {
     return "/introducers";
   }
+  static get INTRODUCER_DETAILS() {
+    return "/introducers/details/:id";
+  }
+  static get INTRODUCER_EDIT() {
+    return "/introducers/edit/:id";
+  }
 }
