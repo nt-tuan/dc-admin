@@ -120,4 +120,16 @@ export class ApiPathConsts {
   static get REBATES() {
     return `${this.#REBATES_PREFIX}`;
   }
+
+  static get GET_NEW_COMPANY_LIST() {
+    return `${this.#COMPANY_PREFIX}/new`;
+  }
+
+  static get APPROVE_NEW_COMPANY() {
+    return `${this.#COMPANY_PREFIX}/:companyId/approve`;
+  }
+
+  static get UPDATE_PRODUCT_CREATION_PERMISSION() {
+    return `${this.#COMPANY_PREFIX}/:companyId/productCreation?isEnable=`;
+  }
 }

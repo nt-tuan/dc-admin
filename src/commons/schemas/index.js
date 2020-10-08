@@ -1,4 +1,5 @@
 export * from "./user-management.schema";
+export * from "./new-user.schema";
 export * from "./order.schema";
 export * from "./service.schema";
 export * from "./account-summary.schema";

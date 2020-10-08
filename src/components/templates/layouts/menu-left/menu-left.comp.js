@@ -78,6 +78,8 @@ export const MenuLeft = () => {
           </li>
         );
       }
+      if (key === "New Users" && `${process.env.REACT_APP_COMPANY_NAME}` !== "Extravaganza") return;
+
       return (
         <li
           className={classNames(styles.air__menuLeft__item, {

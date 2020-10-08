@@ -41,6 +41,11 @@ export async function getUserData() {
           url: RouteConst.USER_MANAGEMENT
         },
         {
+          title: "New User",
+          key: "New Users",
+          url: RouteConst.NEW_USER
+        },
+        {
           title: "Rebates",
           key: "Rebates",
           url: RouteConst.REBATES
