@@ -9,3 +9,5 @@ export * from "./route.schema";
 export * from "./rebates.schema";
 export * from "./marketplace-credit.schema";
 export * from "./document.schema";
+export * from "./user.schema";
+export * from "./introducer.schema";

@@ -68,13 +68,13 @@ const AddFundsPage = () => {
             below.
           </div>
           <div className="text-danger font-weight-bold">
-            Important: Please add “CY83905000010010011040010011 - {data.walletName}"{" "}
+            Important: Please add “DAL {data.walletName}"{" "}
             {document.queryCommandSupported("copy") && (
               <Button
                 title="Copy"
                 type="primary"
                 size="small"
-                onClick={() => handleCopy(`CY83905000010010011040010011 - ${data.walletName}`)}
+                onClick={() => handleCopy(`DAL ${data.walletName}`)}
                 ghost
               >
                 <i className={showCopySuccess ? "fe fe-check" : "fe fe-copy"} />

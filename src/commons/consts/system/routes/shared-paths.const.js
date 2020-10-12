@@ -95,4 +95,16 @@ export class SharedPaths {
   static get NOTIFICATION() {
     return "/notifications";
   }
+  static get CREATE_INTRODUCER() {
+    return "/create-introducer";
+  }
+  static get INTRODUCERS() {
+    return "/introducers";
+  }
+  static get INTRODUCER_DETAILS() {
+    return "/introducers/details/:id";
+  }
+  static get INTRODUCER_EDIT() {
+    return "/introducers/edit/:id";
+  }
 }
