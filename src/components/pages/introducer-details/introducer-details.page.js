@@ -7,16 +7,17 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { IntroducerService } from "services/introducer.service";
 import moment from "moment";
 import { LoadingIndicator } from "components/atoms";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const IntroducerDetailsPage = memo(() => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
+  const location = useLocation();
   const { id } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       let res = await IntroducerService.getIntroducerDetails(id);
-      res = fakedData;
       const { traderDTOList, phone } = res;
       const phoneParsed = phone.split(" ");
       const traderCompanyName = [];
@@ -64,19 +65,19 @@ const IntroducerDetailsPage = memo(() => {
 
 export default IntroducerDetailsPage;
 
-const fakedData = {
-  companyName: "check",
-  country: "AF",
-  email: "thuybich0000@gmail.com",
-  expiryDate: "2020-10-14T18:02:39",
-  firstName: "fcdfsd",
-  lastName: "gregreg",
-  middleName: "qqq",
-  phone: "93 1123123",
-  traderDTOList: [
-    { companyName: null, username: "Trader 1" },
-    { companyName: null, username: "Trader 2" },
-    { companyName: "Company 3", username: null }
-  ],
-  username: "AdminExtrabeaute"
-};
+// const fakedData = {
+//   companyName: "check",
+//   country: "AF",
+//   email: "thuybich0000@gmail.com",
+//   expiryDate: "2020-10-14T18:02:39",
+//   firstName: "fcdfsd",
+//   lastName: "gregreg",
+//   middleName: "qqq",
+//   phone: "93 1123123",
+//   traderDTOList: [
+//     { companyName: null, username: "Trader 1" },
+//     { companyName: null, username: "Trader 2" },
+//     { companyName: "Company 3", username: null }
+//   ],
+//   username: "AdminExtrabeaute"
+// };

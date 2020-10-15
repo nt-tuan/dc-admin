@@ -14,7 +14,7 @@ export const IntroducerActiveTab = memo(() => {
   const getAllRecords = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
       let res = await getAllRecordsFromAPI(IntroducerService.getActiveIntroducer);
-      res = [...fakedData].map((item) => ({
+      res = res.map((item) => ({
         ...item,
         createdDate: formatDateTime(item.createdDate),
         expiryDate: formatDateTime(item.expiryDate)
@@ -34,40 +34,22 @@ export const IntroducerActiveTab = memo(() => {
     </div>
   );
 });
-
-const fakedData = [
-  {
-    id: "ghf7sdjs3-safsf-443",
-    companyName: "Bimonter",
-    country: "SG",
-    email: "ahahah@yopmail.com",
-    expiryDate: "2020-10-07T04:16:26.896Z",
-    firstName: "HGD",
-    lastName: "WSW",
-    middleName: "UHU",
-    phone: "018 394853",
-    username: "AHA",
-    createdDate: "2020-10-07T04:49:36.356Z",
-    numberOfTraders: 7,
-    numberOfTrade: 23,
-    status: "ACTIVE",
-    totalCommission: 0
-  },
-  {
-    id: "ahihihihihihihi",
-    companyName: "Bimonter",
-    country: "SG",
-    email: "ahahah@yopmail.com",
-    expiryDate: "2020-10-07T04:16:26.896Z",
-    firstName: "HGD",
-    lastName: "WSW",
-    middleName: "UHU",
-    phone: "018 394853",
-    username: "AHA",
-    createdDate: "2020-10-07T04:49:36.356Z",
-    numberOfTraders: 7,
-    numberOfTrade: 23,
-    status: "ACTIVE",
-    totalCommission: 0
-  }
-];
+// const fakedData = [
+//   {
+//     id: "ghf7sdjs3-safsf-443",
+//     companyName: "Bimonter",
+//     country: "SG",
+//     email: "ahahah@yopmail.com",
+//     expiryDate: "2020-10-07T04:16:26.896Z",
+//     firstName: "HGD",
+//     lastName: "WSW",
+//     middleName: "UHU",
+//     phone: "018 394853",
+//     username: "AHA",
+//     createdDate: "2020-10-07T04:49:36.356Z",
+//     numberOfTraders: 7,
+//     numberOfTrade: 23,
+//     status: "ACTIVE",
+//     totalCommission: 0
+//   }
+// ];

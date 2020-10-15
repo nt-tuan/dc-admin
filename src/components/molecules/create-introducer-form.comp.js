@@ -15,7 +15,7 @@ const { FIELDS, LABELS } = USER_SCHEMA;
 const isSmallDevice = isScreensize("md");
 
 export const CreateIntroducerForm = memo(
-  ({ name, initialValues, isView = false, isEdit = false, id = "" }) => {
+  ({ name, initialValues, isView = false, isEdit = false, id = "", submitServiceFn }) => {
     const [form] = Form.useForm();
     const [phonePrefixList, setPhonePrefixList] = useState([]);
     const [traderList, setTraderList] = useState([]);
@@ -24,12 +24,7 @@ export const CreateIntroducerForm = memo(
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
-        let res = await IntroducerService.getTraderList();
-        res = [
-          { companyName: "Company 1", username: "Trader 1" },
-          { companyName: "Company 2", username: "Trader 2" },
-          { companyName: "Company 3", username: "Trader 3" }
-        ];
+        const res = await IntroducerService.getTraderList();
         setUsernames(res);
         setCompanyNames(res);
         setTraderList(res);
@@ -37,12 +32,14 @@ export const CreateIntroducerForm = memo(
     }, []);
 
     const handleSubmit = (values) => {
-      const traderNames = traderList.filter((item) =>
-        values.traderUserName.includes(item.username)
-      );
-      const traderCompanyName = traderList.filter((item) =>
-        values.traderCompanyName.includes(item.companyName)
-      );
+      const traderNames = values.traderUserName.map((username) => ({
+        companyName: null,
+        username
+      }));
+      const traderCompanyName = values.traderCompanyName.map((companyName) => ({
+        companyName,
+        username: null
+      }));
       const request = {
         username: values.username,
         companyName: values.companyName,
@@ -56,7 +53,7 @@ export const CreateIntroducerForm = memo(
         traderDTOList: [...traderNames, ...traderCompanyName]
       };
       asyncErrorHandlerWrapper(async () => {
-        await IntroducerService.addIntroducer(request);
+        await submitServiceFn(request);
       });
     };
 
