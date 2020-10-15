@@ -16,7 +16,9 @@ const FIELDS = {
   reputation: "reputation",
   badges: "badges",
   userStatus: "userStatus",
-  enableMarketplaceCredit: "enableMarketplaceCredit"
+  enableMarketplaceCredit: "enableMarketplaceCredit",
+  enableProductCreation: "enableProductCreation",
+  approved: "approved"
 };
 
 const LABELS = {
@@ -29,7 +31,9 @@ const LABELS = {
   [FIELDS.reputation]: "Scores",
   [FIELDS.badges]: "Badges",
   [FIELDS.userStatus]: "Status",
-  [FIELDS.enableMarketplaceCredit]: "Marketplace credit"
+  [FIELDS.enableMarketplaceCredit]: "Marketplace credit",
+  [FIELDS.enableProductCreation]: "Product Creation",
+  [FIELDS.approved]: "Approved"
 };
 
 const USER_MGT_STATUS = {
@@ -84,6 +88,7 @@ export const userMgtTableSchema = ({
   onLock,
   onViewAssignBadges,
   onHandleMarketplaceCredit,
+  onHandleUpdateProductCreationPermission,
   hiddenStatus = false
 }) => (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => {
   let columnsSchema = [
@@ -179,6 +184,17 @@ export const userMgtTableSchema = ({
       key: FIELDS.enableMarketplaceCredit,
       render: (isEnabled, { id }) => (
         <Switch checked={isEnabled} onChange={() => onHandleMarketplaceCredit(id, !isEnabled)} />
+      )
+    },
+    {
+      title: LABELS[FIELDS.enableProductCreation],
+      dataIndex: FIELDS.enableProductCreation,
+      key: FIELDS.enableProductCreation,
+      render: (isEnabled, { id }) => (
+        <Switch
+          checked={isEnabled}
+          onChange={() => onHandleUpdateProductCreationPermission(id, !isEnabled)}
+        />
       )
     },
     {

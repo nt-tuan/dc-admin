@@ -9,6 +9,7 @@ export class RouteConst extends SharedPaths {
     return [
       this.HOME_ROUTE,
       this.USER_MANAGEMENT,
+      this.NEW_USER,
       this.ORDERS,
       this.SERVICE,
       this.ACCOUNT_SUMMARY,

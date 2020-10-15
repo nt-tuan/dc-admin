@@ -20,6 +20,9 @@ export class SharedPaths {
   static get USER_MANAGEMENT() {
     return "/user-management";
   }
+  static get NEW_USER() {
+    return "/new-user";
+  }
   static get SERVICE() {
     return "/service";
   }

@@ -1,4 +1,4 @@
-import { Checkbox } from "antd";
+import { Button, Checkbox } from "antd";
 import { LoadingIndicator } from "components/atoms";
 import {
   CompanyInfo,
@@ -11,8 +11,9 @@ import {
 import qs from "qs";
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-import { UserService } from "services";
+import { UserService, CompanyService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { Link } from "react-router-dom";
 
 const UserDetails = () => {
   const [data, setData] = useState({});
@@ -40,6 +41,22 @@ const UserDetails = () => {
     });
   };
 
+  const handleProductCreationPermission = (id, isEnable) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await CompanyService.updateProductCreationPermission(id, isEnable);
+      getUserDetails();
+    });
+  };
+
+  const handleApprove = (companyId) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await CompanyService.approveNewCompany({ companyId });
+      getUserDetails();
+    });
+  };
+
   return (
     <Fragment>
       {loading ? (
@@ -56,7 +73,6 @@ const UserDetails = () => {
               <hr />
             </>
           )}
-
           <div className="mt-3">
             <UserProfile data={data.userInfo} />
           </div>
@@ -107,6 +123,34 @@ const UserDetails = () => {
               Enable Marketplace Credit for the user
             </Checkbox>
           </div>
+          {`${process.env.REACT_APP_COMPANY_NAME}` === "Extravaganza" ? (
+            <div>
+              <div className="w-50 mt-3">
+                <h5 className="text-danger">Product Creation</h5>
+                <Checkbox
+                  checked={data.companyInfo.enableProductCreation}
+                  onClick={() =>
+                    handleProductCreationPermission(
+                      data.companyInfo.id,
+                      !data.companyInfo.enableProductCreation
+                    )
+                  }
+                >
+                  Enable Product Creation
+                </Checkbox>
+              </div>
+              <div className="w-50 mt-3">
+                <h5 className="text-danger">User Approval</h5>
+                <Checkbox
+                  checked={data.companyInfo.approved}
+                  onClick={() => handleApprove(data.companyInfo.id)}
+                  disabled={data.companyInfo.approved}
+                >
+                  Approve User
+                </Checkbox>
+              </div>
+            </div>
+          ) : null}
         </div>
       )}
     </Fragment>

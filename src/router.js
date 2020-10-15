@@ -82,6 +82,11 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.NEW_USER,
+    Component: loadable(() => import("components/pages/new-user/new-user.page")),
+    exact: true
+  },
+  {
     path: RouteConst.ORDERS,
     Component: loadable(() => import("components/pages/orders/orders.page")),
     exact: true

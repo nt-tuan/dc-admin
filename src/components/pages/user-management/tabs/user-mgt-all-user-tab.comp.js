@@ -7,6 +7,7 @@ import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { userMapper } from "commons/mappers";
+import { CompanyService } from "../../../../services";
 
 const { parseDataToGridView } = userMapper;
 
@@ -47,6 +48,14 @@ export const UserManagementAllUserTab = () => {
     });
   };
 
+  const handleUpdateProductCreationPermission = (id, isEnable) => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await CompanyService.updateProductCreationPermission(id, isEnable);
+      getListAllUsers();
+    });
+  };
+
   const handleLock = (companyId) => {
     setCurrentCompanyId(companyId);
     toggleConfirmForm();
@@ -81,6 +90,7 @@ export const UserManagementAllUserTab = () => {
             onUnlock: handleUnlock,
             onViewAssignBadges: toggleShowAssignBadgeFormWrapper,
             onHandleMarketplaceCredit: handleMarketplaceCredit,
+            onHandleUpdateProductCreationPermission: handleUpdateProductCreationPermission,
             hiddenStatus: true
           })}
         />
