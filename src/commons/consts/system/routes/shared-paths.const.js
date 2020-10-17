@@ -102,9 +102,9 @@ export class SharedPaths {
     return "/introducers";
   }
   static get INTRODUCER_DETAILS() {
-    return "/introducers/details/:id";
+    return "/introducers/introducer-details";
   }
   static get INTRODUCER_EDIT() {
-    return "/introducers/edit/:id";
+    return "/introducers/introducer-edit";
   }
 }

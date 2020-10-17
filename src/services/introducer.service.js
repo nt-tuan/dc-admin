@@ -25,4 +25,13 @@ export class IntroducerService {
     const res = await backendAPI.get(`${this.#INTRODUCER_PREFIX}/inactive`, { page, size, sort });
     return res;
   };
+
+  static getIntroducerDetails = async (id) => {
+    const res = await backendAPI.get(`${this.#INTRODUCER_PREFIX}/${id}`);
+    return res;
+  };
+
+  static updateIntroducerDetails = async (id, data) => {
+    await backendAPI.put(`${this.#INTRODUCER_PREFIX}/${id}`, data);
+  };
 }
