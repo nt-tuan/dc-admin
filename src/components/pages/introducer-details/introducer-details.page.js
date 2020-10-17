@@ -64,20 +64,3 @@ const IntroducerDetailsPage = memo(() => {
 });
 
 export default IntroducerDetailsPage;
-
-// const fakedData = {
-//   companyName: "check",
-//   country: "AF",
-//   email: "thuybich0000@gmail.com",
-//   expiryDate: "2020-10-14T18:02:39",
-//   firstName: "fcdfsd",
-//   lastName: "gregreg",
-//   middleName: "qqq",
-//   phone: "93 1123123",
-//   traderDTOList: [
-//     { companyName: null, username: "Trader 1" },
-//     { companyName: null, username: "Trader 2" },
-//     { companyName: "Company 3", username: null }
-//   ],
-//   username: "AdminExtrabeaute"
-// };
