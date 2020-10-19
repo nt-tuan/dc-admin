@@ -1,5 +1,4 @@
 import { MARKETPLACE_NAME } from "commons/consts";
-import { CreateIntroducerForm } from "components/molecules/create-introducer-form.comp";
 import React, { memo, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import qs from "qs";
@@ -8,6 +7,7 @@ import { IntroducerService } from "services/introducer.service";
 import moment from "moment";
 import { LoadingIndicator } from "components/atoms";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { CreateIntroducerForm } from "components/molecules";
 
 const IntroducerDetailsPage = memo(() => {
   const [loading, setLoading] = useState(true);

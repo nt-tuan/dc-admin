@@ -1,3 +1,4 @@
+import { INTRODUCER_SCHEMA } from "commons/schemas";
 import { IntroducerContainer } from "components/organisms";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { IntroducerService } from "services";
@@ -6,6 +7,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 
 const { formatDateTime } = DatetimeUtils;
+const { FIELDS, LABELS } = INTRODUCER_SCHEMA;
 
 export const IntroducerInActiveTab = memo(() => {
   const [loading, setLoading] = useState(false);
@@ -16,9 +18,11 @@ export const IntroducerInActiveTab = memo(() => {
       let res = await getAllRecordsFromAPI(IntroducerService.getInactiveIntroducer);
       res = res.map((item) => ({
         ...item,
+        [FIELDS.numberOfTrade]: `${item[FIELDS.numberOfTrade]}`,
         createdDate: formatDateTime(item.createdDate),
         expiryDate: formatDateTime(item.expiryDate)
       }));
+      console.log("getAllRecords -> res", res);
       setLoading(false);
       setData(res);
     });

@@ -8,12 +8,15 @@ import { IntroducerService } from "services";
 import moment from "moment";
 import { LoadingIndicator } from "components/atoms";
 import { CreateIntroducerForm } from "components/molecules";
+import { useDispatch } from "react-redux";
+import * as USER_DUCK from "redux/user/user.duck";
 
 const EditIntroducerPage = memo(() => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const location = useLocation();
   const { id } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -45,6 +48,14 @@ const EditIntroducerPage = memo(() => {
   if (process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"]) {
     return <Redirect to="/" />;
   }
+
+  const updateIntroducerDetailsFormAPI = (data, { onError }) => {
+    dispatch({
+      type: USER_DUCK.UPDATE_PROFILE_INTRODUCER,
+      payload: { values: data, id: id, onError }
+    });
+  };
+
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       {loading ? (
@@ -57,7 +68,7 @@ const EditIntroducerPage = memo(() => {
           initialValues={data}
           isEdit={true}
           id={id}
-          submitServiceFn={(data) => IntroducerService.updateIntroducerDetails(id, data)}
+          onSubmitData={updateIntroducerDetailsFormAPI}
         />
       )}
     </div>

@@ -1,26 +1,30 @@
-import { Button, DatePicker, Form, Input, Select } from "antd";
-import { USER_SCHEMA } from "commons/schemas";
-import React, { memo, useEffect, useState } from "react";
-import { RegexConst, REQUIRED_ERR, RouteConst } from "commons/consts";
-import { isScreensize } from "utils/general.util";
+import { Button, DatePicker, Form, Input, Row, Select } from "antd";
 import { Link } from "react-router-dom";
-import { createFormErrorComp } from "utils/form.util";
+import React, { memo, useEffect, useState } from "react";
+import { USER_SCHEMA } from "commons/schemas";
+import { API_ERRORS, RegexConst, REQUIRED_ERR, RouteConst } from "commons/consts";
 import * as ERR_MSG from "commons/consts/system/errors.const";
+import { createFormErrorComp } from "utils/form.util";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { isScreensize } from "utils/general.util";
+import { IntroducerService } from "services";
+
 import moment from "moment";
 import countryList from "assets/country.json";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { IntroducerService } from "services";
+import styles from "./styles.module.scss";
 
 const { FIELDS, LABELS } = USER_SCHEMA;
 const isSmallDevice = isScreensize("md");
 
 export const CreateIntroducerForm = memo(
-  ({ name, initialValues, isView = false, isEdit = false, id = "", submitServiceFn }) => {
+  ({ name, initialValues, isView = false, isEdit = false, id = "", onSubmitData }) => {
     const [form] = Form.useForm();
     const [phonePrefixList, setPhonePrefixList] = useState([]);
     const [traderList, setTraderList] = useState([]);
     const [usernames, setUsernames] = useState([]);
     const [companyNames, setCompanyNames] = useState([]);
+    const [showServerError, setShowServerError] = useState(false);
+    const [serverError, setServerError] = useState("");
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
@@ -32,34 +36,56 @@ export const CreateIntroducerForm = memo(
     }, []);
 
     const handleSubmit = (values) => {
-      const traderNames = values.traderUserName.map((username) => ({
-        companyName: null,
-        username
-      }));
-      const traderCompanyName = values.traderCompanyName.map((companyName) => ({
-        companyName,
-        username: null
-      }));
-      const request = {
+      const request = parseSubmitData(values);
+      const onServerError = (errors) => {
+        const errorCode = errors[0][1];
+        setShowServerError(true);
+        setServerError(API_ERRORS[errorCode]);
+      };
+
+      onSubmitData(request, { onError: onServerError });
+    };
+
+    const parseSubmitData = (values) => {
+      const traderNames = values.traderUserName
+        ? values.traderUserName.map((username) => ({
+            companyName: null,
+            username
+          }))
+        : [];
+      const traderCompanyName = values.traderCompanyName
+        ? values.traderCompanyName.map((companyName) => ({
+            companyName,
+            username: null
+          }))
+        : [];
+      let request = {
         username: values.username,
-        companyName: values.companyName,
-        country: values.country,
+        companyName: values.companyName.trim(),
+        country: values.country.trim(),
         email: values.email,
         expiryDate: moment(values.expiryDate).format("YYYY-MM-DDTHH:mm:ss"),
-        firstName: values.firstName,
-        lastName: values.lastName,
-        middleName: values.middleName,
+        firstName: values.firstName.trim(),
+        lastName: values.lastName.trim(),
+        middleName: values.middleName ? values.middleName.trim() : "",
         phone: `${values.phonePrefix} ${values.phone}`,
         traderDTOList: [...traderNames, ...traderCompanyName]
       };
-      asyncErrorHandlerWrapper(async () => {
-        await submitServiceFn(request);
-      });
+      if (isEdit && !isView)
+        request = {
+          expiryDate: moment(values.expiryDate).format("YYYY-MM-DDTHH:mm:ss"),
+          traderDTOList: [...traderNames, ...traderCompanyName]
+        };
+      return request;
     };
 
     const handleSelectChange = (valArr, setStateFunc, type) => {
       const newArr = traderList.filter((item) => !valArr.includes(item[type]));
       setStateFunc(newArr);
+    };
+
+    const renderServerError = () => {
+      return showServerError ? <div className="text-danger mb-3">{serverError}</div> : null;
     };
 
     const renderPhonePrefix = () => {
@@ -72,6 +98,7 @@ export const CreateIntroducerForm = memo(
         >
           <Select
             notFoundContent={<div />}
+            className={styles["phone-prefix"]}
             style={{ width: 90 }}
             disabled={phonePrefixList.length === 0}
           >
@@ -97,7 +124,7 @@ export const CreateIntroducerForm = memo(
       >
         <h5>{name}</h5>
         {SCHEMA.map((item) => (
-          <div className={`${isSmallDevice ? null : "my-3"} row`} key={item[0].name}>
+          <Row key={item[0].name}>
             {item.map(({ name, label, rules }) => {
               if (name === FIELDS.contractExpiryDate) {
                 return (
@@ -106,7 +133,8 @@ export const CreateIntroducerForm = memo(
                     label={label}
                     rules={rules}
                     key={name}
-                    className="col-12 col-sm-12 col-md-12 col-lg-4"
+                    {...labelConfig}
+                    className="col-sm-12 col-md-6 col-lg-6"
                   >
                     <DatePicker
                       disabled={isView}
@@ -123,11 +151,13 @@ export const CreateIntroducerForm = memo(
                     label={label}
                     rules={rules}
                     key={name}
-                    className="col-12 col-sm-12 col-md-12 col-lg-4"
+                    {...labelConfig}
+                    className="col-sm-12 col-md-6 col-lg-6"
                   >
                     <Select
                       disabled={isView || isEdit}
                       showSearch
+                      allowClear
                       placeholder="Search Country"
                       onChange={(countryCode) => {
                         const prefixList = countryList.find(
@@ -155,12 +185,13 @@ export const CreateIntroducerForm = memo(
                     label={label}
                     rules={rules}
                     key={name}
-                    className="col-12 col-sm-12 col-md-12 col-lg-4"
+                    {...labelConfig}
+                    className="col-sm-12 col-md-6 col-lg-6"
                   >
                     <Input
                       addonBefore={renderPhonePrefix()}
                       style={{ width: "100%", height: 30 }}
-                      disabled={isView || isEdit}
+                      disabled={isView || isEdit || phonePrefixList.length === 0}
                     />
                   </Form.Item>
                 );
@@ -171,53 +202,61 @@ export const CreateIntroducerForm = memo(
                   label={label}
                   rules={rules}
                   key={name}
-                  className="col-12 col-sm-12 col-md-12 col-lg-4"
+                  {...labelConfig}
+                  className="col-sm-12 col-md-6 col-lg-6"
                 >
                   <Input disabled={isView || isEdit} />
                 </Form.Item>
               );
             })}
-          </div>
+          </Row>
         ))}
         <h5>Assign Traders</h5>
         <h6>Please assign Traders to the Introducer</h6>
-        <Form.Item
-          name={FIELDS.traderUserName}
-          label={LABELS[FIELDS.traderUserName]}
-          className="my-3 col-12 col-lg-6 p-0"
-        >
-          <Select
-            disabled={isView}
-            mode="multiple"
-            placeholder="Choose username"
-            onChange={(val) => handleSelectChange(val, setCompanyNames, "username")}
+        <Row className={isSmallDevice ? null : "my-3"} key="trader-user-name">
+          <Form.Item
+            name={FIELDS.traderUserName}
+            label={LABELS[FIELDS.traderUserName]}
+            {...labelTradersConfig}
+            className="col-sm-12 col-md-12 col-lg-12"
           >
-            {usernames.map(({ username }) => (
-              <Select.Option key={username} value={username}>
-                {username}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <div className="text-center col-12 col-lg-6 p-0">Or</div>
-        <Form.Item
-          name={FIELDS.traderCompanyName}
-          label={LABELS[FIELDS.traderCompanyName]}
-          className="my-3 col-12 col-lg-6 p-0"
-        >
-          <Select
-            disabled={isView}
-            mode="multiple"
-            placeholder="Choose company name"
-            onChange={(val) => handleSelectChange(val, setUsernames, "companyName")}
+            <Select
+              disabled={isView}
+              mode="multiple"
+              placeholder="Choose username"
+              onChange={(val) => handleSelectChange(val, setCompanyNames, "username")}
+            >
+              {usernames.map(({ username }) => (
+                <Select.Option key={username} value={username}>
+                  {username}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Row>
+        {/* ant-select ant-select-single ant-select-show-arrow ant-select-disabled */}
+        <Row className="text-center mx-3">Or</Row>
+        <Row className={isSmallDevice ? null : "my-3"} key="trader-company-name">
+          <Form.Item
+            name={FIELDS.traderCompanyName}
+            label={LABELS[FIELDS.traderCompanyName]}
+            {...labelTradersConfig}
+            className="col-sm-12 col-md-12 col-lg-12"
           >
-            {companyNames.map(({ companyName }) => (
-              <Select.Option key={companyName} value={companyName}>
-                {companyName}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
+            <Select
+              disabled={isView}
+              mode="multiple"
+              placeholder="Choose company name"
+              onChange={(val) => handleSelectChange(val, setUsernames, "companyName")}
+            >
+              {companyNames.map(({ companyName }) => (
+                <Select.Option key={companyName} value={companyName}>
+                  {companyName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Row>
         <div className="text-center">
           <Link to={RouteConst.INTRODUCERS}>
             <Button type="primary" className="mr-3">
@@ -234,11 +273,20 @@ export const CreateIntroducerForm = memo(
             </Button>
           )}
         </div>
+        {/* Sever Error */}
+        {renderServerError()}
       </Form>
     );
   }
 );
-
+const labelConfig = {
+  labelCol: { xl: 12, lg: 12, md: 12, sm: 24 },
+  wrapperCol: { xl: 12, lg: 12, md: 12, sm: 24 }
+};
+const labelTradersConfig = {
+  labelCol: { xl: 6, lg: 6, md: 6, sm: 24 },
+  wrapperCol: { xl: 12, lg: 12, md: 12, sm: 24 }
+};
 const SCHEMA = [
   [
     {
@@ -270,32 +318,19 @@ const SCHEMA = [
       name: FIELDS.firstName,
       label: LABELS[FIELDS.firstName],
       rules: [
-        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.firstName])) },
-        {
-          pattern: RegexConst.NO_WHITE_SPACE_STRING,
-          message: createFormErrorComp("First name is text only")
-        }
+        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.firstName])) }
       ]
     },
     {
       name: FIELDS.middleName,
       label: LABELS[FIELDS.middleName],
-      rules: [
-        {
-          pattern: RegexConst.NO_WHITE_SPACE_STRING,
-          message: createFormErrorComp("Middle name is text only")
-        }
-      ]
+      rules: []
     },
     {
       name: FIELDS.lastName,
       label: LABELS[FIELDS.lastName],
       rules: [
-        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.lastName])) },
-        {
-          pattern: RegexConst.NO_WHITE_SPACE_STRING,
-          message: createFormErrorComp("Last name is text only")
-        }
+        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.lastName])) }
       ]
     }
   ],
@@ -304,22 +339,14 @@ const SCHEMA = [
       name: FIELDS.companyName,
       label: LABELS[FIELDS.companyName],
       rules: [
-        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.companyName])) },
-        {
-          pattern: RegexConst.NO_WHITE_SPACE_STRING,
-          message: createFormErrorComp("Company name is text only")
-        }
+        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.companyName])) }
       ]
     },
     {
       name: FIELDS.country,
       label: LABELS[FIELDS.country],
       rules: [
-        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.country])) },
-        {
-          pattern: RegexConst.NO_WHITE_SPACE_STRING,
-          message: createFormErrorComp("Country is text only")
-        }
+        { required: true, message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.country])) }
       ]
     }
   ],

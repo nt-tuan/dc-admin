@@ -7,13 +7,13 @@ import { sortAlphabetically } from "utils/sort.util";
 
 const STATUS = {
   ACTIVE: "ACTIVE",
-  PENDING: "PENDING",
+  PENDING_KYC: "PENDING_KYC",
   EXPIRED: "EXPIRED"
 };
 
 const STATUS_LABELS = {
   [STATUS.ACTIVE]: "Active",
-  [STATUS.PENDING]: "Pending",
+  [STATUS.PENDING_KYC]: "Pending",
   [STATUS.EXPIRED]: "Expired"
 };
 
