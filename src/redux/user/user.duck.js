@@ -1,8 +1,9 @@
 export const SET_STATE = "@@DTC/USER/SET_STATE";
 export const LOGIN = "@@DTC/USER/LOGIN";
+export const REGISTER_INTRODUCER = "@@DTC/USER/REGISTER/INTRODUCER";
+export const UPDATE_PROFILE_INTRODUCER = "@@DTC/USER/UPDATE/PROFILE/INTRODUCER";
 export const LOAD_CURRENT_ACCOUNT = "@@DTC/USER/LOAD_CURRENT_ACCOUNT";
 export const LOGOUT = "@@DTC/USER/LOGOUT";
-export const REGISTER = "@@DTC/USER/REGISTER";
 export const UPDATE_PROFILE = "@@DTC/USER/UPDATE_PROFILE";
 
 export const setStateAction = (payload) => {

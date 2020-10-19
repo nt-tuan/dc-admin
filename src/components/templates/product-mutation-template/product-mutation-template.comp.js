@@ -7,7 +7,6 @@ import {
   ProductUploadImagesForm,
   VitalInfoForm
 } from "components/organisms";
-import dayjs from "dayjs";
 import debounce from "lodash/debounce";
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
