@@ -23,10 +23,9 @@ const IntroducerDetailsPage = memo(() => {
       const traderCompanyName = [];
       const traderUserName = [];
       traderDTOList.forEach((trader) => {
-        if (trader.companyName) {
+        if (trader.username === null) {
           traderCompanyName.push(trader.companyName);
-        }
-        if (trader.username) {
+        } else {
           traderUserName.push(trader.username);
         }
       });

@@ -8,6 +8,11 @@ export class IntroducerService {
     return res;
   };
 
+  static getTraderListByIntroducer = async (id) => {
+    const res = await backendAPI.get(`${this.#INTRODUCER_PREFIX}/traders/${id}`);
+    return res;
+  };
+
   static addIntroducer = async (data) => {
     await backendAPI.post(this.#INTRODUCER_PREFIX, data);
   };

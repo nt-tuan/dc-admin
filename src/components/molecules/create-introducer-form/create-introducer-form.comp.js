@@ -28,7 +28,10 @@ export const CreateIntroducerForm = memo(
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
-        const res = await IntroducerService.getTraderList();
+        const res =
+          isView || isEdit
+            ? await IntroducerService.getTraderListByIntroducer(id)
+            : await IntroducerService.getTraderList();
         setUsernames(res);
         setCompanyNames(res);
         setTraderList(res);
