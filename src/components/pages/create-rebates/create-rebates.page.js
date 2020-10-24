@@ -6,6 +6,7 @@ import { RouteConst } from "commons/consts";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { REBATES_SCHEMA } from "commons/schemas";
 import { FormError } from "components/atoms";
+import { Helmet } from "react-helmet";
 
 const { FIELDS } = REBATES_SCHEMA;
 
@@ -80,6 +81,7 @@ const CreateRebatesPage = () => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <Helmet title="Create Rebates" />
       <RebatesForm
         title="CREATE REBATES"
         companies={companies}

@@ -4,6 +4,7 @@ import { creditUserSchema } from "commons/schemas";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { UserService, CreditService } from "services";
+import { Helmet } from "react-helmet";
 
 const CreditUsersPage = () => {
   const [data, setData] = useState([]);
@@ -37,6 +38,7 @@ const CreditUsersPage = () => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10 mt-3">
+      <Helmet title="Credit Users" />
       <DTCTable
         showSettings={false}
         loading={loading}

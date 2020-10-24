@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import qs from "qs";
 import { useHistory } from "react-router-dom";
 import { APIError } from "commons/types";
+import { Helmet } from "react-helmet";
 
 const { confirm } = Modal;
 
@@ -166,6 +167,7 @@ const OrderActiveTab = () => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <Helmet title="Documents" />
       <div className="d-flex justify-content-end">
         <Button
           type="primary"
