@@ -9,6 +9,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory, Link } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
 import { APIError } from "commons/types";
+import { Helmet } from "react-helmet";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -239,6 +240,7 @@ const AddRoutePage = () => {
 
   return (
     <DTCSection>
+      <Helmet title="Routes Creation" />
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
         <RouteLocationForm onTypeChange={handleTypeChange} ref={locationFormRef} />
