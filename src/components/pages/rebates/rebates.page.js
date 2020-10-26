@@ -9,6 +9,7 @@ import { RebatesService } from "services";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import moment from "moment";
 import { DATETIME_FORMAT } from "commons/consts";
+import { Helmet } from "react-helmet";
 
 const { FIELDS, LABELS } = REBATES_SCHEMA;
 
@@ -104,6 +105,7 @@ const Rebates = () => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <Helmet title="Rebates" />
       <DTCTable
         showSettings={false}
         loading={loading}

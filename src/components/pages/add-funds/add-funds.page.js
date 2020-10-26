@@ -4,6 +4,7 @@ import { toCurrency } from "utils/general.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { FinancialService } from "services";
 import { Button } from "antd";
+import { Helmet } from "react-helmet";
 
 const PCC_BANK_DETAILS = {
   bankName: "bankName",
@@ -54,6 +55,7 @@ const AddFundsPage = () => {
 
   return (
     <Fragment>
+      <Helmet title="Add Fund" />
       <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3 d-flex align-items-center">
         <h5 className="text-primary mr-1">Total Balance: </h5>
         <h5>{toCurrency(data.totalBalance)}</h5>
