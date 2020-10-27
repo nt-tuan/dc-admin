@@ -36,7 +36,7 @@ export const CreateIntroducerForm = memo(
         setCompanyNames(res);
         setTraderList(res);
       });
-    }, []);
+    }, [id, isEdit, isView]);
 
     const handleSubmit = (values) => {
       const request = parseSubmitData(values);
@@ -162,6 +162,11 @@ export const CreateIntroducerForm = memo(
                       showSearch
                       allowClear
                       placeholder="Search Country"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+                        option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
                       onChange={(countryCode) => {
                         const prefixList = countryList.find(
                           (country) => country.alpha2Code === countryCode
