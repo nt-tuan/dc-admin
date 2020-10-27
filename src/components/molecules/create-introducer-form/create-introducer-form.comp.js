@@ -23,8 +23,6 @@ export const CreateIntroducerForm = memo(
     const [traderList, setTraderList] = useState([]);
     const [usernames, setUsernames] = useState([]);
     const [companyNames, setCompanyNames] = useState([]);
-    const [showServerError, setShowServerError] = useState(false);
-    const [serverError, setServerError] = useState("");
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
@@ -41,11 +39,16 @@ export const CreateIntroducerForm = memo(
     const handleSubmit = (values) => {
       const request = parseSubmitData(values);
       const onServerError = (errors) => {
-        const errorCode = errors[0][1];
-        setShowServerError(true);
-        setServerError(API_ERRORS[errorCode]);
+        const errorFields = errors.map((error) => {
+          const errorField = error[0];
+          const errorCode = error[1];
+          return {
+            name: errorField,
+            errors: [API_ERRORS[errorCode]]
+          };
+        });
+        form.setFields(errorFields);
       };
-
       onSubmitData(request, { onError: onServerError });
     };
 
@@ -85,10 +88,6 @@ export const CreateIntroducerForm = memo(
     const handleSelectChange = (valArr, setStateFunc, type) => {
       const newArr = traderList.filter((item) => !valArr.includes(item[type]));
       setStateFunc(newArr);
-    };
-
-    const renderServerError = () => {
-      return showServerError ? <div className="text-danger mb-3">{serverError}</div> : null;
     };
 
     const renderPhonePrefix = () => {
@@ -276,8 +275,6 @@ export const CreateIntroducerForm = memo(
             </Button>
           )}
         </div>
-        {/* Sever Error */}
-        {renderServerError()}
       </Form>
     );
   }
