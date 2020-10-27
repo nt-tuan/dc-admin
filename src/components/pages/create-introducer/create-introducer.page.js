@@ -1,6 +1,7 @@
 import { MARKETPLACE_NAME } from "commons/consts";
 import { CreateIntroducerForm } from "components/molecules";
 import React, { memo } from "react";
+import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
@@ -20,6 +21,7 @@ const CreateIntroducerPage = memo(() => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10 mb-3">
+      <Helmet title="Create Introducer" />
       <CreateIntroducerForm name="Create Introducer" onSubmitData={createIntroducer} />
     </div>
   );
