@@ -1,6 +1,7 @@
 import { MARKETPLACE_NAME } from "commons/consts";
 import { CreateIntroducerForm } from "components/molecules";
 import React, { memo } from "react";
+import { Helmet } from "react-helmet";
 import { Redirect } from "react-router-dom";
 
 const CreateIntroducerPage = memo(() => {
@@ -9,6 +10,7 @@ const CreateIntroducerPage = memo(() => {
   }
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10 mb-3">
+      <Helmet title="Create Introducer" />
       <CreateIntroducerForm name="Create Introducer" />
     </div>
   );

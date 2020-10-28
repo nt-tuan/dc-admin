@@ -10,10 +10,7 @@ import { TableSetting } from "components/molecules";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { CreditService } from "services";
-import { DatetimeUtils } from "utils/date-time.util";
 import { parseDataCredit } from "commons/mappers";
-
-const { formatDateTime } = DatetimeUtils;
 
 const { FIELDS, LABELS } = MARKETPLACE_CREDIT_SCHEMA;
 
