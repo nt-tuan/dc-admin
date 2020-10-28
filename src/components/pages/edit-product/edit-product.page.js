@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import qs from "qs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
+import { Helmet } from "react-helmet";
 
 const EditProductPage = () => {
   const { uid: productId } = qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -12,7 +13,7 @@ const EditProductPage = () => {
     if (productDetails === undefined) {
       return {};
     }
-    const isManualAdded = productDetails.importImages.length > 0;
+    const isManualAdded = productDetails.importImages && productDetails.importImages.length > 0;
     const images = isManualAdded ? productDetails.importImages : productDetails.images;
     const vitalInfoData = {
       brand: productDetails.brand,
@@ -47,12 +48,15 @@ const EditProductPage = () => {
   }, [productId]);
 
   return (
-    <ProductMutationTemplate
-      title={`Edit Product - ${productDetails && productDetails.name}`}
-      pageName="EditProductPage"
-      initialValues={handleMapProductDetails(productDetails)}
-      mutateServiceFn={(data) => ProductService.editProduct(data, productId)}
-    />
+    <>
+      <Helmet title="Edit Product" />
+      <ProductMutationTemplate
+        title={`Edit Product - ${productDetails && productDetails.name}`}
+        pageName="EditProductPage"
+        initialValues={handleMapProductDetails(productDetails)}
+        mutateServiceFn={(data) => ProductService.editProduct(data, productId)}
+      />
+    </>
   );
 };
 

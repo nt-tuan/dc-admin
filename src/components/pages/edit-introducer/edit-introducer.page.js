@@ -10,6 +10,7 @@ import { LoadingIndicator } from "components/atoms";
 import { CreateIntroducerForm } from "components/molecules";
 import { useDispatch } from "react-redux";
 import * as USER_DUCK from "redux/user/user.duck";
+import { Helmet } from "react-helmet";
 
 const EditIntroducerPage = memo(() => {
   const [loading, setLoading] = useState(true);
@@ -57,6 +58,7 @@ const EditIntroducerPage = memo(() => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <Helmet title="Edit Introducer" />
       {loading ? (
         <div className="text-center">
           <LoadingIndicator />

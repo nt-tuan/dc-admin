@@ -8,7 +8,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import countryList from "assets/country.json";
 
 const { formatDateTime } = DatetimeUtils;
-const { FIELDS, LABELS } = INTRODUCER_SCHEMA;
+const { FIELDS } = INTRODUCER_SCHEMA;
 
 export const IntroducerInActiveTab = memo(() => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,6 @@ export const IntroducerInActiveTab = memo(() => {
         expiryDate: formatDateTime(item.expiryDate),
         country: countryList.find((c) => c.alpha2Code === item.country).name
       }));
-      console.log("getAllRecords -> res", res);
       setLoading(false);
       setData(res);
     });
