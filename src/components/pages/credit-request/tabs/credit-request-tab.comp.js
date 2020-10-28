@@ -8,9 +8,6 @@ import { MARKETPLACE_CREDIT_SCHEMA, creditRequestSchema } from "commons/schemas"
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { CreditService } from "services";
 import { parseDataCredit } from "commons/mappers";
-import { DatetimeUtils } from "utils/date-time.util";
-
-const { formatDateTime } = DatetimeUtils;
 
 const { FIELDS, LABELS } = MARKETPLACE_CREDIT_SCHEMA;
 

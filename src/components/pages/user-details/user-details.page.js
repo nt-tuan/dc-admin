@@ -1,4 +1,4 @@
-import { Button, Checkbox } from "antd";
+import { Checkbox } from "antd";
 import { LoadingIndicator } from "components/atoms";
 import {
   CompanyInfo,
@@ -13,7 +13,7 @@ import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { UserService, CompanyService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const UserDetails = () => {
   const [data, setData] = useState({});
@@ -59,6 +59,7 @@ const UserDetails = () => {
 
   return (
     <Fragment>
+      <Helmet title="User Detail" />
       {loading ? (
         <div className="d-flex justify-content-center">
           <LoadingIndicator />
