@@ -107,4 +107,7 @@ export class SharedPaths {
   static get INTRODUCER_EDIT() {
     return "/introducers/introducer-edit";
   }
+  static get REQUESTED_PRODUCTS() {
+    return "/requested-products";
+  }
 }

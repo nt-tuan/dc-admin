@@ -236,6 +236,13 @@ const privateRoutes = [
     path: RouteConst.INTRODUCER_EDIT,
     Component: loadable(() => import("components/pages/edit-introducer/edit-introducer.page")),
     exact: true
+  },
+  {
+    path: RouteConst.REQUESTED_PRODUCTS,
+    Component: loadable(() =>
+      import("components/pages/requested-products/requested-products.page")
+    ),
+    exact: true
   }
 ];
 
