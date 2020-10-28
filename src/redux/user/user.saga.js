@@ -1,6 +1,6 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import * as USER_ACTIONS from "./user.duck";
-import { notification } from "antd";
+import { notification, message } from "antd";
 import { APIError } from "commons/types";
 import { AuthService, IntroducerService, UserService } from "services";
 import { MessageConst, RouteConst } from "commons/consts";
@@ -106,6 +106,7 @@ export function* UPDATE_PROFILE_INTRODUCER({ payload }) {
   try {
     yield put(setStateAction({ loading: true }));
     yield IntroducerService.updateIntroducerDetails(id, values);
+    message.success("Edit Successfully");
     yield history.push(RouteConst.INTRODUCERS);
   } catch (error) {
     if (error instanceof APIError) {
