@@ -1,18 +1,46 @@
 import { Button, Col, Modal, Row } from "antd";
-import { RouteConst } from "commons/consts";
+import { RouteConst, DATETIME_FORMAT } from "commons/consts";
 import { getRequestedProductsSchema } from "commons/schemas";
 import { DTCTable } from "components/atoms";
 import { AvailableProductModal } from "components/molecules";
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ProductService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import moment from "moment";
 
-export const RequestedProductsTable = memo(({ data, loading }) => {
+export const RequestedProductsTable = memo(() => {
   const [showModalReject, setIsShowModalReject] = useState(false);
   const [showModalAccept, setIsShowModalAccept] = useState(false);
   const [showModalAvailableProducts, setIsShowModalAvailableProducts] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
-  const handleReject = () => {
+  const [removeData, setRemoveData] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const mapRequestedProductsData = (requestedProducts) => {
+    return requestedProducts.map((item) => {
+      item.timestamp = moment(item.timestamp).format(DATETIME_FORMAT);
+      return item;
+    });
+  };
+  const getRequestedProductsData = useCallback(() => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      const result = await ProductService.getRequestedProducts();
+      setData(mapRequestedProductsData(result));
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    getRequestedProductsData();
+  }, [getRequestedProductsData]);
+
+  const handleReject = (removeProduct) => {
     setIsShowModalReject(true);
+    setRemoveData(removeProduct);
   };
 
   const handleAccept = (requestData) => {
@@ -21,7 +49,10 @@ export const RequestedProductsTable = memo(({ data, loading }) => {
   };
 
   const onRejectRequest = () => {
-    //TODO: APPLY API
+    asyncErrorHandlerWrapper(async () => {
+      await ProductService.rejectProduct(removeData.id);
+      getRequestedProductsData();
+    });
     setIsShowModalReject(false);
   };
 
@@ -32,7 +63,7 @@ export const RequestedProductsTable = memo(({ data, loading }) => {
         visible={showModalReject}
         onCancel={() => setIsShowModalReject(false)}
         footer={[
-          <Row className="justify-content-center">
+          <Row className="justify-content-center" key="reject-modal">
             <Button
               key="back"
               onClick={() => setIsShowModalReject(false)}
@@ -64,9 +95,16 @@ export const RequestedProductsTable = memo(({ data, loading }) => {
         visible={showModalAccept}
         onCancel={() => setIsShowModalAccept(false)}
         footer={[
-          <Row>
+          <Row key="approve-product">
             <Col span={11}>
-              <Link to={RouteConst.ADD_PRODUCT}>
+              <Link
+                to={
+                  selectedData &&
+                  `${RouteConst.EDIT_PRODUCT.replace(":id", `${selectedData.productName}`)}?uid=${
+                    selectedData.id
+                  }&requestedProduct=true`
+                }
+              >
                 <Button type="primary">Create a new product</Button>
               </Link>
             </Col>
@@ -97,9 +135,7 @@ export const RequestedProductsTable = memo(({ data, loading }) => {
         </Col>
         <Col span={4}>
           <Link to={RouteConst.ADD_PRODUCT}>
-            <Button block type="primary">
-              Create a new product
-            </Button>
+            <Button type="primary">Create a new product</Button>
           </Link>
         </Col>
       </Row>
@@ -115,6 +151,11 @@ export const RequestedProductsTable = memo(({ data, loading }) => {
       <AvailableProductModal
         initialValues={selectedData}
         isVisibleModal={showModalAvailableProducts}
+        onSubmitSuccess={() => {
+          getRequestedProductsData();
+          setIsShowModalAccept(false);
+          setIsShowModalAvailableProducts(false);
+        }}
         onCancel={() => {
           setIsShowModalAccept(true);
           setIsShowModalAvailableProducts(false);

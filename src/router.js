@@ -136,7 +136,7 @@ const privateRoutes = [
   {
     path: RouteConst.EDIT_PRODUCT,
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
-    exact: true
+    exact: false
   },
   {
     path: RouteConst.REBATES,

@@ -53,7 +53,12 @@ export const VitalInfoForm = forwardRef((props, ref) => {
   const renderFormItems = (fieldName, label) => {
     switch (fieldName) {
       case VITAL_INFO_FIELDS.productName:
-        return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName]} />;
+        return (
+          <Input
+            disabled={props.isDisabled}
+            placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName]}
+          />
+        );
       case VITAL_INFO_FIELDS.brand:
         return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brand]} />;
       case VITAL_INFO_FIELDS.category:
@@ -62,7 +67,7 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.category]}
             allowClear
             loading={isLoadingCategories}
-            disabled={isLoadingCategories}
+            disabled={isLoadingCategories || props.isDisabled}
             onChange={handleCategoryChange}
           >
             {categories.map((category) => (
@@ -78,7 +83,7 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type]}
             allowClear
             loading={isLoadingTypes}
-            disabled={isLoadingTypes}
+            disabled={isLoadingTypes || props.isDisabled}
           >
             {types.map((type) => (
               <Option value={type} key={type}>
@@ -147,8 +152,8 @@ const VITAL_INFO_FIELDS = {
   productName: "productName",
   brand: "brand",
   category: "category",
-  keyword: "keyword"
-  // type: "type",
+  keyword: "keyword",
+  type: "type"
   // saleChannel: "salesChannel"
 };
 
@@ -156,8 +161,8 @@ const VITAL_INFO_LABELS = {
   [VITAL_INFO_FIELDS.productName]: "Product Name",
   [VITAL_INFO_FIELDS.brand]: "Product Brand",
   [VITAL_INFO_FIELDS.category]: "Product Category",
-  [VITAL_INFO_FIELDS.keyword]: "Keywords"
-  // [VITAL_INFO_FIELDS.type]: "Type",
+  [VITAL_INFO_FIELDS.keyword]: "Keywords",
+  [VITAL_INFO_FIELDS.type]: "Type"
   // [VITAL_INFO_FIELDS.saleChannel]: "Sales Channels"
 };
 
@@ -181,12 +186,12 @@ const SCHEMA = [
     rules: [{ required: true, message: "Category is required" }],
     title: "The category of the product"
   },
-  // {
-  //   name: VITAL_INFO_FIELDS.type,
-  //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
-  //   rules: [{ required: true, message: "Type is required" }],
-  //   dependencies: [VITAL_INFO_FIELDS.category]
-  // },
+  {
+    name: VITAL_INFO_FIELDS.type,
+    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
+    rules: [{ required: true, message: "Type is required" }],
+    dependencies: [VITAL_INFO_FIELDS.category]
+  },
   // {
   //   name: VITAL_INFO_FIELDS.saleChannel,
   //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel],
