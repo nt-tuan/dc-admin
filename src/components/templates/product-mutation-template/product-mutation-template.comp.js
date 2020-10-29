@@ -9,7 +9,6 @@ import {
 } from "components/organisms";
 import debounce from "lodash/debounce";
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import * as STORAGE_DUCK from "redux/storage/storage.duck";
@@ -177,7 +176,6 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
 
   return (
     <article>
-      <Helmet title="Add product" />
       {showLoadSavedResult && (
         <DTCSection>
           <Result

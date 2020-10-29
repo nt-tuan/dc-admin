@@ -8,6 +8,7 @@ import moment from "moment";
 import { LoadingIndicator } from "components/atoms";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { CreateIntroducerForm } from "components/molecules";
+import { Helmet } from "react-helmet";
 
 const IntroducerDetailsPage = memo(() => {
   const [loading, setLoading] = useState(true);
@@ -35,7 +36,7 @@ const IntroducerDetailsPage = memo(() => {
         traderCompanyName,
         traderUserName,
         phone: phoneParsed[1],
-        phonePrefix: phoneParsed[0]
+        phonePrefix: `+${phoneParsed[0]}`
       });
       setLoading(false);
     });
@@ -46,6 +47,7 @@ const IntroducerDetailsPage = memo(() => {
   }
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
+      <Helmet title="Introducer Details" />
       {loading ? (
         <div className="text-center">
           <LoadingIndicator />

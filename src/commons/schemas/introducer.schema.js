@@ -187,12 +187,12 @@ export const getIntroducerSchema = (onDelete) => (
       render: ({ id }) => (
         <div className="d-flex">
           <Link to={`${RouteConst.INTRODUCER_DETAILS}?id=${id}`}>
-            <Button title="View introducer details">
+            <Button title="View introducer details" type="primary">
               <i className="fe fe-eye" />
             </Button>
           </Link>
           <Link to={`${RouteConst.INTRODUCER_EDIT}?id=${id}`}>
-            <Button title="Edit introducer details" className="mx-2">
+            <Button title="Edit introducer details" className="mx-2" type="primary">
               <i className="fe fe-edit" />
             </Button>
           </Link>

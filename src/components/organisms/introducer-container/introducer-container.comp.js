@@ -78,8 +78,8 @@ export const IntroducerContainer = ({ data, loading, fetchData }) => {
         onCancel={() => setIsShowDeleteConfirm(false)}
       >
         Are you sure you want to delete this user as an introducer? Please note that this action
-        will only delete the introducer role of this user, so he will still be active as a trader on
-        your platform.
+        will only delete the introducer role of this user, he will still be active as a trader on
+        your marketplace.
       </Modal>
       <Modal
         title={<h4>Show/Hide Columns</h4>}

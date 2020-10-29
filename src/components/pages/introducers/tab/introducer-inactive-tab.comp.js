@@ -5,6 +5,7 @@ import { IntroducerService } from "services";
 import { DatetimeUtils } from "utils/date-time.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
+import countryList from "assets/country.json";
 
 const { formatDateTime } = DatetimeUtils;
 const { FIELDS } = INTRODUCER_SCHEMA;
@@ -20,7 +21,8 @@ export const IntroducerInActiveTab = memo(() => {
         ...item,
         [FIELDS.numberOfTrade]: `${item[FIELDS.numberOfTrade]}`,
         createdDate: formatDateTime(item.createdDate),
-        expiryDate: formatDateTime(item.expiryDate)
+        expiryDate: formatDateTime(item.expiryDate),
+        country: countryList.find((c) => c.alpha2Code === item.country).name
       }));
       setLoading(false);
       setData(res);

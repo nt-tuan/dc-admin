@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as NOTI_DUCK from "redux/notification/notification.duck";
 import dayjs from "dayjs";
+import { Helmet } from "react-helmet";
 
 const NotificationPage = React.memo(() => {
   const [isInit, setIsInit] = useState(true);
@@ -44,6 +45,7 @@ const NotificationPage = React.memo(() => {
 
   return (
     <article className="air__utils__shadow bg-white dtc-br-10 p-3">
+      <Helmet title="Notifications" />
       <h4>Notification list</h4>
       <Skeleton loading={isLoadingNewMessage} active={true} avatar paragraph={{ rows: 1 }} />
       {isInit ? null : (
