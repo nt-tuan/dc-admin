@@ -23,7 +23,13 @@ const canMoveTemplate = async (asyncValidateFn, setDataFn) => {
   }
 };
 
-export const ProductMutationTemplate = ({ pageName, initialValues, mutateServiceFn, title }) => {
+export const ProductMutationTemplate = ({
+  isDisabled,
+  pageName,
+  initialValues,
+  mutateServiceFn,
+  title
+}) => {
   const dispatch = useDispatch();
   const vitalFormRef = useRef({ getFieldsValue: () => ({}) });
   const variantFormRef = useRef({ getFieldsValue: () => ({}) });
@@ -66,7 +72,7 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
       stepIndex: 0,
       title: "Vital Information",
       canMove: async () => true,
-      component: <VitalInfoForm ref={vitalFormRef} />
+      component: <VitalInfoForm ref={vitalFormRef} isDisabled={isDisabled} />
     },
     {
       stepIndex: 1,

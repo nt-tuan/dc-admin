@@ -68,4 +68,29 @@ export class ProductService {
     const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_DETAILS.replace(":id", id));
     return result;
   };
+
+  static getRequestedProducts = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_REQUESTED_PRODUCTS);
+    return result;
+  };
+
+  static rejectProduct = async (id) => {
+    const result = await backendAPI.put(ApiPathConsts.REJECT_REQUESTED_PRODUCTS.replace(":id", id));
+    return result;
+  };
+
+  static getProductNameByTypeId = async (typeId) => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_NAMES_BY_TYPE_ID, { typeId });
+    return result;
+  };
+
+  static addAvailableProduct = async (sourceId, targetId) => {
+    const result = await backendAPI.put(
+      ApiPathConsts.ADD_AVAILABLE_PRODUCT.replace(":sourceId", sourceId).replace(
+        ":targetId",
+        targetId
+      )
+    );
+    return result;
+  };
 }

@@ -58,7 +58,12 @@ export const VitalInfoForm = forwardRef((props, ref) => {
   const renderFormItems = (fieldName, label) => {
     switch (fieldName) {
       case VITAL_INFO_FIELDS.productName:
-        return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName]} />;
+        return (
+          <Input
+            disabled={Boolean(props.isDisabled)}
+            placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.productName]}
+          />
+        );
       case VITAL_INFO_FIELDS.brand:
         return <Input placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.brand]} />;
       case VITAL_INFO_FIELDS.category:
@@ -67,7 +72,7 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.category]}
             allowClear
             loading={isLoadingCategories}
-            disabled={isLoadingCategories}
+            disabled={isLoadingCategories || Boolean(props.isDisabled)}
             onChange={getTypes}
           >
             {categories.map((category) => (
@@ -83,7 +88,7 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type]}
             allowClear
             loading={isLoadingTypes}
-            disabled={isLoadingTypes}
+            disabled={isLoadingTypes || Boolean(props.isDisabled)}
           >
             {types.map(({ id, name }) => (
               <Option value={id} key={id}>
@@ -162,7 +167,7 @@ const VITAL_INFO_LABELS = {
   [VITAL_INFO_FIELDS.brand]: "Product Brand",
   [VITAL_INFO_FIELDS.category]: "Product Category",
   [VITAL_INFO_FIELDS.keyword]: "Keywords",
-  [VITAL_INFO_FIELDS.type]: "Type"
+  [VITAL_INFO_FIELDS.type]: "Product Type"
   // [VITAL_INFO_FIELDS.saleChannel]: "Sales Channels"
 };
 
