@@ -30,11 +30,19 @@ export const CreateIntroducerForm = memo(
           isView || isEdit
             ? await IntroducerService.getTraderListByIntroducer(id)
             : await IntroducerService.getTraderList();
-        setUsernames(res);
-        setCompanyNames(res);
+        setUsernames(
+          initialValues
+            ? res.filter((item) => !initialValues.traderCompanyName.includes(item.companyName))
+            : res
+        );
+        setCompanyNames(
+          initialValues
+            ? res.filter((item) => !initialValues.traderUserName.includes(item.username))
+            : res
+        );
         setTraderList(res);
       });
-    }, [id, isEdit, isView]);
+    }, [id, isEdit, isView, initialValues]);
 
     const handleSubmit = (values) => {
       const request = parseSubmitData(values);

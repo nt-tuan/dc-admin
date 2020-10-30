@@ -47,10 +47,10 @@ const ProductDatabase = () => {
   }, 100);
 
   const selectImageFromProduct = (product) => {
-    if (product.images.length > 0) {
+    if (product && product.images && product.images.length > 0) {
       return product.images[0].url;
     }
-    if (product.importImages.length > 0) {
+    if (product && product.importImages && product.importImages.length > 0) {
       return product.importImages[0].url;
     }
     return "";

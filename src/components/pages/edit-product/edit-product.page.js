@@ -6,7 +6,9 @@ import { ProductService } from "services";
 import { Helmet } from "react-helmet";
 
 const EditProductPage = () => {
-  const { uid: productId } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const { uid: productId, requestedProduct: isDisabled } = qs.parse(location.search, {
+    ignoreQueryPrefix: true
+  });
   const [productDetails, setProductDetails] = useState(undefined);
 
   const handleMapProductDetails = (productDetails) => {
@@ -18,8 +20,10 @@ const EditProductPage = () => {
     const vitalInfoData = {
       brand: productDetails.brand,
       productName: productDetails.name,
+      typeId: productDetails.typeId,
       type: productDetails.type,
       salesChannel: productDetails.salesChannel,
+      categoryId: productDetails.categoryId,
       category: productDetails.category,
       keyword: productDetails.keyword ? productDetails.keyword.split(",") : []
     };
@@ -51,6 +55,7 @@ const EditProductPage = () => {
     <>
       <Helmet title="Edit Product" />
       <ProductMutationTemplate
+        isDisabled={isDisabled}
         title={`Edit Product - ${productDetails && productDetails.name}`}
         pageName="EditProductPage"
         initialValues={handleMapProductDetails(productDetails)}
