@@ -8,6 +8,7 @@ export class ApiPathConsts {
   static #PRODUCT_PREFIX = "/products";
   static #BRANDS_PREFIX = "/brands";
   static #REBATES_PREFIX = "/rebates";
+  static #TRADE_RULE_PREFIX = "/";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;

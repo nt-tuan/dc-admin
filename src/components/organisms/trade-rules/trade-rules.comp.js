@@ -5,7 +5,7 @@ import qs from "qs";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { DocumentList } from "../route/document-list/document-list.comp";
 import { SelectProductForm } from "components/molecules";
-import { Checkbox } from "antd";
+import { Checkbox, Button } from "antd";
 import { TradeRulesTable } from "../trade-rules-table/trade-rules-table.comp";
 
 const docs = [
@@ -16,15 +16,24 @@ const docs = [
 
 export const TradeRules = memo(({ initialValues = {} }) => {
   const [documents, setDocuments] = useState([]);
-  const [docTableData, setDocTableData] = useState([]);
+  const [selectedDoc, setSelectedDoc] = useState([]);
   const [isSkip, setIsSkip] = useState(false);
   const location = useLocation();
   const { id } = qs.parse(location.search, { ignoreQueryPrefix: true });
   const selectProductFormRef = useRef();
+  const tradeRuleTableRef = useRef();
 
   useEffect(() => setDocuments(docs), []);
 
-  const handleDocumentChange = useCallback((checkedList) => console.log(checkedList), []);
+  const handleDocumentChange = useCallback((checkedList) => {
+    setSelectedDoc(checkedList);
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    selectProductFormRef.current.validateFields();
+    const value = tradeRuleTableRef.current.getTradeRuleData();
+    console.log(value);
+  }, []);
 
   return (
     <Fragment>
@@ -52,13 +61,18 @@ export const TradeRules = memo(({ initialValues = {} }) => {
           <p className="mt-2">Select the documents that have to be uploaded by the users</p>
           <DocumentList
             title="Customized Documents"
-            defaultDocs={[]}
             documents={documents}
             onChange={handleDocumentChange}
           />
-          <TradeRulesTable />
+          <TradeRulesTable {...{ selectedDoc }} ref={(ins) => (tradeRuleTableRef.current = ins)} />
         </>
       )}
+      <div className="text-center">
+        <Button className="mr-2">Cancel</Button>
+        <Button type="primary" onClick={handleSubmit}>
+          Save
+        </Button>
+      </div>
     </Fragment>
   );
 });
