@@ -22,7 +22,8 @@ export const IntroducerInActiveTab = memo(() => {
         [FIELDS.numberOfTrade]: `${item[FIELDS.numberOfTrade]}`,
         createdDate: formatDateTime(item.createdDate),
         expiryDate: formatDateTime(item.expiryDate),
-        country: countryList.find((c) => c.alpha2Code === item.country).name
+        country: countryList.find((c) => c.alpha2Code === item.country).name,
+        phone: `+${item.phone}`
       }));
       console.log("getAllRecords -> res", res);
       setLoading(false);
