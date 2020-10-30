@@ -4,6 +4,7 @@ import { IntroducerService } from "services";
 import { DatetimeUtils } from "utils/date-time.util";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
+import countryList from "assets/country.json";
 
 const { formatDateTime } = DatetimeUtils;
 
@@ -17,7 +18,9 @@ export const IntroducerActiveTab = memo(() => {
       res = res.map((item) => ({
         ...item,
         createdDate: formatDateTime(item.createdDate),
-        expiryDate: formatDateTime(item.expiryDate)
+        expiryDate: formatDateTime(item.expiryDate),
+        country: countryList.find((c) => c.alpha2Code === item.country).name,
+        phone: `+${item.phone}`
       }));
       setLoading(false);
       setData(res);
