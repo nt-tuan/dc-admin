@@ -3,12 +3,39 @@ import { ApiPathConsts } from "commons/consts/system";
 
 export class ProductService {
   static addProduct = async (data) => {
-    const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, data);
+    const { brand, fileName, keyword, productName, typeId, variantList } = data;
+    const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
+      brand,
+      fileName,
+      keyword,
+      productName,
+      typeId,
+      variantList
+    });
     return result;
   };
 
   static editProduct = async (data, id) => {
-    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
+    const {
+      brand,
+      fileName,
+      keyword,
+      productId,
+      productName,
+      salesChannel,
+      typeId,
+      variantList
+    } = data;
+    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), {
+      brand,
+      fileName,
+      keyword,
+      productId,
+      productName,
+      salesChannel,
+      variantList,
+      typeId
+    });
     return result;
   };
 
