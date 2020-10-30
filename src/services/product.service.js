@@ -83,6 +83,7 @@ export class ProductService {
     const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_NAMES_BY_TYPE_ID, { typeId });
     return result;
   };
+
   static addAvailableProduct = async (sourceId, targetId) => {
     const result = await backendAPI.put(
       ApiPathConsts.ADD_AVAILABLE_PRODUCT.replace(":sourceId", sourceId).replace(
