@@ -1,4 +1,4 @@
-import { Button, Form, Result } from "antd";
+import { Form } from "antd";
 import { RouteConst } from "commons/consts";
 import { DTCSection, Stepper } from "components/atoms";
 import {
@@ -7,9 +7,8 @@ import {
   ProductUploadImagesForm,
   VitalInfoForm
 } from "components/organisms";
-import debounce from "lodash/debounce";
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import * as STORAGE_DUCK from "redux/storage/storage.duck";
 import { ImageService } from "services";
@@ -26,11 +25,9 @@ const canMoveTemplate = async (asyncValidateFn, setDataFn) => {
 
 export const ProductMutationTemplate = ({ pageName, initialValues, mutateServiceFn, title }) => {
   const dispatch = useDispatch();
-  const [showLoadSavedResult, setShowSavedResult] = useState(false);
   const vitalFormRef = useRef({ getFieldsValue: () => ({}) });
   const variantFormRef = useRef({ getFieldsValue: () => ({}) });
   const productImgFormRef = useRef({ getFieldsValue: () => ({}) });
-  const draftedFormData = useSelector(STORAGE_DUCK.selectPageData(pageName));
   const [isUploading, setIsUploading] = useState(false);
   const history = useHistory();
 
@@ -50,17 +47,15 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
   };
 
   useEffect(() => {
-    if (initialValues !== undefined) {
-      vitalFormRef.current.setFieldsValue(initialValues.vitalInfoData);
+    if (typeof initialValues !== "undefined") {
+      if (initialValues.vitalInfoData) {
+        vitalFormRef.current.setFieldsValue(initialValues.vitalInfoData);
+      }
       variantFormRef.current.setFieldsValue(initialValues.variantData);
       productImgFormRef.current.setFieldsValue(initialValues.imagesData);
       forceUpdate();
     }
   }, [initialValues]);
-
-  useEffect(() => {
-    draftedFormData !== undefined && setShowSavedResult(true);
-  }, [draftedFormData]);
 
   useEffect(() => {
     dispatch({ type: STORAGE_DUCK.GET_FROM_STORAGE, payload: { pageName } });
@@ -120,7 +115,6 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
     const composedData = {
       ...vitalInfoData,
       category: undefined,
-      type: "Perfume",
       keyword: vitalInfoData.keyword.join(","),
       fileName: imagesData.productImageName[0].name,
       variantList: Object.keys(variantData).map((field) => ({
@@ -130,74 +124,14 @@ export const ProductMutationTemplate = ({ pageName, initialValues, mutateService
     };
     asyncErrorHandlerWrapper(async () => {
       await mutateServiceFn(composedData);
-      handleClearDraftedFormData();
       history.push(RouteConst.PRODUCT_DATABASE);
     });
   };
 
-  const saveDraftedFormData = () => {
-    if (
-      vitalFormRef.current === null ||
-      variantFormRef.current === null ||
-      productImgFormRef.current === null
-    ) {
-      return;
-    }
-    const vitalInfoData = vitalFormRef.current.getFieldsValue();
-    const variantData = variantFormRef.current.getFieldsValue();
-    const imagesData = productImgFormRef.current.getFieldsValue();
-    const composedData = {
-      vitalInfoData,
-      variantData,
-      imagesData
-    };
-    dispatch({
-      type: STORAGE_DUCK.SAVE_TO_STORAGE,
-      payload: { pageName, data: { data: composedData, timestamp: Date.now() } }
-    });
-  };
-
-  const handleFormChange = debounce(() => {
-    showLoadSavedResult === true && setShowSavedResult(false);
-    saveDraftedFormData();
-  }, 1500);
-
-  const handleLoadDraftedFormData = () => {
-    vitalFormRef.current.setFieldsValue(draftedFormData.data.vitalInfoData);
-    variantFormRef.current.setFieldsValue(draftedFormData.data.variantData);
-    productImgFormRef.current.setFieldsValue(draftedFormData.data.imagesData);
-    setShowSavedResult(false);
-  };
-
-  const handleClearDraftedFormData = () => {
-    dispatch({ type: STORAGE_DUCK.CLEAR_FROM_STORAGE, payload: { pageName } });
-    setShowSavedResult(false);
-  };
-
   return (
     <article>
-      {showLoadSavedResult && (
-        <DTCSection>
-          <Result
-            status="info"
-            title={
-              draftedFormData.timestamp
-                ? "Do you want to restore your unfinished product creation from the previous session?"
-                : ""
-            }
-            extra={[
-              <Button type="primary" key="okay" onClick={handleLoadDraftedFormData}>
-                Okay
-              </Button>,
-              <Button type="primary" key="no" danger onClick={handleClearDraftedFormData}>
-                No
-              </Button>
-            ]}
-          />
-        </DTCSection>
-      )}
-      <DTCSection hidden={showLoadSavedResult}>
-        <Form.Provider onFormChange={handleFormChange}>
+      <DTCSection>
+        <Form.Provider>
           <Stepper title={title} steps={Steps} onSubmit={handleSubmit} />
         </Form.Provider>
       </DTCSection>

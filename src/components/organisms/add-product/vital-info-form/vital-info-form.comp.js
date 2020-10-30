@@ -1,8 +1,8 @@
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { forwardRef, useState, useEffect, useCallback } from "react";
 import { Form, Input, Select } from "antd";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
-import { SALE_CHANNELS } from "commons/consts";
+// import { SALE_CHANNELS } from "commons/consts";
 
 const { Option } = Select;
 
@@ -10,13 +10,13 @@ export const VitalInfoForm = forwardRef((props, ref) => {
   const [form] = Form.useForm();
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
-  const [saleChannels, setSaleChannels] = useState([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isLoadingTypes, setIsLoadingTypes] = useState(false);
-  const [isLoadingSaleChannels, setIsLoadingSaleChannels] = useState(true);
+  // const [isLoadingSaleChannels, setIsLoadingSaleChannels] = useState(true);
+  // const [saleChannels, setSaleChannels] = useState([]);
   const category = form.getFieldValue(VITAL_INFO_FIELDS.category);
 
-  useEffect(() => {
+  const getCategories = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
       const categoriesString = await ProductService.getProductCategories();
       setCategories(categoriesString);
@@ -24,31 +24,36 @@ export const VitalInfoForm = forwardRef((props, ref) => {
     });
   }, []);
 
-  useEffect(() => {
+  const getTypes = useCallback((categoryId) => {
     setIsLoadingTypes(true);
     asyncErrorHandlerWrapper(async () => {
-      const types = await ProductService.getProductTypes(category);
+      const types = await ProductService.getProductTypes(categoryId);
       setTypes(types);
       setIsLoadingTypes(false);
-    });
-  }, [category]);
-
-  const handleCategoryChange = (category) => {
-    setIsLoadingTypes(true);
-    asyncErrorHandlerWrapper(async () => {
-      const types = await ProductService.getProductTypes(category);
-      setTypes(types);
-      setIsLoadingTypes(false);
-    });
-  };
-
-  useEffect(() => {
-    asyncErrorHandlerWrapper(async () => {
-      const saleChannels = await ProductService.getProductSaleChannels();
-      setSaleChannels(saleChannels);
-      setIsLoadingSaleChannels(false);
     });
   }, []);
+
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
+
+  useEffect(() => {
+    if (category) {
+      getTypes(category);
+    }
+  }, [getTypes, category]);
+
+  // const getSaleChannels = useCallback(() => {
+  //   asyncErrorHandlerWrapper(async () => {
+  //     const saleChannels = await ProductService.getProductSaleChannels();
+  //     setSaleChannels(saleChannels);
+  //     setIsLoadingSaleChannels(false);
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   getSaleChannels();
+  // }, [getSaleChannels]);
 
   const renderFormItems = (fieldName, label) => {
     switch (fieldName) {
@@ -63,11 +68,11 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             allowClear
             loading={isLoadingCategories}
             disabled={isLoadingCategories}
-            onChange={handleCategoryChange}
+            onChange={getTypes}
           >
             {categories.map((category) => (
-              <Option value={category} key={category}>
-                {category}
+              <Option value={category.id} key={category.id}>
+                {category.name}
               </Option>
             ))}
           </Select>
@@ -80,28 +85,28 @@ export const VitalInfoForm = forwardRef((props, ref) => {
             loading={isLoadingTypes}
             disabled={isLoadingTypes}
           >
-            {types.map((type) => (
-              <Option value={type} key={type}>
-                {type}
+            {types.map(({ id, name }) => (
+              <Option value={id} key={id}>
+                {name}
               </Option>
             ))}
           </Select>
         );
-      case VITAL_INFO_FIELDS.saleChannel:
-        return (
-          <Select
-            placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel]}
-            allowClear
-            loading={isLoadingSaleChannels}
-            disabled={isLoadingSaleChannels}
-          >
-            {saleChannels.map((channel) => (
-              <Option value={channel} key={channel}>
-                {SALE_CHANNELS[channel]}
-              </Option>
-            ))}
-          </Select>
-        );
+      // case VITAL_INFO_FIELDS.saleChannel:
+      //   return (
+      //     <Select
+      //       placeholder={VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel]}
+      //       allowClear
+      //       loading={isLoadingSaleChannels}
+      //       disabled={isLoadingSaleChannels}
+      //     >
+      //       {saleChannels.map((channel) => (
+      //         <Option value={channel} key={channel}>
+      //           {SALE_CHANNELS[channel]}
+      //         </Option>
+      //       ))}
+      //     </Select>
+      //   );
       case VITAL_INFO_FIELDS.keyword:
         return (
           <Select
@@ -146,9 +151,9 @@ export const VitalInfoForm = forwardRef((props, ref) => {
 const VITAL_INFO_FIELDS = {
   productName: "productName",
   brand: "brand",
-  category: "category",
-  keyword: "keyword"
-  // type: "type",
+  category: "categoryId",
+  keyword: "keyword",
+  type: "typeId"
   // saleChannel: "salesChannel"
 };
 
@@ -156,8 +161,8 @@ const VITAL_INFO_LABELS = {
   [VITAL_INFO_FIELDS.productName]: "Product Name",
   [VITAL_INFO_FIELDS.brand]: "Product Brand",
   [VITAL_INFO_FIELDS.category]: "Product Category",
-  [VITAL_INFO_FIELDS.keyword]: "Keywords"
-  // [VITAL_INFO_FIELDS.type]: "Type",
+  [VITAL_INFO_FIELDS.keyword]: "Keywords",
+  [VITAL_INFO_FIELDS.type]: "Type"
   // [VITAL_INFO_FIELDS.saleChannel]: "Sales Channels"
 };
 
@@ -181,12 +186,12 @@ const SCHEMA = [
     rules: [{ required: true, message: "Category is required" }],
     title: "The category of the product"
   },
-  // {
-  //   name: VITAL_INFO_FIELDS.type,
-  //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
-  //   rules: [{ required: true, message: "Type is required" }],
-  //   dependencies: [VITAL_INFO_FIELDS.category]
-  // },
+  {
+    name: VITAL_INFO_FIELDS.type,
+    label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.type],
+    rules: [{ required: true, message: "Type is required" }],
+    dependencies: [VITAL_INFO_FIELDS.category]
+  },
   // {
   //   name: VITAL_INFO_FIELDS.saleChannel,
   //   label: VITAL_INFO_LABELS[VITAL_INFO_FIELDS.saleChannel],

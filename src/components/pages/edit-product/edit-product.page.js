@@ -18,8 +18,10 @@ const EditProductPage = () => {
     const vitalInfoData = {
       brand: productDetails.brand,
       productName: productDetails.name,
+      typeId: productDetails.typeId,
       type: productDetails.type,
       salesChannel: productDetails.salesChannel,
+      categoryId: productDetails.categoryId,
       category: productDetails.category,
       keyword: productDetails.keyword ? productDetails.keyword.split(",") : []
     };
