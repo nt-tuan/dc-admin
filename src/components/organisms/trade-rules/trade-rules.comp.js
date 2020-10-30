@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { DocumentList } from "../route/document-list/document-list.comp";
 import { SelectProductForm } from "components/molecules";
 import { Checkbox } from "antd";
+import { TradeRulesTable } from "../trade-rules-table/trade-rules-table.comp";
 
 const docs = [
   { id: "423423432", name: "Doc1" },
@@ -55,6 +56,7 @@ export const TradeRules = memo(({ initialValues = {} }) => {
             documents={documents}
             onChange={handleDocumentChange}
           />
+          <TradeRulesTable />
         </>
       )}
     </Fragment>
