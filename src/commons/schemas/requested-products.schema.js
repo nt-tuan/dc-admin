@@ -9,6 +9,10 @@ const REQUESTED_PRODUCTS_FIELDS = {
   type: "productType",
   productName: "productName",
   numberOfRequests: "numberOfRequests",
+  id: "id",
+  categoryId: "productCategoryId",
+  typeId: "productTypeId",
+  companyNames: "companyNames",
   manage: "manage"
 };
 
@@ -87,19 +91,19 @@ export const getRequestedProductsSchema = (onReject, onAccept) => (
       sortOrder:
         sortedInfo.columnKey === REQUESTED_PRODUCTS_FIELDS.numberOfRequests && sortedInfo.order,
       render: (product) => {
-        console.log("numberOfRequests", product);
+        const { numberOfRequests, companyNames } = product;
         return (
           <Row>
             <Tooltip
               title={
                 <>
-                  {product.companyNames.map((company) => (
-                    <div>{company}</div>
+                  {companyNames.map((company, index) => (
+                    <div key={index}>{company}</div>
                   ))}
                 </>
               }
             >
-              <span>{product.numberOfRequests}</span>
+              {numberOfRequests}
             </Tooltip>
           </Row>
         );
@@ -115,7 +119,12 @@ export const getRequestedProductsSchema = (onReject, onAccept) => (
               <Button shape="circle" icon={<CheckOutlined />} onClick={() => onAccept(product)} />
             </Col>
             <Col span={11}>
-              <Button danger shape="circle" icon={<CloseOutlined />} onClick={onReject} />
+              <Button
+                danger
+                shape="circle"
+                icon={<CloseOutlined />}
+                onClick={() => onReject(product)}
+              />
             </Col>
           </Row>
         );
