@@ -39,7 +39,7 @@ const EditIntroducerPage = memo(() => {
         traderCompanyName,
         traderUserName,
         phone: phoneParsed[1],
-        phonePrefix: phoneParsed[0]
+        phonePrefix: `+${phoneParsed[0]}`
       });
       setLoading(false);
     });

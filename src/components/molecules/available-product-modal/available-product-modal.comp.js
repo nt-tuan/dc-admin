@@ -1,5 +1,5 @@
 import { Button, Col, Form, Modal, Row, Select } from "antd";
-import { REQUIRED_ERR, RouteConst } from "commons/consts";
+import { REQUIRED_ERR } from "commons/consts";
 import { REQUESTED_PRODUCTS_SCHEMA } from "commons/schemas";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { ProductService } from "services";
@@ -17,14 +17,14 @@ export const AvailableProductModal = memo(
 
     const getProductCategories = useCallback(() => {
       asyncErrorHandlerWrapper(async () => {
-        const result = await ProductService.getRequestedProductCategories();
+        const result = await ProductService.getProductCategories();
         setCategories(result);
       });
     }, []);
 
     const getProductTypes = useCallback((categoryId) => {
       asyncErrorHandlerWrapper(async () => {
-        const result = await ProductService.getProductTypesByCategoryId(categoryId);
+        const result = await ProductService.getProductTypes(categoryId);
         setTypes(result);
       });
     }, []);
@@ -45,7 +45,7 @@ export const AvailableProductModal = memo(
         getProductTypes(initialValues[FIELDS.categoryId]);
         getProductNames(initialValues[FIELDS.typeId]);
       }
-    }, [initialValues]);
+    }, [initialValues, getProductTypes, getProductNames]);
 
     const onSubmit = () => {
       asyncErrorHandlerWrapper(async () => {
@@ -94,59 +94,58 @@ export const AvailableProductModal = memo(
         <p className="text-center">Link the request with a product in the database</p>
         <Form labelAlign="left" form={form} initialValues={initialValues}>
           {SCHEMA.map(({ name, label, rules }) => {
-            {
-              if (name === FIELDS.categoryId) {
-                return (
-                  <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
-                    <Select
-                      placeholder={label}
-                      onChange={(value) => {
-                        form.setFieldsValue({ [FIELDS.typeId]: undefined, [FIELDS.id]: undefined });
-                        getProductTypes(value);
-                      }}
-                    >
-                      {categories.map((category) => (
-                        <Select.Option value={category.id} key={category.id}>
-                          {category.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                );
-              }
-              if (name === FIELDS.typeId) {
-                return (
-                  <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
-                    <Select
-                      placeholder={label}
-                      onChange={(value) => {
-                        form.setFieldsValue({ [FIELDS.id]: undefined });
-                        getProductTypes(value);
-                      }}
-                    >
-                      {types.map((type) => (
-                        <Select.Option value={type.id} key={type.id}>
-                          {type.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                );
-              }
-              if (name === FIELDS.id) {
-                return (
-                  <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
-                    <Select placeholder={label}>
-                      {productName.map((product) => (
-                        <Select.Option key={product.name} value={product.id}>
-                          {product.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                );
-              }
+            if (name === FIELDS.categoryId) {
+              return (
+                <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
+                  <Select
+                    placeholder={label}
+                    onChange={(value) => {
+                      form.setFieldsValue({ [FIELDS.typeId]: undefined, [FIELDS.id]: undefined });
+                      getProductTypes(value);
+                    }}
+                  >
+                    {categories.map((category) => (
+                      <Select.Option value={category.id} key={category.id}>
+                        {category.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              );
             }
+            if (name === FIELDS.typeId) {
+              return (
+                <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
+                  <Select
+                    placeholder={label}
+                    onChange={(value) => {
+                      form.setFieldsValue({ [FIELDS.id]: undefined });
+                      getProductTypes(value);
+                    }}
+                  >
+                    {types.map((type) => (
+                      <Select.Option value={type.id} key={type.id}>
+                        {type.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              );
+            }
+            if (name === FIELDS.id) {
+              return (
+                <Form.Item name={name} label={label} rules={rules} key={name} {...labelConfig}>
+                  <Select placeholder={label}>
+                    {productName.map((product) => (
+                      <Select.Option key={product.name} value={product.id}>
+                        {product.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              );
+            }
+            return null;
           })}
         </Form>
       </Modal>
