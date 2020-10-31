@@ -116,14 +116,6 @@ export class ApiPathConsts {
   static get REJECT_REQUESTED_PRODUCTS() {
     return `${this.#PRODUCT_PREFIX}/reject/:id`;
   }
-
-  static get GET_PRODUCT_TYPES_BY_CATEGORY_ID() {
-    return `${this.#PRODUCT_PREFIX}/product-types`;
-  }
-  static get GET_PRODUCT_CATEGORIES_SELECT() {
-    return `${this.#PRODUCT_PREFIX}/categories`;
-  }
-
   static get GET_PRODUCT_NAMES_BY_TYPE_ID() {
     return `${this.#PRODUCT_PREFIX}/products`;
   }
@@ -152,5 +144,14 @@ export class ApiPathConsts {
 
   static get UPDATE_PRODUCT_CREATION_PERMISSION() {
     return `${this.#COMPANY_PREFIX}/:companyId/productCreation?isEnable=`;
+  }
+  static get GET_PRODUCT_TRADE_RULES_PENDING() {
+    return `${this.#PRODUCT_PREFIX}/product-rule-pending`;
+  }
+  static get GET_PRODUCT_TRADE_RULES_ACTIVE() {
+    return `${this.#PRODUCT_PREFIX}/product-has-rule`;
+  }
+  static get PUT_PRODUCT_TRADE_RULES_STATUS() {
+    return `${this.#PRODUCT_PREFIX}/rule-status/:id`;
   }
 }

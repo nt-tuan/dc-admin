@@ -1,16 +1,55 @@
 import { Button, Col, Modal, Row } from "antd";
-import { getTraderRulesActive } from "commons/schemas/trade-rules.schema";
+import { getTraderRulesActive, TRADE_RULES_SCHEMA } from "commons/schemas/trade-rules.schema";
 import { DTCTable } from "components/atoms";
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { ProductService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
-export const TradeRulesActiveTab = memo((status) => {
+const { STATUS } = TRADE_RULES_SCHEMA;
+export const TradeRulesActiveTab = memo(() => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(mockData);
+  const [data, setData] = useState([]);
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowSuspendModal, setIsShowSuspendModal] = useState(false);
+  const [deletedId, setDeletedId] = useState();
+  const [suspendedData, setSuspendedData] = useState({});
 
-  const onSubmitSuspendTradeRule = () => {};
-  const onSubmitDeleteTradeRule = () => {};
+  const getActiveData = useCallback(() => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      const result = await ProductService.getProductTradeRulesActive();
+      setData(result);
+      setLoading(false);
+    });
+  });
+
+  useEffect(() => {
+    getActiveData();
+  }, []);
+
+  const onSubmitSuspendTradeRule = () => {
+    if (suspendedData) {
+      setLoading(true);
+      asyncErrorHandlerWrapper(async () => {
+        await ProductService.updateProductTradeRulesStatus(
+          suspendedData.id,
+          suspendedData.status === STATUS.ACTIVE ? STATUS.SUSPENDED : STATUS.ACTIVE
+        );
+        getActiveData();
+        setIsShowSuspendModal(false);
+        setLoading(false);
+      });
+    }
+  };
+  const onSubmitDeleteTradeRule = () => {
+    setLoading(true);
+    asyncErrorHandlerWrapper(async () => {
+      await ProductService.updateProductTradeRulesStatus(deletedId, STATUS.DELETE);
+      getActiveData();
+      setIsShowDeleteModal(false);
+      setLoading(false);
+    });
+  };
 
   const renderSuspendModal = () => {
     return (
@@ -82,13 +121,14 @@ export const TradeRulesActiveTab = memo((status) => {
     );
   };
 
-  const handleSuspendTradeRulesModal = () => {
+  const handleSuspendTradeRulesModal = (trade) => {
+    setSuspendedData(trade);
     setIsShowSuspendModal(true);
   };
-  const handleDeleteTradeRulesModal = () => {
+  const handleDeleteTradeRulesModal = (id) => {
+    setDeletedId(id);
     setIsShowDeleteModal(true);
   };
-  const handleCreateTradeRules = () => {};
 
   return (
     <section className="air__utils__shadow bg-white p-4 dtc-br-10 mt-3">
@@ -96,11 +136,7 @@ export const TradeRulesActiveTab = memo((status) => {
         showSetting={false}
         loading={loading}
         dataSource={data}
-        schema={getTraderRulesActive(
-          handleCreateTradeRules,
-          handleSuspendTradeRulesModal,
-          handleDeleteTradeRulesModal
-        )}
+        schema={getTraderRulesActive(handleSuspendTradeRulesModal, handleDeleteTradeRulesModal)}
       />
       {renderSuspendModal()}
       {renderDeleteModal()}
@@ -108,21 +144,21 @@ export const TradeRulesActiveTab = memo((status) => {
   );
 });
 
-const mockData = [
-  {
-    timestamp: "2020-10-29T13:41:41.297Z",
-    productCategory: "productCategory",
-    type: "productType",
-    productName: "productName",
-    numberOfDocuments: "1",
-    status: "ACTIVE"
-  },
-  {
-    timestamp: "2020-10-29T13:41:41.297Z",
-    productCategory: "productCategory",
-    type: "productType",
-    productName: "productName",
-    numberOfDocuments: "1",
-    status: "SUSPENDED"
-  }
-];
+// const mockData = [
+//   {
+//     timestamp: "2020-10-29T13:41:41.297Z",
+//     productCategory: "productCategory",
+//     type: "productType",
+//     productName: "productName",
+//     numberOfDocuments: "1",
+//     status: "ACTIVE"
+//   },
+//   {
+//     timestamp: "2020-10-29T13:41:41.297Z",
+//     productCategory: "productCategory",
+//     type: "productType",
+//     productName: "productName",
+//     numberOfDocuments: "1",
+//     status: "SUSPENDED"
+//   }
+// ];

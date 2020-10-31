@@ -1,4 +1,4 @@
-import { Button, Tag } from "antd";
+import { Button } from "antd";
 import { RouteConst } from "commons/consts";
 import React from "react";
 import { Link } from "react-router-dom";
