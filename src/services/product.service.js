@@ -84,6 +84,24 @@ export class ProductService {
     return result;
   };
 
+  static getProductTradeRulesPending = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_TRADE_RULES_PENDING);
+    return result;
+  };
+  static getProductTradeRulesActive = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_TRADE_RULES_ACTIVE);
+    return result;
+  };
+
+  static updateProductTradeRulesStatus = async (productId, status) => {
+    const result = await backendAPI.put(
+      `${ApiPathConsts.PUT_PRODUCT_TRADE_RULES_STATUS.replace(":id", productId)}`,
+      null,
+      { status }
+    );
+    return result;
+  };
+
   static addAvailableProduct = async (sourceId, targetId) => {
     const result = await backendAPI.put(
       ApiPathConsts.ADD_AVAILABLE_PRODUCT.replace(":sourceId", sourceId).replace(

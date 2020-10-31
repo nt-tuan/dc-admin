@@ -184,6 +184,22 @@ export async function getUserData() {
           url: RouteConst.ADD_FUNDS
         }
       ]
+    },
+    {
+      title: "Trade Rules",
+      key: "TradeRules",
+      icon: "fe fe-navigation-2",
+      children: [
+        {
+          title: "Trade Rule",
+          key: "TradeRule",
+          url: RouteConst.TRADE_RULES
+        },
+        {
+          title: "Create Trade Rule",
+          key: "CreateTradeRule"
+        }
+      ]
     }
   ];
 }

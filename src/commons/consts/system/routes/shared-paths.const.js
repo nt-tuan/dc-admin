@@ -107,6 +107,9 @@ export class SharedPaths {
   static get INTRODUCER_EDIT() {
     return "/introducers/introducer-edit";
   }
+  static get TRADE_RULES() {
+    return "/trader-rules";
+  }
   static get REQUESTED_PRODUCTS() {
     return "/requested-products";
   }
