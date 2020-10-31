@@ -6,3 +6,4 @@ export * from "./table-setting.comp";
 export * from "./purchase-order-pdf/purchase-order-pdf.comp";
 export * from "./create-introducer-form/create-introducer-form.comp";
 export * from "./select-product-form/select-product-form.comp";
+export * from "./available-product-modal/available-product-modal.comp";

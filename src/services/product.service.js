@@ -3,12 +3,39 @@ import { ApiPathConsts } from "commons/consts/system";
 
 export class ProductService {
   static addProduct = async (data) => {
-    const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, data);
+    const { brand, fileName, keyword, productName, typeId, variantList } = data;
+    const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
+      brand,
+      fileName,
+      keyword,
+      productName,
+      typeId,
+      variantList
+    });
     return result;
   };
 
   static editProduct = async (data, id) => {
-    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
+    const {
+      brand,
+      fileName,
+      keyword,
+      productId,
+      productName,
+      salesChannel,
+      typeId,
+      variantList
+    } = data;
+    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), {
+      brand,
+      fileName,
+      keyword,
+      productId,
+      productName,
+      salesChannel,
+      variantList,
+      typeId
+    });
     return result;
   };
 
@@ -39,6 +66,49 @@ export class ProductService {
 
   static getProductDetails = async (id) => {
     const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_DETAILS.replace(":id", id));
+    return result;
+  };
+
+  static getRequestedProducts = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_REQUESTED_PRODUCTS);
+    return result;
+  };
+
+  static rejectProduct = async (id) => {
+    const result = await backendAPI.put(ApiPathConsts.REJECT_REQUESTED_PRODUCTS.replace(":id", id));
+    return result;
+  };
+
+  static getProductNameByTypeId = async (typeId) => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_NAMES_BY_TYPE_ID, { typeId });
+    return result;
+  };
+
+  static getProductTradeRulesPending = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_TRADE_RULES_PENDING);
+    return result;
+  };
+  static getProductTradeRulesActive = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_TRADE_RULES_ACTIVE);
+    return result;
+  };
+
+  static updateProductTradeRulesStatus = async (productId, status) => {
+    const result = await backendAPI.put(
+      `${ApiPathConsts.PUT_PRODUCT_TRADE_RULES_STATUS.replace(":id", productId)}`,
+      null,
+      { status }
+    );
+    return result;
+  };
+
+  static addAvailableProduct = async (sourceId, targetId) => {
+    const result = await backendAPI.put(
+      ApiPathConsts.ADD_AVAILABLE_PRODUCT.replace(":sourceId", sourceId).replace(
+        ":targetId",
+        targetId
+      )
+    );
     return result;
   };
 }

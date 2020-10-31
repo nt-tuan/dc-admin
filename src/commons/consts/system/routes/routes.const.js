@@ -39,7 +39,9 @@ export class RouteConst extends SharedPaths {
       this.INTRODUCERS,
       this.INTRODUCER_DETAILS,
       this.INTRODUCER_EDIT,
-      this.CREATE_TRADE_RULES
+      this.CREATE_TRADE_RULES,
+      this.TRADE_RULES,
+      this.REQUESTED_PRODUCTS
     ];
   }
 

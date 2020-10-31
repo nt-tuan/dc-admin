@@ -136,7 +136,7 @@ const privateRoutes = [
   {
     path: RouteConst.EDIT_PRODUCT,
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
-    exact: true
+    exact: false
   },
   {
     path: RouteConst.REBATES,
@@ -241,6 +241,18 @@ const privateRoutes = [
     path: RouteConst.CREATE_TRADE_RULES,
     Component: loadable(() =>
       import("components/pages/create-trade-rules/create-trade-rules.page")
+    ),
+    exact: true
+  },
+  {
+    path: RouteConst.TRADE_RULES,
+    Component: loadable(() => import("components/pages/trade-rules/trade-rules.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.REQUESTED_PRODUCTS,
+    Component: loadable(() =>
+      import("components/pages/requested-products/requested-products.page")
     ),
     exact: true
   }

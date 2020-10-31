@@ -110,4 +110,10 @@ export class SharedPaths {
   static get CREATE_TRADE_RULES() {
     return "/create-trade-rules";
   }
+  static get TRADE_RULES() {
+    return "/trader-rules";
+  }
+  static get REQUESTED_PRODUCTS() {
+    return "/requested-products";
+  }
 }

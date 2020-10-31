@@ -132,6 +132,11 @@ export async function getUserData() {
           title: "Product Creation",
           key: "ProductCreation",
           url: RouteConst.ADD_PRODUCT
+        },
+        {
+          title: "Requested Products",
+          key: "RequestedProducts",
+          url: RouteConst.REQUESTED_PRODUCTS
         }
       ]
     },
@@ -177,6 +182,22 @@ export async function getUserData() {
           title: "Add Fund",
           key: "Add Fund",
           url: RouteConst.ADD_FUNDS
+        }
+      ]
+    },
+    {
+      title: "Trade Rules",
+      key: "TradeRules",
+      icon: "fe fe-navigation-2",
+      children: [
+        {
+          title: "Trade Rule",
+          key: "TradeRule",
+          url: RouteConst.TRADE_RULES
+        },
+        {
+          title: "Create Trade Rule",
+          key: "CreateTradeRule"
         }
       ]
     }
