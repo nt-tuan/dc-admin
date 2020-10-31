@@ -143,22 +143,3 @@ export const TradeRulesActiveTab = memo(() => {
     </section>
   );
 });
-
-// const mockData = [
-//   {
-//     timestamp: "2020-10-29T13:41:41.297Z",
-//     productCategory: "productCategory",
-//     type: "productType",
-//     productName: "productName",
-//     numberOfDocuments: "1",
-//     status: "ACTIVE"
-//   },
-//   {
-//     timestamp: "2020-10-29T13:41:41.297Z",
-//     productCategory: "productCategory",
-//     type: "productType",
-//     productName: "productName",
-//     numberOfDocuments: "1",
-//     status: "SUSPENDED"
-//   }
-// ];
