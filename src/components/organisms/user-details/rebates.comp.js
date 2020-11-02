@@ -11,7 +11,8 @@ export const RebatesInfo = ({
   companyId,
   username,
   setLoading,
-  getUserDetails
+  getUserDetails,
+  isEditable
 }) => {
   const handleDeleteRebate = (id) => {
     setLoading(true);
@@ -25,16 +26,18 @@ export const RebatesInfo = ({
     <Fragment>
       <div className="d-flex">
         <h5 className="text-danger">Rebates</h5>
-        <Link
-          to={{
-            pathname: RouteConst.CREATE_REBATES,
-            state: { toCompanyName: companyName, companyId: companyId, username: username }
-          }}
-        >
-          <Button className="px-2 ml-2">
-            <i className="fe fe-edit" />
-          </Button>
-        </Link>
+        {isEditable && (
+          <Link
+            to={{
+              pathname: RouteConst.CREATE_REBATES,
+              state: { toCompanyName: companyName, companyId: companyId, username: username }
+            }}
+          >
+            <Button className="px-2 ml-2">
+              <i className="fe fe-edit" />
+            </Button>
+          </Link>
+        )}
       </div>
       {data.map((rebate) => (
         <div key={rebate.id}>

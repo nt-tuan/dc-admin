@@ -5,7 +5,7 @@ import { UserManagementSellerTab } from "./tabs/user-mgt-seller-tab.comp";
 import { Helmet } from "react-helmet";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { RouteConst } from "commons/consts";
+import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 
 const TAB_KEYS = {
   BUYER: "BUYER",
@@ -43,13 +43,15 @@ export const UserManagementPage = () => {
           {renderTabButton("Buyer", BUYER)}
           {renderTabButton("Seller", SELLER)}
         </div>
-        <div title="Marketplace credit">
-          <Link to={RouteConst.CREDIT_USERS}>
-            <Button type="primary" className="mr-4">
-              Assign credit
-            </Button>
-          </Link>
-        </div>
+        {process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"] && (
+          <div title="Marketplace credit">
+            <Link to={RouteConst.CREDIT_USERS}>
+              <Button type="primary" className="mr-4">
+                Assign credit
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
       {tab === ALL_USER && renderAllUser()}
       {tab === BUYER && renderBuyer()}

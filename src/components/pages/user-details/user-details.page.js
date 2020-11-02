@@ -98,6 +98,7 @@ const UserDetails = () => {
               companyId={companyId}
               setLoading={setLoading}
               getUserDetails={getUserDetails}
+              isEditable={data.companyType !== "TRADER"}
             />
           </div>
           <div className="w-75 mt-3">
@@ -108,22 +109,25 @@ const UserDetails = () => {
               username={data.userInfo.username}
               setLoading={setLoading}
               getUserDetails={getUserDetails}
+              isEditable={data.companyType !== "TRADER"}
             />
           </div>
-          <div className="w-50 mt-3">
-            <h5 className="text-danger">Marketplace Credit</h5>
-            <Checkbox
-              checked={data.companyInfo.enableMarketplaceCredit}
-              onClick={() =>
-                handleMarketplaceCredit(
-                  data.companyInfo.id,
-                  !data.companyInfo.enableMarketplaceCredit
-                )
-              }
-            >
-              Enable Marketplace Credit for the user
-            </Checkbox>
-          </div>
+          {data.companyType !== "TRADER" && (
+            <div className="w-50 mt-3">
+              <h5 className="text-danger">Marketplace Credit</h5>
+              <Checkbox
+                checked={data.companyInfo.enableMarketplaceCredit}
+                onClick={() =>
+                  handleMarketplaceCredit(
+                    data.companyInfo.id,
+                    !data.companyInfo.enableMarketplaceCredit
+                  )
+                }
+              >
+                Enable Marketplace Credit for the user
+              </Checkbox>
+            </div>
+          )}
           {`${process.env.REACT_APP_COMPANY_NAME}` === "Extravaganza" ? (
             <div>
               <div className="w-50 mt-3">

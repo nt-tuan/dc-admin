@@ -7,7 +7,7 @@ import { AssignBadgesModal } from "components/molecules";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { UserService } from "services";
 
-export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
+export const Reputation = ({ data, companyId, setLoading, getUserDetails, isEditable }) => {
   const [isEdit, toggleIsEdit] = useBooleanState(false);
   const [badges, setBadges] = useState([]);
 
@@ -43,9 +43,11 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
     <Fragment>
       <div className="d-flex">
         <h5 className="text-danger">Reputation</h5>
-        <Button className="px-2 ml-2" onClick={() => toggleIsEdit()} title="Add badges">
-          <i className="fe fe-edit" />
-        </Button>
+        {isEditable && (
+          <Button className="px-2 ml-2" onClick={() => toggleIsEdit()} title="Add badges">
+            <i className="fe fe-edit" />
+          </Button>
+        )}
       </div>
       <div className="d-flex align-items-center h-100 mb-2">
         <strong className="mr-1 pt-2">Reputation: </strong>

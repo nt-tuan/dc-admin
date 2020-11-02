@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
 import { sortAlphabetically } from "utils/sort.util";
 import { Link } from "react-router-dom";
-import { RouteConst } from "commons/consts";
+import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 
 const FIELDS = {
   id: "id",
@@ -190,17 +190,18 @@ export const userMgtTableSchema = ({
       title: LABELS[FIELDS.enableProductCreation],
       dataIndex: FIELDS.enableProductCreation,
       key: FIELDS.enableProductCreation,
-      render: (isEnabled, { id }) => (
+      render: (isEnabled, { id, companyType }) => (
         <Switch
           checked={isEnabled}
           onChange={() => onHandleUpdateProductCreationPermission(id, !isEnabled)}
+          disabled={companyType === "TRADER"}
         />
       )
     },
     {
       title: "Manage",
       key: "manage",
-      render: ({ id, suspended, username }) => (
+      render: ({ id, suspended, username, companyType }) => (
         <Fragment>
           {suspended === true ? (
             <Button onClick={() => onUnlock(id)} type="primary" className="dtc-min-width-50 mr-2">
@@ -215,6 +216,7 @@ export const userMgtTableSchema = ({
             type="primary"
             className="dtc-min-width-50 mr-2"
             onClick={() => onViewAssignBadges(id)}
+            disabled={companyType === "TRADER"}
           >
             <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
           </Button>
@@ -228,7 +230,12 @@ export const userMgtTableSchema = ({
     }
   ];
 
-  if (hiddenStatus) columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.userStatus);
+  if (hiddenStatus) {
+    columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.userStatus);
+    if (process.env.REACT_APP_COMPANY_NAME === MARKETPLACE_NAME["8Corners"]) {
+      columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.enableMarketplaceCredit);
+    }
+  }
 
   return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
 };

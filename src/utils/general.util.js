@@ -144,15 +144,21 @@ export const areObjectValuesUndefined = (object) => {
   return values.every((v) => v === undefined);
 };
 
+const filterMenuData = (exceptionArr, menuData) =>
+  menuData.filter((item) => !exceptionArr.includes(item.key));
+
 export const getMenuData = (data) => {
   let menuData = data;
   switch (process.env.REACT_APP_COMPANY_NAME) {
     case MARKETPLACE_NAME["8Corners"]: {
+      const EightCornersException = ["Marketplace Credit"];
+      menuData = filterMenuData(EightCornersException, menuData);
       return menuData;
     }
     case MARKETPLACE_NAME.Extravaganza:
     default: {
-      menuData = menuData.filter((item) => item.title !== "Introducer");
+      const DefaultException = ["Introducer"];
+      menuData = filterMenuData(DefaultException, menuData);
       return menuData;
     }
   }
