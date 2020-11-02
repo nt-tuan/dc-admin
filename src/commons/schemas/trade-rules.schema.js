@@ -2,30 +2,34 @@ import { Button, Tag } from "antd";
 import { RouteConst } from "commons/consts";
 import React from "react";
 import { Link } from "react-router-dom";
-import { toCurrency } from "utils/general.util";
 import { sortAlphabetically } from "utils/sort.util";
 import { PlusOutlined, DeleteOutlined, PauseOutlined, FormOutlined } from "@ant-design/icons";
 
 const STATUS = {
   ACTIVE: "ACTIVE",
-  SUSPENDED: "SUSPENDED",
-  DELETE: "DELETED"
+  INACTIVE: "INACTIVE",
+  START: "START",
+  SUSPENDED: "SUSPEND",
+  DELETE: "DELETE"
 };
 
 const STATUS_LABELS = {
   [STATUS.ACTIVE]: "Active",
-  [STATUS.SUSPENDED]: "Suspended"
+  [STATUS.INACTIVE]: "Suspended"
 };
 
 const FIELDS = {
   id: "id",
-  timestamp: "timestamp",
-  category: "productCategory",
+  productId: "productId",
+  timestamp: "createdDate",
+  category: "category",
   categoryId: "productCategoryId",
-  type: "productType",
+  type: "type",
   typeId: "productTypeId",
   productName: "productName",
   manage: "manage",
+  productRuleResponseList: "productRuleResponseList",
+  routeDocumentTypeId: "routeDocumentTypeId",
   numberOfDocuments: "numberOfDocuments",
   status: "status"
 };
@@ -97,7 +101,7 @@ export const getTraderRulesActive = (handleSuspendTradeRulesModal, handleDeleteT
       sorter: (a, b) => a[FIELDS.numberOfDocuments] - b[FIELDS.numberOfDocuments],
       sortOrder: sortedInfo.columnKey === FIELDS.numberOfDocuments && sortedInfo.order,
       render: (numberOfDocuments) => (
-        <CustomHighlighter searchText={searchText} value={toCurrency(numberOfDocuments)} />
+        <CustomHighlighter searchText={searchText} value={`${numberOfDocuments}`} />
       )
     },
     {
@@ -119,7 +123,7 @@ export const getTraderRulesActive = (handleSuspendTradeRulesModal, handleDeleteT
         const { status, id } = trade;
         return (
           <>
-            <Link to={RouteConst.TRADE_RULES}>
+            <Link to={`${RouteConst.EDIT_TRADE_RULES}?id=${id}`}>
               <Button type="primary" className="dtc-min-width-50 mr-2" icon={<FormOutlined />} />
             </Link>
 
@@ -153,7 +157,7 @@ export const getTraderRulesActive = (handleSuspendTradeRulesModal, handleDeleteT
 
   return schema.filter((column) => !hiddenColumns.includes(column.key));
 };
-const getStatusClass = { ACTIVE: "dtc-bg-green", SUSPENDED: "dtc-bg-red" };
+const getStatusClass = { ACTIVE: "dtc-bg-green", INACTIVE: "dtc-bg-red" };
 
 export const getTraderRulesPending = () => (
   sortedInfo,
@@ -167,10 +171,10 @@ export const getTraderRulesPending = () => (
       title: LABELS[FIELDS.manage],
       key: FIELDS.manage,
       render: (trade) => {
-        const { id } = trade;
+        const { productId } = trade;
         return (
           <>
-            <Link to={RouteConst.TRADE_RULES}>
+            <Link to={`${RouteConst.EDIT_TRADE_RULES}?id=${productId}`}>
               <Button type="primary" icon={<PlusOutlined />} className="dtc-min-width-50 mr-2" />
             </Link>
           </>

@@ -1,4 +1,5 @@
 import { Table, Checkbox, message } from "antd";
+import isEmpty from "lodash/isEmpty";
 import React, {
   memo,
   useMemo,
@@ -9,28 +10,31 @@ import React, {
   forwardRef
 } from "react";
 
-import { TradeRuleService } from "services/trade-rule.service";
-
 const RULE_TYPE = {
-  IS_BUYER: "isBuyer",
-  IS_PRODUCER: "isProducer"
+  IS_BUYER: "BUYER",
+  IS_SELLER: "SELLER"
 };
 
 export const TradeRulesTable = memo(
-  forwardRef(({ selectedDoc }, tradeRuleTableRef) => {
+  forwardRef(({ selectedDoc, initialValues }, tradeRuleTableRef) => {
     const [tableValue, setTableValue] = useState({});
     const [ruleList, setRuleList] = useState([]);
+
     useImperativeHandle(tradeRuleTableRef, () => ({
       getTradeRuleData
     }));
 
     const getTradeRuleData = () => {
+      if (isEmpty(tableValue)) {
+        message.error(`Please select value for Documents`);
+        return;
+      }
       const invalidRow = Object.keys(tableValue).find((id) => {
         const rowValue = tableValue[id];
-        return !rowValue[RULE_TYPE.IS_PRODUCER] && !rowValue[RULE_TYPE.IS_BUYER];
+        return !rowValue[RULE_TYPE.IS_SELLER] && !rowValue[RULE_TYPE.IS_BUYER];
       });
       if (invalidRow) {
-        message.error(`Please select value for ${invalidRow}`);
+        message.error(`Please select value for ${tableValue[invalidRow]["docName"]}`);
         return;
       } else {
         return tableValue;
@@ -44,15 +48,15 @@ export const TradeRulesTable = memo(
         dataIndex: "docName"
       },
       {
-        title: "Producer",
-        key: RULE_TYPE.IS_PRODUCER,
-        dataIndex: RULE_TYPE.IS_PRODUCER,
+        title: "Seller",
+        key: RULE_TYPE.IS_SELLER,
+        dataIndex: RULE_TYPE.IS_SELLER,
         render: (isChecked, record) => {
           return (
             <Checkbox
               className="error"
               defaultChecked={isChecked}
-              onChange={(e) => onChangeRule(e, record, RULE_TYPE.IS_PRODUCER)}
+              onChange={(e) => onChangeRule(e, record, RULE_TYPE.IS_SELLER)}
             ></Checkbox>
           );
         }
@@ -74,44 +78,40 @@ export const TradeRulesTable = memo(
 
     const onChangeRule = useCallback(
       (event, record, type) => {
-        const currentRecordData = tableValue[record.id];
+        const currentRecordData = tableValue[record.key];
         setTableValue({
           ...tableValue,
-          [record.id]: { ...currentRecordData, [type]: event.target.checked }
+          [record.key]: { ...currentRecordData, [type]: event.target.checked }
         });
       },
       [tableValue]
     );
 
     useEffect(() => {
-      //api to get trade rule table
-      const listResponse = selectedDoc.map(async (docId) => {
-        // const rs = await TradeRuleService.getTradeRule(docId);
-        // return rs;
-        return new Promise((resolve) =>
-          setTimeout(
-            resolve({
-              id: "sampleId",
-              docName: "doc sample",
-              [RULE_TYPE.IS_PRODUCER]: false,
-              [RULE_TYPE.IS_BUYER]: false
-            })
-          )
-        );
-      });
+      if (initialValues) {
+        setTableValue(initialValues);
+        setRuleList(Object.values(initialValues));
+      }
+    }, [initialValues]);
 
-      Promise.all(listResponse).then((list) => {
-        const tableValue = {};
-        list.forEach((item) => {
-          const id = item.id;
-          tableValue[id] = {
-            [RULE_TYPE.IS_PRODUCER]: false,
+    useEffect(() => {
+      const tmpValue = {};
+      selectedDoc.forEach((doc) => {
+        if (Object.keys(tableValue).includes(doc.id)) {
+          tmpValue[doc.id] = tableValue[doc.id];
+        } else {
+          tmpValue[doc.id] = {
+            key: doc.id,
+            docName: doc.name,
+            [RULE_TYPE.IS_SELLER]: false,
             [RULE_TYPE.IS_BUYER]: false
           };
-        });
-        setRuleList(list);
-        setTableValue(tableValue);
+        }
       });
+      setTableValue(tmpValue);
+      setRuleList(Object.values(tmpValue));
+
+      // NOTE: DO NOT add dependency: 'tableValue'
     }, [selectedDoc]);
 
     const getRowKey = useMemo((doc) => doc?.id, []);

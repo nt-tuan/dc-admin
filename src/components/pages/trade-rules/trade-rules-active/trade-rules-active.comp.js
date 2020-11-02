@@ -2,11 +2,14 @@ import { Button, Col, Modal, Row } from "antd";
 import { getTraderRulesActive, TRADE_RULES_SCHEMA } from "commons/schemas/trade-rules.schema";
 import { DTCTable } from "components/atoms";
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { ProductService } from "services";
+import { ProductRuleService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
+import moment from "moment";
+import { DATETIME_FORMAT } from "commons/consts";
 
-const { STATUS } = TRADE_RULES_SCHEMA;
-export const TradeRulesActiveTab = memo(() => {
+const { STATUS, FIELDS } = TRADE_RULES_SCHEMA;
+export const TradeRulesActiveTab = memo((status) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
@@ -17,23 +20,34 @@ export const TradeRulesActiveTab = memo(() => {
   const getActiveData = useCallback(() => {
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
-      const result = await ProductService.getProductTradeRulesActive();
-      setData(result);
+      const result = await getAllRecordsFromAPI(ProductRuleService.getProductTradeRules, {
+        outerParams: status
+      });
+      setData(mapProductRules(result));
       setLoading(false);
     });
-  });
+  }, [status]);
+
+  const mapProductRules = (data) => {
+    return data.map((item) => {
+      item[FIELDS.timestamp] = moment(item[FIELDS.timestamp]).format(DATETIME_FORMAT);
+      item[FIELDS.id] = item[FIELDS.productId];
+      item[FIELDS.numberOfDocuments] = item[FIELDS.productRuleResponseList].length;
+      return item;
+    });
+  };
 
   useEffect(() => {
     getActiveData();
-  }, []);
+  }, [getActiveData]);
 
   const onSubmitSuspendTradeRule = () => {
     if (suspendedData) {
       setLoading(true);
       asyncErrorHandlerWrapper(async () => {
-        await ProductService.updateProductTradeRulesStatus(
+        await ProductRuleService.updateProductTradeRulesStatus(
           suspendedData.id,
-          suspendedData.status === STATUS.ACTIVE ? STATUS.SUSPENDED : STATUS.ACTIVE
+          suspendedData.status === STATUS.ACTIVE ? STATUS.SUSPENDED : STATUS.START
         );
         getActiveData();
         setIsShowSuspendModal(false);
@@ -44,7 +58,7 @@ export const TradeRulesActiveTab = memo(() => {
   const onSubmitDeleteTradeRule = () => {
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
-      await ProductService.updateProductTradeRulesStatus(deletedId, STATUS.DELETE);
+      await ProductRuleService.updateProductTradeRulesStatus(deletedId, STATUS.DELETE);
       getActiveData();
       setIsShowDeleteModal(false);
       setLoading(false);

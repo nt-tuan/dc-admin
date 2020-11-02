@@ -9,10 +9,11 @@ const defaultDocsProp = [];
 const defaultDocuments = [];
 
 export const DocumentList = ({
+  loadMoreButton,
   onChange,
   onTouch,
   documents = defaultDocuments,
-  disableCheckall = false,
+  disableCheckAll = false,
   title,
   defaultDocs = defaultDocsProp,
   defaultValue = defaultValueProp
@@ -26,12 +27,13 @@ export const DocumentList = ({
       const defaultDocIds = documents
         .filter((d) => defaultDocs.some((dd) => dd.id === d.id))
         .map((d) => d.id);
-      const list = uniq([...defaultDocIds, ...defaultValue]);
+      const list = uniq([...defaultDocIds, ...defaultValue, ...checkedList]);
       setCheckedList(list);
       setIndeterminate(list.length < documents.length && list.length > 0);
       setCheckAll(list.length === documents.length);
       onChange && onChange(list);
     }
+    // NOTE: DO NOT need to add dependency: 'checkedList'
   }, [documents, defaultDocs, onChange, defaultValue]);
 
   const handleChange = (checkedList) => {
@@ -46,6 +48,7 @@ export const DocumentList = ({
     const defaultDocIs = documents
       .filter((d) => defaultDocs.some((dd) => dd.id === d.id))
       .map((d) => d.id);
+
     setCheckedList(isChecked ? documents.map((d) => d.id) : defaultDocIs);
     setIndeterminate(isChecked ? false : true);
     setCheckAll(isChecked);
@@ -79,13 +82,13 @@ export const DocumentList = ({
             indeterminate={indeterminate}
             onChange={handleCheckAllChange}
             checked={checkAll}
-            disabled={documents.length === 0 || disableCheckall}
+            disabled={documents.length === 0 || disableCheckAll}
           >
             <b>Select all</b>
           </Checkbox>
         </div>
         <hr />
-        <CheckboxGroup onChange={handleChange} value={checkedList}>
+        <CheckboxGroup onChange={handleChange} value={checkedList} defaultValue={checkedList}>
           <Row>
             {documents.map((opt) => (
               <Col span={24} key={opt.id}>
@@ -101,6 +104,7 @@ export const DocumentList = ({
             ))}
           </Row>
         </CheckboxGroup>
+        {loadMoreButton}
       </div>
     </div>
   );
