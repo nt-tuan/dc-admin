@@ -40,10 +40,8 @@ export const UserManagementBuyerTab = () => {
   }, [getListBuyers]);
 
   const handleMarketplaceCredit = (id, isEnable) => {
-    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await UserService.manageMarketplaceCredit(id, isEnable);
-      getListBuyers();
     });
   };
 
