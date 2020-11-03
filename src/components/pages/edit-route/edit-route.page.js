@@ -364,7 +364,7 @@ const EditRoutePage = () => {
       <div>
         <h5>Documents</h5>
         <p>You can either select from the document list of or create a new document</p>
-        <p>Select the documents that required for this route</p>
+        <p>Select the documents required for this route</p>
         <Row gutter={[30, 0]}>
           <Col>
             <DocumentList
