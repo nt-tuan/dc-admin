@@ -9,7 +9,7 @@ export const ServicePage = () => {
 
   return (
     <ServicePageContainer
-      title="Service"
+      title="Services"
       renderLogisticProvider={renderLogisticProvider}
       renderInspectionProvider={renderInspectionProvider}
     />

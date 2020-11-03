@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Checkbox, Row, Col } from "antd";
+import { Typography, Checkbox, Row, Col, message } from "antd";
 import uniq from "lodash/uniq";
 
 const CheckboxGroup = Checkbox.Group;
@@ -57,6 +57,9 @@ export const DocumentList = ({
   };
 
   const handleCheckboxClick = (e, id) => {
+    if (!e.target.checked) {
+      message.error("Deleted successfully");
+    }
     onTouch && onTouch([id]);
   };
 

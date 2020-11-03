@@ -30,7 +30,7 @@ export const ServicePageContainer = memo(
       <article>
         <Helmet title={title} />
         <div className="flex mb-3 ml-2">
-          {renderTabButton("Logistic Provider", LOGISTIC_PROVIDER)}
+          {renderTabButton("Logistics Provider", LOGISTIC_PROVIDER)}
           {renderTabButton("Inspection Provider", INSPECTION_PROVIDER)}
         </div>
         {tab === LOGISTIC_PROVIDER && renderLogisticProvider()}

@@ -183,7 +183,10 @@ export const userMgtTableSchema = ({
       dataIndex: FIELDS.enableMarketplaceCredit,
       key: FIELDS.enableMarketplaceCredit,
       render: (isEnabled, { id }) => (
-        <Switch checked={isEnabled} onChange={() => onHandleMarketplaceCredit(id, !isEnabled)} />
+        <Switch
+          defaultChecked={isEnabled}
+          onChange={() => onHandleMarketplaceCredit(id, !isEnabled)}
+        />
       )
     },
     {
