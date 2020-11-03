@@ -42,8 +42,9 @@ export class RouteService {
     return result;
   };
 
-  static getDocuments = async () => {
-    const result = await backendAPI.get(`${this.#BASE_URL}/documents`);
+  static getDocuments = async (params) => {
+    const { page, size, sort } = params.params ? params.params : params;
+    const result = await backendAPI.get(`${this.#BASE_URL}/documents`, { page, size, sort });
     return result;
   };
 

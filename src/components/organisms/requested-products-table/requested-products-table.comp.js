@@ -5,9 +5,10 @@ import { DTCTable } from "components/atoms";
 import { AvailableProductModal } from "components/molecules";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ProductService } from "services";
+import { ProductRequestsService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import moment from "moment";
+import { getAllRecordsFromAPI } from "utils/general.util";
 
 export const RequestedProductsTable = memo(() => {
   const [showModalReject, setIsShowModalReject] = useState(false);
@@ -20,15 +21,18 @@ export const RequestedProductsTable = memo(() => {
   const [data, setData] = useState([]);
 
   const mapRequestedProductsData = (requestedProducts) => {
-    return requestedProducts.map((item) => {
-      item.timestamp = moment(item.timestamp).format(DATETIME_FORMAT);
-      return item;
-    });
+    if (requestedProducts && requestedProducts.length > 0) {
+      return requestedProducts.map((item) => {
+        item.timestamp = moment(item.createdDate).format(DATETIME_FORMAT);
+        return item;
+      });
+    }
+    return [];
   };
   const getRequestedProductsData = useCallback(() => {
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
-      const result = await ProductService.getRequestedProducts();
+      const result = await getAllRecordsFromAPI(ProductRequestsService.getRequestedProducts);
       setData(mapRequestedProductsData(result));
       setLoading(false);
     });
@@ -50,7 +54,7 @@ export const RequestedProductsTable = memo(() => {
 
   const onRejectRequest = () => {
     asyncErrorHandlerWrapper(async () => {
-      await ProductService.rejectProduct(removeData.id);
+      await ProductRequestsService.rejectProduct(removeData.id);
       getRequestedProductsData();
     });
     setIsShowModalReject(false);
@@ -97,16 +101,16 @@ export const RequestedProductsTable = memo(() => {
         footer={[
           <Row key="approve-product">
             <Col span={11}>
-              <Link
-                to={
-                  selectedData &&
-                  `${RouteConst.EDIT_PRODUCT.replace(":id", `${selectedData.productName}`)}?uid=${
-                    selectedData.id
-                  }&requestedProduct=true`
-                }
-              >
-                <Button type="primary">Create a new product</Button>
-              </Link>
+              {selectedData && (
+                <Link
+                  to={`${RouteConst.EDIT_PRODUCT.replace(
+                    ":id",
+                    `${selectedData.productName}`
+                  )}?uid=${selectedData.id}&requestedProduct=true`}
+                >
+                  <Button type="primary">Create a new product</Button>
+                </Link>
+              )}
             </Col>
             <Col span={11}>
               <Button

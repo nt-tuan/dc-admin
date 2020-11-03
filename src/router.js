@@ -238,6 +238,18 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.CREATE_TRADE_RULES,
+    Component: loadable(() =>
+      import("components/pages/create-trade-rules/create-trade-rules.page")
+    ),
+    exact: true
+  },
+  {
+    path: RouteConst.EDIT_TRADE_RULES,
+    Component: loadable(() => import("components/pages/edit-trade-rules/edit-trade-rules.page")),
+    exact: true
+  },
+  {
     path: RouteConst.TRADE_RULES,
     Component: loadable(() => import("components/pages/trade-rules/trade-rules.page")),
     exact: true

@@ -91,13 +91,13 @@ export const getRequestedProductsSchema = (onReject, onAccept) => (
       sortOrder:
         sortedInfo.columnKey === REQUESTED_PRODUCTS_FIELDS.numberOfRequests && sortedInfo.order,
       render: (product) => {
-        const { numberOfRequests, companyNames } = product;
+        const { numberOfRequests, companyNameList } = product;
         return (
           <Row>
             <Tooltip
               title={
                 <>
-                  {companyNames.map((company, index) => (
+                  {companyNameList.map((company, index) => (
                     <div key={index}>{company}</div>
                   ))}
                 </>

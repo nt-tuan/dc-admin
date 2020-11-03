@@ -11,4 +11,5 @@ export * from "./marketplace-credit.schema";
 export * from "./document.schema";
 export * from "./user.schema";
 export * from "./introducer.schema";
+export * from "./trade-rules.schema";
 export * from "./requested-products.schema";

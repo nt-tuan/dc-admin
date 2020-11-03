@@ -1,24 +1,28 @@
 import { getTraderRulesPending } from "commons/schemas/trade-rules.schema";
 import { DTCTable } from "components/atoms";
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { ProductService } from "services";
+import { ProductRuleService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
 
-export const TradeRulesPendingTab = memo(() => {
+export const TradeRulesPendingTab = memo((status) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
   const getPendingData = useCallback(() => {
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
-      const result = await ProductService.getProductTradeRulesPending();
+      const result = await getAllRecordsFromAPI(ProductRuleService.getProductTradeRules, {
+        outerParams: status
+      });
       setData(result);
       setLoading(false);
     });
-  });
+  }, [status]);
+
   useEffect(() => {
     getPendingData();
-  }, []);
+  }, [getPendingData]);
   const handleCreateTradeRules = () => {};
 
   return (

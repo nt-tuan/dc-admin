@@ -197,7 +197,8 @@ export async function getUserData() {
         },
         {
           title: "Create Trade Rule",
-          key: "CreateTradeRule"
+          key: "CreateTradeRule",
+          url: RouteConst.CREATE_TRADE_RULES
         }
       ]
     }

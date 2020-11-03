@@ -8,6 +8,8 @@ export class ApiPathConsts {
   static #PRODUCT_PREFIX = "/products";
   static #BRANDS_PREFIX = "/brands";
   static #REBATES_PREFIX = "/rebates";
+  static #PRODUCT_REQUEST_PREFIX = "/product-requests";
+  static #TRADE_RULE_PREFIX = "/product-rules";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -109,15 +111,8 @@ export class ApiPathConsts {
     return `${this.#PRODUCT_PREFIX}/images`;
   }
 
-  static get GET_REQUESTED_PRODUCTS() {
-    return `${this.#PRODUCT_PREFIX}/product-pending`;
-  }
-
-  static get REJECT_REQUESTED_PRODUCTS() {
-    return `${this.#PRODUCT_PREFIX}/reject/:id`;
-  }
   static get GET_PRODUCT_NAMES_BY_TYPE_ID() {
-    return `${this.#PRODUCT_PREFIX}/products`;
+    return `${this.#PRODUCT_PREFIX}/types/:id`;
   }
   static get ADD_AVAILABLE_PRODUCT() {
     return `${this.#PRODUCT_PREFIX}/map/:sourceId/:targetId`;
@@ -145,13 +140,29 @@ export class ApiPathConsts {
   static get UPDATE_PRODUCT_CREATION_PERMISSION() {
     return `${this.#COMPANY_PREFIX}/:companyId/productCreation?isEnable=`;
   }
-  static get GET_PRODUCT_TRADE_RULES_PENDING() {
-    return `${this.#PRODUCT_PREFIX}/product-rule-pending`;
+
+  static get GET_PRODUCTS_REQUESTS() {
+    return this.#PRODUCT_REQUEST_PREFIX;
   }
-  static get GET_PRODUCT_TRADE_RULES_ACTIVE() {
-    return `${this.#PRODUCT_PREFIX}/product-has-rule`;
+
+  static get DELETE_PRODUCTS_REQUESTS() {
+    return `${this.#PRODUCT_REQUEST_PREFIX}/:id`;
   }
-  static get PUT_PRODUCT_TRADE_RULES_STATUS() {
-    return `${this.#PRODUCT_PREFIX}/rule-status/:id`;
+
+  static get GET_PRODUCT_TRADE_RULES_STATUS() {
+    return `${this.#TRADE_RULE_PREFIX}/rule-status/:id`;
+  }
+
+  static get GET_PRODUCT_TRADE_RULES() {
+    return this.#TRADE_RULE_PREFIX;
+  }
+  static get GET_PRODUCT_TRADE_RULE_DETAIL() {
+    return `${this.#TRADE_RULE_PREFIX}/:id`;
+  }
+  static get PUT_PRODUCT_TRADE_RULE_DETAIL() {
+    return `${this.#TRADE_RULE_PREFIX}/:id`;
+  }
+  static get POST_PRODUCT_TRADE_RULE_DETAIL() {
+    return `${this.#TRADE_RULE_PREFIX}/:id`;
   }
 }

@@ -40,7 +40,7 @@ const TradeRulesPage = memo(() => {
           {renderTabButton("Pending", PENDING)}
         </Col>
         <Col className="mr-4">
-          <Link to={RouteConst.TRADE_RULES}>
+          <Link to={RouteConst.CREATE_TRADE_RULES}>
             <Button type="primary">Create Trade Rules</Button>
           </Link>
         </Col>
