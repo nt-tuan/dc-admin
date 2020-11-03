@@ -262,7 +262,7 @@ const AddRoutePage = () => {
             create a new document
           </span>
         </p>
-        <p>Select the documents that required for this route</p>
+        <p>Select the documents required for this route</p>
         <Row gutter={[30, 0]}>
           <Col>
             <DocumentList
