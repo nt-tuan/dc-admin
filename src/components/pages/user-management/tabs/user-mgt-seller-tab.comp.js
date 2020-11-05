@@ -93,6 +93,7 @@ export const UserManagementSellerTab = () => {
       />
 
       <AssignBadgesModal
+        assignedBadgesId={data?.find((comp) => comp.id === currentCompanyId)?.badgeDTOList}
         badges={badges}
         showForm={showAssignBadgeForm}
         toggleShowForm={toggleShowAssignBadgeForm}
