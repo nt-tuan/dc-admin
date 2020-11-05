@@ -66,6 +66,10 @@ body {
     background-color: transparent;
   }
 
+  .ant-form-item-has-error .ant-input-disabled {
+    border-color: $red;
+  }
+
   .ant-table-thead > tr > th {
     font-weight: 600;
   }
