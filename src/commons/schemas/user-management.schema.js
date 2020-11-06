@@ -157,18 +157,30 @@ export const userMgtTableSchema = ({
       key: FIELDS.badges,
       // sorter: (a, b) => a.reputationList.value - b.reputationList.value,
       // sortOrder: sortedInfo.columnKey === FIELDS.reputationList && sortedInfo.order,
-      render: (badges) => (
-        <Fragment>
-          <div className="d-flex align-items-center h-100">
-            {badges &&
-              badges
-                .sort((a, b) => b.value - a.value)
-                .map((badge, index) => (
-                  <UserBadge key={badge.type} type={badge.type} value={badge.value} />
-                ))}
-          </div>
-        </Fragment>
-      )
+      render: (badges, record) => {
+        const { badgeDTOList } = record;
+        return (
+          <Fragment>
+            <div className="d-flex align-items-center h-100">
+              {badges &&
+                badges
+                  .sort((a, b) => b.value - a.value)
+                  .map((badge, index) => (
+                    <UserBadge key={badge.type} type={badge.type} value={badge.value} />
+                  ))}
+              {badgeDTOList.map((badge) => {
+                return (
+                  <span className="pr-1 pl-1 d-block mr-1" style={{ width: 40 }}>
+                    <div title={badge.name} style={{ width: 40, height: 40 }}>
+                      <img height={40} width={40} src={badge.url} alt={""} />
+                    </div>
+                  </span>
+                );
+              })}
+            </div>
+          </Fragment>
+        );
+      }
     },
     {
       title: LABELS[FIELDS.userStatus],

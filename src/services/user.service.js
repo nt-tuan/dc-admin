@@ -63,9 +63,20 @@ export class UserService {
     return result;
   };
 
-  static assignBadge = async ({ companyId, type }) => {
+  static getAllBadges = async () => {
+    const result = await backendAPI.get(ApiPathConsts.GET_ALL_BADGES);
+    return result;
+  };
+
+  static assignBadges = async (data) => {
+    const { companyId, badgeIdList } = data;
+    let queryString = "";
+    badgeIdList.forEach((id, index) => {
+      const operator = index === 0 ? "?" : "&";
+      queryString = `${queryString}${operator}badgeIdList=${id}`;
+    });
     const result = await backendAPI.post(
-      `${ApiPathConsts.ASSIGN_BADGE_TO_USER.replace(":companyId", companyId)}?type=${type}`
+      `${ApiPathConsts.GET_ALL_BADGES}/${companyId}${queryString}`
     );
     return result;
   };

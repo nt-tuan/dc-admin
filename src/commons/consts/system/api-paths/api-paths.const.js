@@ -10,6 +10,7 @@ export class ApiPathConsts {
   static #REBATES_PREFIX = "/rebates";
   static #PRODUCT_REQUEST_PREFIX = "/product-requests";
   static #TRADE_RULE_PREFIX = "/product-rules";
+  static #BADGE = "/badges";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -38,7 +39,9 @@ export class ApiPathConsts {
   static get GET_AVAILABLE_BADGES() {
     return `${this.#USER_MANAGEMENT_PREFIX}/:companyId/badge/type`;
   }
-
+  static get GET_ALL_BADGES() {
+    return `${this.#BADGE}`;
+  }
   static get LOGIN() {
     return `${this.#PUBLIC_PREFIX}/login`;
   }

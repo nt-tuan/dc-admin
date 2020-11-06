@@ -101,7 +101,7 @@ export const CreditRequestTab = () => {
   };
 
   const checkEnabledBtn = () => {
-    return data.length === 1 ? selectedRowKeys.length === 1 : selectedRowKeys.length >= 2;
+    return selectedRowKeys.length >= 1;
   };
 
   const renderTableSettingModal = () => {
