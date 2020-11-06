@@ -7,7 +7,7 @@ import { AssignBadgesModal } from "components/molecules";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { UserService } from "services";
 
-export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
+export const Reputation = ({ data, companyId, setLoading, getUserDetails, user }) => {
   const [isEdit, toggleIsEdit] = useBooleanState(false);
   const [badges, setBadges] = useState([]);
 
@@ -27,6 +27,16 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
     await getUserDetails();
     getBadges();
   };
+  const handleRemoveAssignedBadge = async (removeId) => {
+    asyncErrorHandlerWrapper(async () => {
+      const currentAssignedBadgesID = assignedBadges.map((badge) => badge.id);
+      await UserService.assignBadges({
+        companyId,
+        badgeIdList: currentAssignedBadgesID.filter((badgeId) => badgeId !== removeId)
+      });
+      await getUserDetails();
+    });
+  };
 
   const renderPopoverContent = (type) => (
     <Fragment>
@@ -38,6 +48,19 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
       </div>
     </Fragment>
   );
+
+  const renderRemoveAssignedBadge = (id) => (
+    <Fragment>
+      <div>Do you want to remove this badge?</div>
+      <div className="text-center mt-2">
+        <Button type="primary" onClick={() => handleRemoveAssignedBadge(id)}>
+          Yes
+        </Button>
+      </div>
+    </Fragment>
+  );
+
+  const assignedBadges = user?.companyInfo?.badgeList;
 
   return (
     <Fragment>
@@ -72,9 +95,19 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails }) => {
                   )}
                 </div>
               ))}
+          {assignedBadges?.map((badge) => (
+            <Popover content={renderRemoveAssignedBadge(badge.id)}>
+              <span className="pr-1 pl-1 d-block mr-1" style={{ width: 40 }}>
+                <div title={badge.name} style={{ width: 40, height: 40 }}>
+                  <img height={40} width={40} src={badge.url} alt={""} />
+                </div>
+              </span>
+            </Popover>
+          ))}
         </div>
       </div>
       <AssignBadgesModal
+        assignedBadgesId={assignedBadges}
         badges={badges}
         showForm={isEdit}
         toggleShowForm={toggleIsEdit}
