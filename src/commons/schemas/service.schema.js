@@ -11,7 +11,7 @@ const FIELDS = {
 };
 
 const LOGISTIC_PROVIDER_LABELS = {
-  [FIELDS.name]: "Logistic Provider Name",
+  [FIELDS.name]: "Logistics Provider Name",
   [FIELDS.reputation]: "Reputation",
   [FIELDS.status]: "Status"
 };
