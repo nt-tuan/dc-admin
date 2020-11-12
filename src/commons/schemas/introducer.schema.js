@@ -41,7 +41,7 @@ const LABELS = {
   [FIELDS.numberOfTraders]: "Number of Traders",
   [FIELDS.numberOfTrade]: "Number of successful trade done by traders",
   [FIELDS.status]: "Status",
-  [FIELDS.totalCommission]: "Total Commission paid to Introducer (CAD)",
+  [FIELDS.totalCommission]: "Total Commission paid to Introducer",
   [FIELDS.username]: "Introducer’s username",
   [FIELDS.firstName]: "First name",
   [FIELDS.lastName]: "Last name",
