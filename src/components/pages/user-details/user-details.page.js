@@ -95,6 +95,7 @@ const UserDetails = () => {
                 reputation: data.companyInfo.reputation,
                 reputationList: data.companyInfo.reputationList
               }}
+              user={data}
               companyId={companyId}
               setLoading={setLoading}
               getUserDetails={getUserDetails}

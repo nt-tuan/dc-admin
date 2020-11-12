@@ -40,10 +40,8 @@ export const UserManagementBuyerTab = () => {
   }, [getListBuyers]);
 
   const handleMarketplaceCredit = (id, isEnable) => {
-    setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       await UserService.manageMarketplaceCredit(id, isEnable);
-      getListBuyers();
     });
   };
 
@@ -94,6 +92,7 @@ export const UserManagementBuyerTab = () => {
       />
 
       <AssignBadgesModal
+        assignedBadgesId={data?.find((comp) => comp.id === currentCompanyId)?.badgeDTOList}
         badges={badges}
         showForm={showAssignBadgeForm}
         toggleShowForm={toggleShowAssignBadgeForm}

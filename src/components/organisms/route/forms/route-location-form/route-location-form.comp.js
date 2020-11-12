@@ -115,7 +115,7 @@ export const RouteLocationForm = forwardRef(
               className="col-12 col-lg-6 mx-0 mt-2"
               rules={[{ required: true, message: "Please input From Country" }]}
             >
-              <Select style={{ width: 200 }}>
+              <Select disabled={isEdit} style={{ width: 200 }}>
                 {countriesFrom.map((c) => (
                   <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
                     {c.name}
@@ -131,7 +131,7 @@ export const RouteLocationForm = forwardRef(
               className="col-12 col-lg-6 mx-0 mt-2"
               rules={[{ required: true, message: "Please input To Country" }]}
             >
-              <Select style={{ width: 200 }}>
+              <Select disabled={isEdit} style={{ width: 200 }}>
                 {countriesTo.map((c) => (
                   <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
                     {c.name}
@@ -153,7 +153,7 @@ export const RouteLocationForm = forwardRef(
               }
             ]}
           >
-            <Select style={{ width: 200 }} onChange={handleCategoryChange}>
+            <Select disabled={isEdit} style={{ width: 200 }} onChange={handleCategoryChange}>
               {categories.map((c) => (
                 <Select.Option value={c.id} key={c.id}>
                   {c.name}
@@ -172,7 +172,7 @@ export const RouteLocationForm = forwardRef(
               }
             ]}
           >
-            <Select style={{ width: 200 }} onChange={handleTypeChange}>
+            <Select disabled={isEdit} style={{ width: 200 }} onChange={handleTypeChange}>
               {types.map((t) => (
                 <Select.Option value={t.id} key={t.id}>
                   {t.name}

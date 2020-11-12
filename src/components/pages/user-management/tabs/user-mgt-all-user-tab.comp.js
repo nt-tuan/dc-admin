@@ -104,14 +104,17 @@ export const UserManagementAllUserTab = () => {
         innerText="Please note that if you disable the account, all the actions and processes of this user will be suspended."
       />
 
-      <AssignBadgesModal
-        badges={badges}
-        showForm={showAssignBadgeForm}
-        toggleShowForm={toggleShowAssignBadgeForm}
-        companyId={currentCompanyId}
-        getListUsers={getListAllUsers}
-        setLoading={setLoading}
-      />
+      {showAssignBadgeForm && (
+        <AssignBadgesModal
+          assignedBadgesId={data?.find((comp) => comp.id === currentCompanyId)?.badgeDTOList}
+          badges={badges}
+          showForm={showAssignBadgeForm}
+          toggleShowForm={toggleShowAssignBadgeForm}
+          companyId={currentCompanyId}
+          getListUsers={getListAllUsers}
+          setLoading={setLoading}
+        />
+      )}
     </Fragment>
   );
 };

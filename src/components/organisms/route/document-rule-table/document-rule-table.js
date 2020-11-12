@@ -80,7 +80,7 @@ const EditableCell = ({
             allowClear
             disabled={record.disabled}
           >
-            {["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"]
+            {["Seller", "Buyer", "Logistics Service Provider", "Inspection Provider"]
               .filter((actor) => selectedActors[actor] === undefined)
               .map((item) => (
                 <Select.Option value={item} key={item}>
@@ -173,7 +173,7 @@ export const DocumentRuleTable = forwardRef(({ data }, ref) => {
           let initSelectedActors = {};
           Object.keys(record).forEach((actor) => {
             if (
-              ["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"].includes(
+              ["Seller", "Buyer", "Logistics Service Provider", "Inspection Provider"].includes(
                 record[actor]
               ) === false
             ) {
