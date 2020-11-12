@@ -90,7 +90,8 @@ export const DTCTable = React.memo(
             pagination={{
               pageSize: itemsPerPage,
               total: filtered.length,
-              showTotal: (total, range) => `${range[0]} to ${range[1]} of ${total} entries`,
+              showTotal: (total, range) =>
+                `Showing ${range[0]} to ${range[1]} of Total ${total} entries`,
               showLessItems: true,
               onChange: (page, pageSize) => {
                 setCurrentPage(page);
