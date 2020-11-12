@@ -28,7 +28,7 @@ export const ServicePageContainer = memo(
 
     return (
       <article>
-        <Helmet title={"title"} />
+        <Helmet title={title} />
         <div className="flex mb-3 ml-2">
           {renderTabButton("Logistics Provider", LOGISTIC_PROVIDER)}
           {renderTabButton("Inspection Provider", INSPECTION_PROVIDER)}
