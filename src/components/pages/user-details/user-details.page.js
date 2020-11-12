@@ -1,4 +1,4 @@
-import { Checkbox } from "antd";
+import { Checkbox, Button } from "antd";
 import { LoadingIndicator } from "components/atoms";
 import {
   CompanyInfo,
@@ -14,12 +14,15 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { UserService, CompanyService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { Helmet } from "react-helmet";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { RouteConst } from "commons/consts";
 
 const UserDetails = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const { username, companyId } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const history = useHistory();
 
   const getUserDetails = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -153,6 +156,9 @@ const UserDetails = () => {
               </div>
             </div>
           ) : null}
+          <div className="mt-2 text-center">
+            <Button onClick={() => history.push(RouteConst.USER_MANAGEMENT)}>Back</Button>
+          </div>
         </div>
       )}
     </Fragment>
