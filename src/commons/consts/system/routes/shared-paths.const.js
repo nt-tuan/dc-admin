@@ -24,7 +24,7 @@ export class SharedPaths {
     return "/new-user";
   }
   static get SERVICE() {
-    return "/service";
+    return "/services";
   }
   static get WALLET() {
     return "/wallet";
@@ -33,7 +33,7 @@ export class SharedPaths {
     return "/account-summary";
   }
   static get WITHDRAW_FUND() {
-    return "/withdraw-fund";
+    return "/withdraw-funds";
   }
   static get ADD_FUNDS() {
     return "/add-funds";

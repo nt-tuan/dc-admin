@@ -47,13 +47,13 @@ const USER_MGT_STATUS = {
 };
 
 const USER_MGT_STATUS_LABELS = {
-  [USER_MGT_STATUS.LIVE_SELLER]: "Live Sellers",
-  [USER_MGT_STATUS.SELLING_SELLER]: "Selling Sellers",
-  [USER_MGT_STATUS.INACTIVE_SELLER]: "Inactive Sellers",
+  [USER_MGT_STATUS.LIVE_SELLER]: "Live Seller",
+  [USER_MGT_STATUS.SELLING_SELLER]: "Selling Seller",
+  [USER_MGT_STATUS.INACTIVE_SELLER]: "Inactive Seller",
   [USER_MGT_STATUS.SUSPENDED]: "Suspended",
-  [USER_MGT_STATUS.LIVE_BUYER]: "Live Buyers",
-  [USER_MGT_STATUS.BUYING_BUYER]: "Buying Buyers",
-  [USER_MGT_STATUS.INACTIVE_BUYER]: "Inactive Buyers"
+  [USER_MGT_STATUS.LIVE_BUYER]: "Live Buyer",
+  [USER_MGT_STATUS.BUYING_BUYER]: "Buying Buyer",
+  [USER_MGT_STATUS.INACTIVE_BUYER]: "Inactive Buyer"
 };
 
 const BADGE_TYPES = {

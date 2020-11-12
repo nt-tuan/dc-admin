@@ -226,7 +226,7 @@ export const CreateIntroducerForm = memo(
             })}
           </Row>
         ))}
-        <h5>Assign Traders</h5>
+        <h5>Assign Traders (Optional)</h5>
         <h6>Please assign Traders to the Introducer</h6>
         <Row className={isSmallDevice ? null : "my-3"} key="trader-user-name">
           <Form.Item
