@@ -363,7 +363,20 @@ const EditRoutePage = () => {
       <Divider />
       <div>
         <h5>Documents</h5>
-        <p>You can either select from the document list of or create a new document</p>
+        <p>
+          You can either select from the document list or{" "}
+          <Link
+            style={{ cursor: "pointer" }}
+            to={{
+              pathname: RouteConst.DOCUMENT,
+              search: "?showCreateDocument=true",
+              state: { previousPage: `${location.pathname}${location.search}` }
+            }}
+            className="text-primary"
+          >
+            create a new document
+          </Link>
+        </p>
         <p>Select the documents required for this route</p>
         <Row gutter={[30, 0]}>
           <Col>
