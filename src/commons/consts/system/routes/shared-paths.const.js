@@ -111,7 +111,7 @@ export class SharedPaths {
     return "/create-trade-rules";
   }
   static get TRADE_RULES() {
-    return "/trader-rules";
+    return "/trade-rules";
   }
   static get EDIT_TRADE_RULES() {
     return "/edit-trader-rules";

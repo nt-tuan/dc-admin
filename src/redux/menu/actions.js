@@ -191,12 +191,12 @@ export async function getUserData() {
       icon: "fe fe-navigation-2",
       children: [
         {
-          title: "Trade Rule",
+          title: "Trade Rules",
           key: "TradeRule",
           url: RouteConst.TRADE_RULES
         },
         {
-          title: "Create Trade Rule",
+          title: "Create Trade Rules",
           key: "CreateTradeRule",
           url: RouteConst.CREATE_TRADE_RULES
         }
