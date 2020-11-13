@@ -10,6 +10,8 @@ import {
 import { NotificationList } from "../notification-list/notification-list.comp";
 import styles from "./style.module.scss";
 import { RouteConst } from "commons/consts";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { setNotificationsRead } from "services";
 
 const _Actions = ({ list, isLoadingNewMessage }) => {
   const dispatch = useDispatch();
@@ -17,7 +19,7 @@ const _Actions = ({ list, isLoadingNewMessage }) => {
 
   const handleViewNotification = () => {
     dispatch({ type: NOTI_DUCK.HAS_VIEW_NEW_MESSAGE });
-    // asyncErrorHandlerWrapper(async () => await setNotificationsRead());
+    asyncErrorHandlerWrapper(async () => await setNotificationsRead());
   };
 
   const menu = (
