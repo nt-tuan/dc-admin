@@ -57,7 +57,7 @@ export const DefaultRouteTab = () => {
           asyncErrorHandlerWrapper(async () => {
             await RouteService.delete(id);
             getData();
-            message.success("Delete Successfully!");
+            message.success("Deleted Successfully!");
           });
         }
       });

@@ -72,7 +72,7 @@ export const RouteTab = () => {
           asyncErrorHandlerWrapper(async () => {
             await RouteService.delete(id);
             getData(status, setFn);
-            message.success("Delete Successfully!");
+            message.success("Deleted Successfully!");
           });
         }
       });
