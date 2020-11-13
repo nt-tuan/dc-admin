@@ -115,7 +115,7 @@ const OrderActiveTab = () => {
           if (showCreateDocument && routeState) {
             history.push(routeState.previousPage);
           } else {
-            message.success("Create Successfully");
+            message.success("Created Successfully");
             handleGetAllDocs();
           }
         } catch (error) {

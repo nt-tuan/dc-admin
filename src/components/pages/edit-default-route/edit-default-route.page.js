@@ -119,7 +119,7 @@ const EditRoutePage = () => {
 
         try {
           await RouteService.edit(routeDetails.id, composedValues);
-          message.success("Create Successfully");
+          message.success("Created Successfully");
           history.push(RouteConst.ROUTE);
         } catch (error) {
           if (error.message === "400") {
