@@ -8,3 +8,7 @@ export const getNotificationList = async (page = 0, size = 5) => {
   });
   return result;
 };
+
+export const setNotificationsRead = async () => {
+  await backendAPI.put("/me/notifications/read");
+};
