@@ -32,6 +32,7 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       onError(error);
     }
   };
+  console.log("form.getFieldValue(documentType)", form.getFieldValue("documentType"));
 
   return (
     <Form
@@ -83,9 +84,9 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
                 return Promise.resolve();
               }
               const documentType = form.getFieldValue("documentType");
-              return fileList[0].type === documentType
+              return fileList[0].type === FILE_TYPES[documentType]
                 ? Promise.resolve()
-                : Promise.reject("Please upload file with type as Document Type");
+                : Promise.reject("Please upload a file with type as Document Type");
             }
           }
         ]}
@@ -125,4 +126,9 @@ const fileTypes = [
 const acceptTypes = {
   PDF: ".pdf",
   XLSX: ".xlsx"
+};
+
+const FILE_TYPES = {
+  PDF: "application/pdf",
+  XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 };
