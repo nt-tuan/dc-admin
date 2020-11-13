@@ -63,14 +63,14 @@ export async function getUserData() {
       icon: "fe fe-award",
       children: [
         {
-          title: "Create Introducer",
-          key: "Create Introducer",
-          url: RouteConst.CREATE_INTRODUCER
-        },
-        {
           title: "Introducers",
           key: "Introducers",
           url: RouteConst.INTRODUCERS
+        },
+        {
+          title: "Create Introducer",
+          key: "Create Introducer",
+          url: RouteConst.CREATE_INTRODUCER
         }
       ]
     },
