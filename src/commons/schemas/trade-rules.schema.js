@@ -39,7 +39,7 @@ const LABELS = {
   [FIELDS.category]: "Product Category",
   [FIELDS.type]: "Product Type",
   [FIELDS.productName]: "Product Name",
-  [FIELDS.numberOfDocuments]: "No of Document",
+  [FIELDS.numberOfDocuments]: "No of Documents",
   [FIELDS.status]: "Status",
   [FIELDS.manage]: "Manage"
 };
