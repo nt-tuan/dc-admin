@@ -220,7 +220,7 @@ const AddRoutePage = () => {
         });
         try {
           await RouteService.create(composedValues);
-          message.success("Create Successfully");
+          message.success("Created Successfully");
           history.push(RouteConst.ROUTE);
         } catch (error) {
           if (error instanceof APIError) {
