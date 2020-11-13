@@ -136,18 +136,18 @@ const AddRoutePage = () => {
       <div>
         <h5>Documents</h5>
         <p>
-          You can either select from the document list of or{" "}
-          <span
-            className="text-primary"
+          You can either select from the document list or{" "}
+          <Link
             style={{ cursor: "pointer" }}
-            onClick={() =>
-              history.push(`${RouteConst.DOCUMENT}?showCreateDocument=true`, {
-                previousPage: RouteConst.ADD_DEFAULT_ROUTE
-              })
-            }
+            to={{
+              pathname: RouteConst.DOCUMENT,
+              search: "?showCreateDocument=true",
+              state: { previousPage: RouteConst.ADD_DEFAULT_ROUTE }
+            }}
+            className="text-primary"
           >
             create a new document
-          </span>
+          </Link>
         </p>
         <p>Select the documents required for this route</p>
 
