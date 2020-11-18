@@ -141,6 +141,23 @@ export async function getUserData() {
       ]
     },
     {
+      title: "Trade Rules",
+      key: "TradeRules",
+      icon: "fe fe-navigation-2",
+      children: [
+        {
+          title: "Trade Rules",
+          key: "TradeRule",
+          url: RouteConst.TRADE_RULES
+        },
+        {
+          title: "Create Trade Rules",
+          key: "CreateTradeRule",
+          url: RouteConst.CREATE_TRADE_RULES
+        }
+      ]
+    },
+    {
       title: "Analytics",
       key: "Analytics",
       icon: "fe fe-pie-chart",
@@ -182,23 +199,6 @@ export async function getUserData() {
           title: "Add Fund",
           key: "Add Fund",
           url: RouteConst.ADD_FUNDS
-        }
-      ]
-    },
-    {
-      title: "Trade Rules",
-      key: "TradeRules",
-      icon: "fe fe-navigation-2",
-      children: [
-        {
-          title: "Trade Rules",
-          key: "TradeRule",
-          url: RouteConst.TRADE_RULES
-        },
-        {
-          title: "Create Trade Rules",
-          key: "CreateTradeRule",
-          url: RouteConst.CREATE_TRADE_RULES
         }
       ]
     }
