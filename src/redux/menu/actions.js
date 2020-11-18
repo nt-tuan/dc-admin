@@ -44,17 +44,17 @@ export async function getUserData() {
           title: "New User",
           key: "New Users",
           url: RouteConst.NEW_USER
-        },
-        {
-          title: "Rebates",
-          key: "Rebates",
-          url: RouteConst.REBATES
-        },
-        {
-          title: "Create Rebates",
-          key: "Create Rebates",
-          url: RouteConst.CREATE_REBATES
         }
+        // {
+        //   title: "Rebates",
+        //   key: "Rebates",
+        //   url: RouteConst.REBATES
+        // },
+        // {
+        //   title: "Create Rebates",
+        //   key: "Create Rebates",
+        //   url: RouteConst.CREATE_REBATES
+        // }
       ]
     },
     {
@@ -74,28 +74,28 @@ export async function getUserData() {
         }
       ]
     },
-    {
-      title: "Marketplace Credit",
-      key: "Marketplace Credit",
-      icon: "fe fe-credit-card",
-      children: [
-        {
-          title: "Credit Request",
-          key: "Credit Request",
-          url: RouteConst.CREDIT_REQUEST
-        },
-        {
-          title: "Credit Status",
-          key: "Credit Status",
-          url: RouteConst.CREDIT_STATUS
-        },
-        {
-          title: "Users",
-          key: "Users",
-          url: RouteConst.CREDIT_USERS
-        }
-      ]
-    },
+    // {
+    //   title: "Marketplace Credit",
+    //   key: "Marketplace Credit",
+    //   icon: "fe fe-credit-card",
+    //   children: [
+    //     {
+    //       title: "Credit Request",
+    //       key: "Credit Request",
+    //       url: RouteConst.CREDIT_REQUEST
+    //     },
+    //     {
+    //       title: "Credit Status",
+    //       key: "Credit Status",
+    //       url: RouteConst.CREDIT_STATUS
+    //     },
+    //     {
+    //       title: "Users",
+    //       key: "Users",
+    //       url: RouteConst.CREDIT_USERS
+    //     }
+    //   ]
+    // },
     {
       title: "Routes",
       key: "RoutesMain",
@@ -128,11 +128,11 @@ export async function getUserData() {
           key: "Database",
           url: RouteConst.PRODUCT_DATABASE
         },
-        {
-          title: "Product Creation",
-          key: "ProductCreation",
-          url: RouteConst.ADD_PRODUCT
-        },
+        // {
+        //   title: "Product Creation",
+        //   key: "ProductCreation",
+        //   url: RouteConst.ADD_PRODUCT
+        // },
         {
           title: "Requested Products",
           key: "RequestedProducts",
