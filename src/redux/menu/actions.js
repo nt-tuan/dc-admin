@@ -123,11 +123,11 @@ export async function getUserData() {
       key: "Product",
       icon: "fe fe-package",
       children: [
-        {
-          title: "Database",
-          key: "Database",
-          url: RouteConst.PRODUCT_DATABASE
-        },
+        // {
+        //   title: "Database",
+        //   key: "Database",
+        //   url: RouteConst.PRODUCT_DATABASE
+        // },
         // {
         //   title: "Product Creation",
         //   key: "ProductCreation",
