@@ -1,28 +1,14 @@
 @import "assets/styles/mixins.scss";
 
-#left {
-  background: url("../../assets/images/login/login-left-top.png") no-repeat;
-  min-height: 100px;
-  background-size: contain;
-}
-
-#right {
-  background: url("../../assets/images/login/login-right.png") no-repeat;
-  background-size: contain;
-  background-position: bottom;
-}
+// #right {
+//   background: url("../../assets/images/login/login-right.png") no-repeat;
+//   background-size: contain;
+//   background-position: bottom;
+// }
 
 #logo {
   margin-top: -4rem;
   max-height: 5rem;
-}
-
-@media only screen and (min-width: 768px) {
-  #left {
-    background: url("../../assets/images/login/login-left-top.png") no-repeat;
-    background-size: cover;
-    height: 100%;
-  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -37,4 +23,48 @@
   a {
     color: $darkblue;
   }
+}
+
+@media only screen and (min-width: 100px) {
+  .link {
+    position: absolute;
+    right: 10px;
+    bottom: 150px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    height: 150px;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .footer {
+    position: absolute;
+    bottom: 0;
+    height: 150px;
+    width: 100%;
+  }
+  .link {
+    position: absolute;
+    right: 10px;
+    bottom: 150px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .footer {
+    position: absolute;
+    bottom: 0;
+    height: 150px;
+    width: 100%;
+  }
+  .link {
+    position: absolute;
+    right: 10px;
+    bottom: 150px;
+  }
+}
+.rightBlock {
+  min-height: 850px;
 }
