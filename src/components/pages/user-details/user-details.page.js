@@ -3,7 +3,6 @@ import { LoadingIndicator } from "components/atoms";
 import {
   CompanyInfo,
   OwnerInfo,
-  RebatesInfo,
   Reputation,
   UserProfile,
   CompanyLogo
@@ -102,7 +101,8 @@ const UserDetails = () => {
               companyId={companyId}
               setLoading={setLoading}
               getUserDetails={getUserDetails}
-              isEditable={data.companyInfo.companyType !== "TRADER"}
+              // isEditable={data.companyInfo.companyType !== "TRADER"}
+              isEditable={true}
             />
           </div>
           {/* <div className="w-75 mt-3">

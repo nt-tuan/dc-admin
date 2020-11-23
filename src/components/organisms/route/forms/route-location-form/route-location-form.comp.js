@@ -28,15 +28,15 @@ export const RouteLocationForm = forwardRef(
       asyncErrorHandlerWrapper(async () => {
         if (defaultCategoryId === undefined && defaultTypeId === undefined) {
           const categoriesRes = await RouteService.getCategories();
-          const typeRes = await RouteService.getTypes(categoriesRes[0].id);
+          // const typeRes = await RouteService.getTypes(categoriesRes[0].id);
 
           setCategories(categoriesRes);
-          setTypes(typeRes);
+          // setTypes(typeRes);
 
           isEdit &&
             form.setFieldsValue({
-              category: categoriesRes[0].id,
-              type: typeRes[0] ? typeRes[0].id : undefined
+              category: categoriesRes[0].id
+              // type: typeRes[0] ? typeRes[0].id : undefined
             });
         } else {
           const categoriesRes = await RouteService.getCategories();
