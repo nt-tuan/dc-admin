@@ -1,9 +1,11 @@
+import React, { useCallback, useState, useEffect } from "react";
+import qs from "qs";
+
 import { Button, Checkbox, Modal, Empty, Input, Row, Col, message } from "antd";
 import { ReactComponent as DistributorBadge } from "assets/icons/badges/distributor.svg";
 import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/manufactor.svg";
 import { SearchOutlined } from "@ant-design/icons";
 import UserVerifiedBadges from "assets/icons/badges/user-verified-badge.png";
-import React, { useCallback, useState, useMemo, useEffect } from "react";
 import { USER_MANAGEMENT_SCHEMA } from "commons/schemas";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { UserService } from "services";
@@ -35,22 +37,20 @@ export const AssignBadgesModal = ({
   const [listBadgeFiltered, setListBadgeFiltered] = useState([]);
   const [totalBadges, setTotalBadges] = useState([]);
 
-  const toggleShowAssignBadgeFormWrapper = async () => {
+  const { username } = qs.parse(location.search, { ignoreQueryPrefix: true });
+
+  const toggleShowAssignBadgeFormWrapper = useCallback(async () => {
     asyncErrorHandlerWrapper(async () => {
       const badges = await UserService.getAllBadges();
       setTotalBadges(badges);
+      const res = await UserService.getUserDetails(username);
+      setSelected(res?.companyInfo?.badgeList || []);
     });
-  };
-
-  useEffect(() => {
-    if (assignedBadgesId?.length) {
-      setSelected(assignedBadgesId.map((badge) => badge.id));
-    }
-  }, [assignedBadgesId]);
+  }, [username]);
 
   useEffect(() => {
     toggleShowAssignBadgeFormWrapper();
-  }, []);
+  }, [toggleShowAssignBadgeFormWrapper]);
 
   useEffect(() => {
     const filtered = totalBadges.filter((badge) =>
