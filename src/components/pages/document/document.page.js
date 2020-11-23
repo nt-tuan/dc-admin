@@ -83,6 +83,7 @@ const OrderActiveTab = () => {
       onOk: () => {
         asyncErrorHandlerWrapper(async () => {
           await RouteService.deleteDocument(id);
+          message.success("Deleted Successfully");
           handleGetAllDocs();
         });
       }
