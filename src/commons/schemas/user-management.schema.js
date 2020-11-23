@@ -231,7 +231,7 @@ export const userMgtTableSchema = ({
             type="primary"
             className="dtc-min-width-50 mr-2"
             onClick={() => onViewAssignBadges(id)}
-            disabled={companyType === "TRADER"}
+            // disabled={companyType === "TRADER"}
           >
             <i className="fe fe-award" style={{ verticalAlign: "middle" }}></i>
           </Button>
