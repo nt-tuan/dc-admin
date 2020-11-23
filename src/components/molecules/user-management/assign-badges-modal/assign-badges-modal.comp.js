@@ -44,7 +44,7 @@ export const AssignBadgesModal = ({
       const badges = await UserService.getAllBadges();
       setTotalBadges(badges);
       const res = await UserService.getUserDetails(username);
-      setSelected(res?.companyInfo?.badgeList || []);
+      setSelected(res?.companyInfo?.badgeList?.map((b) => b.id) || []);
     });
   }, [username]);
 
