@@ -105,7 +105,7 @@ const UserDetails = () => {
               isEditable={data.companyInfo.companyType !== "TRADER"}
             />
           </div>
-          <div className="w-75 mt-3">
+          {/* <div className="w-75 mt-3">
             <RebatesInfo
               data={data.rebateResponses}
               companyName={data.companyInfo.name}
@@ -131,7 +131,7 @@ const UserDetails = () => {
                 Enable Marketplace Credit for the user
               </Checkbox>
             </div>
-          )}
+          {/* )} */}
           {`${process.env.REACT_APP_COMPANY_NAME}` === "Extravaganza" ? (
             <div>
               <div className="w-50 mt-3">

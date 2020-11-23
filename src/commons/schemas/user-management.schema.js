@@ -16,8 +16,8 @@ const FIELDS = {
   reputation: "reputation",
   badges: "badges",
   userStatus: "userStatus",
-  enableMarketplaceCredit: "enableMarketplaceCredit",
-  enableProductCreation: "enableProductCreation",
+  // enableMarketplaceCredit: "enableMarketplaceCredit",
+  // enableProductCreation: "enableProductCreation",
   approved: "approved"
 };
 
@@ -31,8 +31,8 @@ const LABELS = {
   [FIELDS.reputation]: "Scores",
   [FIELDS.badges]: "Badges",
   [FIELDS.userStatus]: "Status",
-  [FIELDS.enableMarketplaceCredit]: "Marketplace credit",
-  [FIELDS.enableProductCreation]: "Product Creation",
+  // [FIELDS.enableMarketplaceCredit]: "Marketplace credit",
+  // [FIELDS.enableProductCreation]: "Product Creation",
   [FIELDS.approved]: "Approved"
 };
 
@@ -190,29 +190,29 @@ export const userMgtTableSchema = ({
       sortOrder: sortedInfo.columnKey === FIELDS.userStatus && sortedInfo.order,
       render: (userStatus) => <CustomHighlighter searchText={searchText} value={userStatus} />
     },
-    {
-      title: LABELS[FIELDS.enableMarketplaceCredit],
-      dataIndex: FIELDS.enableMarketplaceCredit,
-      key: FIELDS.enableMarketplaceCredit,
-      render: (isEnabled, { id }) => (
-        <Switch
-          defaultChecked={isEnabled}
-          onChange={() => onHandleMarketplaceCredit(id, !isEnabled)}
-        />
-      )
-    },
-    {
-      title: LABELS[FIELDS.enableProductCreation],
-      dataIndex: FIELDS.enableProductCreation,
-      key: FIELDS.enableProductCreation,
-      render: (isEnabled, { id, companyType }) => (
-        <Switch
-          checked={isEnabled}
-          onChange={() => onHandleUpdateProductCreationPermission(id, !isEnabled)}
-          disabled={companyType === "TRADER"}
-        />
-      )
-    },
+    // {
+    //   title: LABELS[FIELDS.enableMarketplaceCredit],
+    //   dataIndex: FIELDS.enableMarketplaceCredit,
+    //   key: FIELDS.enableMarketplaceCredit,
+    //   render: (isEnabled, { id }) => (
+    //     <Switch
+    //       defaultChecked={isEnabled}
+    //       onChange={() => onHandleMarketplaceCredit(id, !isEnabled)}
+    //     />
+    //   )
+    // },
+    // {
+    //   title: LABELS[FIELDS.enableProductCreation],
+    //   dataIndex: FIELDS.enableProductCreation,
+    //   key: FIELDS.enableProductCreation,
+    //   render: (isEnabled, { id, companyType }) => (
+    //     <Switch
+    //       checked={isEnabled}
+    //       onChange={() => onHandleUpdateProductCreationPermission(id, !isEnabled)}
+    //       disabled={companyType === "TRADER"}
+    //     />
+    //   )
+    // },
     {
       title: "Manage",
       key: "manage",
