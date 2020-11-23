@@ -79,7 +79,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
   const renderTermsAndPolicy = () => {
     return (
       <div className="mt-4 mb-3">
-        <div>By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’s </div>
+        <div>By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’ </div>
         <div>
           <Link to={RouteConst.TERMS_AND_CONDITIONS_ROUTE} className="font-weight-bold">
             Terms and Conditions
