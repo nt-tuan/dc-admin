@@ -128,11 +128,11 @@ const privateRoutes = [
   //   Component: loadable(() => import("components/pages/product-database/product-database.page")),
   //   exact: true
   // },
-  // {
-  //   path: RouteConst.ADD_PRODUCT,
-  //   Component: loadable(() => import("components/pages/add-product/add-product.page")),
-  //   exact: true
-  // },
+  {
+    path: RouteConst.ADD_PRODUCT,
+    Component: loadable(() => import("components/pages/add-product/add-product.page")),
+    exact: true
+  },
   // {
   //   path: RouteConst.EDIT_PRODUCT,
   //   Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
