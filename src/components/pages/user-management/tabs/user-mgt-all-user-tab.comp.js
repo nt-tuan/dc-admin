@@ -23,7 +23,7 @@ export const UserManagementAllUserTab = () => {
     asyncErrorHandlerWrapper(async () => {
       const badges = await UserService.getAvailableBadges({ companyId });
       setBadges(badges);
-      toggleShowAssignBadgeForm();
+      toggleShowAssignBadgeForm(true);
       setCurrentCompanyId(companyId);
     });
   };
@@ -113,6 +113,7 @@ export const UserManagementAllUserTab = () => {
           companyId={currentCompanyId}
           getListUsers={getListAllUsers}
           setLoading={setLoading}
+          username={data?.find((comp) => comp.id === currentCompanyId)?.username}
         />
       )}
     </Fragment>
