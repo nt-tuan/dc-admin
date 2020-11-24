@@ -7,11 +7,7 @@ const AddProductPage = () => {
   return (
     <>
       <Helmet title="Add Product" />
-      <ProductMutationTemplate
-        title="Product Creation"
-        pageName="AddProductPage"
-        mutateServiceFn={ProductService.addProduct}
-      />
+      <ProductMutationTemplate title="Product Creation" />
     </>
   );
 };
