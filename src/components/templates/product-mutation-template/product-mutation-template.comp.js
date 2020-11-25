@@ -13,14 +13,13 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
-
-  const variantFormRef = useRef();
 
   const isSmallDevice = isScreensize("sm");
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
+  const [variantDetailsForm] = Form.useForm();
 
   //submit data in current step
   const handleSubmitForm = useCallback(
@@ -89,7 +88,7 @@ export const ProductMutationTemplate = () => {
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
           {currentStep === 1 && <VitalInformation form={vitalForm} formNewFields={formNewFields} />}
-          {currentStep === 2 && <VariantDetails ref={variantFormRef} />}
+          {currentStep === 2 && <VariantDetails form={variantDetailsForm} />}
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
