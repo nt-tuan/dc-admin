@@ -27,8 +27,6 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                     {() => (
                       <Form.Item
                         {...field}
-                        noStyle
-                        validateTrigger={["onChange", "onBlur", "onSubmit"]}
                         name={[field.name, "name"]}
                         fieldKey={[field.fieldKey, "name"]}
                         rules={[{ required: true, message: "Missing Name" }]}
@@ -41,8 +39,6 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                 <Col span={11} md={11} sm={24} lg={11}>
                   <Form.Item
                     {...field}
-                    noStyle
-                    validateTrigger={["onChange", "onBlur", "onSubmit"]}
                     name={[field.name, "value"]}
                     fieldKey={[field.fieldKey, "value"]}
                     rules={[{ required: true, message: "Missing Value" }]}
@@ -51,7 +47,7 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                   </Form.Item>
                 </Col>
                 <Col span={2} md={2} sm={24} lg={2}>
-                  <MinusCircleOutlined type="danger" onClick={() => remove(field.name)} />
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
                 </Col>
               </Row>
             ))}

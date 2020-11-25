@@ -10,13 +10,15 @@ const AddProductPage = () => {
   const [formNewFields] = Form.useForm();
 
   const onSubmit = useCallback(async () => {
+    form.validateFields();
     formNewFields.validateFields();
-  }, [formNewFields]);
+  }, [formNewFields, form]);
   return (
     <>
       <Helmet title="Add Product" />
       <article className="air__utils__shadow bg-white p-4 dtc-br-10">
         <VitalInformationForm form={form} formNewFields={formNewFields} />
+
         <Button type="primary" htmlType="submit" onClick={onSubmit}>
           Submit
         </Button>
