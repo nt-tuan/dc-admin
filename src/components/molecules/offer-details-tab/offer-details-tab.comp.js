@@ -3,7 +3,7 @@ import React, { memo, useCallback, useState } from "react";
 
 export const OfferDetailsTab = memo(({ data }) => {
   return (
-    <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
+    <div className="p-3 mb-3">
       {Object.keys(data)
         .filter((item) => item !== "productImage")
         .map((field) => (

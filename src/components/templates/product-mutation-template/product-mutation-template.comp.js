@@ -7,6 +7,7 @@ import VitalInformation from "./components/VitalInformation";
 import { PRODUCT_CREATE_TEMPLATE } from "./constants";
 import "./product-mutation-template.comp.scss";
 import { ProductTemplateImage } from "components/pages/add-product/product-template-image/product-template-image.comp";
+import { ProductTemplateReview } from "components/organisms";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -93,7 +94,7 @@ export const ProductMutationTemplate = () => {
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
           {currentStep === 6 && <ProductTemplateImage />}
-          {currentStep === 7 && <div>step 7</div>}
+          {currentStep === 7 && <ProductTemplateReview />}
         </Form.Provider>
       </DTCSection>
       <div className="footer">
