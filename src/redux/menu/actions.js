@@ -128,11 +128,11 @@ export async function getUserData() {
         //   key: "Database",
         //   url: RouteConst.PRODUCT_DATABASE
         // },
-        // {
-        //   title: "Product Creation",
-        //   key: "ProductCreation",
-        //   url: RouteConst.ADD_PRODUCT
-        // },
+        {
+          title: "Product Creation",
+          key: "ProductCreation",
+          url: RouteConst.ADD_PRODUCT
+        },
         {
           title: "Requested Products",
           key: "RequestedProducts",
