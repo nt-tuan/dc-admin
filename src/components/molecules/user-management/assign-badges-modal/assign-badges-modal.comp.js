@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import qs from "qs";
-
+import { useLocation } from "react-router-dom";
 import { Button, Checkbox, Modal, Empty, Input, Row, Col, message } from "antd";
 import { ReactComponent as DistributorBadge } from "assets/icons/badges/distributor.svg";
 import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/manufactor.svg";
@@ -29,7 +29,9 @@ export const AssignBadgesModal = ({
   companyId,
   getListUsers,
   assignedBadgesId,
-  setLoading
+  setLoading,
+  username,
+  styleTop = false
 }) => {
   const [isAssigning, setIsAssigning] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -37,20 +39,22 @@ export const AssignBadgesModal = ({
   const [listBadgeFiltered, setListBadgeFiltered] = useState([]);
   const [totalBadges, setTotalBadges] = useState([]);
 
-  const { username } = qs.parse(location.search, { ignoreQueryPrefix: true });
-
-  const toggleShowAssignBadgeFormWrapper = useCallback(async () => {
-    asyncErrorHandlerWrapper(async () => {
-      const badges = await UserService.getAllBadges();
-      setTotalBadges(badges);
-      const res = await UserService.getUserDetails(username);
-      setSelected(res?.companyInfo?.badgeList?.map((b) => b.id) || []);
-    });
-  }, [username]);
+  console.log("assignedBadgesId", assignedBadgesId);
 
   useEffect(() => {
-    toggleShowAssignBadgeFormWrapper();
-  }, [toggleShowAssignBadgeFormWrapper]);
+    asyncErrorHandlerWrapper(async () => {
+      if (username) {
+        const [badges, res] = await Promise.all([
+          UserService.getAllBadges(),
+          UserService.getUserDetails(username)
+        ]);
+        if ((badges, res)) {
+          setTotalBadges(badges);
+          setSelected(res?.companyInfo?.badgeList?.map((b) => b.id) || []);
+        }
+      }
+    });
+  }, [username]);
 
   useEffect(() => {
     const filtered = totalBadges.filter((badge) =>
@@ -123,6 +127,7 @@ export const AssignBadgesModal = ({
       footer={null}
       onCancel={toggleShowForm}
       destroyOnClose={true}
+      style={{ top: styleTop }}
     >
       <div className="assign-badge-modal">
         <Row>

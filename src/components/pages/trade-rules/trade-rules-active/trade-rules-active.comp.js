@@ -32,7 +32,9 @@ export const TradeRulesActiveTab = memo((status) => {
     return data.map((item) => {
       item[FIELDS.timestamp] = moment(item[FIELDS.timestamp]).format(DATETIME_FORMAT);
       item[FIELDS.id] = item[FIELDS.productId];
-      item[FIELDS.numberOfDocuments] = item[FIELDS.productRuleResponseList].length;
+      item[FIELDS.numberOfDocuments] = item[FIELDS.productRuleResponseList].filter(
+        (item) => item.routeDocumentTypeId
+      ).length;
       return item;
     });
   };
