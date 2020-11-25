@@ -32,7 +32,6 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       onError(error);
     }
   };
-  console.log("form.getFieldValue(documentType)", form.getFieldValue("documentType"));
 
   return (
     <Form
