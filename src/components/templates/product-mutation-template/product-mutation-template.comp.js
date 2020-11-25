@@ -1,7 +1,8 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useRef } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps } from "antd";
 
+import VariantDetails from "./components/VariantDetails";
 import { isScreensize } from "utils/general.util";
 
 import "./product-mutation-template.comp.scss";
@@ -21,8 +22,10 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
+
+  const variantFormRef = useRef();
 
   const isSmallDevice = isScreensize("sm");
 
@@ -92,7 +95,7 @@ export const ProductMutationTemplate = () => {
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
           {currentStep === 1 && <div>step 1</div>}
-          {currentStep === 2 && <div>step 2</div>}
+          {currentStep === 2 && <VariantDetails ref={variantFormRef} />}
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
