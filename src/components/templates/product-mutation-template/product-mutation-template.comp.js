@@ -1,20 +1,14 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useRef } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps } from "antd";
 
+import VariantDetails from "./components/VariantsDetails";
+import VitalInformation from "./components/VitalInformation";
+
 import { isScreensize } from "utils/general.util";
+import { PRODUCT_CREATE_TEMPLATE } from "./constants";
 
 import "./product-mutation-template.comp.scss";
-
-const PRODUCT_CREATE_TEMPLATE = [
-  { title: "Vital Information" },
-  { title: "Variant Details" },
-  { title: "Offer Details" },
-  { title: "Packing Details" },
-  { title: "Certifications Details" },
-  { title: "Product Template Image" },
-  { title: "Review" }
-];
 
 const ALLOW_SKIP = [4, 5];
 
@@ -24,29 +18,33 @@ export const ProductMutationTemplate = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
 
+  const variantFormRef = useRef();
+
   const isSmallDevice = isScreensize("sm");
+  const [vitalForm] = Form.useForm();
+  const [formNewFields] = Form.useForm();
 
   //submit data in current step
   const handleSubmitForm = useCallback(
     (name, { values, forms }) => {
+      console.log(values);
       setProductData({ ...productData, [name]: values });
     },
     [productData]
   );
 
-  //validate form in current step
+  //TODO: combine submit and get error
   const handleValidator = useCallback(() => {
-    let error = [1];
     switch (currentStep) {
       case 1:
-        //Vital form validate and submit form
-        break;
-
+        vitalForm.submit();
+        formNewFields.submit();
+        return !vitalForm.getFieldsError().length && formNewFields.getFieldsError().length > 1;
       default:
         break;
     }
-    return !!error.length;
-  }, [currentStep]);
+    return true;
+  }, [currentStep, vitalForm, formNewFields]);
 
   const handleChangeStep = useCallback(
     (targetStep) => {
@@ -57,12 +55,13 @@ export const ProductMutationTemplate = () => {
     [handleValidator]
   );
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
       // submit data
       return;
     } else {
-      if (!handleValidator()) return;
+      const isValid = await handleValidator();
+      if (!isValid) return;
       setCurrentStep(currentStep + 1);
     }
   }, [currentStep, handleValidator]);
@@ -91,8 +90,8 @@ export const ProductMutationTemplate = () => {
         </Steps>
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
-          {currentStep === 1 && <div>step 1</div>}
-          {currentStep === 2 && <div>step 2</div>}
+          {currentStep === 1 && <VitalInformation form={vitalForm} formNewFields={formNewFields} />}
+          {currentStep === 2 && <VariantDetails ref={variantFormRef} />}
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
