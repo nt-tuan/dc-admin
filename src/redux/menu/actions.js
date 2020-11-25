@@ -57,23 +57,23 @@ export async function getUserData() {
         // }
       ]
     },
-    {
-      title: "Introducer",
-      key: "Introducer",
-      icon: "fe fe-award",
-      children: [
-        {
-          title: "Introducers",
-          key: "Introducers",
-          url: RouteConst.INTRODUCERS
-        },
-        {
-          title: "Create Introducer",
-          key: "Create Introducer",
-          url: RouteConst.CREATE_INTRODUCER
-        }
-      ]
-    },
+    // {
+    //   title: "Introducer",
+    //   key: "Introducer",
+    //   icon: "fe fe-award",
+    //   children: [
+    //     {
+    //       title: "Introducers",
+    //       key: "Introducers",
+    //       url: RouteConst.INTRODUCERS
+    //     },
+    //     {
+    //       title: "Create Introducer",
+    //       key: "Create Introducer",
+    //       url: RouteConst.CREATE_INTRODUCER
+    //     }
+    //   ]
+    // },
     // {
     //   title: "Marketplace Credit",
     //   key: "Marketplace Credit",
@@ -140,23 +140,23 @@ export async function getUserData() {
         }
       ]
     },
-    {
-      title: "Trade Rules",
-      key: "TradeRules",
-      icon: "fe fe-navigation-2",
-      children: [
-        {
-          title: "Trade Rules",
-          key: "TradeRule",
-          url: RouteConst.TRADE_RULES
-        },
-        {
-          title: "Create Trade Rules",
-          key: "CreateTradeRule",
-          url: RouteConst.CREATE_TRADE_RULES
-        }
-      ]
-    },
+    // {
+    //   title: "Trade Rules",
+    //   key: "TradeRules",
+    //   icon: "fe fe-navigation-2",
+    //   children: [
+    //     {
+    //       title: "Trade Rules",
+    //       key: "TradeRule",
+    //       url: RouteConst.TRADE_RULES
+    //     },
+    //     {
+    //       title: "Create Trade Rules",
+    //       key: "CreateTradeRule",
+    //       url: RouteConst.CREATE_TRADE_RULES
+    //     }
+    //   ]
+    // },
     {
       title: "Analytics",
       key: "Analytics",
