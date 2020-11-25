@@ -1,10 +1,9 @@
 import React, { useCallback, useState, useMemo } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps } from "antd";
-
 import { isScreensize } from "utils/general.util";
-
 import "./product-mutation-template.comp.scss";
+import { ProductTemplateImage } from "components/pages/add-product/product-template-image/product-template-image.comp";
 
 const PRODUCT_CREATE_TEMPLATE = [
   { title: "Vital Information" },
@@ -96,7 +95,7 @@ export const ProductMutationTemplate = () => {
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
-          {currentStep === 6 && <div>step 6</div>}
+          {currentStep === 6 && <ProductTemplateImage />}
           {currentStep === 7 && <div>step 7</div>}
         </Form.Provider>
       </DTCSection>
