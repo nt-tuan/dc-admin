@@ -97,8 +97,8 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails, isEdit
                   )}
                 </div>
               ))}
-          {assignedBadges?.map((badge) => (
-            <Popover content={renderRemoveAssignedBadge(badge.id)}>
+          {assignedBadges?.map((badge, idx) => (
+            <Popover key={`badge${idx}`} content={renderRemoveAssignedBadge(badge.id)}>
               <span className="pr-1 pl-1 d-block mr-1" style={{ width: 40 }}>
                 <div title={badge.name} style={{ width: 40, height: 40 }}>
                   <img height={40} width={40} src={badge.url} alt={""} />
@@ -108,15 +108,19 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails, isEdit
           ))}
         </div>
       </div>
-      <AssignBadgesModal
-        assignedBadgesId={assignedBadges}
-        badges={badges}
-        showForm={isEdit}
-        toggleShowForm={toggleIsEdit}
-        companyId={companyId}
-        getListUsers={getUserDetails}
-        setLoading={setLoading}
-      />
+      {isEdit && (
+        <AssignBadgesModal
+          assignedBadgesId={assignedBadges}
+          badges={badges}
+          showForm={isEdit}
+          toggleShowForm={toggleIsEdit}
+          companyId={companyId}
+          getListUsers={getUserDetails}
+          setLoading={setLoading}
+          username={user.userInfo.username}
+          styleTop={20}
+        />
+      )}
     </Fragment>
   );
 };
