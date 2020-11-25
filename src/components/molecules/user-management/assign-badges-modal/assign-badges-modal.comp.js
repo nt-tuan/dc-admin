@@ -1,6 +1,4 @@
 import React, { useCallback, useState, useEffect } from "react";
-import qs from "qs";
-import { useLocation } from "react-router-dom";
 import { Button, Checkbox, Modal, Empty, Input, Row, Col, message } from "antd";
 import { ReactComponent as DistributorBadge } from "assets/icons/badges/distributor.svg";
 import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/manufactor.svg";
@@ -38,8 +36,6 @@ export const AssignBadgesModal = ({
   const [selected, setSelected] = useState([]);
   const [listBadgeFiltered, setListBadgeFiltered] = useState([]);
   const [totalBadges, setTotalBadges] = useState([]);
-
-  console.log("assignedBadgesId", assignedBadgesId);
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
