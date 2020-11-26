@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        registry = 'nexus.morphotech.co.uk/distichain-admin-frontend'
+        registry = 'nexus.morphotech.co.uk/hsb2b-admin-frontend'
         registryUrl = 'https://nexus.morphotech.co.uk'
         registryCredential = 'nexus'
         dockerImage = ''
