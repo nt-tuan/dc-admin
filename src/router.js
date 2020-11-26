@@ -123,36 +123,17 @@ const privateRoutes = [
     ),
     exact: true
   },
-  // {
-  //   path: RouteConst.PRODUCT_DATABASE,
-  //   Component: loadable(() => import("components/pages/product-database/product-database.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.ADD_PRODUCT,
-  //   Component: loadable(() => import("components/pages/add-product/add-product.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.EDIT_PRODUCT,
-  //   Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
-  //   exact: false
-  // },
-  // {
-  //   path: RouteConst.REBATES,
-  //   Component: loadable(() => import("components/pages/rebates/rebates.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.CREATE_REBATES,
-  //   Component: loadable(() => import("components/pages/create-rebates/create-rebates.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.EDIT_REBATES,
-  //   Component: loadable(() => import("components/pages/edit-rebates/edit-rebates.page")),
-  //   exact: true
-  // },
+  {
+    path: RouteConst.ADD_PRODUCT,
+    Component: loadable(() => import("components/pages/add-product/add-product.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.EDIT_PRODUCT,
+    Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
+    exact: false
+  },
+
   {
     path: RouteConst.ROUTE,
     Component: loadable(() => import("components/pages/route/route.page")),
@@ -190,21 +171,6 @@ const privateRoutes = [
     Component: loadable(() => import("components/pages/user-details/user-details.page")),
     exact: true
   },
-  // {
-  //   path: RouteConst.CREDIT_REQUEST,
-  //   Component: loadable(() => import("components/pages/credit-request/credit-request.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.CREDIT_STATUS,
-  //   Component: loadable(() => import("components/pages/credit-status/credit-status.page")),
-  //   exact: true
-  // },
-  // {
-  //   path: RouteConst.CREDIT_USERS,
-  //   Component: loadable(() => import("components/pages/credit-users/credit-users.page")),
-  //   exact: true
-  // },
   {
     path: RouteConst.PURCHASE_ORDER,
     Component: loadable(() => import("components/pages/purchase-order/purchase-order.page")),
@@ -213,45 +179,6 @@ const privateRoutes = [
   {
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.CREATE_INTRODUCER,
-    Component: loadable(() => import("components/pages/create-introducer/create-introducer.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.INTRODUCERS,
-    Component: loadable(() => import("components/pages/introducers/introducers.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.INTRODUCER_DETAILS,
-    Component: loadable(() =>
-      import("components/pages/introducer-details/introducer-details.page")
-    ),
-    exact: true
-  },
-  {
-    path: RouteConst.INTRODUCER_EDIT,
-    Component: loadable(() => import("components/pages/edit-introducer/edit-introducer.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.CREATE_TRADE_RULES,
-    Component: loadable(() =>
-      import("components/pages/create-trade-rules/create-trade-rules.page")
-    ),
-    exact: true
-  },
-  {
-    path: RouteConst.EDIT_TRADE_RULES,
-    Component: loadable(() => import("components/pages/edit-trade-rules/edit-trade-rules.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.TRADE_RULES,
-    Component: loadable(() => import("components/pages/trade-rules/trade-rules.page")),
     exact: true
   },
   {

@@ -1,4 +1,4 @@
-import { Button, Switch } from "antd";
+import { Button } from "antd";
 import React, { Fragment } from "react";
 import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
 import { sortAlphabetically } from "utils/sort.util";

@@ -34,15 +34,15 @@ export class RouteConst extends SharedPaths {
       this.CREDIT_STATUS,
       this.CREDIT_USERS,
       this.PURCHASE_ORDER,
-      this.NOTIFICATION,
-      this.CREATE_INTRODUCER,
-      this.INTRODUCERS,
-      this.INTRODUCER_DETAILS,
-      this.INTRODUCER_EDIT,
-      this.CREATE_TRADE_RULES,
-      this.TRADE_RULES,
-      this.REQUESTED_PRODUCTS,
-      this.EDIT_TRADE_RULES
+      this.NOTIFICATION
+      // this.CREATE_INTRODUCER,
+      // this.INTRODUCERS,
+      // this.INTRODUCER_DETAILS,
+      // this.INTRODUCER_EDIT,
+      // this.CREATE_TRADE_RULES,
+      // this.TRADE_RULES,
+      // this.REQUESTED_PRODUCTS,
+      // this.EDIT_TRADE_RULES
     ];
   }
 

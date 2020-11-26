@@ -35,13 +35,13 @@ const UserDetails = () => {
     getUserDetails();
   }, [getUserDetails]);
 
-  const handleMarketplaceCredit = (id, isEnable) => {
-    setLoading(true);
-    asyncErrorHandlerWrapper(async () => {
-      await UserService.manageMarketplaceCredit(id, isEnable);
-      getUserDetails();
-    });
-  };
+  // const handleMarketplaceCredit = (id, isEnable) => {
+  //   setLoading(true);
+  //   asyncErrorHandlerWrapper(async () => {
+  //     await UserService.manageMarketplaceCredit(id, isEnable);
+  //     getUserDetails();
+  //   });
+  // };
 
   const handleProductCreationPermission = (id, isEnable) => {
     setLoading(true);

@@ -1,11 +1,10 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import * as USER_ACTIONS from "./user.duck";
-import { notification, message } from "antd";
+import { notification } from "antd";
 import { APIError } from "commons/types";
-import { AuthService, IntroducerService, UserService } from "services";
-import { MessageConst, RouteConst } from "commons/consts";
+import { AuthService, UserService } from "services";
+import { MessageConst } from "commons/consts";
 import * as NOTIFICATION_DUCKS from "redux/notification/notification.duck";
-import { history } from "index";
 
 const { setStateAction } = USER_ACTIONS;
 
@@ -84,47 +83,11 @@ export function* LOAD_CURRENT_ACCOUNT() {
   }
 }
 
-export function* REGISTER_INTRODUCER({ payload }) {
-  const { values, onError } = payload;
-  try {
-    yield put(setStateAction({ loading: true }));
-    yield IntroducerService.addIntroducer(values);
-    yield history.push(RouteConst.INTRODUCERS);
-  } catch (error) {
-    if (error instanceof APIError) {
-      onError(error.errors);
-      return;
-    }
-    throw error;
-  } finally {
-    yield put(setStateAction({ loading: false }));
-  }
-}
-
-export function* UPDATE_PROFILE_INTRODUCER({ payload }) {
-  const { values, id, onError } = payload;
-  try {
-    yield put(setStateAction({ loading: true }));
-    yield IntroducerService.updateIntroducerDetails(id, values);
-    message.success("Edit Successfully");
-    yield history.push(RouteConst.INTRODUCERS);
-  } catch (error) {
-    if (error instanceof APIError) {
-      onError(error.errors);
-      return;
-    }
-    throw error;
-  } finally {
-    yield put(setStateAction({ loading: false }));
-  }
-}
 export default function* rootSaga() {
   yield all([
     LOAD_CURRENT_ACCOUNT(), // run once on app load to check user auth
     takeEvery(USER_ACTIONS.LOGOUT, LOGOUT),
     takeEvery(USER_ACTIONS.LOGIN, LOGIN),
-    takeEvery(USER_ACTIONS.REGISTER_INTRODUCER, REGISTER_INTRODUCER),
-    takeEvery(USER_ACTIONS.UPDATE_PROFILE_INTRODUCER, UPDATE_PROFILE_INTRODUCER),
     takeEvery(USER_ACTIONS.LOAD_CURRENT_ACCOUNT, LOAD_CURRENT_ACCOUNT)
   ]);
 }

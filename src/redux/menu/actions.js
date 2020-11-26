@@ -45,57 +45,8 @@ export async function getUserData() {
           key: "New Users",
           url: RouteConst.NEW_USER
         }
-        // {
-        //   title: "Rebates",
-        //   key: "Rebates",
-        //   url: RouteConst.REBATES
-        // },
-        // {
-        //   title: "Create Rebates",
-        //   key: "Create Rebates",
-        //   url: RouteConst.CREATE_REBATES
-        // }
       ]
     },
-    {
-      title: "Introducer",
-      key: "Introducer",
-      icon: "fe fe-award",
-      children: [
-        {
-          title: "Introducers",
-          key: "Introducers",
-          url: RouteConst.INTRODUCERS
-        },
-        {
-          title: "Create Introducer",
-          key: "Create Introducer",
-          url: RouteConst.CREATE_INTRODUCER
-        }
-      ]
-    },
-    // {
-    //   title: "Marketplace Credit",
-    //   key: "Marketplace Credit",
-    //   icon: "fe fe-credit-card",
-    //   children: [
-    //     {
-    //       title: "Credit Request",
-    //       key: "Credit Request",
-    //       url: RouteConst.CREDIT_REQUEST
-    //     },
-    //     {
-    //       title: "Credit Status",
-    //       key: "Credit Status",
-    //       url: RouteConst.CREDIT_STATUS
-    //     },
-    //     {
-    //       title: "Users",
-    //       key: "Users",
-    //       url: RouteConst.CREDIT_USERS
-    //     }
-    //   ]
-    // },
     {
       title: "Routes",
       key: "RoutesMain",
@@ -123,37 +74,10 @@ export async function getUserData() {
       key: "Product",
       icon: "fe fe-package",
       children: [
-        // {
-        //   title: "Database",
-        //   key: "Database",
-        //   url: RouteConst.PRODUCT_DATABASE
-        // },
-        // {
-        //   title: "Product Creation",
-        //   key: "ProductCreation",
-        //   url: RouteConst.ADD_PRODUCT
-        // },
         {
           title: "Requested Products",
           key: "RequestedProducts",
           url: RouteConst.REQUESTED_PRODUCTS
-        }
-      ]
-    },
-    {
-      title: "Trade Rules",
-      key: "TradeRules",
-      icon: "fe fe-navigation-2",
-      children: [
-        {
-          title: "Trade Rules",
-          key: "TradeRule",
-          url: RouteConst.TRADE_RULES
-        },
-        {
-          title: "Create Trade Rules",
-          key: "CreateTradeRule",
-          url: RouteConst.CREATE_TRADE_RULES
         }
       ]
     },

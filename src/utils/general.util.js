@@ -155,6 +155,10 @@ export const getMenuData = (data) => {
       menuData = filterMenuData(EightCornersException, menuData);
       return menuData;
     }
+    case MARKETPLACE_NAME.HSB2B: {
+      menuData = filterMenuData([], menuData);
+      return menuData;
+    }
     case MARKETPLACE_NAME.Extravaganza:
     default: {
       const DefaultException = ["Introducer"];
