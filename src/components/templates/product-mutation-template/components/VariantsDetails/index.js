@@ -13,6 +13,7 @@ const VariantDetails = ({ form }) => {
               <Form.Item
                 noStyle
                 shouldUpdate={(prevValues, curValues) => prevValues.name !== curValues.name}
+                key={field.name}
               >
                 {() => (
                   <Form.Item
@@ -21,7 +22,7 @@ const VariantDetails = ({ form }) => {
                     fieldKey={[field.fieldKey, "name"]}
                     rules={[{ required: true, message: "Missing Name" }]}
                   >
-                    <Field />
+                    <Field onRemove={remove} name={field.name} />
                   </Form.Item>
                 )}
               </Form.Item>

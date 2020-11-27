@@ -83,7 +83,7 @@ export const ProductMutationTemplate = () => {
           progressDot
         >
           {PRODUCT_CREATE_TEMPLATE.map((menu) => (
-            <Step title={menu.title} />
+            <Step title={menu.title} key={menu.title} />
           ))}
         </Steps>
         <Form.Provider onFormFinish={handleSubmitForm}>
