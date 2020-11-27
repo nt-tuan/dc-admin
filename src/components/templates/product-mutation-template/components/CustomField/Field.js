@@ -11,6 +11,7 @@ const { Option } = Select;
 const Field = forwardRef(({ type, onRemove, name }, ref) => {
   const [isTypeModalOpen, setTypeModalOpen] = useState(false);
   const [fieldType, setFieldType] = useState();
+  const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
   const fieldOptionsRef = useRef();
 
   const handleChange = useCallback((value) => {
@@ -21,10 +22,10 @@ const Field = forwardRef(({ type, onRemove, name }, ref) => {
     () => (
       <div className="d-flex justify-content-between align-items-center w-100">
         <div>This is panel header 2</div>
-        <i className="fe fe-minus-circle text-danger" onClick={() => onRemove(name)} />
+        <i className="fe fe-minus-circle text-danger" onClick={() => setIsOpenConfirmPopup(true)} />
       </div>
     ),
-    [onRemove, name]
+    []
   );
   return (
     <>
@@ -81,6 +82,17 @@ const Field = forwardRef(({ type, onRemove, name }, ref) => {
           question types, some previously entered data, such as field values and child fields of
           each value (if any) may not be saved.
         </p>
+      </Modal>
+      <Modal
+        visible={isOpenConfirmPopup}
+        onCancel={() => setIsOpenConfirmPopup(false)}
+        onOk={() => onRemove(name)}
+        okText="Yes"
+        cancelText="No"
+        title="Are you sure?"
+      >
+        If you delete this field, all the data that you entered will be lost.Are you sure you want
+        to delete the field
       </Modal>
     </>
   );
