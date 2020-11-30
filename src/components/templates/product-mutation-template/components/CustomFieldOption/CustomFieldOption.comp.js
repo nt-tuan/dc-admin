@@ -12,10 +12,52 @@ import React, {
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import CustomInput from "../CustomInput/CustomInput.comp";
 import every from "lodash/every";
+import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
+
+const initialFieldOptions = {
+  label: "",
+  isError: false,
+  childField: [
+    {
+      fieldName: "time of breakfast",
+      type: "dropdown",
+      fieldOption: [{ label: "6AM" }, { label: "7AM" }, { label: "8AM" }]
+    },
+    {
+      fieldName: "note",
+      type: "textbox",
+      fieldOption: [
+        {
+          allowInput: "string",
+          fieldType: "shortText"
+        }
+      ]
+    },
+    {
+      fieldName: "price of breakfast",
+      type: "radio",
+      fieldOption: [
+        { label: "$100 hrhtr erhrtyt erye" },
+        { label: "$200 ggw egewew" },
+        { label: "$300" }
+      ]
+    },
+    {
+      fieldName: "note",
+      type: "textbox",
+      fieldOption: [
+        {
+          allowInput: "string",
+          fieldType: "longText"
+        }
+      ]
+    }
+  ]
+};
 
 const CustomFieldOption = memo(
   forwardRef(({ type }, ref) => {
-    const [fieldOptions, setFieldOptions] = useState([{ label: "", isError: false }]);
+    const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
     const [textOptions, setTextOptions] = useState([
       {
         allowInput: "string",
@@ -24,7 +66,7 @@ const CustomFieldOption = memo(
     ]);
 
     useEffect(() => {
-      setFieldOptions([{ label: "", isError: false }]);
+      setFieldOptions([{ ...initialFieldOptions }]);
       setTextOptions([
         {
           allowInput: "string",
@@ -51,6 +93,15 @@ const CustomFieldOption = memo(
         }
       }
     }));
+
+    const handleRemoveChildField = useCallback(
+      (index) => {
+        const fieldOptionsClone = [...fieldOptions];
+        delete fieldOptionsClone[index].childField;
+        setFieldOptions(fieldOptionsClone);
+      },
+      [fieldOptions]
+    );
 
     const handleAddField = useCallback(
       (index) => {
@@ -124,6 +175,12 @@ const CustomFieldOption = memo(
                       />
                     </div>
                   </div>
+                  {field.childField && (
+                    <ChildFieldReview
+                      data={field.childField}
+                      onRemove={() => handleRemoveChildField(index)}
+                    />
+                  )}
                 </Fragment>
               ))}
             </section>
@@ -164,7 +221,15 @@ const CustomFieldOption = memo(
         default:
           return;
       }
-    }, [type, fieldOptions, handleRemoveField, handleAddField, handleInputChange, textOptions]);
+    }, [
+      type,
+      fieldOptions,
+      handleRemoveField,
+      handleAddField,
+      handleInputChange,
+      textOptions,
+      handleRemoveChildField
+    ]);
 
     return renderDynamicFields;
   })

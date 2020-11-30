@@ -18,19 +18,17 @@ const Field = forwardRef(({ type, onRemove, name }, ref) => {
     setFieldType(value);
   }, []);
 
-  const renderFieldHeader = useMemo(
-    () => (
-      <div className="d-flex justify-content-between align-items-center w-100">
-        <div>This is panel header 2</div>
-        <i className="fe fe-minus-circle text-danger" onClick={() => setIsOpenConfirmPopup(true)} />
-      </div>
-    ),
-    []
-  );
+  const renderRemoveIcon = useMemo(() => {
+    const handleClick = (e) => {
+      e.stopPropagation();
+      setIsOpenConfirmPopup(true);
+    };
+    return <i className="fe fe-minus-circle text-danger" onClick={handleClick} />;
+  }, []);
   return (
     <>
       <Collapse defaultActiveKey={["1"]}>
-        <Panel header={renderFieldHeader} key="2">
+        <Panel header="This is panel header 2" extra={renderRemoveIcon} key="2">
           <Card className="mb-1">
             <Row>
               <Col xs={8} sm={4} md={4} lg={3} xl={2}>
