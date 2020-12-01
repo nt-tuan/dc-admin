@@ -180,13 +180,6 @@ const privateRoutes = [
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
     exact: true
-  },
-  {
-    path: RouteConst.REQUESTED_PRODUCTS,
-    Component: loadable(() =>
-      import("components/pages/requested-products/requested-products.page")
-    ),
-    exact: true
   }
 ];
 

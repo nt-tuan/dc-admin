@@ -70,18 +70,6 @@ export async function getUserData() {
       ]
     },
     {
-      title: "Product",
-      key: "Product",
-      icon: "fe fe-package",
-      children: [
-        {
-          title: "Requested Products",
-          key: "RequestedProducts",
-          url: RouteConst.REQUESTED_PRODUCTS
-        }
-      ]
-    },
-    {
       title: "Analytics",
       key: "Analytics",
       icon: "fe fe-pie-chart",
