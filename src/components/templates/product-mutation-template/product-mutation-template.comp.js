@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useRef } from "react";
+import React, { useCallback, useState, useMemo, useRef, useEffect } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps } from "antd";
 import { isScreensize } from "utils/general.util";
@@ -8,6 +8,8 @@ import { PRODUCT_CREATE_TEMPLATE } from "./constants";
 import "./product-mutation-template.comp.scss";
 import { ProductTemplateImage } from "components/pages/add-product/product-template-image/product-template-image.comp";
 import { ProductTemplateReview } from "components/organisms";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ProductService } from "services";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -16,11 +18,33 @@ const { Step } = Steps;
 export const ProductMutationTemplate = () => {
   const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [hsCode, setHsCode] = useState([]);
 
   const isSmallDevice = isScreensize("sm");
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
+
+  useEffect(() => {
+    asyncErrorHandlerWrapper(async () => {
+      const [categories] = await Promise.all([
+        ProductService.getProductCategories()
+        // ProductService.getAllHsCode()
+      ]);
+      const parseHsCode = ["ABCDEF", "123456", "HIJKLMN"].map((code) => ({ id: code, name: code }));
+      setCategories(categories);
+      setHsCode(parseHsCode);
+    });
+  }, []);
+
+  const getTypeByCategory = useCallback((catId) => {
+    asyncErrorHandlerWrapper(async () => {
+      const res = await ProductService.getProductTypeByCategory(catId);
+      setTypes(res);
+    });
+  }, []);
 
   //submit data in current step
   const handleSubmitForm = useCallback(
@@ -88,7 +112,16 @@ export const ProductMutationTemplate = () => {
         </Steps>
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
-          {currentStep === 1 && <VitalInformation form={vitalForm} formNewFields={formNewFields} />}
+          {currentStep === 1 && (
+            <VitalInformation
+              form={vitalForm}
+              formNewFields={formNewFields}
+              categories={categories}
+              onCategoryChange={getTypeByCategory}
+              types={types}
+              hsCode={hsCode}
+            />
+          )}
           {currentStep === 2 && <VariantDetails form={variantDetailsForm} />}
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}

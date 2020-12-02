@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { REQUIRED_ERR } from "commons/consts";
 import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ProductService } from "services";
 
 const INPUT_TYPE = {
   SELECT: "SELECT",
@@ -33,7 +35,16 @@ const LAYOUT = {
   wrapperCol: { xl: 16, lg: 16, md: 24, sm: 24 }
 };
 
-const VitalInformationForm = ({ form, formNewFields }) => {
+const VitalInformationForm = ({
+  form,
+  formNewFields,
+  categories,
+  onCategoryChange,
+  types,
+  hsCode
+}) => {
+  console.log("🚀 ~ file: index.js ~ line 44 ~ hsCode", hsCode);
+  const [aheccCode, setAheccCode] = useState([]);
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
     const fields = [
       {
@@ -41,6 +52,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "productCategory",
         type: INPUT_TYPE.SELECT,
         options: {
+          options: categories,
           rules: [
             {
               required: true,
@@ -54,6 +66,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "productType",
         type: INPUT_TYPE.SELECT,
         options: {
+          options: types,
           rules: [
             {
               required: true,
@@ -80,6 +93,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "hsCode",
         type: INPUT_TYPE.SELECT,
         options: {
+          options: hsCode,
           rules: [
             {
               required: true,
@@ -118,6 +132,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         label: "HS Code Description",
         name: "hsCodeDescription",
         type: INPUT_TYPE.INPUT,
+        props: { disabled: true },
         options: {
           rules: [
             {
@@ -132,6 +147,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "ahecc",
         type: INPUT_TYPE.SELECT,
         options: {
+          options: aheccCode,
           rules: [
             {
               required: true,
@@ -145,6 +161,10 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "aheccFullDescription",
         type: INPUT_TYPE.SELECT,
         options: {
+          options: aheccCode.map((code) => ({
+            id: code.aheccDescription,
+            name: code.aheccDescription
+          })),
           rules: [
             {
               required: true,
@@ -158,7 +178,7 @@ const VitalInformationForm = ({ form, formNewFields }) => {
         name: "quantity",
         type: INPUT_TYPE.INPUT,
         props: {
-          addonAfter: "KG"
+          disabled: true
         },
         options: {
           rules: [
@@ -211,26 +231,67 @@ const VitalInformationForm = ({ form, formNewFields }) => {
       }
     ];
     return fields;
-  }, []);
+  }, [categories, types, hsCode, aheccCode]);
 
-  const renderSchema = useCallback((schema) => {
-    switch (schema.type) {
-      case INPUT_TYPE.SELECT:
-        return (
-          <Select model={schema.mode}>
-            {schema?.options?.options?.map((item) => {
-              return (
-                <Option key={item} value={item}>
-                  {item}
-                </Option>
-              );
-            })}
-          </Select>
-        );
-      default:
-        return <Input {...schema.props} />;
-    }
-  }, []);
+  const handleFieldChange = useCallback(
+    (name) => {
+      switch (name) {
+        case "productCategory":
+          return onCategoryChange;
+        case "hsCode":
+          return (code) => {
+            console.log(code);
+            asyncErrorHandlerWrapper(async () => {
+              const hsDetails = await ProductService.getHsCodeDetails(code);
+              form.setFieldsValue({ hsCodeDescription: hsDetails[0].hsCodeDescription });
+              const aheccCode = hsDetails.map((hs) => ({
+                id: hs.ahecc,
+                name: hs.ahecc,
+                aheccDescription: hs.aheccDescription,
+                unitQuantity: hs.unitQuantity
+              }));
+              setAheccCode(aheccCode);
+            });
+          };
+        case "ahecc":
+          return (aheccCode) => {
+            const selectedAheccCode = aheccCode.find((code) => code.id === aheccCode);
+            form.setFieldsValue({ aheccFullDescription: selectedAheccCode?.selectedAheccCode });
+            form.setFieldsValue({ quantity: selectedAheccCode?.unitQuantity });
+          };
+        case "aheccFullDescription":
+          return (aheccDes) => {
+            const selectedAheccCode = aheccCode.find((code) => code.aheccDescription === aheccDes);
+            form.setFieldsValue({ ahecc: selectedAheccCode?.id });
+          };
+        default:
+          return () => {};
+      }
+    },
+    [onCategoryChange, form, aheccCode]
+  );
+
+  const renderSchema = useCallback(
+    (schema) => {
+      switch (schema.type) {
+        case INPUT_TYPE.SELECT:
+          return (
+            <Select model={schema.mode} onChange={handleFieldChange(schema.name)}>
+              {schema?.options?.options?.map((item) => {
+                return (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
+        default:
+          return <Input {...schema.props} />;
+      }
+    },
+    [handleFieldChange]
+  );
 
   return (
     <>

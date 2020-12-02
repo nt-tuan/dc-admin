@@ -2,6 +2,9 @@ import { backendAPI } from "utils/httpAPI.util";
 import { ApiPathConsts } from "commons/consts/system";
 
 export class ProductService {
+  static PRODUCT_CATEGORY = "/products/category";
+  static HS_CODE = "/products/hsCode";
+
   static addProduct = async (data) => {
     const { brand, fileName, keyword, productName, typeId, variantList } = data;
     const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
@@ -83,6 +86,26 @@ export class ProductService {
         targetId
       )
     );
+    return result;
+  };
+
+  static getProductCategories = async () => {
+    const result = await backendAPI.get(this.PRODUCT_CATEGORY);
+    return result;
+  };
+
+  static getProductTypeByCategory = async (catId) => {
+    const result = await backendAPI.get(`${this.PRODUCT_CATEGORY}/${catId}`);
+    return result;
+  };
+
+  static getAllHsCode = async () => {
+    const result = await backendAPI.get(this.HS_CODE);
+    return result;
+  };
+
+  static getHsCodeDetails = async (code) => {
+    const result = await backendAPI.get(`/hsCode/${code}`);
     return result;
   };
 }
