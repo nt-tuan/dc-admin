@@ -1,14 +1,15 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { REQUIRED_ERR } from "commons/consts";
-import { Col, Form, Input, Row, Select } from "antd";
+import { Col, Form, Input, Row, Select, InputNumber } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 
 const INPUT_TYPE = {
   SELECT: "SELECT",
-  INPUT: "INPUT"
+  INPUT: "INPUT",
+  NUMBER: "NUMBER"
 };
 
 const { Option } = Select;
@@ -43,7 +44,6 @@ const VitalInformationForm = ({
   types,
   hsCode
 }) => {
-  console.log("🚀 ~ file: index.js ~ line 44 ~ hsCode", hsCode);
   const [aheccCode, setAheccCode] = useState([]);
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
     const fields = [
@@ -106,6 +106,7 @@ const VitalInformationForm = ({
         label: "Chapter Label",
         name: "chapterLabel",
         type: INPUT_TYPE.INPUT,
+        props: { disabled: true },
         options: {
           rules: [
             {
@@ -119,6 +120,7 @@ const VitalInformationForm = ({
         label: "Heading Label",
         name: "headingLabel",
         type: INPUT_TYPE.INPUT,
+        props: { disabled: true },
         options: {
           rules: [
             {
@@ -192,7 +194,10 @@ const VitalInformationForm = ({
       {
         label: "Minimum Order Quantity",
         name: "minimumQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
+        props: {
+          min: 1
+        },
         options: {
           rules: [
             {
@@ -205,7 +210,10 @@ const VitalInformationForm = ({
       {
         label: "Allowed Multiples of Quantity",
         name: "allowedMultiplesQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
+        props: {
+          min: 1
+        },
         options: {
           rules: [
             {
@@ -218,7 +226,7 @@ const VitalInformationForm = ({
       {
         label: "Keyword",
         name: "keyword",
-        type: INPUT_TYPE.SELECT,
+        type: INPUT_TYPE.INPUT,
         mode: "tags",
         options: {
           rules: [
@@ -244,6 +252,8 @@ const VitalInformationForm = ({
             asyncErrorHandlerWrapper(async () => {
               const hsDetails = await ProductService.getHsCodeDetails(code);
               form.setFieldsValue({ hsCodeDescription: hsDetails[0].hsCodeDescription });
+              form.setFieldsValue({ chapterLabel: hsDetails[0].chapterLabel });
+              form.setFieldsValue({ headingLabel: hsDetails[0].headingLabel });
               const aheccCode = hsDetails.map((hs) => ({
                 id: hs.ahecc,
                 name: hs.ahecc,
@@ -254,8 +264,8 @@ const VitalInformationForm = ({
             });
           };
         case "ahecc":
-          return (aheccCode) => {
-            const selectedAheccCode = aheccCode.find((code) => code.id === aheccCode);
+          return (selectedCode) => {
+            const selectedAheccCode = aheccCode.find((code) => code.id === selectedCode);
             form.setFieldsValue({ aheccFullDescription: selectedAheccCode?.selectedAheccCode });
             form.setFieldsValue({ quantity: selectedAheccCode?.unitQuantity });
           };
@@ -286,6 +296,8 @@ const VitalInformationForm = ({
               })}
             </Select>
           );
+        case INPUT_TYPE.NUMBER:
+          return <InputNumber {...schema.props} />;
         default:
           return <Input {...schema.props} />;
       }
@@ -295,7 +307,7 @@ const VitalInformationForm = ({
 
   return (
     <>
-      <Form hideRequiredMark form={form} name="vitalInformationForm" {...LAYOUT}>
+      <Form hideRequiredMark form={form} name="vitalInformation" {...LAYOUT}>
         <Row>
           {VITAL_INFORMATION_SCHEMA.map((schema, index) => {
             return (
@@ -312,8 +324,8 @@ const VitalInformationForm = ({
             );
           })}
         </Row>
+        <VitalInformationAddFieldsForm form={formNewFields} />
       </Form>
-      <VitalInformationAddFieldsForm form={formNewFields} />
     </>
   );
 };

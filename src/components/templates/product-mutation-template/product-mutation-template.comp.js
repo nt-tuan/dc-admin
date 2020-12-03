@@ -16,7 +16,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -26,14 +26,15 @@ export const ProductMutationTemplate = () => {
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
+  const [templateImageForm] = Form.useForm();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      const [categories] = await Promise.all([
-        ProductService.getProductCategories()
-        // ProductService.getAllHsCode()
+      const [categories, hsCode] = await Promise.all([
+        ProductService.getProductCategories(),
+        ProductService.getAllHsCode()
       ]);
-      const parseHsCode = ["ABCDEF", "123456", "HIJKLMN"].map((code) => ({ id: code, name: code }));
+      const parseHsCode = hsCode.map((code) => ({ id: code, name: code }));
       setCategories(categories);
       setHsCode(parseHsCode);
     });
@@ -49,7 +50,6 @@ export const ProductMutationTemplate = () => {
   //submit data in current step
   const handleSubmitForm = useCallback(
     (name, { values, forms }) => {
-      console.log(values);
       setProductData({ ...productData, [name]: values });
     },
     [productData]
@@ -60,13 +60,21 @@ export const ProductMutationTemplate = () => {
     switch (currentStep) {
       case 1:
         vitalForm.submit();
-        formNewFields.submit();
-        return !vitalForm.getFieldsError().length && formNewFields.getFieldsError().length > 1;
+        const isVitalFormValid = !Object.values(vitalForm.getFieldsValue())
+          .filter((value) => value !== undefined) //for custom vital
+          .some((fieldValue) => !fieldValue);
+        const isFormNewFieldsValid =
+          !vitalForm.getFieldsValue().customVital ||
+          !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);
+        return isVitalFormValid && isFormNewFieldsValid;
+      case 6:
+        templateImageForm.submit();
+        return templateImageForm.getFieldsValue().productImage;
       default:
         break;
     }
     return true;
-  }, [currentStep, vitalForm, formNewFields]);
+  }, [currentStep, vitalForm, templateImageForm]);
 
   const handleChangeStep = useCallback(
     (targetStep) => {
@@ -126,8 +134,8 @@ export const ProductMutationTemplate = () => {
           {currentStep === 3 && <div>step 3</div>}
           {currentStep === 4 && <div>step 4</div>}
           {currentStep === 5 && <div>step 5</div>}
-          {currentStep === 6 && <ProductTemplateImage />}
-          {currentStep === 7 && <ProductTemplateReview />}
+          {currentStep === 6 && <ProductTemplateImage form={templateImageForm} />}
+          {currentStep === 7 && <ProductTemplateReview data={productData} />}
         </Form.Provider>
       </DTCSection>
       <div className="footer">

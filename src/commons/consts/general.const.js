@@ -127,7 +127,11 @@ export const PRODUCT_DETAILS_LABELS = Object.freeze({
   hsCodeDescription: "HS Code Description",
   ahecc: "AHECC",
   aheccDescription: "AHECC Full Description",
+  aheccFullDescription: "AHECC Full Description",
   unitOfQuantity: "Unit of Quantity",
   minimumOrderQuantity: "Minimum Order Quantity",
-  allowedMutipleQuantity: "Allowed Multiple Quantity"
+  minimumQuantity: "Minimum Order Quantity",
+  allowedMutipleQuantity: "Allowed Multiple Quantity",
+  allowedMultiplesQuantity: "Allowed Multiple Quantity",
+  keyword: "Key Word"
 });

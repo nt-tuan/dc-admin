@@ -3,7 +3,7 @@ import { ApiPathConsts } from "commons/consts/system";
 
 export class ProductService {
   static PRODUCT_CATEGORY = "/products/category";
-  static HS_CODE = "/products/hsCode";
+  static HS_CODE = "/hsCode";
 
   static addProduct = async (data) => {
     const { brand, fileName, keyword, productName, typeId, variantList } = data;
