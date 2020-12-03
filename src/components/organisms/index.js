@@ -15,3 +15,4 @@ export * from "./introducer-container/introducer-container.comp";
 export * from "./trade-rules/trade-rules.comp";
 export * from "./trade-rules-table/trade-rules-table.comp";
 export * from "./requested-products-table/requested-products-table.comp";
+export * from "./product-template-review/product-template-review.comp";

@@ -54,13 +54,7 @@ const EditProductPage = () => {
   return (
     <>
       <Helmet title="Edit Product" />
-      <ProductMutationTemplate
-        isDisabled={isDisabled}
-        title={`Edit Product - ${productDetails && productDetails.name}`}
-        pageName="EditProductPage"
-        initialValues={handleMapProductDetails(productDetails)}
-        mutateServiceFn={(data) => ProductService.editProduct(data, productId)}
-      />
+      <ProductMutationTemplate />F
     </>
   );
 };

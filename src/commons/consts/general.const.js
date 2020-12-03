@@ -117,3 +117,22 @@ export const PHONE_CREDIT_TYPE_LABELS = Object.freeze({
   [PHONE_CREDIT_TYPES.THIRTY_FIVE_DAYS]: "35 days",
   [PHONE_CREDIT_TYPES.ESCROW_ON_DELIVERY]: "Escrow on Delivery"
 });
+
+export const PRODUCT_DETAILS_LABELS = Object.freeze({
+  productCategory: "Product Category",
+  productType: "Product Type",
+  productName: "Product Name",
+  hsCode: "HS Code",
+  chapterLabel: "Chapter Label",
+  headingLabel: "Heading Label",
+  hsCodeDescription: "HS Code Description",
+  ahecc: "AHECC",
+  aheccDescription: "AHECC Full Description",
+  aheccFullDescription: "AHECC Full Description",
+  unitOfQuantity: "Unit of Quantity",
+  minimumOrderQuantity: "Minimum Order Quantity",
+  minimumQuantity: "Minimum Order Quantity",
+  allowedMutipleQuantity: "Allowed Multiple Quantity",
+  allowedMultiplesQuantity: "Allowed Multiple Quantity",
+  keyword: "Key Word"
+});

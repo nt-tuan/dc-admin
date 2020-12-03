@@ -1,0 +1,14 @@
+@import "assets/styles/mixins.scss";
+
+.footer {
+  text-align: right;
+  button + button {
+    margin-left: 10px;
+  }
+}
+.question {
+  font-size: 24px;
+  color: $gray-3;
+  position: absolute;
+  top: 3px;
+}

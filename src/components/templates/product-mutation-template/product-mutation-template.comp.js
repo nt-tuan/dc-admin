@@ -1,146 +1,152 @@
-import { Form } from "antd";
-import { RouteConst } from "commons/consts";
-import { DTCSection, Stepper } from "components/atoms";
-import {
-  ProductDescriptionForm,
-  ProductReviewReadOnly,
-  ProductUploadImagesForm,
-  VitalInfoForm
-} from "components/organisms";
-import React, { useEffect, useReducer, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import * as STORAGE_DUCK from "redux/storage/storage.duck";
-import { ImageService } from "services";
+import React, { useCallback, useState, useMemo, useRef, useEffect } from "react";
+import { DTCSection } from "components/atoms";
+import { Button, Form, Steps } from "antd";
+import { isScreensize } from "utils/general.util";
+import VariantDetails from "./components/VariantsDetails";
+import VitalInformation from "./components/VitalInformation";
+import { PRODUCT_CREATE_TEMPLATE } from "./constants";
+import "./product-mutation-template.comp.scss";
+import { ProductTemplateImage } from "components/pages/add-product/product-template-image/product-template-image.comp";
+import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ProductService } from "services";
 
-const canMoveTemplate = async (asyncValidateFn, setDataFn) => {
-  try {
-    await asyncValidateFn();
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
+const ALLOW_SKIP = [4, 5];
 
-export const ProductMutationTemplate = ({
-  isDisabled,
-  pageName,
-  initialValues,
-  mutateServiceFn,
-  title
-}) => {
-  const dispatch = useDispatch();
-  const vitalFormRef = useRef({ getFieldsValue: () => ({}) });
-  const variantFormRef = useRef({ getFieldsValue: () => ({}) });
-  const productImgFormRef = useRef({ getFieldsValue: () => ({}) });
-  const [isUploading, setIsUploading] = useState(false);
-  const history = useHistory();
+const { Step } = Steps;
 
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+export const ProductMutationTemplate = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [productData, setProductData] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [hsCode, setHsCode] = useState([]);
 
-  const vitalInfoData = vitalFormRef.current.getFieldsValue();
-  const variantData = variantFormRef.current.getFieldsValue();
-  const imagesData = productImgFormRef.current.getFieldsValue();
-
-  const handleUploadImage = async ({ onSuccess, onError, file }) => {
-    setIsUploading(true);
-    if (file.size / 1024 / 1024 < 5) {
-      const res = await ImageService.uploadImage(file);
-      onSuccess({ ...res, status: "done", uid: res.name });
-    }
-    setIsUploading(false);
-  };
+  const isSmallDevice = isScreensize("sm");
+  const [vitalForm] = Form.useForm();
+  const [formNewFields] = Form.useForm();
+  const [variantDetailsForm] = Form.useForm();
+  const [templateImageForm] = Form.useForm();
 
   useEffect(() => {
-    if (typeof initialValues !== "undefined") {
-      if (initialValues.vitalInfoData) {
-        vitalFormRef.current.setFieldsValue(initialValues.vitalInfoData);
-      }
-      variantFormRef.current.setFieldsValue(initialValues.variantData);
-      productImgFormRef.current.setFieldsValue(initialValues.imagesData);
-      forceUpdate();
-    }
-  }, [initialValues]);
-
-  useEffect(() => {
-    dispatch({ type: STORAGE_DUCK.GET_FROM_STORAGE, payload: { pageName } });
-  }, [dispatch, pageName]);
-
-  const Steps = [
-    {
-      stepIndex: 0,
-      title: "Vital Information",
-      canMove: async () => true,
-      component: <VitalInfoForm ref={vitalFormRef} isDisabled={isDisabled} />
-    },
-    {
-      stepIndex: 1,
-      title: "Product Description",
-      canMove: async () => canMoveTemplate(vitalFormRef.current.validateFields),
-      component: <ProductDescriptionForm ref={variantFormRef} />
-    },
-    {
-      stepIndex: 2,
-      title: "Product Image",
-      canMove: async () => {
-        const isStep1Valid = await canMoveTemplate(vitalFormRef.current.validateFields);
-        const isStep2Valid = await canMoveTemplate(variantFormRef.current.validateFields);
-        return isStep1Valid && isStep2Valid;
-      },
-      component: (
-        <ProductUploadImagesForm ref={productImgFormRef} handleUploadImage={handleUploadImage} />
-      )
-    },
-    {
-      stepIndex: 3,
-      title: "Review",
-      canMove: async () => {
-        const isStep1Valid = await canMoveTemplate(vitalFormRef.current.validateFields);
-        const isStep2Valid = await canMoveTemplate(variantFormRef.current.validateFields);
-        const isStep3Valid = await canMoveTemplate(productImgFormRef.current.validateFields);
-        isStep1Valid && isStep2Valid && isStep3Valid && forceUpdate();
-        return isStep1Valid && isStep2Valid && isStep3Valid && isUploading === false;
-      },
-      component: (
-        <ProductReviewReadOnly
-          data={{
-            ...vitalInfoData,
-            imgUrl:
-              imagesData.productImageName &&
-              imagesData.productImageName[0] &&
-              imagesData.productImageName[0].url,
-            variantList: { ...variantData, Brand: vitalInfoData.brand }
-          }}
-        />
-      )
-    }
-  ];
-
-  const handleSubmit = () => {
-    const composedData = {
-      ...vitalInfoData,
-      category: undefined,
-      keyword: vitalInfoData.keyword.join(","),
-      fileName: imagesData.productImageName[0].name,
-      variantList: Object.keys(variantData).map((field) => ({
-        name: field,
-        value: variantData[field]
-      }))
-    };
     asyncErrorHandlerWrapper(async () => {
-      await mutateServiceFn(composedData);
-      history.push(RouteConst.PRODUCT_DATABASE);
+      const [categories, hsCode] = await Promise.all([
+        ProductService.getProductCategories(),
+        ProductService.getAllHsCode()
+      ]);
+      const parseHsCode = hsCode.map((code) => ({ id: code, name: code }));
+      setCategories(categories);
+      setHsCode(parseHsCode);
     });
-  };
+  }, []);
+
+  const getTypeByCategory = useCallback((catId) => {
+    asyncErrorHandlerWrapper(async () => {
+      const res = await ProductService.getProductTypeByCategory(catId);
+      setTypes(res);
+    });
+  }, []);
+
+  //submit data in current step
+  const handleSubmitForm = useCallback(
+    (name, { values, forms }) => {
+      setProductData({ ...productData, [name]: values });
+    },
+    [productData]
+  );
+
+  //TODO: combine submit and get error
+  const handleValidator = useCallback(() => {
+    switch (currentStep) {
+      case 1:
+        vitalForm.submit();
+        const isVitalFormValid = !Object.values(vitalForm.getFieldsValue())
+          .filter((value) => value !== undefined) //for custom vital
+          .some((fieldValue) => !fieldValue);
+        const isFormNewFieldsValid =
+          !vitalForm.getFieldsValue().customVital ||
+          !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);
+        return isVitalFormValid && isFormNewFieldsValid;
+      case 6:
+        templateImageForm.submit();
+        return templateImageForm.getFieldsValue().productImage;
+      default:
+        break;
+    }
+    return true;
+  }, [currentStep, vitalForm, templateImageForm]);
+
+  const handleChangeStep = useCallback(
+    (targetStep) => {
+      if (handleValidator()) {
+        setCurrentStep(targetStep + 1);
+      }
+    },
+    [handleValidator]
+  );
+
+  const handleNext = useCallback(async () => {
+    if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
+      // submit data
+      return;
+    } else {
+      const isValid = await handleValidator();
+      if (!isValid) return;
+      setCurrentStep(currentStep + 1);
+    }
+  }, [currentStep, handleValidator]);
+
+  const isSkip = useMemo(() => {
+    if (ALLOW_SKIP.includes(currentStep)) {
+      return true;
+    }
+    return false;
+  }, [currentStep]);
 
   return (
     <article>
       <DTCSection>
-        <Form.Provider>
-          <Stepper title={title} steps={Steps} onSubmit={handleSubmit} />
+        <Steps
+          className={null}
+          current={currentStep - 1}
+          size="default"
+          direction={isSmallDevice ? "vertical" : "horizontal"}
+          onChange={handleChangeStep}
+          progressDot
+        >
+          {PRODUCT_CREATE_TEMPLATE.map((menu) => (
+            <Step title={menu.title} key={menu.title} />
+          ))}
+        </Steps>
+        <Form.Provider onFormFinish={handleSubmitForm}>
+          {/* create form here form here */}
+          {currentStep === 1 && (
+            <VitalInformation
+              form={vitalForm}
+              formNewFields={formNewFields}
+              categories={categories}
+              onCategoryChange={getTypeByCategory}
+              types={types}
+              hsCode={hsCode}
+            />
+          )}
+          {currentStep === 2 && <VariantDetails form={variantDetailsForm} />}
+          {currentStep === 3 && <div>step 3</div>}
+          {currentStep === 4 && <div>step 4</div>}
+          {currentStep === 5 && <div>step 5</div>}
+          {currentStep === 6 && <ProductTemplateImage form={templateImageForm} />}
+          {currentStep === 7 && <ProductTemplateReview data={productData} />}
         </Form.Provider>
       </DTCSection>
+      <div className="footer">
+        {currentStep !== 1 && (
+          <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
+        )}
+        {isSkip && <Button danger>Skip Section</Button>}
+        <Button type="primary" onClick={handleNext}>
+          {currentStep === PRODUCT_CREATE_TEMPLATE.length ? "Submit" : "Next"}
+        </Button>
+      </div>
     </article>
   );
 };
