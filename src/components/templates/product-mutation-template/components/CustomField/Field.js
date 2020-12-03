@@ -2,21 +2,24 @@ import React, { forwardRef, useCallback, useMemo, useRef, useState } from "react
 import { Collapse, Card, Row, Col, Select, Input, Modal, Switch, Button } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { FIELD_TYPE } from "../../constants";
+import ChildFieldModal from "./ChildFieldModal";
+import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 import CustomFieldOption from "../CustomFieldOption/CustomFieldOption.comp";
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const Field = forwardRef(({ type, onRemove, name }, ref) => {
+const Field = forwardRef(({ type, onRemove, name, field, fieldKey, remove }, ref) => {
   const [isTypeModalOpen, setTypeModalOpen] = useState(false);
-  const [fieldType, setFieldType] = useState();
+  // const [fieldType, setFieldType] = useState();
   const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
+  const [isChildModalOpen, setIsChildModalOpen] = useState(false);
   const fieldOptionsRef = useRef();
 
-  const handleChange = useCallback((value) => {
-    setFieldType(value);
-  }, []);
+  // const handleChange = useCallback((value) => {
+  //   setFieldType(value);
+  // }, []);
 
   const renderRemoveIcon = useMemo(() => {
     const handleClick = (e) => {
@@ -27,7 +30,7 @@ const Field = forwardRef(({ type, onRemove, name }, ref) => {
   }, []);
   return (
     <>
-      <Collapse defaultActiveKey={["1"]}>
+      {/* <Collapse defaultActiveKey={["1"]}>
         <Panel header="This is panel header 2" extra={renderRemoveIcon} key="2">
           <Card className="mb-1">
             <Row>
@@ -67,7 +70,9 @@ const Field = forwardRef(({ type, onRemove, name }, ref) => {
             </Card>
           )}
         </Panel>
-      </Collapse>
+      </Collapse> */}
+      <FieldLayout {...{ type, setTypeModalOpen, fieldKey, setIsChildModalOpen, remove }} />
+      <ChildFieldModal isOpen={isChildModalOpen} closeModal={() => setIsChildModalOpen(false)} />
       <Modal
         centered
         visible={isTypeModalOpen}

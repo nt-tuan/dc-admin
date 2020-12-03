@@ -38,11 +38,14 @@ export const ProductMutationTemplate = () => {
         vitalForm.submit();
         formNewFields.submit();
         return !vitalForm.getFieldsError().length && formNewFields.getFieldsError().length > 1;
+      case 2:
+        variantDetailsForm.submit();
+        return !variantDetailsForm.getFieldsError().length;
       default:
         break;
     }
     return true;
-  }, [currentStep, vitalForm, formNewFields]);
+  }, [currentStep, vitalForm, formNewFields, variantDetailsForm]);
 
   const handleChangeStep = useCallback(
     (targetStep) => {
