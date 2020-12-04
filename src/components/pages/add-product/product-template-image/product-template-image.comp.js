@@ -8,8 +8,7 @@ const normFile = (e) => {
   return e && e.fileList.map((file) => (file.status === "done" ? file.response : file));
 };
 
-export const ProductTemplateImage = () => {
-  const [form] = Form.useForm();
+export const ProductTemplateImage = ({ form }) => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
