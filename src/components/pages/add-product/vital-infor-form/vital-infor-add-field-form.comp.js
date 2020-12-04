@@ -14,7 +14,7 @@ const formItemLayoutWithOutLabel = {
 export const VitalInformationAddFieldsForm = ({ form }) => {
   return (
     <Form {...formItemLayoutWithOutLabel} form={form}>
-      <Form.List name="new-fields-item">
+      <Form.List name="customVital">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (
