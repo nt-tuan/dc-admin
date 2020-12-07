@@ -1,4 +1,4 @@
-import { Checkbox, Input, Radio } from "antd";
+import { Checkbox, Input, Radio, Form } from "antd";
 import React, {
   forwardRef,
   Fragment,
@@ -13,6 +13,8 @@ import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import CustomInput from "../CustomInput/CustomInput.comp";
 import every from "lodash/every";
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
+import { REQUIRED_ERR } from "commons/consts";
+import { createFormErrorComp } from "utils/form.util";
 
 const initialFieldOptions = {
   label: "",
@@ -56,7 +58,7 @@ const initialFieldOptions = {
 };
 
 const CustomFieldOption = memo(
-  forwardRef(({ type }, ref) => {
+  forwardRef(({ type, setIsChildModalOpen, childAble }, ref) => {
     const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
     const [textOptions, setTextOptions] = useState([
       {
@@ -147,40 +149,53 @@ const CustomFieldOption = memo(
                   <div className="row mt-2">
                     <div className="col-3">{`Value ${index + 1}`}:</div>
                     <div className="col-9">
-                      <CustomInput
-                        value={field.label}
-                        hasError={field.isError}
-                        onChange={(e) => handleInputChange(index, e.target.value)}
-                        addOnBelow={() =>
-                          hasChildFields && (
-                            <Checkbox className="mt-2">Add child field(s) to this value</Checkbox>
-                          )
-                        }
-                        addOnAfter={() => (
-                          <>
-                            <PlusCircleOutlined
-                              className="mx-2"
-                              onClick={() => handleAddField(index)}
-                            />
-                            <MinusCircleOutlined
-                              onClick={
-                                fieldOptions.length === 1
-                                  ? undefined
-                                  : () => handleRemoveField(index)
-                              }
-                              style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
-                            />
-                          </>
-                        )}
-                      />
+                      <Form.Item
+                        name={"childValue"}
+                        rules={[
+                          {
+                            required: true,
+                            message: createFormErrorComp(REQUIRED_ERR("Value"))
+                          }
+                        ]}
+                      >
+                        <CustomInput
+                          value={field.label}
+                          hasError={field.isError}
+                          onChange={(e) => handleInputChange(index, e.target.value)}
+                          addOnBelow={() =>
+                            hasChildFields &&
+                            childAble && (
+                              <Checkbox className="mt-2" onClick={() => setIsChildModalOpen(true)}>
+                                Add child field(s) to this value
+                              </Checkbox>
+                            )
+                          }
+                          addOnAfter={() => (
+                            <>
+                              <PlusCircleOutlined
+                                className="mx-2"
+                                onClick={() => handleAddField(index)}
+                              />
+                              <MinusCircleOutlined
+                                onClick={
+                                  fieldOptions.length === 1
+                                    ? undefined
+                                    : () => handleRemoveField(index)
+                                }
+                                style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
+                              />
+                            </>
+                          )}
+                        />
+                      </Form.Item>
                     </div>
                   </div>
-                  {field.childField && (
+                  {/* {field.childField && (
                     <ChildFieldReview
                       data={field.childField}
                       onRemove={() => handleRemoveChildField(index)}
                     />
-                  )}
+                  )} */}
                 </Fragment>
               ))}
             </section>
