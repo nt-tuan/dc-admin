@@ -144,7 +144,7 @@ const VitalInformationForm = ({
           ]
         }
       },
-      // Note: comment AHECC, AHECC Full Description, Unit of Quantity field for hsb2b
+      // Note: remove AHECC, AHECC Full Description field and do not disable Unit of Quantity field for hsb2b
       // {
       //   label: "AHECC",
       //   name: "ahecc",
@@ -176,22 +176,22 @@ const VitalInformationForm = ({
       //     ]
       //   }
       // },
-      // {
-      //   label: "Unit of Quantity",
-      //   name: "quantity",
-      //   type: INPUT_TYPE.INPUT,
-      //   props: {
-      //     disabled: true
-      //   },
-      //   options: {
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-      //       }
-      //     ]
-      //   }
-      // },
+      {
+        label: "Unit of Quantity",
+        name: "quantity",
+        type: INPUT_TYPE.INPUT,
+        props: {
+          // disabled: true
+        },
+        options: {
+          rules: [
+            {
+              required: true,
+              message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
+            }
+          ]
+        }
+      },
       {
         label: "Minimum Order Quantity",
         name: "minimumQuantity",
