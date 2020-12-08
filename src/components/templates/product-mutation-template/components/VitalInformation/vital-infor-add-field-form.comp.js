@@ -1,6 +1,7 @@
 import { Form, Input, Button, Row, Col } from "antd";
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { isScreensize } from "utils/general.util";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -12,6 +13,7 @@ const formItemLayoutWithOutLabel = {
 };
 
 export const VitalInformationAddFieldsForm = ({ form }) => {
+  const isSmallDevice = isScreensize("sm");
   return (
     <Form.List name="customVital">
       {(fields, { add, remove }) => (
@@ -35,7 +37,7 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                   )}
                 </Form.Item>
               </Col>
-              <Col sm={20} md={22} lg={14} xl={14} className="px-0">
+              <Col sm={20} md={22} lg={14} xl={14} className={`${isSmallDevice ? "px-2" : "px-0"}`}>
                 <Form.Item
                   {...field}
                   name={[field.name, "value"]}
