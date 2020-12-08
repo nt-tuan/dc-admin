@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { sortAlphabetically } from "utils/sort.util";
 import { Button } from "antd";
 
@@ -72,24 +72,22 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
       title: "Manage",
       key: "manage",
       render: (record) => (
-        <React.Fragment>
-          <Fragment>
-            <Button
-              type="primary"
-              className="dtc-min-width-50 mr-2"
-              onClick={() => onEditClick(record.id)}
-            >
-              <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
-            </Button>
-            <Button
-              type="danger"
-              className="dtc-min-width-50 mr-2"
-              onClick={() => onDeleteClick(record.id)}
-            >
-              <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
-            </Button>
-          </Fragment>
-        </React.Fragment>
+        <div className="d-flex justify-content-end mr-2">
+          <Button
+            type="primary"
+            className="dtc-min-width-50 mr-2"
+            onClick={() => onEditClick(record.id)}
+          >
+            <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
+          </Button>
+          <Button
+            type="danger"
+            className="dtc-min-width-50 mr-2"
+            onClick={() => onDeleteClick(record.id)}
+          >
+            <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
+          </Button>
+        </div>
       )
     }
   ];
