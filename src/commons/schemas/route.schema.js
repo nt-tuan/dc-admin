@@ -72,7 +72,7 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
       title: "Manage",
       key: "manage",
       render: (record) => (
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-end mr-2">
           <Button
             type="primary"
             className="dtc-min-width-50 mr-2"
