@@ -82,7 +82,7 @@ export const RouteTab = () => {
 
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-end mr-4">
         <Link to={RouteConst.ADD_ROUTE}>
           <Button type="primary" className="mb-3">
             Create Route
