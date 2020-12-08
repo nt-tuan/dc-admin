@@ -51,8 +51,13 @@ export const ProductTemplateImage = ({ form }) => {
                 if (value[0].size / 1024 / 1024 >= 5) {
                   throw new Error("Please upload an image file with size less than 5 mb");
                 }
-                if ([".png", ".jpg", ".jpeg"].includes(fileExt.toLowerCase()) === false) {
-                  throw new Error("Invalid File Type. Accepted type: .png, .jpg, .jpeg");
+                if (
+                  [".png", ".jpg", ".jpeg", ".tiff", ".gif"].includes(fileExt.toLowerCase()) ===
+                  false
+                ) {
+                  throw new Error(
+                    "Invalid File Type. Accepted type: .png, .jpg, .jpeg, .tiff, .gif"
+                  );
                 }
               }
             }
@@ -62,6 +67,7 @@ export const ProductTemplateImage = ({ form }) => {
         getValueFromEvent={normFile}
       >
         <Upload
+          accept=".jpg, .jpeg, .png, .tiff, .gif"
           className="upload-product-image"
           listType="picture-card"
           customRequest={handleUploadImage}
