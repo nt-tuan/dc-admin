@@ -157,7 +157,7 @@ export const ProductMutationTemplate = () => {
           <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
         )}
         {isSkip && <Button danger>Skip Section</Button>}
-        <Button type="primary" onClick={handleNext}>
+        <Button type="primary" onClick={handleNext} className="mb-3">
           {currentStep === PRODUCT_CREATE_TEMPLATE.length ? "Submit" : "Next"}
         </Button>
       </div>

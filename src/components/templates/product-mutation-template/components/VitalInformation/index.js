@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { createFormErrorComp } from "utils/form.util";
-import { REQUIRED_ERR } from "commons/consts";
+import { RegexConst, REQUIRED_ERR } from "commons/consts";
 import { Col, Form, Input, Row, Select, InputNumber } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
@@ -108,12 +108,7 @@ const VitalInformationForm = ({
         type: INPUT_TYPE.INPUT,
         props: { disabled: true },
         options: {
-          rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("Chapter Label"))
-            }
-          ]
+          rules: []
         }
       },
       {
@@ -122,12 +117,7 @@ const VitalInformationForm = ({
         type: INPUT_TYPE.INPUT,
         props: { disabled: true },
         options: {
-          rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("Heading Label"))
-            }
-          ]
+          rules: []
         }
       },
       {
@@ -136,12 +126,7 @@ const VitalInformationForm = ({
         type: INPUT_TYPE.INPUT,
         props: { disabled: true },
         options: {
-          rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("HS Code Description"))
-            }
-          ]
+          rules: []
         }
       },
       {
@@ -194,15 +179,17 @@ const VitalInformationForm = ({
       {
         label: "Minimum Order Quantity",
         name: "minimumQuantity",
-        type: INPUT_TYPE.NUMBER,
-        props: {
-          min: 1
-        },
+        type: INPUT_TYPE.INPUT,
+        props: {},
         options: {
           rules: [
             {
               required: true,
               message: createFormErrorComp(REQUIRED_ERR("Minimum Order Quantity"))
+            },
+            {
+              pattern: RegexConst.ONLY_INTERER_GREATER_THAN_ZERO_REGEX,
+              message: createFormErrorComp("Minimum Order Quantity is integer greater then zero")
             }
           ]
         }
@@ -210,15 +197,19 @@ const VitalInformationForm = ({
       {
         label: "Allowed Multiples of Quantity",
         name: "allowedMultiplesQuantity",
-        type: INPUT_TYPE.NUMBER,
-        props: {
-          min: 1
-        },
+        type: INPUT_TYPE.INPUT,
+        props: {},
         options: {
           rules: [
             {
               required: true,
               message: createFormErrorComp(REQUIRED_ERR("Allowed Multiples of Quantity"))
+            },
+            {
+              pattern: RegexConst.ONLY_INTERER_GREATER_THAN_ZERO_REGEX,
+              message: createFormErrorComp(
+                "Allowed Multiples of Quantity is integer greater than zero"
+              )
             }
           ]
         }
@@ -248,7 +239,6 @@ const VitalInformationForm = ({
           return onCategoryChange;
         case "hsCode":
           return (code) => {
-            console.log(code);
             asyncErrorHandlerWrapper(async () => {
               const hsDetails = await ProductService.getHsCodeDetails(code);
               form.setFieldsValue({ hsCodeDescription: hsDetails[0].hsCodeDescription });
@@ -296,8 +286,6 @@ const VitalInformationForm = ({
               })}
             </Select>
           );
-        case INPUT_TYPE.NUMBER:
-          return <InputNumber {...schema.props} />;
         default:
           return <Input {...schema.props} />;
       }
