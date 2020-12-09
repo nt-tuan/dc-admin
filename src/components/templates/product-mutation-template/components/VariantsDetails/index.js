@@ -1,22 +1,44 @@
-import React, { forwardRef, useState } from "react";
-import { Form, Input, Button, Row, Col } from "antd";
+import React from "react";
+import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import Field from "../CustomField/Field";
 
 const VariantDetails = ({ form }) => {
   return (
-    <Form form={form}>
-      <Form.List name="variant-fields">
+    <Form
+      form={form}
+      initialValues={{
+        variantFields: [
+          {
+            fieldName: "",
+            type: "",
+            fieldOption: [""]
+          }
+        ]
+      }}
+    >
+      <Form.List name="variantFields">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (
-              <Field fieldKey={field.key} index={index} remove={() => remove(field.name)} />
+              <Field
+                field={field}
+                fieldKey={field.key}
+                index={index}
+                remove={() => remove(field.name)}
+              />
             ))}
             <Form.Item className="mt-3">
               <Button
                 type="primary"
-                onClick={() => add()}
+                onClick={() =>
+                  add({
+                    fieldName: "",
+                    type: "",
+                    fieldOption: [""]
+                  })
+                }
                 style={{ minWidth: "100px" }}
                 icon={<PlusOutlined />}
               >

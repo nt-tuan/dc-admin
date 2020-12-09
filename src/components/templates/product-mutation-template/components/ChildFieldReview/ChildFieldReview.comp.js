@@ -2,8 +2,19 @@ import { Collapse, Input, Radio, Select } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { memo, useCallback, useMemo, useState } from "react";
 
+const sample = [
+  {
+    fieldName: "custom child field 1",
+    type: "dropdown",
+    fieldOption: [
+      { label: "child label 1" },
+      { label: "child label 2" },
+      { label: "child label 3" }
+    ]
+  }
+];
+
 const ChildFieldReview = memo(({ onRemove, data }) => {
-  console.log("🚀 ~ file: ChildFieldReview.comp.js ~ line 41 ~ ChildFieldReview ~ data", data);
   const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
 
   const handleRemove = useCallback(() => {
@@ -51,11 +62,11 @@ const ChildFieldReview = memo(({ onRemove, data }) => {
       case "textbox":
         return (
           <div
-            className={`${options[0].fieldType === "shortText" ? "col-6 my-2" : "col-9 my-2"}`}
+            className={`${options[0].type === "shortText" ? "col-6 my-2" : "col-9 my-2"}`}
             key={fieldName}
           >
             <div className="text-capitalize">{fieldName}</div>
-            {options[0].fieldType === "shortText" ? (
+            {options[0].type === "shortText" ? (
               <Input className="mt-2" />
             ) : (
               <Input.TextArea className="mt-2" />
@@ -72,7 +83,7 @@ const ChildFieldReview = memo(({ onRemove, data }) => {
       <Collapse defaultActiveKey={["1"]} className="my-3">
         <Collapse.Panel header="Child field review" key="1" extra={renderRemoveIcon}>
           <div className="row">
-            {data.map(({ fieldName, type, fieldOption }) =>
+            {data?.map(({ fieldName, type, fieldOption }) =>
               renderChildField(fieldName, type, fieldOption)
             )}
           </div>

@@ -16,7 +16,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -67,6 +67,19 @@ export const ProductMutationTemplate = () => {
           !vitalForm.getFieldsValue().customVital ||
           !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);
         return isVitalFormValid && isFormNewFieldsValid;
+      case 2:
+        variantDetailsForm.submit();
+        const formValue = variantDetailsForm?.getFieldsValue()?.variantFields;
+        const errorField = formValue.find((value) => {
+          if (!value.fieldName || !value.type) {
+            return true;
+          }
+          if (value.fieldOption.find((childValue) => !childValue.label)) {
+            return true;
+          }
+          return false;
+        });
+        return !errorField;
       case 6:
         templateImageForm.submit();
         return templateImageForm.getFieldsValue().productImage;
@@ -74,7 +87,7 @@ export const ProductMutationTemplate = () => {
         break;
     }
     return true;
-  }, [currentStep, vitalForm, templateImageForm]);
+  }, [currentStep, vitalForm, templateImageForm, variantDetailsForm]);
 
   const handleChangeStep = useCallback(
     (targetStep) => {
@@ -86,14 +99,15 @@ export const ProductMutationTemplate = () => {
   );
 
   const handleNext = useCallback(async () => {
-    if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
-      // submit data
-      return;
-    } else {
-      const isValid = await handleValidator();
-      if (!isValid) return;
-      setCurrentStep(currentStep + 1);
-    }
+    // if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
+    //   // submit data
+    //   return;
+    // } else {
+    //   const isValid = await handleValidator();
+    //   if (!isValid) return;
+    //   setCurrentStep(currentStep + 1);
+    // }
+    setCurrentStep(currentStep + 1);
   }, [currentStep, handleValidator]);
 
   const isSkip = useMemo(() => {

@@ -5,7 +5,25 @@ import { FIELD_TYPE } from "../../constants";
 import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 
-const ChildFieldModal = ({ isOpen, closeModal, form }) => {
+const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
+  const handleOK = (e) => {
+    const formValue = form?.getFieldsValue()?.childField;
+    const errorField = formValue.find((value) => {
+      if (!value?.fieldName || !value?.type) {
+        return true;
+      }
+      if (value.fieldOption.find((childValue) => !childValue.label)) {
+        return true;
+      }
+      return false;
+    });
+    if (errorField) {
+      form.validateFields();
+    } else {
+      //
+      handleSave(formValue);
+    }
+  };
   return (
     <Modal
       centered
@@ -14,32 +32,36 @@ const ChildFieldModal = ({ isOpen, closeModal, form }) => {
       onCancel={closeModal}
       okText="Save"
       width={800}
-      onOk={() => console.log(111)}
+      onOk={handleOK}
     >
-      <Form form={form}>
-        <Form.List name="child-field-items">
+      <Form
+        form={form}
+        initialValues={{
+          variantFields: [
+            {
+              fieldName: "",
+              type: "",
+              fieldOption: [""]
+            }
+          ]
+        }}
+      >
+        <Form.List name="childField">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, index) => (
-                <Form.Item
-                  noStyle
-                  shouldUpdate={(prevValues, curValues) => prevValues.name !== curValues.name}
-                >
-                  {() => (
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "name"]}
-                      fieldKey={[field.fieldKey, "name"]}
-                    >
-                      <FieldLayout childAble={false} />
-                    </Form.Item>
-                  )}
-                </Form.Item>
+                <FieldLayout {...{ field }} remove={() => remove(field.name)} childAble={false} />
               ))}
               <Form.Item className="mt-3">
                 <Button
                   type="primary"
-                  onClick={add}
+                  onClick={() =>
+                    add({
+                      fieldName: "",
+                      fieldType: "",
+                      fieldOption: [""]
+                    })
+                  }
                   style={{ minWidth: "100px" }}
                   icon={<PlusOutlined />}
                 >

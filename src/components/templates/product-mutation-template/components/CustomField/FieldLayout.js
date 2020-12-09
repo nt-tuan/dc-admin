@@ -16,7 +16,9 @@ const FieldLayout = ({
   setTypeModalOpen,
   fieldKey,
   setIsChildModalOpen,
-  remove
+  remove,
+  field,
+  childValue
 }) => {
   const [fieldType, setFieldType] = useState();
   const [form] = Form.useForm();
@@ -30,6 +32,7 @@ const FieldLayout = ({
     <DeleteOutlined
       onClick={(event) => {
         remove();
+        // fieldOptionsRef.current.onValidateFieldOptions();
         // If you don't want click extra trigger collapse, you can prevent this:
         event.stopPropagation();
       }}
@@ -37,9 +40,9 @@ const FieldLayout = ({
   );
 
   return (
-    <>
+    <div key={field.key} className="mb-3">
       <Collapse defaultActiveKey={["1"]}>
-        <Panel header="" key="2" extra={genExtra()}>
+        <Panel header="" key="1" extra={genExtra()}>
           <Card className="mb-1">
             <Row>
               <Col xs={8} sm={4} md={4} lg={3} xl={3}>
@@ -47,7 +50,7 @@ const FieldLayout = ({
               </Col>
               <Col xs={16} sm={10} md={10} lg={15} xl={15} className="mb-1 pr-1">
                 <Form.Item
-                  name={[fieldKey, "inner"]}
+                  name={[field.name, "fieldName"]}
                   rules={[
                     {
                       required: true,
@@ -60,11 +63,11 @@ const FieldLayout = ({
               </Col>
               <Col xs={24} sm={10} md={10} lg={6} xl={6}>
                 <Form.Item
-                  name={[fieldKey, "innerSelect"]}
+                  name={[field.name, "type"]}
                   rules={[
                     {
                       required: true,
-                      message: createFormErrorComp(REQUIRED_ERR("select"))
+                      message: createFormErrorComp(REQUIRED_ERR("Field Type"))
                     }
                   ]}
                 >
@@ -91,44 +94,20 @@ const FieldLayout = ({
             </div>
           </Card>
 
-          {/* <Card>
-            <p>Enter value(s) for this field:</p>
-            <Row>
-              <Col xs={8} sm={4} md={4} lg={3} xl={3}>
-                Value
-              </Col>
-              <Col xs={16} sm={10} md={10} lg={15} xl={15} className="mb-1 pr-1">
-                <Input placeholder="Enter field value" />
-                {childAble && (
-                  <div className="text-right mt-2">
-                    Add child field?
-                    <Switch
-                      checked={isChildModalOpen}
-                      onChange={(value) => setIsChildModalOpen(value)}
-                      className="mx-3"
-                    />
-                  </div>
-                )}
-              </Col>
-              <Col xs={24} sm={10} md={10} lg={6} xl={6}>
-                <MinusCircleOutlined style={{ fontSize: "24px" }} className="mr-1" />
-                <PlusCircleOutlined style={{ fontSize: "24px" }} />
-              </Col>
-            </Row>
-          </Card> */}
           {fieldType && (
             <Card>
               <CustomFieldOption
                 type={fieldType}
                 ref={fieldOptionsRef}
                 childAble={childAble}
-                {...{ setIsChildModalOpen }}
+                fieldKey={field.key}
+                {...{ setIsChildModalOpen, childValue }}
               />
             </Card>
           )}
         </Panel>
       </Collapse>
-    </>
+    </div>
   );
 };
 
