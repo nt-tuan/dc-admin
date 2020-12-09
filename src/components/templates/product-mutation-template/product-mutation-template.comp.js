@@ -16,7 +16,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -99,15 +99,15 @@ export const ProductMutationTemplate = () => {
   );
 
   const handleNext = useCallback(async () => {
-    // if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
-    //   // submit data
-    //   return;
-    // } else {
-    //   const isValid = await handleValidator();
-    //   if (!isValid) return;
-    //   setCurrentStep(currentStep + 1);
-    // }
-    setCurrentStep(currentStep + 1);
+    if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
+      // submit data
+      return;
+    } else {
+      const isValid = await handleValidator();
+      if (!isValid) return;
+      setCurrentStep(currentStep + 1);
+    }
+    // setCurrentStep(currentStep + 1);
   }, [currentStep, handleValidator]);
 
   const isSkip = useMemo(() => {

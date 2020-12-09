@@ -6,19 +6,19 @@ import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
 export const ProductTemplateReview = memo(({ data = sample }) => {
   const productName = useMemo(
     () =>
-      Object.keys(data.vitalInformation)
+      Object.keys(data?.vitalInformation ? data?.vitalInformation : {})
         .filter((field) => field !== "customVital")
         .map((key) => {
-          return { key, value: data.vitalInformation[key] };
+          return { key, value: data?.vitalInformation[key] };
         })
         .find((item) => item.key === "productName")?.value,
     [data]
   );
   const productDetails = useMemo(
     () => [
-      ...Object.keys(data.vitalInformation)
+      ...Object.keys(data?.vitalInformation)
         .map((key) => {
-          return { key, value: data.vitalInformation[key] };
+          return { key, value: data?.vitalInformation[key] };
         })
         .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
       data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
