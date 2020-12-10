@@ -154,24 +154,34 @@ const CustomFieldOption = memo(
           return (
             <section>
               <p>Please choose field's properties:</p>
-              <Form.Item name={[fieldKey, "fieldOption", "allowInput"]}>
-                <div className="row">
-                  <div className="col-3 font-weight-bold">Allowed input:</div>
-                  <Radio.Group className="col-9">
-                    <Radio value="string">String</Radio>
-                    <Radio value="number">Number</Radio>
-                  </Radio.Group>
-                </div>
-              </Form.Item>
-              <Form.Item name={[fieldKey, "fieldOption", "textboxType"]}>
-                <div className="row mt-2">
-                  <div className="col-3 font-weight-bold">Field type:</div>
-                  <Radio.Group className="col-9">
-                    <Radio value="shortText">Single Texbox (Short text)</Radio>
-                    <Radio value="longText">Comment Box (Long text)</Radio>
-                  </Radio.Group>
-                </div>
-              </Form.Item>
+              <Form.List name={[fieldKey, "fieldOption"]}>
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <>
+                        <Form.Item name={[field.name, "allowInput"]}>
+                          <div className="row">
+                            <div className="col-3 font-weight-bold">Allowed input:</div>
+                            <Radio.Group className="col-9">
+                              <Radio value="string">String</Radio>
+                              <Radio value="number">Number</Radio>
+                            </Radio.Group>
+                          </div>
+                        </Form.Item>
+                        <Form.Item name={[field.name, "textboxType"]}>
+                          <div className="row mt-2">
+                            <div className="col-3 font-weight-bold">Field type:</div>
+                            <Radio.Group className="col-9">
+                              <Radio value="shortText">Single Texbox (Short text)</Radio>
+                              <Radio value="longText">Comment Box (Long text)</Radio>
+                            </Radio.Group>
+                          </div>
+                        </Form.Item>
+                      </>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </section>
           );
         default:

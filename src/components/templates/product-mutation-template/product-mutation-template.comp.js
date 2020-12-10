@@ -82,9 +82,16 @@ export const ProductMutationTemplate = () => {
       if (value?.fieldOption[0] === "") {
         return true;
       }
-      if (value?.fieldOption?.find((childValue) => !childValue.label)) {
-        return true;
+      if (value.type === "textbox") {
+        if (!value?.fieldOption[0].allowInput || !value?.fieldOption[0].textboxType) {
+          return true;
+        }
+      } else {
+        if (value?.fieldOption?.find((childValue) => !childValue.label)) {
+          return true;
+        }
       }
+
       return false;
     });
     return errorField;
