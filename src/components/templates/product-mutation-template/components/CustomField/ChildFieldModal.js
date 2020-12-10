@@ -12,6 +12,9 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
       if (!value?.fieldName || !value?.type) {
         return true;
       }
+      if (value?.fieldOption[0] === "") {
+        return true;
+      }
       if (value.fieldOption.find((childValue) => !childValue.label)) {
         return true;
       }

@@ -14,14 +14,12 @@ const FieldLayout = ({
   type,
   childAble = true,
   setTypeModalOpen,
-  fieldKey,
   setIsChildModalOpen,
   remove,
   field,
   childValue
 }) => {
   const [fieldType, setFieldType] = useState();
-  const [form] = Form.useForm();
   const fieldOptionsRef = useRef();
 
   const handleChange = useCallback((value) => {

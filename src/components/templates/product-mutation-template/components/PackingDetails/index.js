@@ -9,7 +9,7 @@ const VariantDetails = ({ form, handleFieldChange }) => {
     <Form
       form={form}
       initialValues={{
-        variantDetails: [
+        packingDetails: [
           {
             fieldName: "",
             type: "",

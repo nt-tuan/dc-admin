@@ -18,7 +18,15 @@ const Field = forwardRef(({ type, onRemove, name, field, fieldKey, remove }, ref
   return (
     <>
       <FieldLayout
-        {...{ type, setTypeModalOpen, fieldKey, setIsChildModalOpen, remove, field, childValue }}
+        {...{
+          type,
+          setTypeModalOpen,
+          fieldKey,
+          setIsChildModalOpen,
+          remove,
+          field,
+          childValue
+        }}
       />
       <ChildFieldModal
         isOpen={isChildModalOpen}

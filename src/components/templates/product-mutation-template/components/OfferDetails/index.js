@@ -9,7 +9,7 @@ const VariantDetails = ({ form }) => {
     <Form
       form={form}
       initialValues={{
-        variantDetails: [
+        offerDetails: [
           {
             fieldName: "",
             type: "",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -23,6 +23,7 @@ const VariantDetails = ({ form }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                form={form}
                 field={field}
                 fieldKey={field.key}
                 index={index}
