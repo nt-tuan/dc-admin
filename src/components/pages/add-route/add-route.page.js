@@ -25,7 +25,7 @@ const AddRoutePage = () => {
   const [defaultRoute, setDefaultRoute] = useState();
   const [defaultDocs, setDefaultDocs] = useState([]);
   const [selectedDefaultDocs, setSelectedDefaultDocs] = useState([]);
-  const [selectedCustomizedDocs, setSelectedCustomizedtDocs] = useState([]);
+  const [selectedCustomizedDocs, setSelectedCustomizedDocs] = useState([]);
   const isDocListTouched = useRef({});
   const locationFormRef = useRef();
   const documentRuleForms = useRef(new Map());
@@ -182,7 +182,7 @@ const AddRoutePage = () => {
             disabled: false
           };
         });
-      setSelectedCustomizedtDocs(docs);
+      setSelectedCustomizedDocs(docs);
     },
     [documents, defaultDocs]
   );
