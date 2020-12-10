@@ -6,11 +6,10 @@ export class ProductService {
   static HS_CODE = "/hsCode";
 
   static addProduct = async (data) => {
-    const { brand, fileName, keyword, productName, typeId, variantList } = data;
+    const { fileName, productName, typeId, variantList, detail } = data;
     const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
-      brand,
+      detail,
       fileName,
-      keyword,
       productName,
       typeId,
       variantList

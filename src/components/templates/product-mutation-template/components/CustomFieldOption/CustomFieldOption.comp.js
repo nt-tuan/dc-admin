@@ -95,45 +95,6 @@ const CustomFieldOption = memo(
       }
     }));
 
-    const handleRemoveChildField = useCallback(
-      (index) => {
-        const fieldOptionsClone = [...fieldOptions];
-        delete fieldOptionsClone[index].childField;
-        setFieldOptions(fieldOptionsClone);
-      },
-      [fieldOptions]
-    );
-
-    const handleAddField = useCallback(
-      (index) => {
-        const fieldsClone = [...fieldOptions];
-        const firstPart = fieldsClone.slice(0, index + 1);
-        const secondPart = fieldsClone.slice(index + 1);
-
-        secondPart.unshift({ label: "" });
-        setFieldOptions(firstPart.concat(secondPart));
-      },
-      [fieldOptions]
-    );
-
-    const handleRemoveField = useCallback(
-      (index) => {
-        const fieldsClone = [...fieldOptions];
-        fieldsClone.splice(index, 1);
-        setFieldOptions(fieldsClone);
-      },
-      [fieldOptions]
-    );
-
-    const handleInputChange = useCallback(
-      (index, value) => {
-        const fieldsClone = [...fieldOptions];
-        fieldsClone[index] = { label: value, isError: false };
-        setFieldOptions(fieldsClone);
-      },
-      [fieldOptions]
-    );
-
     const renderDynamicFields = useMemo(() => {
       switch (type) {
         case "dropdown":
@@ -219,7 +180,7 @@ const CustomFieldOption = memo(
     }, [type, fieldOptions, childAble, setIsChildModalOpen, fieldKey, childValue]);
 
     // return renderDynamicFields;
-    return <Form.Item name={"fieldOption"}>{renderDynamicFields}</Form.Item>;
+    return <Form.Item>{renderDynamicFields}</Form.Item>;
   })
 );
 

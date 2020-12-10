@@ -37,7 +37,7 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
       <Form
         form={form}
         initialValues={{
-          variantFields: [
+          variantDetails: [
             {
               fieldName: "",
               type: "",

@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import Field from "../CustomField/Field";
 
-const VariantDetails = ({ form }) => {
+const VariantDetails = ({ form, handleFieldChange }) => {
   return (
     <Form
       form={form}
@@ -17,8 +17,9 @@ const VariantDetails = ({ form }) => {
           }
         ]
       }}
+      onValuesChange={handleFieldChange}
     >
-      <Form.List name="variantDetails">
+      <Form.List name="packingDetails">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (

@@ -18,7 +18,7 @@ const VariantDetails = ({ form }) => {
         ]
       }}
     >
-      <Form.List name="variantDetails">
+      <Form.List name="offerDetails">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (

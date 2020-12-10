@@ -82,10 +82,12 @@ const FieldLayout = ({
                     ))}
                   </Select>
                 </Form.Item>
-                <QuestionCircleOutlined
-                  className="question"
-                  onClick={() => setTypeModalOpen(true)}
-                />
+                {childAble && (
+                  <QuestionCircleOutlined
+                    className="question"
+                    onClick={() => setTypeModalOpen(true)}
+                  />
+                )}
               </Col>
             </Row>
             <div className="text-right mt-2">
