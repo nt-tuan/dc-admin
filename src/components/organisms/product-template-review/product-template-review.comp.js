@@ -79,7 +79,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
             </Tabs.TabPane>
             <Tabs.TabPane tab="Product Details" key="2">
               <ProductDetailsTab
-                data={productDetails.filter((field) => field.key)}
+                data={productDetails.filter((field) => field.key && field.key !== "customVital")}
                 categories={categories}
                 types={types}
               />
