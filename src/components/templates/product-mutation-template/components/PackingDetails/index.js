@@ -27,7 +27,10 @@ const VariantDetails = ({ form, handleFieldChange }) => {
                 field={field}
                 fieldKey={field.key}
                 index={index}
-                remove={() => remove(field.name)}
+                remove={() => {
+                  if (fields.length === 1) return;
+                  remove(field.name);
+                }}
               />
             ))}
             <Form.Item className="mt-3">
