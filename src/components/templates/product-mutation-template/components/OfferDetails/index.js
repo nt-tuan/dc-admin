@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -9,7 +9,7 @@ const VariantDetails = ({ form }) => {
     <Form
       form={form}
       initialValues={{
-        variantDetails: [
+        offerDetails: [
           {
             fieldName: "",
             type: "",
@@ -18,12 +18,11 @@ const VariantDetails = ({ form }) => {
         ]
       }}
     >
-      <Form.List name="variantDetails">
+      <Form.List name="offerDetails">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (
               <Field
-                form={form}
                 field={field}
                 fieldKey={field.key}
                 index={index}

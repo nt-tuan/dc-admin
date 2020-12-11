@@ -10,7 +10,6 @@ import React, {
   useState
 } from "react";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import CustomInput from "../CustomInput/CustomInput.comp";
 import every from "lodash/every";
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 import { REQUIRED_ERR } from "commons/consts";
@@ -58,7 +57,7 @@ const initialFieldOptions = {
 };
 
 const CustomFieldOption = memo(
-  forwardRef(({ type, setIsChildModalOpen, childAble }, ref) => {
+  forwardRef(({ type, setIsChildModalOpen, childAble, fieldKey, childValue }, ref) => {
     const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
     const [textOptions, setTextOptions] = useState([
       {
@@ -96,45 +95,6 @@ const CustomFieldOption = memo(
       }
     }));
 
-    const handleRemoveChildField = useCallback(
-      (index) => {
-        const fieldOptionsClone = [...fieldOptions];
-        delete fieldOptionsClone[index].childField;
-        setFieldOptions(fieldOptionsClone);
-      },
-      [fieldOptions]
-    );
-
-    const handleAddField = useCallback(
-      (index) => {
-        const fieldsClone = [...fieldOptions];
-        const firstPart = fieldsClone.slice(0, index + 1);
-        const secondPart = fieldsClone.slice(index + 1);
-
-        secondPart.unshift({ label: "" });
-        setFieldOptions(firstPart.concat(secondPart));
-      },
-      [fieldOptions]
-    );
-
-    const handleRemoveField = useCallback(
-      (index) => {
-        const fieldsClone = [...fieldOptions];
-        fieldsClone.splice(index, 1);
-        setFieldOptions(fieldsClone);
-      },
-      [fieldOptions]
-    );
-
-    const handleInputChange = useCallback(
-      (index, value) => {
-        const fieldsClone = [...fieldOptions];
-        fieldsClone[index] = { label: value, isError: false };
-        setFieldOptions(fieldsClone);
-      },
-      [fieldOptions]
-    );
-
     const renderDynamicFields = useMemo(() => {
       switch (type) {
         case "dropdown":
@@ -144,60 +104,49 @@ const CustomFieldOption = memo(
           return (
             <section key={type}>
               <p>Enter values(s) for this field:</p>
-              {fieldOptions.map((field, index) => (
-                <Fragment key={index}>
-                  <div className="row mt-2">
-                    <div className="col-3">{`Value ${index + 1}`}:</div>
-                    <div className="col-9">
-                      <Form.Item
-                        name={"childValue"}
-                        rules={[
-                          {
-                            required: true,
-                            message: createFormErrorComp(REQUIRED_ERR("Value"))
-                          }
-                        ]}
-                      >
-                        <CustomInput
-                          value={field.label}
-                          hasError={field.isError}
-                          onChange={(e) => handleInputChange(index, e.target.value)}
-                          addOnBelow={() =>
-                            hasChildFields &&
-                            childAble && (
-                              <Checkbox className="mt-2" onClick={() => setIsChildModalOpen(true)}>
+              <Form.List name={[fieldKey, "fieldOption"]}>
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <div className="row mt-2">
+                        <div className="col-3">{`Value ${index + 1}`}:</div>
+                        <div className="col-9">
+                          <div className="d-flex align-items-center">
+                            <Form.Item
+                              name={[field.name, "label"]}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: createFormErrorComp(REQUIRED_ERR("option"))
+                                }
+                              ]}
+                            >
+                              <Input placeholder="Enter field value" />
+                            </Form.Item>
+                            <PlusCircleOutlined className="mx-2" onClick={() => add()} />
+                            <MinusCircleOutlined
+                              onClick={() => remove(field.name)}
+                              style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
+                            />
+                          </div>
+                          {hasChildFields && childAble && (
+                            <>
+                              <Checkbox
+                                className="mt-2"
+                                onClick={() => setIsChildModalOpen(true)}
+                                checked={!!childValue}
+                              >
                                 Add child field(s) to this value
                               </Checkbox>
-                            )
-                          }
-                          addOnAfter={() => (
-                            <>
-                              <PlusCircleOutlined
-                                className="mx-2"
-                                onClick={() => handleAddField(index)}
-                              />
-                              <MinusCircleOutlined
-                                onClick={
-                                  fieldOptions.length === 1
-                                    ? undefined
-                                    : () => handleRemoveField(index)
-                                }
-                                style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
-                              />
+                              {childValue && <ChildFieldReview data={childValue} />}
                             </>
                           )}
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                  {/* {field.childField && (
-                    <ChildFieldReview
-                      data={field.childField}
-                      onRemove={() => handleRemoveChildField(index)}
-                    />
-                  )} */}
-                </Fragment>
-              ))}
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </section>
           );
         }
@@ -205,48 +154,43 @@ const CustomFieldOption = memo(
           return (
             <section>
               <p>Please choose field's properties:</p>
-              <div className="row">
-                <div className="col-3 font-weight-bold">Allowed input:</div>
-                <Radio.Group
-                  className="col-9"
-                  value={textOptions[0].allowInput}
-                  onChange={(e) =>
-                    setTextOptions([{ ...textOptions[0], allowInput: e.target.value }])
-                  }
-                >
-                  <Radio value="string">String</Radio>
-                  <Radio value="number">Number</Radio>
-                </Radio.Group>
-              </div>
-              <div className="row mt-2">
-                <div className="col-3 font-weight-bold">Field type:</div>
-                <Radio.Group
-                  className="col-9"
-                  value={textOptions[0].fieldType}
-                  onChange={(e) =>
-                    setTextOptions([{ ...textOptions[0], fieldType: e.target.value }])
-                  }
-                >
-                  <Radio value="shortText">Single Texbox (Short text)</Radio>
-                  <Radio value="longText">Comment Box (Long text)</Radio>
-                </Radio.Group>
-              </div>
+              <Form.List name={[fieldKey, "fieldOption"]}>
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <>
+                        <Form.Item name={[field.name, "allowInput"]}>
+                          <div className="row">
+                            <div className="col-3 font-weight-bold">Allowed input:</div>
+                            <Radio.Group className="col-9">
+                              <Radio value="string">String</Radio>
+                              <Radio value="number">Number</Radio>
+                            </Radio.Group>
+                          </div>
+                        </Form.Item>
+                        <Form.Item name={[field.name, "textboxType"]}>
+                          <div className="row mt-2">
+                            <div className="col-3 font-weight-bold">Field type:</div>
+                            <Radio.Group className="col-9">
+                              <Radio value="shortText">Single Texbox (Short text)</Radio>
+                              <Radio value="longText">Comment Box (Long text)</Radio>
+                            </Radio.Group>
+                          </div>
+                        </Form.Item>
+                      </>
+                    ))}
+                  </>
+                )}
+              </Form.List>
             </section>
           );
         default:
           return;
       }
-    }, [
-      type,
-      fieldOptions,
-      handleRemoveField,
-      handleAddField,
-      handleInputChange,
-      textOptions,
-      handleRemoveChildField
-    ]);
+    }, [type, fieldOptions, childAble, setIsChildModalOpen, fieldKey, childValue]);
 
-    return renderDynamicFields;
+    // return renderDynamicFields;
+    return <Form.Item>{renderDynamicFields}</Form.Item>;
   })
 );
 

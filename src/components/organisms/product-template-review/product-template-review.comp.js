@@ -4,68 +4,69 @@ import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
 
 export const ProductTemplateReview = memo(({ data = sample }) => {
+  console.log(data);
   const productName = useMemo(
     () =>
-      Object.keys(data.vitalInformation)
+      Object.keys(data?.vitalInformation ? data?.vitalInformation : {})
         .filter((field) => field !== "customVital")
         .map((key) => {
-          return { key, value: data.vitalInformation[key] };
+          return { key, value: data?.vitalInformation[key] };
         })
         .find((item) => item.key === "productName")?.value,
     [data]
   );
   const productDetails = useMemo(
     () => [
-      ...Object.keys(data.vitalInformation)
+      ...Object.keys(data?.vitalInformation)
         .map((key) => {
-          return { key, value: data.vitalInformation[key] };
+          return { key, value: data?.vitalInformation[key] };
         })
         .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
       data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
     ],
     [data]
   );
-  // const preHandleOfferDetails = useMemo(() => {
-  //   const flatData = (name) => {
-  //     data.details[name].forEach(({ fieldOption, fieldName }) =>
-  //       fieldOption.forEach(
-  //         (option) =>
-  //           option.childField &&
-  //           option.childField.forEach((child) =>
-  //             offerDetails[name].push({
-  //               ...child,
-  //               parentField: option.label,
-  //               rootField: fieldName
-  //             })
-  //           )
-  //       )
-  //     );
-  //   };
-  //   const offerDetails = {
-  //     ...data.details,
-  //     variantDetails: [
-  //       { fieldName: "AHECC Code", type: "dropdown", fieldOption: [{ label: "08081001" }] },
-  //       {
-  //         fieldName: "AHECC Full Description",
-  //         type: "dropdown",
-  //         fieldOption: [{ label: "Delicious apple" }]
-  //       },
-  //       // ...data.details.variantDetails
-  //     ],
-  //     // offerDetails: [...DEFAULT_OFFER_FIELDS, ...data.details.offerDetails]
-  //   };
-  //   flatData("variantDetails");
-  //   flatData("offerDetails");
-  //   flatData("packingDetails");
-  //   return offerDetails;
-  // }, [data]);
+  const preHandleOfferDetails = useMemo(() => {
+    const flatData = (name) => {
+      data.details[name].forEach(({ fieldOption, fieldName }) =>
+        fieldOption.forEach(
+          (option) =>
+            option.childField &&
+            option.childField.forEach((child) =>
+              offerDetails[name].push({
+                ...child,
+                parentField: option.label,
+                rootField: fieldName
+              })
+            )
+        )
+      );
+    };
+    const offerDetails = {
+      ...data.details,
+      variantDetails: [
+        // { fieldName: "AHECC Code", type: "dropdown", fieldOption: [{ label: "08081001" }] },
+        // {
+        //   fieldName: "AHECC Full Description",
+        //   type: "dropdown",
+        //   fieldOption: [{ label: "Delicious apple" }]
+        // }
+        ...data.details.variantDetails
+      ],
+      offerDetails: [...data.details.offerDetails]
+    };
+    flatData("variantDetails");
+    flatData("offerDetails");
+    flatData("packingDetails");
+    return offerDetails;
+  }, [data]);
   return (
     <Fragment>
       <div className="row">
         <div className="col-xl-3 col-12 text-center mb-4">
           <h5 className="text-primary">Product Template Review</h5>
           <img
-            src={data?.ProductUploadImagesForm?.productImage[0]?.url}
+            src={data?.details?.productImage && data?.details?.productImage[0]?.url}
             alt="Product"
             className="mt-2"
             style={{ width: "100%" }}
@@ -75,7 +76,7 @@ export const ProductTemplateReview = memo(({ data = sample }) => {
           <h5 className="text-uppercase mb-0">{productName}</h5>
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab="Offer Details" key="1">
-              {/* <OfferDetailsTab data={preHandleOfferDetails} /> */}
+              <OfferDetailsTab data={preHandleOfferDetails} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Product Details" key="2">
               <ProductDetailsTab data={productDetails} />
