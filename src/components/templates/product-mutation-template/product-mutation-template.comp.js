@@ -227,7 +227,9 @@ export const ProductMutationTemplate = () => {
             <CertificationDetails form={certificationForm} {...{ handleFieldChange }} />
           )}
           {currentStep === 6 && <ProductTemplateImage form={templateImageForm} />}
-          {currentStep === 7 && <ProductTemplateReview data={productData} />}
+          {currentStep === 7 && (
+            <ProductTemplateReview data={productData} categories={categories} types={types} />
+          )}
         </Form.Provider>
       </DTCSection>
       <div className="footer">

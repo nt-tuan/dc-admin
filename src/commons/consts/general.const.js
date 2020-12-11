@@ -133,5 +133,6 @@ export const PRODUCT_DETAILS_LABELS = Object.freeze({
   minimumQuantity: "Minimum Order Quantity",
   allowedMutipleQuantity: "Allowed Multiple Quantity",
   allowedMultiplesQuantity: "Allowed Multiple Quantity",
-  keyword: "Key Word"
+  keyword: "Key Word",
+  quantity: "Quantity"
 });

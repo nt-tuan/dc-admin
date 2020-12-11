@@ -3,8 +3,7 @@ import image from "assets/images/aramex-logo.png";
 import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
 
-export const ProductTemplateReview = memo(({ data = sample }) => {
-  console.log(data);
+export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(
     () =>
       Object.keys(data?.vitalInformation ? data?.vitalInformation : {})
@@ -79,7 +78,7 @@ export const ProductTemplateReview = memo(({ data = sample }) => {
               <OfferDetailsTab data={preHandleOfferDetails} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Product Details" key="2">
-              <ProductDetailsTab data={productDetails} />
+              <ProductDetailsTab data={productDetails} categories={categories} types={types} />
             </Tabs.TabPane>
           </Tabs>
         </div>
