@@ -102,9 +102,17 @@ export const ProductMutationTemplate = () => {
     switch (currentStep) {
       case 1:
         vitalForm.submit();
-        const isVitalFormValid = !Object.values(vitalForm.getFieldsValue())
-          .filter((value) => value !== undefined) //for custom vital
-          .some((fieldValue) => !fieldValue);
+        const ignoreValidatorFieldList = [
+          "headingLabel",
+          "chapterLabel",
+          "hsCodeDescription",
+          "quantity",
+          "customVital"
+        ];
+        const formVal = vitalForm.getFieldsValue();
+        const isVitalFormValid = !Object.keys(formVal)
+          .filter((key) => !ignoreValidatorFieldList.includes(key))
+          .some((key) => !formVal[key]);
         const isFormNewFieldsValid =
           !vitalForm.getFieldsValue().customVital ||
           !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);

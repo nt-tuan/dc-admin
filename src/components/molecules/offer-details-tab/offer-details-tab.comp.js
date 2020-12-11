@@ -115,8 +115,8 @@ const ProductReviewSection = memo(({ name, data }) => {
 });
 
 const SECTION_LABEL = {
-  variantDetails: "Varients",
+  variantDetails: "Variants",
   offerDetails: "Offer Details",
   packingDetails: "Packing Details",
-  certificationDetails: "Certification"
+  certificationDetails: "Certifications"
 };
