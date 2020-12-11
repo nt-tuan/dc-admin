@@ -245,6 +245,9 @@ const VitalInformationForm = ({
               form.setFieldsValue({ hsCodeDescription: hsDetails[0].hsCodeDescription });
               form.setFieldsValue({ chapterLabel: hsDetails[0].chapterLabel });
               form.setFieldsValue({ headingLabel: hsDetails[0].headingLabel });
+              form.setFieldsValue({ ahecc: hsDetails[0].ahecc });
+              form.setFieldsValue({ aheccFullDescription: hsDetails[0].aheccDescription });
+              form.setFieldsValue({ quantity: hsDetails[0].unitQuantity });
               const aheccCode = hsDetails.map((hs) => ({
                 id: hs.ahecc,
                 name: hs.ahecc,
