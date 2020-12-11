@@ -15,14 +15,17 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     [data]
   );
   const productDetails = useMemo(
-    () => [
-      ...Object.keys(data?.vitalInformation)
-        .map((key) => {
-          return { key, value: data?.vitalInformation[key] };
-        })
-        .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
-      data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
-    ],
+    () =>
+      data.vitalInformation
+        ? [
+            ...Object.keys(data.vitalInformation)
+              .map((key) => {
+                return { key, value: data?.vitalInformation[key] };
+              })
+              .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
+            data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
+          ]
+        : [],
     [data]
   );
   const preHandleOfferDetails = useMemo(() => {
@@ -44,12 +47,18 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     const offerDetails = {
       ...data.details,
       variantDetails: [
-        // { fieldName: "AHECC Code", type: "dropdown", fieldOption: [{ label: "08081001" }] },
-        // {
-        //   fieldName: "AHECC Full Description",
-        //   type: "dropdown",
-        //   fieldOption: [{ label: "Delicious apple" }]
-        // }
+        {
+          fieldName: "AHECC Code",
+          type: "dropdown",
+          fieldOption: [{ label: productDetails.find((item) => item.key === "ahecc")?.value }]
+        },
+        {
+          fieldName: "AHECC Full Description",
+          type: "dropdown",
+          fieldOption: [
+            { label: productDetails.find((item) => item.key === "aheccFullDescription")?.value }
+          ]
+        },
         ...data.details.variantDetails
       ],
       offerDetails: [...data.details.offerDetails]
@@ -58,7 +67,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     flatData("offerDetails");
     flatData("packingDetails");
     return offerDetails;
-  }, [data]);
+  }, [data, productDetails]);
   return (
     <Fragment>
       <div className="row">
