@@ -1,4 +1,4 @@
-import { Checkbox, Input, Radio, Form } from "antd";
+import { Checkbox, Input, Radio, Form, Modal } from "antd";
 import React, {
   forwardRef,
   Fragment,
@@ -57,141 +57,181 @@ const initialFieldOptions = {
 };
 
 const CustomFieldOption = memo(
-  forwardRef(({ type, setIsChildModalOpen, childAble, fieldKey, childValue }, ref) => {
-    const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
-    const [textOptions, setTextOptions] = useState([
-      {
-        allowInput: "string",
-        fieldType: "shortText"
-      }
-    ]);
-
-    useEffect(() => {
-      setFieldOptions([{ ...initialFieldOptions }]);
-      setTextOptions([
+  forwardRef(
+    ({ type, setIsChildModalOpen, childAble, fieldKey, childValue, setChildValue }, ref) => {
+      const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
+      const [isOpen, setIsOpen] = useState(false);
+      const [deletedField, setDeletedField] = useState({});
+      const [textOptions, setTextOptions] = useState([
         {
           allowInput: "string",
           fieldType: "shortText"
         }
       ]);
-    }, [type]);
 
-    useImperativeHandle(ref, () => ({
-      onValidateFieldOptions: () => {
-        if (type !== "textbox") {
-          const fieldOptionsClone = [...fieldOptions];
-          fieldOptions.forEach((item, index) => {
-            if (!item.label) {
-              fieldOptionsClone[index].isError = true;
-              setFieldOptions(fieldOptionsClone);
-            }
-          });
-          return every(fieldOptions, ["isError", false])
-            ? fieldOptions.map((item) => ({ label: item.label }))
-            : null;
-        } else {
-          return textOptions;
+      useEffect(() => {
+        setFieldOptions([{ ...initialFieldOptions }]);
+        setTextOptions([
+          {
+            allowInput: "string",
+            fieldType: "shortText"
+          }
+        ]);
+      }, [type]);
+
+      useImperativeHandle(ref, () => ({
+        onValidateFieldOptions: () => {
+          if (type !== "textbox") {
+            const fieldOptionsClone = [...fieldOptions];
+            fieldOptions.forEach((item, index) => {
+              if (!item.label) {
+                fieldOptionsClone[index].isError = true;
+                setFieldOptions(fieldOptionsClone);
+              }
+            });
+            return every(fieldOptions, ["isError", false])
+              ? fieldOptions.map((item) => ({ label: item.label }))
+              : null;
+          } else {
+            return textOptions;
+          }
         }
-      }
-    }));
-
-    const renderDynamicFields = useMemo(() => {
-      switch (type) {
-        case "dropdown":
-        case "radio":
-        case "multiDropdown": {
-          const hasChildFields = ["dropdown", "radio"].includes(type);
-          return (
-            <section key={type}>
-              <p>Enter values(s) for this field:</p>
-              <Form.List name={[fieldKey, "fieldOption"]}>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map((field, index) => (
-                      <div className="row mt-2">
-                        <div className="col-3">{`Value ${index + 1}`}:</div>
-                        <div className="col-9">
-                          <div className="d-flex align-items-center">
-                            <Form.Item
-                              name={[field.name, "label"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: createFormErrorComp(REQUIRED_ERR("option"))
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Enter field value" />
-                            </Form.Item>
-                            <PlusCircleOutlined className="mx-2" onClick={() => add()} />
-                            <MinusCircleOutlined
-                              onClick={() => remove(field.name)}
-                              style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
-                            />
-                          </div>
-                          {hasChildFields && childAble && (
-                            <>
-                              <Checkbox
-                                className="mt-2"
-                                onClick={() => setIsChildModalOpen(true)}
-                                checked={!!childValue}
+      }));
+      const handleOK = (func) => {
+        setIsOpen(false);
+        func();
+      };
+      const handleDelete = useCallback((fields, field) => {
+        if (fields.length === 1) return;
+        setDeletedField(field);
+        setIsOpen(true);
+      }, []);
+      const renderDynamicFields = useMemo(() => {
+        switch (type) {
+          case "dropdown":
+          case "radio":
+          case "multiDropdown": {
+            const hasChildFields = ["dropdown", "radio"].includes(type);
+            return (
+              <section key={type}>
+                <p>Enter values(s) for this field:</p>
+                <Form.List name={[fieldKey, "fieldOption"]}>
+                  {(fields, { add, remove }) => (
+                    <>
+                      <Modal
+                        centered
+                        visible={isOpen}
+                        onCancel={() => setIsOpen(false)}
+                        onOk={() => handleOK(() => remove(deletedField.name))}
+                        okText=""
+                      >
+                        <p className="mt-3">
+                          If you delete value, your entered data will not be saved. Are you sure you
+                          want to delete it anyway?
+                        </p>
+                      </Modal>
+                      {fields.map((field, index) => (
+                        <div className="row mt-2">
+                          <div className="col-3">{`Value ${index + 1}`}:</div>
+                          <div className="col-9">
+                            <div className="d-flex align-items-center">
+                              <Form.Item
+                                name={[field.name, "label"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: createFormErrorComp(REQUIRED_ERR("option"))
+                                  }
+                                ]}
                               >
-                                Add child field(s) to this value
-                              </Checkbox>
-                              {childValue && <ChildFieldReview data={childValue} />}
-                            </>
-                          )}
+                                <Input placeholder="Enter field value" />
+                              </Form.Item>
+                              <PlusCircleOutlined className="mx-2" onClick={() => add()} />
+                              <MinusCircleOutlined
+                                onClick={() => handleDelete(fields, field)}
+                                // onClick={() => remove(field.name)}
+                                style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
+                              />
+                            </div>
+                            {hasChildFields && childAble && (
+                              <>
+                                <Checkbox
+                                  className="mt-2"
+                                  onClick={() => setIsChildModalOpen(true)}
+                                  checked={!!childValue}
+                                >
+                                  Add child field(s) to this value
+                                </Checkbox>
+                                {childValue && (
+                                  <ChildFieldReview
+                                    data={childValue}
+                                    onRemove={() => setChildValue(undefined)}
+                                  />
+                                )}
+                              </>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </section>
-          );
+                      ))}
+                    </>
+                  )}
+                </Form.List>
+              </section>
+            );
+          }
+          case "textbox":
+            return (
+              <section>
+                <p>Please choose field's properties:</p>
+                <Form.List name={[fieldKey, "fieldOption"]}>
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map((field, index) => (
+                        <>
+                          <Form.Item name={[field.name, "allowInput"]}>
+                            <div className="row">
+                              <div className="col-3 font-weight-bold">Allowed input:</div>
+                              <Radio.Group className="col-9">
+                                <Radio value="string">String</Radio>
+                                <Radio value="number">Number</Radio>
+                              </Radio.Group>
+                            </div>
+                          </Form.Item>
+                          <Form.Item name={[field.name, "textboxType"]}>
+                            <div className="row mt-2">
+                              <div className="col-3 font-weight-bold">Field type:</div>
+                              <Radio.Group className="col-9">
+                                <Radio value="shortText">Single Texbox (Short text)</Radio>
+                                <Radio value="longText">Comment Box (Long text)</Radio>
+                              </Radio.Group>
+                            </div>
+                          </Form.Item>
+                        </>
+                      ))}
+                    </>
+                  )}
+                </Form.List>
+              </section>
+            );
+          default:
+            return;
         }
-        case "textbox":
-          return (
-            <section>
-              <p>Please choose field's properties:</p>
-              <Form.List name={[fieldKey, "fieldOption"]}>
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map((field, index) => (
-                      <>
-                        <Form.Item name={[field.name, "allowInput"]}>
-                          <div className="row">
-                            <div className="col-3 font-weight-bold">Allowed input:</div>
-                            <Radio.Group className="col-9">
-                              <Radio value="string">String</Radio>
-                              <Radio value="number">Number</Radio>
-                            </Radio.Group>
-                          </div>
-                        </Form.Item>
-                        <Form.Item name={[field.name, "textboxType"]}>
-                          <div className="row mt-2">
-                            <div className="col-3 font-weight-bold">Field type:</div>
-                            <Radio.Group className="col-9">
-                              <Radio value="shortText">Single Texbox (Short text)</Radio>
-                              <Radio value="longText">Comment Box (Long text)</Radio>
-                            </Radio.Group>
-                          </div>
-                        </Form.Item>
-                      </>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </section>
-          );
-        default:
-          return;
-      }
-    }, [type, fieldOptions, childAble, setIsChildModalOpen, fieldKey, childValue]);
+      }, [
+        type,
+        fieldOptions,
+        childAble,
+        setIsChildModalOpen,
+        fieldKey,
+        childValue,
+        handleDelete,
+        isOpen,
+        deletedField.name
+      ]);
 
-    // return renderDynamicFields;
-    return <Form.Item>{renderDynamicFields}</Form.Item>;
-  })
+      // return renderDynamicFields;
+      return <Form.Item>{renderDynamicFields}</Form.Item>;
+    }
+  )
 );
 
 export default CustomFieldOption;
