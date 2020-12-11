@@ -17,7 +17,8 @@ const FieldLayout = ({
   setIsChildModalOpen,
   remove,
   field,
-  childValue
+  childValue,
+  setChildValue
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
@@ -101,7 +102,7 @@ const FieldLayout = ({
                 ref={fieldOptionsRef}
                 childAble={childAble}
                 fieldKey={field.key}
-                {...{ setIsChildModalOpen, childValue }}
+                {...{ setIsChildModalOpen, childValue, setChildValue }}
               />
             </Card>
           )}
