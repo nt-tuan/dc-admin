@@ -78,7 +78,11 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
               <OfferDetailsTab data={preHandleOfferDetails} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Product Details" key="2">
-              <ProductDetailsTab data={productDetails} categories={categories} types={types} />
+              <ProductDetailsTab
+                data={productDetails.filter((field) => field.key)}
+                categories={categories}
+                types={types}
+              />
             </Tabs.TabPane>
           </Tabs>
         </div>
