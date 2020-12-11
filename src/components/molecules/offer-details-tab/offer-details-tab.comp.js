@@ -77,7 +77,7 @@ const ProductReviewSection = memo(({ name, data }) => {
             item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
           )
           .map(({ fieldName, type, fieldOption }) => {
-            if (name === "certification") {
+            if (name === "certificationDetails") {
               return (
                 <div key={fieldName} className="mx-3">
                   <div className="text-capitalize">{fieldName}</div>
@@ -118,5 +118,5 @@ const SECTION_LABEL = {
   variantDetails: "Varients",
   offerDetails: "Offer Details",
   packingDetails: "Packing Details",
-  certification: "Certification"
+  certificationDetails: "Certification"
 };

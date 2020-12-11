@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { DTCSection } from "components/atoms";
-import { Button, Form, Steps } from "antd";
+import { Button, Form, Steps, message } from "antd";
 import { isScreensize } from "utils/general.util";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
@@ -164,7 +164,11 @@ export const ProductMutationTemplate = () => {
           })
       };
       asyncErrorHandlerWrapper(async () => {
-        ProductService.addProduct(data);
+        await ProductService.addProduct(data);
+        message.success("Create Successfully");
+        setTimeout(() => {
+          window.location.href = "/add-product";
+        }, 1000);
       });
       return;
     } else {
