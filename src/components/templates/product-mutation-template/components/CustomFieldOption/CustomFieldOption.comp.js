@@ -189,7 +189,15 @@ const CustomFieldOption = memo(
                     <>
                       {fields.map((field, index) => (
                         <>
-                          <Form.Item name={[field.name, "allowInput"]}>
+                          <Form.Item
+                            name={[field.name, "allowInput"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: createFormErrorComp(REQUIRED_ERR("Allow input"))
+                              }
+                            ]}
+                          >
                             <div className="row">
                               <div className="col-3 font-weight-bold">Allowed input:</div>
                               <Radio.Group className="col-9">
@@ -198,7 +206,15 @@ const CustomFieldOption = memo(
                               </Radio.Group>
                             </div>
                           </Form.Item>
-                          <Form.Item name={[field.name, "textboxType"]}>
+                          <Form.Item
+                            name={[field.name, "textboxType"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: createFormErrorComp(REQUIRED_ERR("Field type"))
+                              }
+                            ]}
+                          >
                             <div className="row mt-2">
                               <div className="col-3 font-weight-bold">Field type:</div>
                               <Radio.Group className="col-9">
