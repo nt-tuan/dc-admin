@@ -47,18 +47,18 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     const offerDetails = {
       ...data.details,
       variantDetails: [
-        {
-          fieldName: "AHECC Code",
-          type: "dropdown",
-          fieldOption: [{ label: productDetails.find((item) => item.key === "ahecc")?.value }]
-        },
-        {
-          fieldName: "AHECC Full Description",
-          type: "dropdown",
-          fieldOption: [
-            { label: productDetails.find((item) => item.key === "aheccFullDescription")?.value }
-          ]
-        },
+        // {
+        //   fieldName: "AHECC Code",
+        //   type: "dropdown",
+        //   fieldOption: [{ label: productDetails.find((item) => item.key === "ahecc")?.value }]
+        // },
+        // {
+        //   fieldName: "AHECC Full Description",
+        //   type: "dropdown",
+        //   fieldOption: [
+        //     { label: productDetails.find((item) => item.key === "aheccFullDescription")?.value }
+        //   ]
+        // },
         ...data.details.variantDetails
       ],
       offerDetails: [...data.details.offerDetails]
