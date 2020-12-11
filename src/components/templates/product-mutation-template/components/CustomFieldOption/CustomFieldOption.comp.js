@@ -164,6 +164,7 @@ const CustomFieldOption = memo(
                                 </Checkbox>
                                 {childValue && (
                                   <ChildFieldReview
+                                    reOpenModal={() => setIsChildModalOpen(true)}
                                     data={childValue}
                                     onRemove={() => setChildValue(undefined)}
                                   />
