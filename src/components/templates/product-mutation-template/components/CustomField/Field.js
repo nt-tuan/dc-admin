@@ -25,7 +25,8 @@ const Field = forwardRef(({ type, onRemove, name, field, fieldKey, remove }, ref
           setIsChildModalOpen,
           remove,
           field,
-          childValue
+          childValue,
+          setChildValue
         }}
       />
       <ChildFieldModal

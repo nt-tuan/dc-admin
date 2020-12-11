@@ -20,7 +20,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
