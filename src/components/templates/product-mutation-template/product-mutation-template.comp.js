@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
 import classNames from "classnames";
@@ -14,14 +14,13 @@ import { ProductTemplateImage } from "components/pages/add-product/product-templ
 import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
-import isEmpty from "lodash/isEmpty";
 
 const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -32,10 +31,10 @@ export const ProductMutationTemplate = () => {
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
+  const templateImageForm = useRef();
   const [offerDetailsForm] = Form.useForm();
   const [packingDetailsForm] = Form.useForm();
   const [certificationForm] = Form.useForm();
-  const [templateImageForm] = Form.useForm();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -131,8 +130,11 @@ export const ProductMutationTemplate = () => {
         certificationForm.submit();
         return !getErrorField(certificationForm);
       case 6:
-        templateImageForm.submit();
-        return templateImageForm.getFieldsValue().productImage;
+        setProductData({
+          ...productData,
+          ProductUploadImagesForm: templateImageForm.current.getValues()
+        });
+        return templateImageForm.current.getValues();
       default:
         break;
     }
@@ -145,7 +147,8 @@ export const ProductMutationTemplate = () => {
     getErrorField,
     offerDetailsForm,
     certificationForm,
-    packingDetailsForm
+    packingDetailsForm,
+    productData
   ]);
 
   const handleChangeStep = useCallback((targetStep) => {
@@ -183,8 +186,10 @@ export const ProductMutationTemplate = () => {
     } else {
       const isValid = await handleValidator();
       if (!isValid) return;
-      setCurrentStep(currentStep + 1);
-      setSkipAble(true);
+      setTimeout(() => {
+        setCurrentStep(currentStep + 1);
+        setSkipAble(true);
+      }, 100);
     }
   }, [currentStep, handleValidator, productData]);
 
@@ -244,7 +249,7 @@ export const ProductMutationTemplate = () => {
             <CertificationDetails form={certificationForm} {...{ handleFieldChange }} />
           </div>
           <div className={classNames({ "d-none": currentStep !== 6 })}>
-            <ProductTemplateImage form={templateImageForm} />
+            <ProductTemplateImage ref={(ref) => (templateImageForm.current = ref)} />
           </div>
           {currentStep === 7 && (
             <ProductTemplateReview data={productData} categories={categories} types={types} />

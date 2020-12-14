@@ -71,20 +71,15 @@ const ProductReviewSection = memo(({ name, data }) => {
   return (
     <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
       <h5>{SECTION_LABEL[name]}</h5>
+      {name === "certificationDetails" && (
+        <div className="">Please choose certifications applicable for your product</div>
+      )}
       <div className="row">
         {data
           .filter((item) =>
             item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
           )
           .map(({ fieldName, type, fieldOption }) => {
-            if (name === "certificationDetails") {
-              return (
-                <div key={fieldName} className="mx-3">
-                  <div className="text-capitalize">{fieldName}</div>
-                  <div className="">{mappingType(type, fieldOption, fieldName)}</div>
-                </div>
-              );
-            }
             if (type === "radio") {
               return (
                 <div key={fieldName} className="col-12 mt-3 row">
