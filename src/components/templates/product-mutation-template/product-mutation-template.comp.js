@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
+import classNames from "classnames";
 import { isScreensize } from "utils/general.util";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
@@ -20,7 +21,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -220,7 +221,7 @@ export const ProductMutationTemplate = () => {
         </Steps>
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
-          {currentStep === 1 && (
+          <div className={classNames({ "d-none": currentStep !== 1 })}>
             <VitalInformation
               form={vitalForm}
               formNewFields={formNewFields}
@@ -229,16 +230,22 @@ export const ProductMutationTemplate = () => {
               types={types}
               hsCode={hsCode}
             />
-          )}
-          {currentStep === 2 && <VariantDetails form={variantDetailsForm} />}
-          {currentStep === 3 && <OfferDetails form={offerDetailsForm} />}
-          {currentStep === 4 && (
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 2 })}>
+            <VariantDetails form={variantDetailsForm} />
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 3 })}>
+            <OfferDetails form={offerDetailsForm} />
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 4 })}>
             <PackingDetails form={packingDetailsForm} {...{ handleFieldChange }} />
-          )}
-          {currentStep === 5 && (
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 5 })}>
             <CertificationDetails form={certificationForm} {...{ handleFieldChange }} />
-          )}
-          {currentStep === 6 && <ProductTemplateImage form={templateImageForm} />}
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 6 })}>
+            <ProductTemplateImage form={templateImageForm} />
+          </div>
           {currentStep === 7 && (
             <ProductTemplateReview data={productData} categories={categories} types={types} />
           )}
