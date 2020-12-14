@@ -35,7 +35,7 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
     if (file.size / 1024 / 1024 < 5) {
       const res = await ImageService.uploadImage(file);
-      setImgUrl(res.url);
+      setImgUrl(res);
       onSuccess({ ...res, status: "done", uid: res.name });
     }
   };
