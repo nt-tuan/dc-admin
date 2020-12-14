@@ -16,11 +16,10 @@ const Field = forwardRef(({ type, onRemove, name, field, fieldKey, remove, form 
     (value) => {
       const newChildValue = [...childValue];
       newChildValue[currentIndex] = value;
-      childForm.setFieldsValue({ childField: newChildValue });
       setChildValue(newChildValue);
       setIsChildModalOpen(false);
     },
-    [childValue, currentIndex, childForm]
+    [childValue, currentIndex]
   );
 
   const openChildField = useCallback(
