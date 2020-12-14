@@ -79,35 +79,39 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
 
   return (
     <div className="p-5">
-      <ImgCrop rotate beforeCrop={beforeCrop}>
-        <Upload
-          accept=".jpg, .jpeg, .png, .tiff, .gif"
-          className="upload-product-image"
-          listType="picture-card"
-          customRequest={handleUploadImage}
-          onChange={() => forceUpdate()}
-          beforeUpload={beforeUpload}
-          onRemove={(file) => {
-            asyncErrorHandlerWrapper(async () => {
-              try {
-                setImgUrl();
-                if (file.status === "done") {
-                  await ImageService.deleteImage(file.response.name);
-                }
-              } catch (error) {
-                throw error;
-              }
-            });
-          }}
-        >
-          {renderUploadButton()}
-        </Upload>
-      </ImgCrop>
-      {isError.isSizeError &&
-        renderErrorMessage("Please upload an image file with size less than 5 mb")}
-      {isError.isTypeError &&
-        renderErrorMessage("Invalid File Type. Accepted type: .png, .jpg, .jpeg")}
-      {isError.isEmpty && renderErrorMessage("Please upload an image")}
+      <div className="d-flex justify-content-center mb-3">
+        <div className={`${imgUrl ? "w-50" : ""}`}>
+          <ImgCrop rotate beforeCrop={beforeCrop}>
+            <Upload
+              accept=".jpg, .jpeg, .png, .tiff, .gif"
+              className="upload-product-image"
+              listType="picture-card"
+              customRequest={handleUploadImage}
+              onChange={() => forceUpdate()}
+              beforeUpload={beforeUpload}
+              onRemove={(file) => {
+                asyncErrorHandlerWrapper(async () => {
+                  try {
+                    setImgUrl();
+                    if (file.status === "done") {
+                      await ImageService.deleteImage(file.response.name);
+                    }
+                  } catch (error) {
+                    throw error;
+                  }
+                });
+              }}
+            >
+              {renderUploadButton()}
+            </Upload>
+          </ImgCrop>
+          {isError.isSizeError &&
+            renderErrorMessage("Please upload an image file with size less than 5 mb")}
+          {isError.isTypeError &&
+            renderErrorMessage("Invalid File Type. Accepted type: .png, .jpg, .jpeg")}
+          {isError.isEmpty && renderErrorMessage("Please upload an image")}
+        </div>
+      </div>
       <Row className="product-template-image-text-container">
         Listings that are missing a main image will not appear in search or browse until you fix the
         listing. Choose images that are clear, information-rich and attractive. Images must meet the
