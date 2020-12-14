@@ -58,7 +58,10 @@ const initialFieldOptions = {
 
 const CustomFieldOption = memo(
   forwardRef(
-    ({ type, setIsChildModalOpen, childAble, fieldKey, childValue, setChildValue }, ref) => {
+    (
+      { type, setIsChildModalOpen, openChildField, childAble, fieldKey, childValue, setChildValue },
+      ref
+    ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
       const [isOpen, setIsOpen] = useState(false);
       const [deletedField, setDeletedField] = useState({});
@@ -68,6 +71,7 @@ const CustomFieldOption = memo(
           fieldType: "shortText"
         }
       ]);
+      const [childField, setChildField] = useState([]);
 
       useEffect(() => {
         setFieldOptions([{ ...initialFieldOptions }]);
@@ -153,19 +157,20 @@ const CustomFieldOption = memo(
                                 style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
                               />
                             </div>
+                            <Form.Item name={[field.name, "childField"]}></Form.Item>
                             {hasChildFields && childAble && (
                               <>
                                 <Checkbox
                                   className="mt-2"
-                                  onClick={() => setIsChildModalOpen(true)}
-                                  checked={!!childValue}
+                                  onClick={() => openChildField(index)}
+                                  checked={!!childValue[index]}
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>
-                                {childValue && (
+                                {childValue[index] && (
                                   <ChildFieldReview
-                                    reOpenModal={() => setIsChildModalOpen(true)}
-                                    data={childValue}
+                                    reOpenModal={() => openChildField(index)}
+                                    data={childValue[index]}
                                     onRemove={() => setChildValue(undefined)}
                                   />
                                 )}
@@ -237,7 +242,8 @@ const CustomFieldOption = memo(
         type,
         fieldOptions,
         childAble,
-        setIsChildModalOpen,
+        openChildField,
+        setChildValue,
         fieldKey,
         childValue,
         handleDelete,
