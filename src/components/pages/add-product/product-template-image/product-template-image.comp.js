@@ -1,19 +1,41 @@
-import { Form, Row, Upload } from "antd";
-import React, { memo, useReducer, useState } from "react";
+import { Row, Upload } from "antd";
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useReducer,
+  useState
+} from "react";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ImageService } from "services";
+import ImgCrop from "antd-img-crop";
 import "./styles.scss";
+import "antd/es/modal/style";
+import "antd/es/slider/style";
 
-const normFile = (e) => {
-  return e && e.fileList.map((file) => (file.status === "done" ? file.response : file));
-};
-
-export const ProductTemplateImage = ({ form }) => {
+export const ProductTemplateImage = forwardRef((props, ref) => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [imgUrl, setImgUrl] = useState();
+  const [isError, setIsError] = useState({
+    isSizeError: false,
+    isTypeError: false,
+    isEmpty: false
+  });
+
+  useImperativeHandle(ref, () => ({
+    getValues: () => {
+      if (!imgUrl) {
+        setIsError({ ...isError, isEmpty: true });
+      }
+      return imgUrl;
+    }
+  }));
 
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
     if (file.size / 1024 / 1024 < 5) {
       const res = await ImageService.uploadImage(file);
+      setImgUrl(res.url);
       onSuccess({ ...res, status: "done", uid: res.name });
     }
   };
@@ -26,46 +48,38 @@ export const ProductTemplateImage = ({ form }) => {
   ));
 
   const renderUploadButton = () => {
-    return form.getFieldValue("productImage") &&
-      form.getFieldValue("productImage").length >= 1 ? null : (
-      <UploadButton />
-    );
+    return imgUrl ? null : <UploadButton />;
   };
 
-  const beforeUpload = (file) => {
-    form.validateFields();
-    return file.size / 1024 / 1024 < 5;
+  const beforeUpload = useCallback((file) => {
+    setImgUrl(file);
+    return true;
+  }, []);
+
+  const beforeCrop = (file) => {
+    const isSizeError = file.size / 1024 / 1024 >= 5;
+    const fileExt = file.name.substr(file.name.lastIndexOf("."));
+    const isTypeError = ![".png", ".jpg", ".jpeg", ".tiff", ".gif"].includes(fileExt.toLowerCase());
+    if (!isSizeError && !isTypeError) {
+      setIsError({ ...isError, isEmpty: false, isSizeError: false, isTypeError: false });
+    } else {
+      setIsError({ isTypeError, isSizeError });
+    }
+    return !isSizeError && !isTypeError;
   };
+
+  const renderErrorMessage = useCallback(
+    (mess) => (
+      <div className="text-danger" style={{ fontSize: 12 }}>
+        {mess}
+      </div>
+    ),
+    []
+  );
 
   return (
-    <Form name="ProductUploadImagesForm" form={form} className="p-5">
-      <Form.Item
-        shouldUpdate
-        name="productImage"
-        rules={[
-          { required: true, message: "Please upload product image" },
-          {
-            validator: async (rule, value) => {
-              if (value && value.length) {
-                const fileExt = value[0].name.substr(value[0].name.lastIndexOf("."));
-                if (value[0].size / 1024 / 1024 >= 5) {
-                  throw new Error("Please upload an image file with size less than 5 mb");
-                }
-                if (
-                  [".png", ".jpg", ".jpeg", ".tiff", ".gif"].includes(fileExt.toLowerCase()) ===
-                  false
-                ) {
-                  throw new Error(
-                    "Invalid File Type. Accepted type: .png, .jpg, .jpeg, .tiff, .gif"
-                  );
-                }
-              }
-            }
-          }
-        ]}
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-      >
+    <div className="p-5">
+      <ImgCrop rotate beforeCrop={beforeCrop}>
         <Upload
           accept=".jpg, .jpeg, .png, .tiff, .gif"
           className="upload-product-image"
@@ -75,15 +89,25 @@ export const ProductTemplateImage = ({ form }) => {
           beforeUpload={beforeUpload}
           onRemove={(file) => {
             asyncErrorHandlerWrapper(async () => {
-              if (file.status === "done") {
-                await ImageService.deleteImage(file.name);
+              try {
+                setImgUrl();
+                if (file.status === "done") {
+                  await ImageService.deleteImage(file.response.name);
+                }
+              } catch (error) {
+                throw error;
               }
             });
           }}
         >
           {renderUploadButton()}
         </Upload>
-      </Form.Item>
+      </ImgCrop>
+      {isError.isSizeError &&
+        renderErrorMessage("Please upload an image file with size less than 5 mb")}
+      {isError.isTypeError &&
+        renderErrorMessage("Invalid File Type. Accepted type: .png, .jpg, .jpeg")}
+      {isError.isEmpty && renderErrorMessage("Please upload an image")}
       <Row className="product-template-image-text-container">
         Listings that are missing a main image will not appear in search or browse until you fix the
         listing. Choose images that are clear, information-rich and attractive. Images must meet the
@@ -106,6 +130,6 @@ export const ProductTemplateImage = ({ form }) => {
           <li>● JPEG is the preferred image format, but you also may use TIFF and GIF files.</li>
         </ul>
       </Row>
-    </Form>
+    </div>
   );
-};
+});
