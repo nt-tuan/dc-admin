@@ -59,12 +59,13 @@ const initialFieldOptions = {
 const CustomFieldOption = memo(
   forwardRef(
     (
-      { type, setIsChildModalOpen, openChildField, childAble, fieldKey, childValue, setChildValue },
+      { type, handleRemove, openChildField, childAble, fieldKey, childValue, setChildValue },
       ref
     ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
       const [isOpen, setIsOpen] = useState(false);
       const [deletedField, setDeletedField] = useState({});
+      const [deletedIndex, setDeletedIndex] = useState({});
       const [textOptions, setTextOptions] = useState([
         {
           allowInput: "string",
@@ -105,9 +106,10 @@ const CustomFieldOption = memo(
         setIsOpen(false);
         func();
       };
-      const handleDelete = useCallback((fields, field) => {
+      const handleDelete = useCallback((fields, field, index) => {
         if (fields.length === 1) return;
         setDeletedField(field);
+        setDeletedIndex(index);
         setIsOpen(true);
       }, []);
       const renderDynamicFields = useMemo(() => {
@@ -126,7 +128,12 @@ const CustomFieldOption = memo(
                         centered
                         visible={isOpen}
                         onCancel={() => setIsOpen(false)}
-                        onOk={() => handleOK(() => remove(deletedField.name))}
+                        onOk={() =>
+                          handleOK(() => {
+                            remove(deletedField.name);
+                            handleRemove(deletedIndex);
+                          })
+                        }
                         okText=""
                       >
                         <p className="mt-3">
@@ -152,18 +159,17 @@ const CustomFieldOption = memo(
                               </Form.Item>
                               <PlusCircleOutlined className="mx-2" onClick={() => add()} />
                               <MinusCircleOutlined
-                                onClick={() => handleDelete(fields, field)}
+                                onClick={() => handleDelete(fields, field, index)}
                                 // onClick={() => remove(field.name)}
                                 style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
                               />
                             </div>
-                            <Form.Item name={[field.name, "childField"]}></Form.Item>
                             {hasChildFields && childAble && (
                               <>
                                 <Checkbox
                                   className="mt-2"
                                   onClick={() => openChildField(index)}
-                                  checked={!!childValue[index]}
+                                  checked={childValue && !!childValue[index]}
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>

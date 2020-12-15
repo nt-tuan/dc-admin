@@ -52,6 +52,7 @@ const VariantDetails = ({ form }) => {
           </>
         )}
       </Form.List>
+      <Form.Item name={"childValue"}></Form.Item>
     </Form>
   );
 };

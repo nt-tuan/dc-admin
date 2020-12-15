@@ -15,7 +15,11 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldTy
       if (value?.fieldOption[0] === "") {
         return true;
       }
-      if (value.fieldOption.find((childValue) => !childValue.label)) {
+      if (
+        value.fieldOption.find(
+          (childValue) => !childValue.label && !childValue.allowInput && !childValue.textboxType
+        )
+      ) {
         return true;
       }
       return false;

@@ -59,12 +59,22 @@ export const ProductMutationTemplate = () => {
   const handleSubmitForm = useCallback(
     (name, { values, forms }) => {
       if (currentStep === 1) {
-        setProductData({ vitalInformation: values });
+        setProductData({ ...productData, vitalInformation: values });
       } else {
         const formName = Object.keys(values)[0];
+        const formValue = values[formName].map((item, index) => {
+          item.fieldOption = item.fieldOption.map((item, index) => {
+            if (values["childValue"]) {
+              item.childField = values["childValue"][index];
+            }
+            return item;
+          });
+
+          return item;
+        });
         setProductData({
           ...productData,
-          details: { ...productData.details, [formName]: values[formName] }
+          details: { ...productData.details, [formName]: formValue }
         });
       }
     },

@@ -23,6 +23,7 @@ const VariantDetails = ({ form }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                form={form}
                 field={field}
                 fieldKey={field.key}
                 index={index}
@@ -51,6 +52,7 @@ const VariantDetails = ({ form }) => {
           </>
         )}
       </Form.List>
+      <Form.Item name={"childValue"}></Form.Item>
     </Form>
   );
 };
