@@ -173,7 +173,7 @@ export const ProductMutationTemplate = () => {
       // submit data
       const data = {
         detail: JSON.stringify(productData.details),
-        fileName: productData?.details?.productImage[0]?.name,
+        fileName: productData?.ProductUploadImagesForm?.name,
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation)
