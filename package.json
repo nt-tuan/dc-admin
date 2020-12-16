@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "5.15.1",
     "@react-pdf/renderer": "^1.6.10",
     "@stomp/stompjs": "^5.4.4",
     "antd": "4.8.5",
