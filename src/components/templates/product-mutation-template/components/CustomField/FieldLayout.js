@@ -108,7 +108,7 @@ const FieldLayout = ({
                 type={fieldType}
                 ref={fieldOptionsRef}
                 childAble={childAble}
-                fieldKey={field.key}
+                fieldName={field.name}
                 {...{
                   openChildField,
                   setIsChildModalOpen,

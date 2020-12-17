@@ -59,7 +59,7 @@ const initialFieldOptions = {
 const CustomFieldOption = memo(
   forwardRef(
     (
-      { type, handleRemove, openChildField, childAble, fieldKey, childValue, setChildValue },
+      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue },
       ref
     ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
@@ -72,7 +72,6 @@ const CustomFieldOption = memo(
           fieldType: "shortText"
         }
       ]);
-      const [childField, setChildField] = useState([]);
 
       useEffect(() => {
         setFieldOptions([{ ...initialFieldOptions }]);
@@ -121,7 +120,7 @@ const CustomFieldOption = memo(
             return (
               <section key={type}>
                 <p>Enter values(s) for this field:</p>
-                <Form.List name={[fieldKey, "fieldOption"]}>
+                <Form.List name={[fieldName, "fieldOption"]}>
                   {(fields, { add, remove }) => (
                     <>
                       <Modal
@@ -195,7 +194,7 @@ const CustomFieldOption = memo(
             return (
               <section>
                 <p>Please choose field's properties:</p>
-                <Form.List name={[fieldKey, "fieldOption"]}>
+                <Form.List name={[fieldName, "fieldOption"]}>
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field, index) => (
@@ -250,11 +249,13 @@ const CustomFieldOption = memo(
         childAble,
         openChildField,
         setChildValue,
-        fieldKey,
+        fieldName,
         childValue,
         handleDelete,
         isOpen,
-        deletedField.name
+        deletedField.name,
+        deletedIndex,
+        handleRemove
       ]);
 
       // return renderDynamicFields;
