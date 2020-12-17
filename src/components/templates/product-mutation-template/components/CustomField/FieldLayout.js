@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { Collapse, Card, Row, Col, Select, Input, Form, Switch } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { FIELD_TYPE } from "../../constants";
@@ -14,14 +14,21 @@ const FieldLayout = ({
   type,
   childAble = true,
   setTypeModalOpen,
+  openChildField,
   setIsChildModalOpen,
   remove,
   field,
+  selectedFieldType,
   childValue,
-  setChildValue
+  setChildValue,
+  handleRemove
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
+
+  useEffect(() => {
+    setFieldType(selectedFieldType);
+  }, [selectedFieldType]);
 
   const handleChange = useCallback((value) => {
     setFieldType(value);
@@ -101,8 +108,14 @@ const FieldLayout = ({
                 type={fieldType}
                 ref={fieldOptionsRef}
                 childAble={childAble}
-                fieldKey={field.key}
-                {...{ setIsChildModalOpen, childValue, setChildValue }}
+                fieldName={field.name}
+                {...{
+                  openChildField,
+                  setIsChildModalOpen,
+                  childValue,
+                  setChildValue,
+                  handleRemove
+                }}
               />
             </Card>
           )}

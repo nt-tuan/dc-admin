@@ -2,6 +2,7 @@ import React, { Fragment, memo, useMemo } from "react";
 import image from "assets/images/aramex-logo.png";
 import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
+import get from "lodash/get";
 
 export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(
@@ -30,7 +31,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
   );
   const preHandleOfferDetails = useMemo(() => {
     const flatData = (name) => {
-      data.details[name].forEach(({ fieldOption, fieldName }) =>
+      get(data, `details[${name}]`).forEach(({ fieldOption, fieldName }) =>
         fieldOption.forEach(
           (option) =>
             option.childField &&
@@ -74,7 +75,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         <div className="col-xl-3 col-12 text-center mb-4">
           <h5 className="text-primary">Product Template Review</h5>
           <img
-            src={data?.details?.productImage && data?.details?.productImage[0]?.url}
+            src={data?.ProductUploadImagesForm.url}
             alt="Product"
             className="mt-2"
             style={{ width: "100%" }}

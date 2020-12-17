@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
+import classNames from "classnames";
 import { isScreensize } from "utils/general.util";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
@@ -13,7 +14,6 @@ import { ProductTemplateImage } from "components/pages/add-product/product-templ
 import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
-import isEmpty from "lodash/isEmpty";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -31,10 +31,10 @@ export const ProductMutationTemplate = () => {
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
+  const templateImageForm = useRef();
   const [offerDetailsForm] = Form.useForm();
   const [packingDetailsForm] = Form.useForm();
   const [certificationForm] = Form.useForm();
-  const [templateImageForm] = Form.useForm();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -59,12 +59,22 @@ export const ProductMutationTemplate = () => {
   const handleSubmitForm = useCallback(
     (name, { values, forms }) => {
       if (currentStep === 1) {
-        setProductData({ vitalInformation: values });
+        setProductData({ ...productData, vitalInformation: values });
       } else {
         const formName = Object.keys(values)[0];
+        const formValue = values[formName].map((item, index) => {
+          item.fieldOption = item.fieldOption.map((item, index) => {
+            if (values["childValue"]) {
+              item.childField = values["childValue"][index];
+            }
+            return item;
+          });
+
+          return item;
+        });
         setProductData({
           ...productData,
-          details: { ...productData.details, [formName]: values[formName] }
+          details: { ...productData.details, [formName]: formValue }
         });
       }
     },
@@ -130,8 +140,11 @@ export const ProductMutationTemplate = () => {
         certificationForm.submit();
         return !getErrorField(certificationForm);
       case 6:
-        templateImageForm.submit();
-        return templateImageForm.getFieldsValue().productImage;
+        setProductData({
+          ...productData,
+          ProductUploadImagesForm: templateImageForm.current.getValues()
+        });
+        return templateImageForm.current.getValues();
       default:
         break;
     }
@@ -144,7 +157,8 @@ export const ProductMutationTemplate = () => {
     getErrorField,
     offerDetailsForm,
     certificationForm,
-    packingDetailsForm
+    packingDetailsForm,
+    productData
   ]);
 
   const handleChangeStep = useCallback((targetStep) => {
@@ -159,7 +173,7 @@ export const ProductMutationTemplate = () => {
       // submit data
       const data = {
         detail: JSON.stringify(productData.details),
-        fileName: productData?.details?.productImage[0]?.name,
+        fileName: productData?.ProductUploadImagesForm?.name,
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation)
@@ -182,8 +196,10 @@ export const ProductMutationTemplate = () => {
     } else {
       const isValid = await handleValidator();
       if (!isValid) return;
-      setCurrentStep(currentStep + 1);
-      setSkipAble(true);
+      setTimeout(() => {
+        setCurrentStep(currentStep + 1);
+        setSkipAble(true);
+      }, 100);
     }
   }, [currentStep, handleValidator, productData]);
 
@@ -220,7 +236,7 @@ export const ProductMutationTemplate = () => {
         </Steps>
         <Form.Provider onFormFinish={handleSubmitForm}>
           {/* create form here form here */}
-          {currentStep === 1 && (
+          <div className={classNames({ "d-none": currentStep !== 1 })}>
             <VitalInformation
               form={vitalForm}
               formNewFields={formNewFields}
@@ -229,16 +245,22 @@ export const ProductMutationTemplate = () => {
               types={types}
               hsCode={hsCode}
             />
-          )}
-          {currentStep === 2 && <VariantDetails form={variantDetailsForm} />}
-          {currentStep === 3 && <OfferDetails form={offerDetailsForm} />}
-          {currentStep === 4 && (
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 2 })}>
+            <VariantDetails form={variantDetailsForm} />
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 3 })}>
+            <OfferDetails form={offerDetailsForm} />
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 4 })}>
             <PackingDetails form={packingDetailsForm} {...{ handleFieldChange }} />
-          )}
-          {currentStep === 5 && (
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 5 })}>
             <CertificationDetails form={certificationForm} {...{ handleFieldChange }} />
-          )}
-          {currentStep === 6 && <ProductTemplateImage form={templateImageForm} />}
+          </div>
+          <div className={classNames({ "d-none": currentStep !== 6 })}>
+            <ProductTemplateImage ref={(ref) => (templateImageForm.current = ref)} />
+          </div>
           {currentStep === 7 && (
             <ProductTemplateReview data={productData} categories={categories} types={types} />
           )}

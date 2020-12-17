@@ -58,10 +58,14 @@ const initialFieldOptions = {
 
 const CustomFieldOption = memo(
   forwardRef(
-    ({ type, setIsChildModalOpen, childAble, fieldKey, childValue, setChildValue }, ref) => {
+    (
+      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue },
+      ref
+    ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
       const [isOpen, setIsOpen] = useState(false);
       const [deletedField, setDeletedField] = useState({});
+      const [deletedIndex, setDeletedIndex] = useState({});
       const [textOptions, setTextOptions] = useState([
         {
           allowInput: "string",
@@ -101,9 +105,10 @@ const CustomFieldOption = memo(
         setIsOpen(false);
         func();
       };
-      const handleDelete = useCallback((fields, field) => {
+      const handleDelete = useCallback((fields, field, index) => {
         if (fields.length === 1) return;
         setDeletedField(field);
+        setDeletedIndex(index);
         setIsOpen(true);
       }, []);
       const renderDynamicFields = useMemo(() => {
@@ -115,14 +120,19 @@ const CustomFieldOption = memo(
             return (
               <section key={type}>
                 <p>Enter values(s) for this field:</p>
-                <Form.List name={[fieldKey, "fieldOption"]}>
+                <Form.List name={[fieldName, "fieldOption"]}>
                   {(fields, { add, remove }) => (
                     <>
                       <Modal
                         centered
                         visible={isOpen}
                         onCancel={() => setIsOpen(false)}
-                        onOk={() => handleOK(() => remove(deletedField.name))}
+                        onOk={() =>
+                          handleOK(() => {
+                            remove(deletedField.name);
+                            handleRemove(deletedIndex);
+                          })
+                        }
                         okText=""
                       >
                         <p className="mt-3">
@@ -148,7 +158,7 @@ const CustomFieldOption = memo(
                               </Form.Item>
                               <PlusCircleOutlined className="mx-2" onClick={() => add()} />
                               <MinusCircleOutlined
-                                onClick={() => handleDelete(fields, field)}
+                                onClick={() => handleDelete(fields, field, index)}
                                 // onClick={() => remove(field.name)}
                                 style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
                               />
@@ -157,15 +167,15 @@ const CustomFieldOption = memo(
                               <>
                                 <Checkbox
                                   className="mt-2"
-                                  onClick={() => setIsChildModalOpen(true)}
-                                  checked={!!childValue}
+                                  onClick={() => openChildField(index)}
+                                  checked={childValue && !!childValue[index]}
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>
-                                {childValue && (
+                                {childValue[index] && (
                                   <ChildFieldReview
-                                    reOpenModal={() => setIsChildModalOpen(true)}
-                                    data={childValue}
+                                    reOpenModal={() => openChildField(index)}
+                                    data={childValue[index]}
                                     onRemove={() => setChildValue(undefined)}
                                   />
                                 )}
@@ -184,7 +194,7 @@ const CustomFieldOption = memo(
             return (
               <section>
                 <p>Please choose field's properties:</p>
-                <Form.List name={[fieldKey, "fieldOption"]}>
+                <Form.List name={[fieldName, "fieldOption"]}>
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field, index) => (
@@ -237,12 +247,15 @@ const CustomFieldOption = memo(
         type,
         fieldOptions,
         childAble,
-        setIsChildModalOpen,
-        fieldKey,
+        openChildField,
+        setChildValue,
+        fieldName,
         childValue,
         handleDelete,
         isOpen,
-        deletedField.name
+        deletedField.name,
+        deletedIndex,
+        handleRemove
       ]);
 
       // return renderDynamicFields;
