@@ -11,6 +11,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FieldLayout = ({
+  form,
   type,
   childAble = true,
   setTypeModalOpen,
@@ -21,7 +22,8 @@ const FieldLayout = ({
   selectedFieldType,
   childValue,
   setChildValue,
-  handleRemove
+  handleRemove,
+  index
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
@@ -30,9 +32,18 @@ const FieldLayout = ({
     setFieldType(selectedFieldType);
   }, [selectedFieldType]);
 
-  const handleChange = useCallback((value) => {
-    setFieldType(value);
-  }, []);
+  const handleChange = useCallback(
+    (value) => {
+      setFieldType(value);
+      //reset option if change value of dropdown
+      const formValue = form.getFieldsValue();
+      const fieldName = Object.keys(formValue)[0];
+      const newValue = [...formValue[fieldName]];
+      newValue[index].fieldOption = [""];
+      form.setFieldsValue({ [fieldName]: newValue });
+    },
+    [form, index]
+  );
 
   const genExtra = () => (
     <DeleteOutlined
