@@ -109,7 +109,9 @@ const FieldLayout = ({
             </Row>
             <div className="text-right mt-2">
               Make this field required?
-              <Switch defaultChecked onChange={(value) => console.log(value)} className="mx-3" />
+              <Form.Item name={[field.name, "isRequired"]}>
+                <Switch />
+              </Form.Item>
             </div>
           </Card>
 
