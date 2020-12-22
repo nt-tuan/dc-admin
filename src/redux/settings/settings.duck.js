@@ -35,7 +35,8 @@ const initialState = {
     isSquaredBorders: false,
     isBorderless: false,
     routerAnimation: "slide-fadein-up" // none, slide-fadein-up, slide-fadein-right, fadein, zoom-fadein
-  })
+  }),
+  browserFingerprint: ""
 };
 
 export default function settingsReducer(state = initialState, action) {
@@ -49,3 +50,4 @@ export default function settingsReducer(state = initialState, action) {
 
 export const selectIsMenuCollapsed = (state) => state.settings.isMenuCollapsed;
 export const selectSetting = (state) => state.settings;
+export const selectBrowserFingerprint = (state) => state.settings.browserFingerprint;

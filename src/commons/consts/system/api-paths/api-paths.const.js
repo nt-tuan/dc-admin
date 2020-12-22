@@ -11,6 +11,9 @@ export class ApiPathConsts {
   static #PRODUCT_REQUEST_PREFIX = "/product-requests";
   static #TRADE_RULE_PREFIX = "/product-rules";
   static #BADGE = "/badges";
+  static #SETTING_PREFIX = "/me/notifications/settings";
+  static #TWO_FACTOR_AUTH_PREFIX = "/two-factor-auth";
+  static #BUSSINESS_DETAIL = "/company-product-rules";
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
@@ -167,5 +170,49 @@ export class ApiPathConsts {
   }
   static get POST_PRODUCT_TRADE_RULE_DETAIL() {
     return `${this.#TRADE_RULE_PREFIX}/:id`;
+  }
+
+  static get PHONE_VERIFICATION() {
+    return `${this.#SETTING_PREFIX}/phone/code`;
+  }
+
+  static get SECURITY_QUESTIONS() {
+    return `${this.#USER_PREFIX}/threeSteps/questions`;
+  }
+  static get SECURITY_ANSWER() {
+    return `${this.#USER_PREFIX}/threeSteps/answers`;
+  }
+  static get THREE_STEPS_PASSCODE() {
+    return `${this.#USER_PREFIX}/threeSteps/passcode`;
+  }
+  static get THREE_STEPS_OTP() {
+    return `${this.#USER_PREFIX}/threeSteps/otp`;
+  }
+  static get NOTIFICATION_SETTING() {
+    return `${this.#SETTING_PREFIX}`;
+  }
+  static get CHANGE_PASSWORD() {
+    return `${this.#USER_PREFIX}/password`;
+  }
+  static get FORGET_BROWSER() {
+    return `${this.#TWO_FACTOR_AUTH_PREFIX}/forget-browser`;
+  }
+  static get BUSSINESS_DETAIL() {
+    return `${this.#BUSSINESS_DETAIL}`;
+  }
+  static get COMPANY_SEND_VERIFICATION_CODE() {
+    return `${this.#COMPANY_PREFIX}/bankdetails/code`;
+  }
+  static get COMPANY_SEND_VERIFICATION_CODE() {
+    return `${this.#COMPANY_PREFIX}/bankdetails/code`;
+  }
+  static get COMPANY_SEND_VERIFICATION_CODE() {
+    return `${this.#COMPANY_PREFIX}/bankdetails/code`;
+  }
+  static get GET_COMPANY_ME() {
+    return `${this.#COMPANY_PREFIX}/me`;
+  }
+  static get GET_GOOGLE_AUTHENTICATOR_QRCODE() {
+    return `${this.#TWO_FACTOR_AUTH_PREFIX}/google-authenticator`;
   }
 }

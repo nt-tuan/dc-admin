@@ -22,4 +22,8 @@ export class AuthService {
     backendAPI.removeAuthHeader();
     return true;
   };
+  static changePassword = async (data) => {
+    await backendAPI.post(ApiPathConsts.CHANGE_PASSWORD, data);
+    return true;
+  };
 }

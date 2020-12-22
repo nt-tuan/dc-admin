@@ -33,4 +33,12 @@ export class CompanyService {
     );
     return result;
   };
+  static sendEmailConfirmBank = async () => {
+    await backendAPI.get(`${ApiPathConsts.COMPANY_SEND_VERIFICATION_CODE}`);
+    return true;
+  };
+  static verifyBankConfirmCode = async (code) => {
+    await backendAPI.post(`${ApiPathConsts.COMPANY_SEND_VERIFICATION_CODE}?code=${code}`);
+    return true;
+  };
 }

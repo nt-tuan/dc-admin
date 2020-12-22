@@ -4,6 +4,7 @@ import qs from "qs";
 import store from "store";
 import * as SETTING_DUCK from "./settings.duck";
 import { isScreensize } from "utils/general.util";
+import Fingerprint2 from "fingerprintjs2";
 
 export function* CHANGE_SETTING({ payload: { setting, value } }) {
   yield store.set(`app.settings.${setting}`, value);
@@ -73,9 +74,22 @@ export function* SETUP() {
   });
 }
 
+export function* GENERATE_BROWSER_FINGERPRINT() {
+  const fingerprintComps = yield Fingerprint2.getPromise();
+  const values = fingerprintComps.map((component) => component.value);
+  const fingerprintHash = Fingerprint2.x64hash128(values.join(""), 31);
+  yield put({
+    type: SETTING_DUCK.SET_STATE,
+    payload: {
+      browserFingerprint: fingerprintHash
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     takeEvery(SETTING_DUCK.CHANGE_SETTING, CHANGE_SETTING),
-    SETUP() // run once on app load to init listeners
+    SETUP(), // run once on app load to init listeners,
+    GENERATE_BROWSER_FINGERPRINT()
   ]);
 }
