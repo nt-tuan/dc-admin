@@ -78,11 +78,11 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
 
   const renderTermsAndPolicy = () => {
     return (
-      <div className="mt-4 mb-3">
-        <div>By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’ </div>
+      <div className="mt-2 mb-3">
         <div>
+          By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’{" "}
           <Link to={RouteConst.TERMS_AND_CONDITIONS_ROUTE} className="font-weight-bold">
-            Terms and Conditions
+            Terms & Conditions
           </Link>{" "}
           &{" "}
           <Link to={RouteConst.PRIVACY_POLICY_ROUTE} className="font-weight-bold">
@@ -95,17 +95,15 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
 
   const renderButtons = () => {
     return (
-      <div className="font-size-18 pt-4 pb-5 mb-sm-5 d-flex flex-sm-row flex-column justify-content-sm-between align-items-sm-center">
-        <Button
-          loading={isLoading}
-          type="primary"
-          size="large"
-          className="text-center btn btn-primary font-weight-bold font-size-18 dtc-min-width-100"
-          htmlType="submit"
-        >
-          Log In
-        </Button>
-      </div>
+      <Button
+        loading={isLoading}
+        type="primary"
+        size="large"
+        className="text-center btn btn-primary font-weight-bold font-size-18 dtc-min-width-100"
+        htmlType="submit"
+      >
+        Log In
+      </Button>
     );
   };
 
@@ -129,7 +127,10 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
   return (
     <div className={style.auth}>
       <div className={`${style.container} pr-md-5 p-3`}>
-        <h5 className="mb-4 mt-1">Please login to your account.</h5>
+        <div style={{ fontSize: "40px", lineHeight: "47px" }}>Sign in</div>
+        <div style={{ fontSize: "20px", lineHeight: "23px" }} className="mb-4 mt-1">
+          Please login to your account.
+        </div>
         <Form
           form={form}
           layout="vertical"
@@ -177,12 +178,16 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
             >
               <Checkbox>{rememberMe.label}</Checkbox>
             </Form.Item>
-            <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
+            {/* <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link> */}
           </div>
           {/* other things */}
           {renderTermsAndPolicy()}
-          {renderCaptcha()}
-          {renderButtons()}
+          <div className="row mr-1">
+            <div className="footer-captcha-button">{renderCaptcha()}</div>
+            <div className="footer-login-button d-flex justify-content-md-end align-items-center">
+              {renderButtons()}
+            </div>
+          </div>
         </Form>
       </div>
     </div>

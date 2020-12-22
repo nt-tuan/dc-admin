@@ -3,14 +3,14 @@ import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { isScreensize } from "utils/general.util";
 
-const formItemLayoutWithOutLabel = {
-  wrapperCol: {
-    xl: 24,
-    lg: 24,
-    md: 24,
-    sm: 24
-  }
-};
+// const formItemLayoutWithOutLabel = {
+//   wrapperCol: {
+//     xl: 24,
+//     lg: 24,
+//     md: 24,
+//     sm: 24
+//   }
+// };
 
 export const VitalInformationAddFieldsForm = ({ form }) => {
   const isSmallDevice = isScreensize("sm");
