@@ -76,7 +76,14 @@ const _ProfileMenu = () => {
   const getMenu = () => {
     return buildMenu({
       viewName: "User",
-      menuItems: []
+      menuItems: [
+        {
+          title: "My Profile",
+          url: `/profile/profile-info`,
+          iconClassesNames: ["fe fe-user"],
+          disabledOnly: true
+        }
+      ]
     });
   };
 

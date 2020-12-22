@@ -236,6 +236,10 @@ const privateRoutes = [
     path: RouteConst.INTRODUCER_EDIT,
     Component: loadable(() => import("components/pages/edit-introducer/edit-introducer.comp")),
     exact: true
+  },
+  {
+    path: RouteConst.PROFILE_PAGES,
+    Component: loadable(() => import("components/pages/profile-pages/profile-page"))
   }
 ];
 

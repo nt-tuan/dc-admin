@@ -34,7 +34,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",
+    "@ant-design/icons": "^4.3.0",
     "@react-pdf/renderer": "^1.6.10",
+    "fingerprintjs2": "^2.1.2",
     "@stomp/stompjs": "^5.4.4",
     "antd": "^4.3.4",
     "antd-dayjs-webpack-plugin": "^1.0.0",

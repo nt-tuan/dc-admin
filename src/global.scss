@@ -272,4 +272,9 @@ body {
       bottom: 0;
     }
   }
+  .label-form-left {
+    .ant-form-item-label {
+      text-align: left;
+    }
+  }
 }
