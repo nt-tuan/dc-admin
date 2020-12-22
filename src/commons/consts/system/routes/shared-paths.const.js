@@ -107,4 +107,7 @@ export class SharedPaths {
   static get INTRODUCER_EDIT() {
     return "/introducers/edit/:id";
   }
+  static get PROFILE_PAGES() {
+    return "/profile/:tabName";
+  }
 }

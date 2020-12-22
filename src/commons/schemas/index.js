@@ -11,3 +11,6 @@ export * from "./marketplace-credit.schema";
 export * from "./document.schema";
 export * from "./user.schema";
 export * from "./introducer.schema";
+export * from "./country.schema";
+export * from "./phone.schema";
+export * from "./password.schema";
