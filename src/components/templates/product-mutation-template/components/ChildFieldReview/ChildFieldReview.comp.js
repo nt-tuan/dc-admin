@@ -36,9 +36,7 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
       case "dropdown":
         return (
           <div className="col-12 col-xl-6 my-2" key={fieldName}>
-            <div className="text-capitalize" onClick={reOpenModal}>
-              {fieldName}
-            </div>
+            <div className="text-capitalize">{fieldName}</div>
             <Select className="mt-2">
               {options.map((opt) => (
                 <Select.Option value={opt.label} key={opt.label}>
@@ -51,9 +49,7 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
       case "radio":
         return (
           <div className="col-12 row my-2" key={fieldName}>
-            <div className="col-3 text-capitalize" onClick={reOpenModal}>
-              {fieldName}
-            </div>
+            <div className="col-3 text-capitalize">{fieldName}</div>
             <Radio.Group className="col-9 row">
               {options.map((opt) => (
                 <Radio value={opt.label} key={opt.label} className="col-3">
@@ -69,9 +65,7 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
             className={`${options[0].type === "shortText" ? "col-6 my-2" : "col-9 my-2"}`}
             key={fieldName}
           >
-            <div className="text-capitalize" onClick={reOpenModal}>
-              {fieldName}
-            </div>
+            <div className="text-capitalize">{fieldName}</div>
             {options[0].type === "shortText" ? (
               <Input className="mt-2" />
             ) : (

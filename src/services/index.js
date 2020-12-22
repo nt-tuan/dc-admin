@@ -13,3 +13,5 @@ export * from "./notification.service";
 export * from "./introducer.service";
 export * from "./product-rules.service";
 export * from "./product-requests.service";
+export * from "./bankDetail.service";
+export * from "./two-factor-auth.service";

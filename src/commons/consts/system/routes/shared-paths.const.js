@@ -119,4 +119,7 @@ export class SharedPaths {
   static get REQUESTED_PRODUCTS() {
     return "/requested-products";
   }
+  static get PROFILE_PAGES() {
+    return "/profile/:tabName";
+  }
 }
