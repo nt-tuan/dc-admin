@@ -24,7 +24,12 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
                 return { key, value: data?.vitalInformation[key] };
               })
               .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
-            data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
+            ...data?.details?.customVital?.map((field) => {
+              return {
+                key: field.name,
+                value: field.value
+              };
+            })
           ]
         : [],
     [data]
