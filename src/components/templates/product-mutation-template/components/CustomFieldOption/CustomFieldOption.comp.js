@@ -59,7 +59,7 @@ const initialFieldOptions = {
 const CustomFieldOption = memo(
   forwardRef(
     (
-      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue },
+      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue, form },
       ref
     ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
@@ -111,6 +111,15 @@ const CustomFieldOption = memo(
         setDeletedIndex(index);
         setIsOpen(true);
       }, []);
+      const handleRemoveChild = useCallback(
+        (index) => {
+          const newChildValue = [...childValue];
+          delete newChildValue[index];
+          setChildValue(newChildValue);
+          form.setFieldsValue({ childValue: newChildValue });
+        },
+        [childValue, setChildValue, form]
+      );
       const renderDynamicFields = useMemo(() => {
         switch (type) {
           case "dropdown":
@@ -172,11 +181,11 @@ const CustomFieldOption = memo(
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>
-                                {childValue[index] && (
+                                {childValue && childValue[index] && (
                                   <ChildFieldReview
                                     reOpenModal={() => openChildField(index)}
                                     data={childValue[index]}
-                                    onRemove={() => setChildValue(undefined)}
+                                    onRemove={() => handleRemoveChild(index)}
                                   />
                                 )}
                               </>
