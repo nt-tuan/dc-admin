@@ -27,6 +27,7 @@ const VariantDetails = ({ form, handleFieldChange }) => {
                 form={form}
                 field={field}
                 fieldKey={field.key}
+                handleFieldChange={handleFieldChange}
                 index={index}
                 remove={() => {
                   if (fields.length === 1) return;

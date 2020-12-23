@@ -58,7 +58,7 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldTy
             <>
               {fields.map((field, index) => (
                 <FieldLayout
-                  {...{ field, index, selectedFieldType }}
+                  {...{ field, index, selectedFieldType, form }}
                   remove={() => remove(field.name)}
                   childAble={false}
                 />

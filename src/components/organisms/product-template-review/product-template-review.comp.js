@@ -31,7 +31,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
   );
   const preHandleOfferDetails = useMemo(() => {
     const flatData = (name) => {
-      get(data, `details[${name}]`).forEach(({ fieldOption, fieldName }) =>
+      get(data, `details[${name}]`, []).forEach(({ fieldOption, fieldName }) =>
         fieldOption.forEach(
           (option) =>
             option.childField &&
@@ -67,6 +67,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     flatData("variantDetails");
     flatData("offerDetails");
     flatData("packingDetails");
+    flatData("certificationDetails");
     return offerDetails;
   }, [data, productDetails]);
   return (
