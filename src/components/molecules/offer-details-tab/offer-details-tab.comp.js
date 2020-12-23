@@ -5,7 +5,7 @@ export const OfferDetailsTab = memo(({ data }) => {
   return (
     <div className="p-3 mb-3">
       {Object.keys(data)
-        .filter((item) => item !== "productImage")
+        .filter((item) => !["productImage", "customVital"].includes(item))
         .map((field) => (
           <ProductReviewSection key={field} name={field} data={data[field]} />
         ))}
