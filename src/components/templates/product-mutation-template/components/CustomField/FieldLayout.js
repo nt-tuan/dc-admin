@@ -71,7 +71,7 @@ const FieldLayout = ({
                   rules={[
                     {
                       required: true,
-                      message: createFormErrorComp(REQUIRED_ERR("name"))
+                      message: createFormErrorComp(REQUIRED_ERR("Field Name"))
                     }
                   ]}
                 >
