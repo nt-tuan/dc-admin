@@ -59,7 +59,13 @@ export const ProductMutationTemplate = () => {
   const handleSubmitForm = useCallback(
     (name, { values, forms }) => {
       if (currentStep === 1) {
-        setProductData({ ...productData, vitalInformation: values });
+        const vitalInfor = { ...values };
+        delete vitalInfor.customVital;
+        setProductData({
+          ...productData,
+          vitalInformation: vitalInfor,
+          details: { ...productData.details, customVital: values?.customVital || [] }
+        });
       } else {
         const formName = Object.keys(values)[0];
         const formValue = values[formName].map((item, index) => {
@@ -176,14 +182,12 @@ export const ProductMutationTemplate = () => {
         fileName: productData?.ProductUploadImagesForm?.name,
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
-        variantList: Object.keys(productData.vitalInformation)
-          .filter((key) => key !== "customVital")
-          .map((key) => {
-            return {
-              name: key,
-              value: productData.vitalInformation[key]
-            };
-          })
+        variantList: Object.keys(productData.vitalInformation).map((key) => {
+          return {
+            name: key,
+            value: productData.vitalInformation[key]
+          };
+        })
       };
       asyncErrorHandlerWrapper(async () => {
         await ProductService.addProduct(data);
