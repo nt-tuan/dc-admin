@@ -119,6 +119,7 @@ const FieldLayout = ({
             <Card>
               <CustomFieldOption
                 type={fieldType}
+                form={form}
                 ref={fieldOptionsRef}
                 childAble={childAble}
                 fieldName={field.name}
