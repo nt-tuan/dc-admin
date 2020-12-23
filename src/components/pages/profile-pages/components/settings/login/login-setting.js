@@ -79,9 +79,6 @@ function LoginSetting() {
             message: PASSWORD_SCHEMA.atLeast1Upper.errMsg
           },
           {
-            validator: PASSWORD_SCHEMA.PWandConfirmPW(form, "password", "confirmPassword").password
-          },
-          {
             validator: PASSWORD_SCHEMA.CurrentPWandNewPW(form, "currentPassword", "password")
               .newPassword
           }
