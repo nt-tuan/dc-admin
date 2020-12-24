@@ -59,7 +59,7 @@ const initialFieldOptions = {
 const CustomFieldOption = memo(
   forwardRef(
     (
-      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue },
+      { type, handleRemove, openChildField, childAble, fieldName, childValue, setChildValue, form },
       ref
     ) => {
       const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
@@ -111,6 +111,15 @@ const CustomFieldOption = memo(
         setDeletedIndex(index);
         setIsOpen(true);
       }, []);
+      const handleRemoveChild = useCallback(
+        (index) => {
+          const newChildValue = [...childValue];
+          delete newChildValue[index];
+          setChildValue(newChildValue);
+          form.setFieldsValue({ childValue: newChildValue });
+        },
+        [childValue, setChildValue, form]
+      );
       const renderDynamicFields = useMemo(() => {
         switch (type) {
           case "dropdown":
@@ -156,7 +165,13 @@ const CustomFieldOption = memo(
                               >
                                 <Input placeholder="Enter field value" />
                               </Form.Item>
-                              <PlusCircleOutlined className="mx-2" onClick={() => add()} />
+                              <PlusCircleOutlined
+                                className="mx-2"
+                                onClick={() => {
+                                  if (type === "radio" && fields.length === 3) return;
+                                  add();
+                                }}
+                              />
                               <MinusCircleOutlined
                                 onClick={() => handleDelete(fields, field, index)}
                                 // onClick={() => remove(field.name)}
@@ -172,11 +187,11 @@ const CustomFieldOption = memo(
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>
-                                {childValue[index] && (
+                                {childValue && childValue[index] && (
                                   <ChildFieldReview
                                     reOpenModal={() => openChildField(index)}
                                     data={childValue[index]}
-                                    onRemove={() => setChildValue(undefined)}
+                                    onRemove={() => handleRemoveChild(index)}
                                   />
                                 )}
                               </>
@@ -248,14 +263,14 @@ const CustomFieldOption = memo(
         fieldOptions,
         childAble,
         openChildField,
-        setChildValue,
         fieldName,
         childValue,
         handleDelete,
         isOpen,
         deletedField.name,
         deletedIndex,
-        handleRemove
+        handleRemove,
+        handleRemoveChild
       ]);
 
       // return renderDynamicFields;

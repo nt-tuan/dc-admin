@@ -71,7 +71,7 @@ const FieldLayout = ({
                   rules={[
                     {
                       required: true,
-                      message: createFormErrorComp(REQUIRED_ERR("name"))
+                      message: createFormErrorComp(REQUIRED_ERR("Field Name"))
                     }
                   ]}
                 >
@@ -119,6 +119,7 @@ const FieldLayout = ({
             <Card>
               <CustomFieldOption
                 type={fieldType}
+                form={form}
                 ref={fieldOptionsRef}
                 childAble={childAble}
                 fieldName={field.name}
