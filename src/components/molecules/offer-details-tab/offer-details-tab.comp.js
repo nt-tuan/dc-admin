@@ -59,7 +59,7 @@ const ProductReviewSection = memo(({ name, data }) => {
         }
 
         case "textbox":
-          return options[0].fieldType === "shortText" ? <Input /> : <Input.TextArea />;
+          return options[0].textboxType === "shortText" ? <Input /> : <Input.TextArea />;
 
         default:
           return;
