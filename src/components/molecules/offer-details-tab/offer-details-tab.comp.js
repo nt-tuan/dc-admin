@@ -79,10 +79,10 @@ const ProductReviewSection = memo(({ name, data }) => {
           .filter((item) =>
             item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
           )
-          .map(({ fieldName, type, fieldOption }) => {
+          .map(({ fieldName, type, fieldOption }, index) => {
             if (type === "radio") {
               return (
-                <div key={fieldName} className="col-12 mt-3 row">
+                <div key={`${fieldName}${index}`} className="col-12 mt-3 row">
                   <div className="text-capitalize col-xl-3 col-12">{fieldName}</div>
                   <div className="col-12 col-xl-9 row">
                     {mappingType(type, fieldOption, fieldName)}
@@ -92,7 +92,7 @@ const ProductReviewSection = memo(({ name, data }) => {
             }
             return (
               <div
-                key={fieldName}
+                key={`${fieldName}${index}`}
                 className={`col-12 mt-3 ${
                   type === "textbox" && fieldOption[0].fieldType === "longText"
                     ? "col-xl-9"
