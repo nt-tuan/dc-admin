@@ -94,8 +94,8 @@ const ProductReviewSection = memo(({ name, data }) => {
               <div
                 key={fieldName}
                 className={`col-12 mt-3 ${
-                  type === "textbox" && fieldOption[0].fieldType === "longText"
-                    ? "col-xl-9"
+                  type === "textbox" && fieldOption[0].textboxType === "longText"
+                    ? "col-xl-12"
                     : "col-xl-6"
                 }`}
               >
