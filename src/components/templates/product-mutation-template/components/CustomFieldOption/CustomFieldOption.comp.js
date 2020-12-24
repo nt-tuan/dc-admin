@@ -165,7 +165,13 @@ const CustomFieldOption = memo(
                               >
                                 <Input placeholder="Enter field value" />
                               </Form.Item>
-                              <PlusCircleOutlined className="mx-2" onClick={() => add()} />
+                              <PlusCircleOutlined
+                                className="mx-2"
+                                onClick={() => {
+                                  if (type === "radio" && fields.length === 3) return;
+                                  add();
+                                }}
+                              />
                               <MinusCircleOutlined
                                 onClick={() => handleDelete(fields, field, index)}
                                 // onClick={() => remove(field.name)}
@@ -257,14 +263,14 @@ const CustomFieldOption = memo(
         fieldOptions,
         childAble,
         openChildField,
-        setChildValue,
         fieldName,
         childValue,
         handleDelete,
         isOpen,
         deletedField.name,
         deletedIndex,
-        handleRemove
+        handleRemove,
+        handleRemoveChild
       ]);
 
       // return renderDynamicFields;
