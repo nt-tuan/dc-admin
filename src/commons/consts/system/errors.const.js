@@ -47,3 +47,5 @@ export const MINIMUM_QUANTITY_CANT_BE_GREATER_THAN_QUANTITY =
   "Minimum Quantity cant be greater than quantity";
 export const WORKING_HOURS_WARNING = "The working hours should be at least 8 hours";
 export const WORKING_DAYS_WARNING = "The working days should be at least 5 days";
+export const MUST_BE_ATLEAST_4_CHARACTERS = (fieldName) =>
+  `${fieldName} must be atleast 4 characters`;

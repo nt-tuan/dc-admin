@@ -13,3 +13,6 @@ export * from "./user.schema";
 export * from "./introducer.schema";
 export * from "./trade-rules.schema";
 export * from "./requested-products.schema";
+export * from "./country.schema";
+export * from "./phone.schema";
+export * from "./password.schema";

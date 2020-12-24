@@ -5,7 +5,7 @@ import { FIELD_TYPE } from "../../constants";
 import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 
-const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
+const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldType }) => {
   const handleOK = (e) => {
     const formValue = form?.getFieldsValue()?.childField;
     const errorField = formValue.find((value) => {
@@ -15,7 +15,11 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
       if (value?.fieldOption[0] === "") {
         return true;
       }
-      if (value.fieldOption.find((childValue) => !childValue.label)) {
+      if (
+        value.fieldOption.find(
+          (childValue) => !childValue.label && !childValue.allowInput && !childValue.textboxType
+        )
+      ) {
         return true;
       }
       return false;
@@ -53,7 +57,11 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave }) => {
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, index) => (
-                <FieldLayout {...{ field }} remove={() => remove(field.name)} childAble={false} />
+                <FieldLayout
+                  {...{ field, index, selectedFieldType, form }}
+                  remove={() => remove(field.name)}
+                  childAble={false}
+                />
               ))}
               <Form.Item className="mt-3">
                 <Button

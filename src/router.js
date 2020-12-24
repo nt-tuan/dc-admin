@@ -180,6 +180,10 @@ const privateRoutes = [
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
     exact: true
+  },
+  {
+    path: RouteConst.PROFILE_PAGES,
+    Component: loadable(() => import("components/pages/profile-pages/profile-page"))
   }
 ];
 

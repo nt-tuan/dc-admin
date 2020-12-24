@@ -2,6 +2,7 @@ import React, { Fragment, memo, useMemo } from "react";
 import image from "assets/images/aramex-logo.png";
 import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
+import get from "lodash/get";
 
 export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(
@@ -23,14 +24,19 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
                 return { key, value: data?.vitalInformation[key] };
               })
               .filter((item) => !["aheccCode", "aheccDescription"].includes(item.key)),
-            data?.vitalInformation?.customVital ? [...data?.vitalInformation?.customVital] : []
+            ...data?.details?.customVital?.map((field) => {
+              return {
+                key: field.name,
+                value: field.value
+              };
+            })
           ]
         : [],
     [data]
   );
   const preHandleOfferDetails = useMemo(() => {
     const flatData = (name) => {
-      data.details[name].forEach(({ fieldOption, fieldName }) =>
+      get(data, `details[${name}]`, []).forEach(({ fieldOption, fieldName }) =>
         fieldOption.forEach(
           (option) =>
             option.childField &&
@@ -66,6 +72,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     flatData("variantDetails");
     flatData("offerDetails");
     flatData("packingDetails");
+    flatData("certificationDetails");
     return offerDetails;
   }, [data, productDetails]);
   return (
@@ -74,7 +81,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         <div className="col-xl-3 col-12 text-center mb-4">
           <h5 className="text-primary">Product Template Review</h5>
           <img
-            src={data?.details?.productImage && data?.details?.productImage[0]?.url}
+            src={data?.ProductUploadImagesForm.url}
             alt="Product"
             className="mt-2"
             style={{ width: "100%" }}

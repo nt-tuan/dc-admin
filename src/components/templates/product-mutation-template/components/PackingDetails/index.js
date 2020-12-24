@@ -24,8 +24,10 @@ const VariantDetails = ({ form, handleFieldChange }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                form={form}
                 field={field}
                 fieldKey={field.key}
+                handleFieldChange={handleFieldChange}
                 index={index}
                 remove={() => {
                   if (fields.length === 1) return;
@@ -52,6 +54,7 @@ const VariantDetails = ({ form, handleFieldChange }) => {
           </>
         )}
       </Form.List>
+      <Form.Item name={"childValue"}></Form.Item>
     </Form>
   );
 };

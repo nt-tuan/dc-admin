@@ -54,7 +54,7 @@ const EditProductPage = () => {
   return (
     <>
       <Helmet title="Edit Product" />
-      <ProductMutationTemplate />F
+      <ProductMutationTemplate />
     </>
   );
 };

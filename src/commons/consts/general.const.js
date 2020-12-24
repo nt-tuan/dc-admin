@@ -137,3 +137,59 @@ export const PRODUCT_DETAILS_LABELS = Object.freeze({
   keyword: "Key Word",
   quantity: "Quantity"
 });
+
+export const USER_TABS_NAME = Object.freeze({
+  profileInfo: "profile-info",
+  companyInfo: "company-info",
+  ownerInfo: "owner-info",
+  bankDetails: "bank-details",
+  documents: "uploaded-documents",
+  security: "add-credit-security",
+  settings: "settings",
+  rebateDetails: "rebate-details",
+  introducer: "introducer-info",
+  businessDetails: "business-details"
+});
+
+export const MESSAGES = Object.freeze({
+  LOGIN_SUCCESS_MSG: `You have successfully logged in to ${process.env.REACT_APP_COMPANY_NAME}!`,
+  LOGIN_SUCCESS_TITLE: "Logged In",
+  CHANGE_PASSWORD_SUCCESS: "Change Password Success",
+  RESET_PASSWORD_SUCCESS: "Reset Password Success",
+  PHONE_VERIFICATION_CODE_SENT: "We've sent you a verification code to the above phone number.",
+  SEND_VERIFICATION_CODE: "Send Verification Code",
+  PHONE_VERIFY_CODE: "Verify",
+  VERIFY_PHONE_NOW: "Please verify your phone number",
+  VERIFY_PHONE_SUCCESSFUL: "Verify successful",
+  UPDATE_SUCCESSFUL: "Update Successful",
+  VERIFY_PHONE_TO_USE_THIS_FEATURE: "Please verify your phone number to use this feature"
+});
+
+export const NOTIFICATION_CHANNELS = Object.freeze({
+  EMAIL: "EMAIL",
+  WHATSAPP: "WHATSAPP",
+  WEB: "WEB",
+  SMS: "SMS"
+});
+
+export const TWO_FACTOR_AUTH_TYPES = Object.freeze({
+  DISABLED: "TWOFA_DISABLED",
+  PER_30_DAYS: "PER_30_DAYS",
+  EVERY_LOGIN: "EVERY_LOGIN",
+  WHATSAPP_PER_30_DAYS: "TWOFA_WHATSAPP_EVERY_30_DAYS",
+  WHATSAPP_EVERY_LOGIN: "TWOFA_WHATSAPP_EVERY_LOGIN",
+  EMAIL_PER_30_DAYS: "TWOFA_EMAIL_EVERY_30_DAYS",
+  EMAIL_EVERY_LOGIN: "TWOFA_EMAIL_EVERY_LOGIN",
+  SMS_PER_30_DAYS: "TWOFA_SMS_EVERY_30_DAYS",
+  SMS_EVERY_LOGIN: "TWOFA_SMS_EVERY_LOGIN",
+  GA_PER_30_DAYS: "TWOFA_GA_EVERY_30_DAYS",
+  GA_EVERY_LOGIN: "TWOFA_GA_EVERY_LOGIN"
+});
+
+export const THREE_STEPS_SECURITY_STATUS = Object.freeze({
+  SUCCESS: "SUCCESS",
+  INVALID: "INVALID",
+  OTP_EXPIRED: "OTP_EXPIRED",
+  OTP_LOCKED: "OTP_LOCKED",
+  PASSCODE_LOCKED: "PASSCODE_LOCKED"
+});

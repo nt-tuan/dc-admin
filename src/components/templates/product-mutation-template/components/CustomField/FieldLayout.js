@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { Collapse, Card, Row, Col, Select, Input, Form, Switch } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { FIELD_TYPE } from "../../constants";
@@ -11,21 +11,39 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 const FieldLayout = ({
+  form,
   type,
   childAble = true,
   setTypeModalOpen,
+  openChildField,
   setIsChildModalOpen,
   remove,
   field,
+  selectedFieldType,
   childValue,
-  setChildValue
+  setChildValue,
+  handleRemove,
+  index
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
 
-  const handleChange = useCallback((value) => {
-    setFieldType(value);
-  }, []);
+  useEffect(() => {
+    setFieldType(selectedFieldType);
+  }, [selectedFieldType]);
+
+  const handleChange = useCallback(
+    (value) => {
+      setFieldType(value);
+      //reset option if change value of dropdown
+      const formValue = form.getFieldsValue();
+      const fieldName = Object.keys(formValue)[0];
+      const newValue = [...formValue[fieldName]];
+      newValue[index].fieldOption = [""];
+      form.setFieldsValue({ [fieldName]: newValue });
+    },
+    [form, index]
+  );
 
   const genExtra = () => (
     <DeleteOutlined
@@ -53,7 +71,7 @@ const FieldLayout = ({
                   rules={[
                     {
                       required: true,
-                      message: createFormErrorComp(REQUIRED_ERR("name"))
+                      message: createFormErrorComp(REQUIRED_ERR("Field Name"))
                     }
                   ]}
                 >
@@ -91,7 +109,9 @@ const FieldLayout = ({
             </Row>
             <div className="text-right mt-2">
               Make this field required?
-              <Switch defaultChecked onChange={(value) => console.log(value)} className="mx-3" />
+              <Form.Item name={[field.name, "isRequired"]}>
+                <Switch />
+              </Form.Item>
             </div>
           </Card>
 
@@ -99,10 +119,17 @@ const FieldLayout = ({
             <Card>
               <CustomFieldOption
                 type={fieldType}
+                form={form}
                 ref={fieldOptionsRef}
                 childAble={childAble}
-                fieldKey={field.key}
-                {...{ setIsChildModalOpen, childValue, setChildValue }}
+                fieldName={field.name}
+                {...{
+                  openChildField,
+                  setIsChildModalOpen,
+                  childValue,
+                  setChildValue,
+                  handleRemove
+                }}
               />
             </Card>
           )}

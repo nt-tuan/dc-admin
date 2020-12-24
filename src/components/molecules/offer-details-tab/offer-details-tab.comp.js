@@ -5,7 +5,7 @@ export const OfferDetailsTab = memo(({ data }) => {
   return (
     <div className="p-3 mb-3">
       {Object.keys(data)
-        .filter((item) => item !== "productImage")
+        .filter((item) => !["productImage", "customVital"].includes(item))
         .map((field) => (
           <ProductReviewSection key={field} name={field} data={data[field]} />
         ))}
@@ -71,20 +71,15 @@ const ProductReviewSection = memo(({ name, data }) => {
   return (
     <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
       <h5>{SECTION_LABEL[name]}</h5>
+      {name === "certificationDetails" && (
+        <div className="">Please choose certifications applicable for your product</div>
+      )}
       <div className="row">
         {data
           .filter((item) =>
             item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
           )
           .map(({ fieldName, type, fieldOption }) => {
-            if (name === "certificationDetails") {
-              return (
-                <div key={fieldName} className="mx-3">
-                  <div className="text-capitalize">{fieldName}</div>
-                  <div className="">{mappingType(type, fieldOption, fieldName)}</div>
-                </div>
-              );
-            }
             if (type === "radio") {
               return (
                 <div key={fieldName} className="col-12 mt-3 row">
@@ -99,8 +94,8 @@ const ProductReviewSection = memo(({ name, data }) => {
               <div
                 key={fieldName}
                 className={`col-12 mt-3 ${
-                  type === "textbox" && fieldOption[0].fieldType === "longText"
-                    ? "col-xl-9"
+                  type === "textbox" && fieldOption[0].textboxType === "longText"
+                    ? "col-xl-12"
                     : "col-xl-6"
                 }`}
               >
