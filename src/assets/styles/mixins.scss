@@ -73,3 +73,24 @@ $sm-min-width: 768px;
 $sm-max-width: 767px;
 $xs-min-width: 544px;
 $xs-max-width: 543px;
+$screen-desktop: 1024px;
+$screen-tablet: 768px;
+$screen-mobile: 360px;
+
+@mixin desktop {
+  @media (min-width: $screen-desktop) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $screen-tablet) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (min-width: $screen-mobile) and (max-width: 380px) {
+    @content;
+  }
+}

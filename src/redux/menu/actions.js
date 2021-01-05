@@ -70,12 +70,12 @@ export async function getUserData() {
       ]
     },
     {
-      title: "Product",
+      title: "Product Template",
       key: "Product",
       icon: "fe fe-package",
       children: [
         {
-          title: "Product Creation",
+          title: "Product Template Creation",
           key: "ProductCreation",
           url: RouteConst.ADD_PRODUCT
         },
@@ -85,24 +85,6 @@ export async function getUserData() {
           url: RouteConst.REQUESTED_PRODUCTS
         }
       ]
-    },
-    {
-      title: "Analytics",
-      key: "Analytics",
-      icon: "fe fe-pie-chart",
-      url: "/notfound"
-    },
-    {
-      title: "Marketing",
-      key: "Marketing",
-      icon: "fe fe-twitter",
-      url: "/notfound"
-    },
-    {
-      title: "Discounts",
-      key: "Discounts",
-      icon: "fe fe-tag",
-      url: "/notfound"
     },
     {
       title: "Financials",

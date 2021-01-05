@@ -110,7 +110,7 @@ const ProductReviewSection = memo(({ name, data }) => {
 });
 
 const SECTION_LABEL = {
-  variantDetails: "Variants",
+  variantDetails: "Variations",
   offerDetails: "Offer Details",
   packingDetails: "Packing Details",
   certificationDetails: "Certifications"
