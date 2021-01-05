@@ -270,7 +270,7 @@ export const ProductMutationTemplate = () => {
           )}
         </Form.Provider>
       </DTCSection>
-      <div className="footer">
+      <div className={`footer ${isSkip() && "mb-3"}`}>
         {currentStep !== 1 && (
           <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
         )}

@@ -2,6 +2,8 @@ import { Collapse, Input, Radio, Select } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { memo, useCallback, useMemo, useState } from "react";
 
+import "./ChildFieldReview.comp.scss";
+
 const sample = [
   {
     fieldName: "custom child field 1",
@@ -48,9 +50,9 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
         );
       case "radio":
         return (
-          <div className="col-12 row my-2" key={fieldName}>
+          <div className="childFieldReview" key={fieldName}>
             <div className="col-3 text-capitalize">{fieldName}</div>
-            <Radio.Group className="col-9 row">
+            <Radio.Group className="childFieldReview">
               {options.map((opt) => (
                 <Radio value={opt.label} key={opt.label} className="col-3">
                   {opt.label}

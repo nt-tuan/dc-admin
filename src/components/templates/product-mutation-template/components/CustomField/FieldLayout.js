@@ -62,7 +62,7 @@ const FieldLayout = ({
         <Panel header="" key="1" extra={genExtra()}>
           <Card className="mb-1">
             <Row>
-              <Col xs={8} sm={4} md={4} lg={3} xl={3}>
+              <Col xs={8} sm={4} md={4} lg={3} xl={3} className="mt-1">
                 Field Name
               </Col>
               <Col xs={16} sm={10} md={10} lg={15} xl={15} className="mb-1 pr-1">
