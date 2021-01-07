@@ -182,7 +182,7 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
           </div>
           {/* other things */}
           {renderTermsAndPolicy()}
-          <div className="row mr-1">
+          <div className="row ml-1 mr-1">
             <div className="footer-captcha-button">{renderCaptcha()}</div>
             <div className="footer-login-button d-flex justify-content-md-end align-items-center">
               {renderButtons()}
