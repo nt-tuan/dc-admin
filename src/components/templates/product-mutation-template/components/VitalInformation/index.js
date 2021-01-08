@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { RegexConst, REQUIRED_ERR } from "commons/consts";
 import { Col, Form, Input, Row, Select, InputNumber } from "antd";
@@ -42,10 +42,36 @@ const VitalInformationForm = ({
   categories,
   onCategoryChange,
   types,
-  hsCode
+  hsCode,
+  setIsValidProductName
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
+    let timeout;
+    const checkProduct = async (name) => {
+      const category = form.getFieldValue("productCategory");
+      const type = form.getFieldValue("productType");
+      if (category && type) {
+        const isValidName = await ProductService.checkDuplicate({
+          name,
+          category,
+          type
+        });
+        setIsValidProductName(isValidName);
+        if (!isValidName) {
+          form.setFields([
+            {
+              name: "productName",
+              errors: ["This product has already been created"]
+            }
+          ]);
+        }
+      }
+    };
+    const handleChangeName = (value) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => checkProduct(value), 500);
+    };
     const fields = [
       {
         label: "Product Category",
@@ -86,6 +112,10 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Name"))
             }
           ]
+        },
+        props: {
+          onChange: (e) => handleChangeName(e.target.value),
+          maxLength: 50
         }
       },
       {

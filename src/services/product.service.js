@@ -17,6 +17,11 @@ export class ProductService {
     return result;
   };
 
+  static checkDuplicate = async (data) => {
+    const result = await backendAPI.post(ApiPathConsts.CHECK_DUPLICATE_PRODUCT, data);
+    return result;
+  };
+
   static editProduct = async (data, id) => {
     const {
       brand,

@@ -36,6 +36,8 @@ export const ProductMutationTemplate = () => {
   const [packingDetailsForm] = Form.useForm();
   const [certificationForm] = Form.useForm();
 
+  const [isValidProductName, setIsValidProductName] = useState(true);
+
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const [categories, hsCode] = await Promise.all([
@@ -200,12 +202,31 @@ export const ProductMutationTemplate = () => {
     } else {
       const isValid = await handleValidator();
       if (!isValid) return;
+      if (currentStep === 1) {
+        const category = vitalForm.getFieldValue("productCategory");
+        const type = vitalForm.getFieldValue("productType");
+        const name = vitalForm.getFieldValue("productName");
+        const isValidName = await ProductService.checkDuplicate({
+          name,
+          category,
+          type
+        });
+        if (!isValidName) {
+          vitalForm.setFields([
+            {
+              name: "productName",
+              errors: ["This product has already been created"]
+            }
+          ]);
+          return;
+        }
+      }
       setTimeout(() => {
         setCurrentStep(currentStep + 1);
         setSkipAble(true);
       }, 100);
     }
-  }, [currentStep, handleValidator, productData]);
+  }, [currentStep, handleValidator, productData, vitalForm]);
 
   const isSkip = useCallback(() => {
     // let isFormDirty = false;
@@ -248,6 +269,8 @@ export const ProductMutationTemplate = () => {
               onCategoryChange={getTypeByCategory}
               types={types}
               hsCode={hsCode}
+              isValidProductName={isValidProductName}
+              setIsValidProductName={setIsValidProductName}
             />
           </div>
           <div className={classNames({ "d-none": currentStep !== 2 })}>

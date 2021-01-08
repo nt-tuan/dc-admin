@@ -85,6 +85,10 @@ export class ApiPathConsts {
     return `${this.#PRODUCT_PREFIX}`;
   }
 
+  static get CHECK_DUPLICATE_PRODUCT() {
+    return `${this.#PRODUCT_PREFIX}/check`;
+  }
+
   static get EDIT_PRODUCT() {
     return `${this.#PRODUCT_PREFIX}/:id`;
   }
