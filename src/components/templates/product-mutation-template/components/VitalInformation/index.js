@@ -26,8 +26,7 @@ const defaultValue = {
   aheccFullDescription: "",
   quantity: "",
   minimumQuantity: "",
-  allowedMultiplesQuantity: "",
-  keyword: ""
+  allowedMultiplesQuantity: ""
 };
 
 const LAYOUT = {
@@ -194,7 +193,7 @@ const VitalInformationForm = ({
       {
         label: "Unit of Quantity",
         name: "quantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {
           // disabled: true
         },
@@ -210,7 +209,7 @@ const VitalInformationForm = ({
       {
         label: "Minimum Order Quantity",
         name: "minimumQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {},
         options: {
           rules: [
@@ -228,7 +227,7 @@ const VitalInformationForm = ({
       {
         label: "Allowed Multiples of Quantity",
         name: "allowedMultiplesQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {},
         options: {
           rules: [
@@ -248,7 +247,7 @@ const VitalInformationForm = ({
       {
         label: "Keyword",
         name: "keyword",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.SELECT,
         mode: "tags",
         options: {
           rules: [
@@ -310,7 +309,7 @@ const VitalInformationForm = ({
       switch (schema.type) {
         case INPUT_TYPE.SELECT:
           return (
-            <Select model={schema.mode} onChange={handleFieldChange(schema.name)}>
+            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)}>
               {schema?.options?.options?.map((item) => {
                 return (
                   <Option key={item.id} value={item.id}>
@@ -321,12 +320,13 @@ const VitalInformationForm = ({
             </Select>
           );
         default:
-          return <Input {...schema.props} />;
+          return <Input type={schema.type} {...schema.props} />;
       }
     },
     [handleFieldChange]
   );
 
+  console.log("Here lo there, Vital Informaiton");
   return (
     <>
       <Form hideRequiredMark form={form} name="vitalInformation" {...LAYOUT}>
