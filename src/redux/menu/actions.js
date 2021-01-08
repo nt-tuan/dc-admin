@@ -78,11 +78,6 @@ export async function getUserData() {
           title: "Product Template Creation",
           key: "ProductCreation",
           url: RouteConst.ADD_PRODUCT
-        },
-        {
-          title: "Requested Products",
-          key: "RequestedProducts",
-          url: RouteConst.REQUESTED_PRODUCTS
         }
       ]
     },
