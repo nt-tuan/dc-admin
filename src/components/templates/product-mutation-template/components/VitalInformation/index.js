@@ -243,8 +243,8 @@ const VitalInformationForm = ({
             }
           ]
         }
-      },
-      {
+      }
+      /*{
         label: "Keyword",
         name: "keyword",
         type: INPUT_TYPE.SELECT,
@@ -252,12 +252,12 @@ const VitalInformationForm = ({
         options: {
           rules: [
             {
-              required: false,
+              required: true,
               message: createFormErrorComp(REQUIRED_ERR("Keyword"))
             }
           ]
         }
-      }
+      }*/
     ];
     return fields;
   }, [categories, types, hsCode]);
