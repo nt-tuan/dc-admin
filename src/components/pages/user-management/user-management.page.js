@@ -43,15 +43,6 @@ export const UserManagementPage = () => {
           {renderTabButton("Buyer", BUYER)}
           {renderTabButton("Seller", SELLER)}
         </div>
-        {process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"] && (
-          <div title="Marketplace credit">
-            <Link to={RouteConst.CREDIT_USERS}>
-              <Button type="primary" className="mr-4">
-                Assign credit
-              </Button>
-            </Link>
-          </div>
-        )}
       </div>
       {tab === ALL_USER && renderAllUser()}
       {tab === BUYER && renderBuyer()}
