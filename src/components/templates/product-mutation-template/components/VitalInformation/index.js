@@ -252,7 +252,7 @@ const VitalInformationForm = ({
         options: {
           rules: [
             {
-              required: true,
+              required: false,
               message: createFormErrorComp(REQUIRED_ERR("Keyword"))
             }
           ]
