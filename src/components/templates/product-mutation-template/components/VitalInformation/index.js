@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { RegexConst, REQUIRED_ERR } from "commons/consts";
 import { Col, Form, Input, Row, Select, InputNumber } from "antd";
@@ -26,8 +26,7 @@ const defaultValue = {
   aheccFullDescription: "",
   quantity: "",
   minimumQuantity: "",
-  allowedMultiplesQuantity: "",
-  keyword: ""
+  allowedMultiplesQuantity: ""
 };
 
 const LAYOUT = {
@@ -42,10 +41,36 @@ const VitalInformationForm = ({
   categories,
   onCategoryChange,
   types,
-  hsCode
+  hsCode,
+  setIsValidProductName
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
+    let timeout;
+    const checkProduct = async (name) => {
+      const category = form.getFieldValue("productCategory");
+      const type = form.getFieldValue("productType");
+      if (category && type) {
+        const isValidName = await ProductService.checkDuplicate({
+          name,
+          category,
+          type
+        });
+        setIsValidProductName(isValidName);
+        if (!isValidName) {
+          form.setFields([
+            {
+              name: "productName",
+              errors: ["This product has already been created"]
+            }
+          ]);
+        }
+      }
+    };
+    const handleChangeName = (value) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => checkProduct(value), 500);
+    };
     const fields = [
       {
         label: "Product Category",
@@ -86,6 +111,10 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Name"))
             }
           ]
+        },
+        props: {
+          onChange: (e) => handleChangeName(e.target.value),
+          maxLength: 50
         }
       },
       {
@@ -164,7 +193,7 @@ const VitalInformationForm = ({
       {
         label: "Unit of Quantity",
         name: "quantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {
           // disabled: true
         },
@@ -180,7 +209,7 @@ const VitalInformationForm = ({
       {
         label: "Minimum Order Quantity",
         name: "minimumQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {},
         options: {
           rules: [
@@ -198,7 +227,7 @@ const VitalInformationForm = ({
       {
         label: "Allowed Multiples of Quantity",
         name: "allowedMultiplesQuantity",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.NUMBER,
         props: {},
         options: {
           rules: [
@@ -218,7 +247,7 @@ const VitalInformationForm = ({
       {
         label: "Keyword",
         name: "keyword",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.SELECT,
         mode: "tags",
         options: {
           rules: [
@@ -280,7 +309,7 @@ const VitalInformationForm = ({
       switch (schema.type) {
         case INPUT_TYPE.SELECT:
           return (
-            <Select model={schema.mode} onChange={handleFieldChange(schema.name)}>
+            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)}>
               {schema?.options?.options?.map((item) => {
                 return (
                   <Option key={item.id} value={item.id}>
@@ -291,12 +320,13 @@ const VitalInformationForm = ({
             </Select>
           );
         default:
-          return <Input {...schema.props} />;
+          return <Input type={schema.type} {...schema.props} />;
       }
     },
     [handleFieldChange]
   );
 
+  console.log("Here lo there, Vital Informaiton");
   return (
     <>
       <Form hideRequiredMark form={form} name="vitalInformation" {...LAYOUT}>
