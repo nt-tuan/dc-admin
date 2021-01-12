@@ -27,6 +27,8 @@ const VariantDetails = ({ form }) => {
                 field={field}
                 fieldKey={field.key}
                 index={index}
+                isHiddenIconRemove
+                numberField={fields.length}
                 remove={() => {
                   if (fields.length === 1) return;
                   remove(field.name);
