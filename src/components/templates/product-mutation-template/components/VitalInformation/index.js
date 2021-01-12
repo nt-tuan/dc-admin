@@ -321,7 +321,6 @@ const VitalInformationForm = ({
     [handleFieldChange]
   );
 
-  console.log("Here lo there, Vital Informaiton");
   return (
     <>
       <Form hideRequiredMark form={form} name="vitalInformation" {...LAYOUT}>
