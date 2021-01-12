@@ -13,6 +13,15 @@ export const ProductDetailsTab = memo(({ data, categories, types }) => {
         if (field.key === "productType") {
           field.value = types.find((item) => item.id === field.value)?.name;
         }
+        if (field.key === "keyword") {
+          field.value = field.value.reduce((acc, item, index) => {
+            if (index == field.value.length - 1) {
+              return acc + item;
+            } else {
+              return acc + item + ", ";
+            }
+          }, "");
+        }
       });
     return cloneData;
   }, [data, categories, types]);
@@ -26,7 +35,7 @@ export const ProductDetailsTab = memo(({ data, categories, types }) => {
             <b>
               {PRODUCT_DETAILS_LABELS[key || name] ? PRODUCT_DETAILS_LABELS[key] : key || name}:
             </b>{" "}
-            {value}
+            <span className="mr-2">{value}</span>
           </div>
         );
       })}
