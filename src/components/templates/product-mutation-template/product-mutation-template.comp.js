@@ -27,7 +27,8 @@ export const ProductMutationTemplate = () => {
   const [hsCode, setHsCode] = useState([]);
   const [skipAble, setSkipAble] = useState(true);
 
-  const isSmallDevice = isScreensize("sm");
+  //Set break-point for Progressive bar
+  const isSmallDevice = isScreensize("lg");
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
