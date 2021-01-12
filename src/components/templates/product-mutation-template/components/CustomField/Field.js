@@ -6,7 +6,22 @@ import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 
 const Field = forwardRef(
-  ({ type, onRemove, name, field, fieldKey, remove, form, index, handleFieldChange }, ref) => {
+  (
+    {
+      type,
+      onRemove,
+      name,
+      field,
+      fieldKey,
+      remove,
+      form,
+      index,
+      handleFieldChange,
+      numberField,
+      isHiddenIconRemove
+    },
+    ref
+  ) => {
     const [isTypeModalOpen, setTypeModalOpen] = useState(false);
     const [childValue, setChildValue] = useState([]);
     const [currentIndex, setCurrentIndex] = useState();
@@ -47,7 +62,6 @@ const Field = forwardRef(
       },
       [childForm, childValue]
     );
-
     return (
       <>
         <FieldLayout
@@ -63,7 +77,9 @@ const Field = forwardRef(
             childValue,
             setChildValue,
             handleRemove,
-            index
+            index,
+            isHiddenIconRemove,
+            numberField
           }}
         />
         {isChildModalOpen && (

@@ -126,7 +126,8 @@ export const ProductMutationTemplate = () => {
           "chapterLabel",
           "hsCodeDescription",
           "quantity",
-          "customVital"
+          "customVital",
+          "keyword"
         ];
         const formVal = vitalForm.getFieldsValue();
         const isVitalFormValid = !Object.keys(formVal)
@@ -186,6 +187,12 @@ export const ProductMutationTemplate = () => {
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
+          if (key == "keyword") {
+            return {
+              name: key,
+              value: productData.vitalInformation[key].reduce((acc, item) => acc + "," + item)
+            };
+          }
           return {
             name: key,
             value: productData.vitalInformation[key]

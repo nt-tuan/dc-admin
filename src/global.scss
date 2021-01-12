@@ -282,3 +282,11 @@ body {
     }
   }
 }
+
+//** Custom Collapse Field for product creation
+.customCollapseField {
+  margin: 15px 0;
+  .ant-collapse-header {
+    min-height: 45px;
+  }
+}

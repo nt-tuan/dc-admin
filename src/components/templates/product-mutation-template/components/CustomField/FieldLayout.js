@@ -23,10 +23,13 @@ const FieldLayout = ({
   childValue,
   setChildValue,
   handleRemove,
-  index
+  index,
+  isHiddenIconRemove,
+  numberField
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
+  const [fileNameValue, setFieldNameValue] = useState("");
 
   useEffect(() => {
     setFieldType(selectedFieldType);
@@ -45,21 +48,27 @@ const FieldLayout = ({
     [form, index]
   );
 
-  const genExtra = () => (
-    <DeleteOutlined
-      onClick={(event) => {
-        remove();
-        // fieldOptionsRef.current.onValidateFieldOptions();
-        // If you don't want click extra trigger collapse, you can prevent this:
-        event.stopPropagation();
-      }}
-    />
-  );
+  const genExtra = () => {
+    if (isHiddenIconRemove && numberField > 1) {
+      return (
+        <DeleteOutlined
+          onClick={(event) => {
+            remove();
+            // fieldOptionsRef.current.onValidateFieldOptions();
+            // If you don't want click extra trigger collapse, you can prevent this:
+            event.stopPropagation();
+          }}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
-    <div key={field.key} className="mb-3">
+    <div key={field.key} className="mb-3 customCollapseField">
       <Collapse defaultActiveKey={["1"]}>
-        <Panel header="" key="1" extra={genExtra()}>
+        <Panel header={fileNameValue} key="1" extra={genExtra()}>
           <Card className="mb-1">
             <Row>
               <Col xs={8} sm={4} md={4} lg={3} xl={3} className="mt-1">
@@ -75,7 +84,10 @@ const FieldLayout = ({
                     }
                   ]}
                 >
-                  <Input placeholder="Enter field name" />
+                  <Input
+                    placeholder="Enter field name"
+                    onChange={(e) => setFieldNameValue(e.target.value)}
+                  />
                 </Form.Item>
               </Col>
               <Col xs={24} sm={10} md={10} lg={6} xl={6}>
