@@ -208,9 +208,9 @@ const VitalInformationForm = ({
       {
         label: "Unit of Quantity",
         name: "quantity",
-        type: INPUT_TYPE.NUMBER,
+        type: INPUT_TYPE.INPUT,
         props: {
-          // disabled: true
+          disabled: true
         },
         options: {
           rules: [
@@ -265,12 +265,7 @@ const VitalInformationForm = ({
         type: INPUT_TYPE.SELECT,
         mode: "tags",
         options: {
-          rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("Keyword"))
-            }
-          ]
+          rules: []
         }
       }
     ];

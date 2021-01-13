@@ -28,7 +28,8 @@ export const ProductMutationTemplate = () => {
   const [hsCode, setHsCode] = useState([]);
   const [skipAble, setSkipAble] = useState(true);
 
-  const isSmallDevice = isScreensize("sm");
+  //Set break-point for Progressive bar
+  const isSmallDevice = isScreensize("lg");
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
@@ -138,7 +139,8 @@ export const ProductMutationTemplate = () => {
           "chapterLabel",
           "hsCodeDescription",
           "quantity",
-          "customVital"
+          "customVital",
+          "keyword"
         ];
         const formVal = vitalForm.getFieldsValue();
         const isVitalFormValid = !Object.keys(formVal)
@@ -198,6 +200,12 @@ export const ProductMutationTemplate = () => {
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
+          if (key == "keyword") {
+            return {
+              name: key,
+              value: productData.vitalInformation[key].reduce((acc, item) => acc + "," + item)
+            };
+          }
           return {
             name: key,
             value: productData.vitalInformation[key]
