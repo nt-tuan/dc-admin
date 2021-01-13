@@ -14,7 +14,7 @@ const INPUT_TYPE = {
 
 const { Option } = Select;
 
-const defaultValue = {
+const defaultValue1 = {
   productCategory: "",
   productType: "",
   productName: "",
@@ -42,9 +42,23 @@ const VitalInformationForm = ({
   onCategoryChange,
   types,
   hsCode,
-  setIsValidProductName
+  setIsValidProductName,
+  productDetails
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
+  const [defaultValue, setDefaultValue] = useState(defaultValue1);
+  useEffect(() => {
+    if (productDetails) {
+      const values = {};
+      productDetails.variants.forEach((variant) => {
+        values[variant.name] = variant.value;
+      });
+      form.setFieldsValue(values);
+      setDefaultValue(values);
+      onCategoryChange(values.productCategory);
+    }
+  }, [productDetails, form, onCategoryChange]);
+
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
     let timeout;
     const checkProduct = async (name) => {
@@ -114,7 +128,8 @@ const VitalInformationForm = ({
         },
         props: {
           onChange: (e) => handleChangeName(e.target.value),
-          maxLength: 50
+          maxLength: 50,
+          disabled: !!productDetails
         }
       },
       {
@@ -255,7 +270,7 @@ const VitalInformationForm = ({
       }
     ];
     return fields;
-  }, [categories, types, hsCode]);
+  }, [categories, types, hsCode, form, setIsValidProductName]);
 
   const handleFieldChange = useCallback(
     (name) => {

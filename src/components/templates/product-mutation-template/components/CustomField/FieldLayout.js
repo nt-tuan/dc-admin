@@ -24,6 +24,7 @@ const FieldLayout = ({
   setChildValue,
   handleRemove,
   index,
+  productType,
   isHiddenIconRemove,
   numberField
 }) => {
@@ -34,6 +35,11 @@ const FieldLayout = ({
   useEffect(() => {
     setFieldType(selectedFieldType);
   }, [selectedFieldType]);
+
+  useEffect(() => {
+    setFieldType(productType);
+    debugger;
+  }, [productType]);
 
   const handleChange = useCallback(
     (value) => {

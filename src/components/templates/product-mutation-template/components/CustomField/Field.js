@@ -18,7 +18,8 @@ const Field = forwardRef(
       index,
       handleFieldChange,
       numberField,
-      isHiddenIconRemove
+      isHiddenIconRemove,
+      productType
     },
     ref
   ) => {
@@ -78,6 +79,7 @@ const Field = forwardRef(
             setChildValue,
             handleRemove,
             index,
+            productType,
             isHiddenIconRemove,
             numberField
           }}
