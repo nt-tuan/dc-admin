@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import get from "lodash/get";
 
 import Field from "../CustomField/Field";
 
-const VariantDetails = ({ form, handleFieldChange }) => {
+const VariantDetails = ({ form, handleFieldChange, productDetails }) => {
+  const [details, setDetails] = useState();
+
+  useEffect(() => {
+    if (productDetails) {
+      const detail = JSON.parse(productDetails.detail);
+      const { packingDetails } = detail;
+      form.setFieldsValue({ packingDetails });
+      setDetails(packingDetails);
+    }
+  }, [productDetails, form]);
   return (
     <Form
       form={form}
@@ -24,6 +35,7 @@ const VariantDetails = ({ form, handleFieldChange }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                productType={get(details, `[${index}].type`)}
                 form={form}
                 field={field}
                 fieldKey={field.key}

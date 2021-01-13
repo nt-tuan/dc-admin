@@ -23,6 +23,7 @@ export const ProductMutationTemplate = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
+
   const [types, setTypes] = useState([]);
   const [hsCode, setHsCode] = useState([]);
   const [skipAble, setSkipAble] = useState(true);
@@ -37,8 +38,20 @@ export const ProductMutationTemplate = () => {
   const [certificationForm] = Form.useForm();
 
   const [isValidProductName, setIsValidProductName] = useState(true);
+  const [productDetails, setProductDetails] = useState();
 
   useEffect(() => {
+    const searchParams = window.location.search;
+    if (searchParams) {
+      const productId = searchParams.split("uid=")[1];
+      asyncErrorHandlerWrapper(async () => {
+        // const productDetails = await ProductService.getProductDetails(productId);
+        const productDetails = await ProductService.getProductDetails(
+          "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
+        );
+        setProductDetails(productDetails);
+      });
+    }
     asyncErrorHandlerWrapper(async () => {
       const [categories, hsCode] = await Promise.all([
         ProductService.getProductCategories(),
@@ -211,7 +224,7 @@ export const ProductMutationTemplate = () => {
           category,
           type
         });
-        if (!isValidName) {
+        if (!isValidName && !productDetails) {
           vitalForm.setFields([
             {
               name: "productName",
@@ -226,7 +239,7 @@ export const ProductMutationTemplate = () => {
         setSkipAble(true);
       }, 100);
     }
-  }, [currentStep, handleValidator, productData, vitalForm]);
+  }, [currentStep, handleValidator, productData, vitalForm, productDetails]);
 
   const isSkip = useCallback(() => {
     // let isFormDirty = false;
@@ -243,7 +256,6 @@ export const ProductMutationTemplate = () => {
   const handleFieldChange = useCallback(() => {
     setSkipAble(false);
   }, []);
-
   return (
     <article>
       <DTCSection>
@@ -271,19 +283,28 @@ export const ProductMutationTemplate = () => {
               hsCode={hsCode}
               isValidProductName={isValidProductName}
               setIsValidProductName={setIsValidProductName}
+              productDetails={productDetails}
             />
           </div>
           <div className={classNames({ "d-none": currentStep !== 2 })}>
-            <VariantDetails form={variantDetailsForm} />
+            <VariantDetails form={variantDetailsForm} productDetails={productDetails} />
           </div>
           <div className={classNames({ "d-none": currentStep !== 3 })}>
-            <OfferDetails form={offerDetailsForm} />
+            <OfferDetails form={offerDetailsForm} productDetails={productDetails} />
           </div>
           <div className={classNames({ "d-none": currentStep !== 4 })}>
-            <PackingDetails form={packingDetailsForm} {...{ handleFieldChange }} />
+            <PackingDetails
+              form={packingDetailsForm}
+              {...{ handleFieldChange }}
+              productDetails={productDetails}
+            />
           </div>
           <div className={classNames({ "d-none": currentStep !== 5 })}>
-            <CertificationDetails form={certificationForm} {...{ handleFieldChange }} />
+            <CertificationDetails
+              form={certificationForm}
+              {...{ handleFieldChange }}
+              productDetails={productDetails}
+            />
           </div>
           <div className={classNames({ "d-none": currentStep !== 6 })}>
             <ProductTemplateImage ref={(ref) => (templateImageForm.current = ref)} />

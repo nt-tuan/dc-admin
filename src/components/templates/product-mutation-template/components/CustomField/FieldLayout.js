@@ -23,7 +23,8 @@ const FieldLayout = ({
   childValue,
   setChildValue,
   handleRemove,
-  index
+  index,
+  productType
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
@@ -31,6 +32,11 @@ const FieldLayout = ({
   useEffect(() => {
     setFieldType(selectedFieldType);
   }, [selectedFieldType]);
+
+  useEffect(() => {
+    setFieldType(productType);
+    debugger;
+  }, [productType]);
 
   const handleChange = useCallback(
     (value) => {
