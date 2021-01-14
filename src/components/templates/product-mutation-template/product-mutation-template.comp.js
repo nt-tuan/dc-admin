@@ -46,10 +46,10 @@ export const ProductMutationTemplate = () => {
     if (searchParams) {
       const productId = searchParams.split("uid=")[1];
       asyncErrorHandlerWrapper(async () => {
-        // const productDetails = await ProductService.getProductDetails(productId);
-        const productDetails = await ProductService.getProductDetails(
-          "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
-        );
+        const productDetails = await ProductService.getProductDetails(productId);
+        // const productDetails = await ProductService.getProductDetails(
+        //   "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
+        // );
         setProductDetails(productDetails);
       });
     }
@@ -223,10 +223,11 @@ export const ProductMutationTemplate = () => {
           data.keyword = productData.vitalInformation["keyword"].toString();
           data.productId = productId;
           await ProductService.editProduct(data, productId);
+          message.success("Edit Successfully");
         } else {
           await ProductService.addProduct(data);
+          message.success("Create Successfully");
         }
-        message.success("Create Successfully");
         setTimeout(() => {
           window.location.href = "/add-product";
         }, 1000);
