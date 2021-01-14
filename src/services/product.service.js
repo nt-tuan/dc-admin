@@ -23,26 +23,7 @@ export class ProductService {
   };
 
   static editProduct = async (data, id) => {
-    const {
-      brand,
-      fileName,
-      keyword,
-      productId,
-      productName,
-      salesChannel,
-      typeId,
-      variantList
-    } = data;
-    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), {
-      brand,
-      fileName,
-      keyword,
-      productId,
-      productName,
-      salesChannel,
-      variantList,
-      typeId
-    });
+    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
     return result;
   };
 

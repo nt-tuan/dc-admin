@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   memo,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useReducer,
   useState
@@ -13,6 +14,7 @@ import ImgCrop from "antd-img-crop";
 import "./styles.scss";
 import "antd/es/modal/style";
 import "antd/es/slider/style";
+import get from "lodash/get";
 
 export const ProductTemplateImage = forwardRef((props, ref) => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -22,13 +24,25 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
     isTypeError: false,
     isEmpty: false
   });
+  const [uploaded, setUploaded] = useState();
+
+  useEffect(() => {
+    if (props.productDetails?.images) {
+      const uploadedImage = {};
+      uploadedImage.uid = "-1";
+      uploadedImage.name = get(props.productDetails, `images[0].originalFileName`);
+      uploadedImage.status = "done";
+      uploadedImage.url = get(props.productDetails, `images[0].url`);
+      setUploaded([uploadedImage]);
+    }
+  }, [props.productDetails]);
 
   useImperativeHandle(ref, () => ({
     getValues: () => {
       if (!imgUrl) {
         setIsError({ ...isError, isEmpty: true });
       }
-      return imgUrl;
+      return imgUrl || get(props.productDetails, `images[0]`);
     }
   }));
 
@@ -48,7 +62,7 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   ));
 
   const renderUploadButton = () => {
-    return imgUrl ? null : <UploadButton />;
+    return imgUrl || uploaded?.length ? null : <UploadButton />;
   };
 
   const beforeUpload = useCallback((file) => {
@@ -76,26 +90,29 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
     ),
     []
   );
-
+  const onChange = ({ fileList: newFileList }) => {
+    setUploaded(newFileList);
+  };
   return (
     <div className="p-5">
       <div className="d-flex justify-content-center mb-3">
         <div className={`${imgUrl ? "w-50" : ""}`}>
           <ImgCrop rotate beforeCrop={beforeCrop}>
             <Upload
+              {...(uploaded ? { fileList: uploaded } : {})}
               accept=".jpg, .jpeg, .png, .tiff, .gif"
               className="upload-product-image"
               listType="picture-card"
               customRequest={handleUploadImage}
-              onChange={() => forceUpdate()}
+              onChange={onChange}
               beforeUpload={beforeUpload}
               onRemove={(file) => {
                 asyncErrorHandlerWrapper(async () => {
                   try {
                     setImgUrl();
-                    if (file.status === "done") {
-                      await ImageService.deleteImage(file.response.name);
-                    }
+                    // if (file.status === "done") {
+                    //   await ImageService.deleteImage(file.response.name);
+                    // }
                   } catch (error) {
                     throw error;
                   }
@@ -109,7 +126,7 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
             renderErrorMessage("Please upload an image file with size less than 5 mb")}
           {isError.isTypeError &&
             renderErrorMessage("Invalid File Type. Accepted type: .png, .jpg, .jpeg")}
-          {isError.isEmpty && renderErrorMessage("Please upload an image")}
+          {isError.isEmpty && !uploaded && renderErrorMessage("Please upload an image")}
         </div>
       </div>
       <Row className="product-template-image-text-container">
