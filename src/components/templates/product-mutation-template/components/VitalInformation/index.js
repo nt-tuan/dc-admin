@@ -214,10 +214,11 @@ const VitalInformationForm = ({
         },
         options: {
           rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-            }
+            //Remove as no long requried field
+            // {
+            //   required: true,
+            //   message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
+            // }
           ]
         }
       },
@@ -286,7 +287,10 @@ const VitalInformationForm = ({
               form.setFieldsValue({ headingLabel: hsDetails[0].headingLabel });
               form.setFieldsValue({ ahecc: hsDetails[0].ahecc });
               form.setFieldsValue({ aheccFullDescription: hsDetails[0].aheccDescription });
-              form.setFieldsValue({ quantity: hsDetails[0].unitQuantity });
+              //Handling for Empty Field from BE
+              form.setFieldsValue({
+                quantity: hsDetails[0].unitQuantity !== undefined ? hsDetails[0].unitQuantity : ""
+              });
               const aheccCode = hsDetails.map((hs) => ({
                 id: hs.ahecc,
                 name: hs.ahecc,
