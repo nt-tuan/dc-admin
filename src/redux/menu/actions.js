@@ -75,6 +75,11 @@ export async function getUserData() {
       icon: "fe fe-package",
       children: [
         {
+          title: "Database",
+          key: "Database",
+          url: RouteConst.PRODUCT_DATABASE
+        },
+        {
           title: "Product Template Creation",
           key: "ProductCreation",
           url: RouteConst.ADD_PRODUCT
