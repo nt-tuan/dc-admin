@@ -38,7 +38,6 @@ const FieldLayout = ({
 
   useEffect(() => {
     setFieldType(productType);
-    debugger;
   }, [productType]);
 
   const handleChange = useCallback(
