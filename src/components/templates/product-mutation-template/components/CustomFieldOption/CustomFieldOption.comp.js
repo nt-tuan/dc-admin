@@ -214,40 +214,45 @@ const CustomFieldOption = memo(
                     <>
                       {fields.map((field, index) => (
                         <>
-                          <Form.Item
-                            name={[field.name, "allowInput"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: createFormErrorComp(REQUIRED_ERR("Allow input"))
-                              }
-                            ]}
-                          >
-                            <div className="row">
-                              <div className="col-3 font-weight-bold">Allowed input:</div>
-                              <Radio.Group className="col-9">
-                                <Radio value="string">String</Radio>
-                                <Radio value="number">Number</Radio>
-                              </Radio.Group>
+                          <div className="row">
+                            <div className="col-3 font-weight-bold">Allowed input:</div>
+                            <div className="col-9">
+                              <Form.Item
+                                name={[field.name, "allowInput"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: createFormErrorComp(REQUIRED_ERR("Allow input"))
+                                  }
+                                ]}
+                              >
+                                <Radio.Group className="w-100">
+                                  <Radio value="string">String</Radio>
+                                  <Radio value="number">Number</Radio>
+                                </Radio.Group>
+                              </Form.Item>
                             </div>
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "textboxType"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: createFormErrorComp(REQUIRED_ERR("Field type"))
-                              }
-                            ]}
-                          >
-                            <div className="row mt-2">
-                              <div className="col-3 font-weight-bold">Field type:</div>
-                              <Radio.Group className="col-9">
-                                <Radio value="shortText">Single Texbox (Short text)</Radio>
-                                <Radio value="longText">Comment Box (Long text)</Radio>
-                              </Radio.Group>
+                          </div>
+
+                          <div className="row">
+                            <div className="col-3 font-weight-bold">Field type:</div>
+                            <div className="col-9">
+                              <Form.Item
+                                name={[field.name, "textboxType"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: createFormErrorComp(REQUIRED_ERR("Field type"))
+                                  }
+                                ]}
+                              >
+                                <Radio.Group className="w-100">
+                                  <Radio value="shortText">Single Texbox (Short text)</Radio>
+                                  <Radio value="longText">Comment Box (Long text)</Radio>
+                                </Radio.Group>
+                              </Form.Item>
                             </div>
-                          </Form.Item>
+                          </div>
                         </>
                       ))}
                     </>

@@ -196,14 +196,16 @@ export const ProductMutationTemplate = () => {
       // submit data
       const data = {
         detail: JSON.stringify(productData.details),
-        fileName: productData?.ProductUploadImagesForm?.name,
+        fileName:
+          productData?.ProductUploadImagesForm?.name ||
+          productData?.ProductUploadImagesForm?.fileName,
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
-          if (key == "keyword") {
+          if (key === "keyword") {
             return {
               name: key,
-              value: productData.vitalInformation[key].reduce((acc, item) => acc + "," + item)
+              value: productData.vitalInformation[key].toString()
             };
           }
           return {
@@ -213,7 +215,17 @@ export const ProductMutationTemplate = () => {
         })
       };
       asyncErrorHandlerWrapper(async () => {
-        await ProductService.addProduct(data);
+        if (productDetails) {
+          const searchParams = window.location.search;
+          const productId = searchParams.split("uid=")[1];
+          delete data.typeId;
+          delete data.productName;
+          data.keyword = productData.vitalInformation["keyword"].toString();
+          data.productId = productId;
+          await ProductService.editProduct(data, productId);
+        } else {
+          await ProductService.addProduct(data);
+        }
         message.success("Create Successfully");
         setTimeout(() => {
           window.location.href = "/add-product";
@@ -315,7 +327,10 @@ export const ProductMutationTemplate = () => {
             />
           </div>
           <div className={classNames({ "d-none": currentStep !== 6 })}>
-            <ProductTemplateImage ref={(ref) => (templateImageForm.current = ref)} />
+            <ProductTemplateImage
+              ref={(ref) => (templateImageForm.current = ref)}
+              productDetails={productDetails}
+            />
           </div>
           {currentStep === 7 && (
             <ProductTemplateReview data={productData} categories={categories} types={types} />
