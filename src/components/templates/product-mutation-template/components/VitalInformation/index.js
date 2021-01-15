@@ -214,10 +214,10 @@ const VitalInformationForm = ({
         },
         options: {
           rules: [
-            {
-              required: true,
-              message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-            }
+            // {
+            //   required: true,
+            //   message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
+            // }
           ]
         }
       },
