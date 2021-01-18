@@ -41,6 +41,7 @@ const VariantDetails = ({ form, productDetails }) => {
                 index={index}
                 isHiddenIconRemove
                 numberField={fields.length}
+                fieldValue={get(details, `[${index}]`)}
                 remove={() => {
                   if (fields.length === 1) return;
                   remove(field.name);
