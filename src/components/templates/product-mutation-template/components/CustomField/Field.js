@@ -98,6 +98,8 @@ const Field = forwardRef(
             closeModal={() => setIsChildModalOpen(false)}
             form={childForm}
             handleSave={handleSave}
+            isHiddenIconRemove
+            numberField
             selectedFieldType={get(childValue, `[${currentIndex}][0].type`)}
           />
         )}
