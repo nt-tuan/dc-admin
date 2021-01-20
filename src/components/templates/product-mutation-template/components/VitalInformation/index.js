@@ -54,6 +54,9 @@ const VitalInformationForm = ({
         values[variant.name] = variant.value;
       });
       form.setFieldsValue(values);
+      if (productDetails?.detail) {
+        form.setFieldsValue({ customVital: JSON.parse(productDetails.detail).customVital });
+      }
       setDefaultValue(values);
       onCategoryChange(values.productCategory);
     }

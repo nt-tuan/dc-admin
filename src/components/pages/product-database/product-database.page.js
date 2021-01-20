@@ -31,7 +31,7 @@ const ProductDatabase = () => {
 
   const handleDeleteProduct = debounce((id, setLoading, setHidden) => {
     confirm({
-      title: "Do you want to delete this product?",
+      title: "Are you sure you want to delete the Product Template ?",
       icon: <ExclamationCircleOutlined />,
       onOk() {
         setLoading(true);

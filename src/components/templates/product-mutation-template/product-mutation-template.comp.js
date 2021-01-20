@@ -229,7 +229,7 @@ export const ProductMutationTemplate = () => {
           message.success("Create Successfully");
         }
         setTimeout(() => {
-          window.location.href = "/add-product";
+          window.location.href = "/product-database";
         }, 1000);
       });
       return;
@@ -263,16 +263,26 @@ export const ProductMutationTemplate = () => {
   }, [currentStep, handleValidator, productData, vitalForm, productDetails]);
 
   const isSkip = useCallback(() => {
-    // let isFormDirty = false;
-    // if (currentStep === 4) {
-    //   const formValue = packingDetailsForm.getFieldsValue;
-    //   isFormDirty = !isEmpty(formValue);
-    // }
-    if (ALLOW_SKIP.includes(currentStep) && skipAble) {
+    let isFormDirty = false;
+    if (currentStep === 4 && productDetails) {
+      const detail = JSON.parse(productDetails?.detail);
+      const { packingDetails } = detail;
+      if (packingDetails) {
+        isFormDirty = true;
+      }
+    }
+    if (currentStep === 5 && productDetails) {
+      const detail = JSON.parse(productDetails?.detail);
+      const { certificationDetails } = detail;
+      if (certificationDetails) {
+        isFormDirty = true;
+      }
+    }
+    if (ALLOW_SKIP.includes(currentStep) && skipAble && !isFormDirty) {
       return true;
     }
     return false;
-  }, [currentStep, skipAble]);
+  }, [currentStep, skipAble, productDetails]);
 
   const handleFieldChange = useCallback(() => {
     setSkipAble(false);
