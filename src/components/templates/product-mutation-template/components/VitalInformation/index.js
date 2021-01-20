@@ -64,9 +64,20 @@ const VitalInformationForm = ({
 
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
     let timeout;
+
     const checkProduct = async (name) => {
       const category = form.getFieldValue("productCategory");
       const type = form.getFieldValue("productType");
+
+      if (name.length > 50) {
+        form.setFields([
+          {
+            name: "productName",
+            errors: ["The product name can not exceed 50 characters"]
+          }
+        ]);
+      }
+
       if (category && type) {
         const isValidName = await ProductService.checkDuplicate({
           name,
@@ -84,10 +95,12 @@ const VitalInformationForm = ({
         }
       }
     };
+
     const handleChangeName = (value) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => checkProduct(value), 500);
     };
+
     const fields = [
       {
         label: "Product Category",
@@ -131,7 +144,7 @@ const VitalInformationForm = ({
         },
         props: {
           onChange: (e) => handleChangeName(e.target.value),
-          maxLength: 50,
+          maxLength: 51,
           disabled: !!productDetails
         }
       },
