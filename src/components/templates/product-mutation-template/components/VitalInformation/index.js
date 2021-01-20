@@ -226,7 +226,7 @@ const VitalInformationForm = ({
         name: "quantity",
         type: INPUT_TYPE.INPUT,
         props: {
-          disabled: true
+          disabled: false
         },
         options: {
           rules: [
