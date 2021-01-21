@@ -2,9 +2,13 @@ import React, { Fragment } from "react";
 import { KYC3_SCHEMA } from "commons/schemas";
 import { Card } from "antd";
 import { areObjectValuesUndefined } from "utils/general.util";
+import countryList from "assets/country.json";
+import "./bank-details-readonly.comp.scss";
+
 const { BANK_DETAILS, KYC3_LABEL } = KYC3_SCHEMA;
 
 export const BankDetailsReadonly = ({
+  handleCopyText,
   bankDetails,
   showHeader = true,
   showTitle = true,
@@ -31,20 +35,40 @@ export const BankDetailsReadonly = ({
           <hr />
         </Fragment>
       ) : null}
-      <div className="row">
+      <div className="row m-4">
         {bankDetails
           .filter((account) => areObjectValuesUndefined(account) === false)
           .map((record, index) => (
             <div key={record.id || index} className={classname}>
-              <Card bodyStyle={{ padding: "10px 15px" }} hoverable={true} className="dtc-br-10">
+              <table className="bank__details">
+                <tr className="bank__details__table-header">
+                  <span
+                    onClick={() => handleCopyText(bankDetails)}
+                    className="fe fe-copy mr-2 dtc-cursor-pointer"
+                  />
+                  <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
+                  your bank’s website
+                </tr>
                 {showTitle && <h5 className="text-primary">{renderTitle(index)}</h5>}
                 {Object.values(schema).map((field) => (
-                  <div key={`${record.id}-${field}`} className="d-flex justify-content-between">
-                    <b>{label[field]} </b>
-                    {record[field]}
-                  </div>
+                  <tr key={`${record.id}-${field}`} className="d-flex justify-content-between">
+                    <div className="bank__details__row__content">
+                      <b>{label[field]} </b>
+                      <div>
+                        {field === BANK_DETAILS.nationality
+                          ? countryList.find((c) => c.alpha2Code === record[field]).name
+                          : record[field]}
+                      </div>
+                    </div>
+                    <span
+                      className="fe fe-copy dtc-cursor-pointer"
+                      onClick={() => handleCopyText(record[field])}
+                    >
+                      <b style={{ color: "rgb(128, 200, 250)", marginLeft: "0.5rem" }}>Copy</b>
+                    </span>
+                  </tr>
                 ))}
-              </Card>
+              </table>
             </div>
           ))}
       </div>
