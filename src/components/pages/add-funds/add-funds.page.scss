@@ -1,0 +1,43 @@
+.list__item {
+  list-style-type: square;
+  margin-right: 20rem;
+
+  li {
+    margin-left: 2rem;
+  }
+}
+
+.blue-item {
+  font-weight: bold;
+  color: rgb(128, 200, 250);
+}
+
+.example {
+  width: 35%;
+  margin-left: 5rem;
+
+  span {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.total__text {
+  border-top: 2px solid;
+  margin-top: 0.5rem;
+  color: rgb(95, 134, 174);
+}
+
+.step {
+  position: relative;
+  background-color: #005691;
+  color: white;
+  display: inline-block;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  text-align: center;
+  margin-right: 1rem;
+}
