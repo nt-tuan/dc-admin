@@ -82,8 +82,7 @@ export const RequestWithdrawalTab = () => {
           {isDisabled && (
             <Row className="dtc-br-10 dtc-bg-red px-4 py-3 text-white mb-3">
               Some infomation in your bank account requires review, please
-              <Link to={`${prefixUrl}/profile/bank-details`} className="mx-1">
-                {" "}
+              <Link to={`/profile/bank-details`} className="mx-1">
                 click here{" "}
               </Link>
               to review them before requesting withdrawal
