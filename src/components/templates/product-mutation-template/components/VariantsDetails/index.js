@@ -34,6 +34,7 @@ const VariantDetails = ({ form, productDetails }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                key={`${field.key}-${index}`}
                 productType={get(details, `[${index}].type`)}
                 form={form}
                 field={field}
@@ -41,6 +42,7 @@ const VariantDetails = ({ form, productDetails }) => {
                 index={index}
                 isHiddenIconRemove
                 numberField={fields.length}
+                fieldValue={get(details, `[${index}]`)}
                 remove={() => {
                   if (fields.length === 1) return;
                   remove(field.name);

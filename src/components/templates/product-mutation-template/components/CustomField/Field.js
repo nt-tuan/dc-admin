@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useCallback, useState, useEffect } from "react";
 import { Modal, Form } from "antd";
 import get from "lodash/get";
 import ChildFieldModal from "./ChildFieldModal";
@@ -19,7 +19,8 @@ const Field = forwardRef(
       handleFieldChange,
       numberField,
       isHiddenIconRemove,
-      productType
+      productType,
+      fieldValue
     },
     ref
   ) => {
@@ -29,6 +30,15 @@ const Field = forwardRef(
     const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
     const [isChildModalOpen, setIsChildModalOpen] = useState(false);
     const [childForm] = Form.useForm();
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
+
+    useEffect(() => {
+      if (fieldValue?.fieldOption) {
+        const selectedChildValue = fieldValue?.fieldOption.map((x) => x.childField);
+        setChildValue(selectedChildValue);
+      }
+    }, [fieldValue]);
     const handleSave = useCallback(
       (value) => {
         const newChildValue = [...childValue];
@@ -56,10 +66,8 @@ const Field = forwardRef(
     const openChildField = useCallback(
       (index) => {
         setCurrentIndex(index);
+        setIsChildModalOpen(true);
         childForm.setFieldsValue({ childField: childValue[index] });
-        setTimeout(() => {
-          setIsChildModalOpen(true);
-        }, 1);
       },
       [childForm, childValue]
     );
@@ -81,7 +89,8 @@ const Field = forwardRef(
             index,
             productType,
             isHiddenIconRemove,
-            numberField
+            numberField,
+            childForm
           }}
         />
         {isChildModalOpen && (
@@ -90,6 +99,8 @@ const Field = forwardRef(
             closeModal={() => setIsChildModalOpen(false)}
             form={childForm}
             handleSave={handleSave}
+            isHiddenIconRemove
+            numberField
             selectedFieldType={get(childValue, `[${currentIndex}][0].type`)}
           />
         )}

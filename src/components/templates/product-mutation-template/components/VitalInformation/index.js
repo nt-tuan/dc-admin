@@ -54,6 +54,9 @@ const VitalInformationForm = ({
         values[variant.name] = variant.value;
       });
       form.setFieldsValue(values);
+      if (productDetails?.detail) {
+        form.setFieldsValue({ customVital: JSON.parse(productDetails.detail).customVital });
+      }
       setDefaultValue(values);
       onCategoryChange(values.productCategory);
     }
@@ -61,9 +64,20 @@ const VitalInformationForm = ({
 
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
     let timeout;
+
     const checkProduct = async (name) => {
       const category = form.getFieldValue("productCategory");
       const type = form.getFieldValue("productType");
+
+      if (name.length > 50) {
+        form.setFields([
+          {
+            name: "productName",
+            errors: ["The product name can not exceed 50 characters"]
+          }
+        ]);
+      }
+
       if (category && type) {
         const isValidName = await ProductService.checkDuplicate({
           name,
@@ -81,10 +95,12 @@ const VitalInformationForm = ({
         }
       }
     };
+
     const handleChangeName = (value) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => checkProduct(value), 500);
     };
+
     const fields = [
       {
         label: "Product Category",
@@ -128,7 +144,7 @@ const VitalInformationForm = ({
         },
         props: {
           onChange: (e) => handleChangeName(e.target.value),
-          maxLength: 50,
+          maxLength: 51,
           disabled: !!productDetails
         }
       },
@@ -210,7 +226,7 @@ const VitalInformationForm = ({
         name: "quantity",
         type: INPUT_TYPE.INPUT,
         props: {
-          disabled: true
+          disabled: false
         },
         options: {
           rules: [
