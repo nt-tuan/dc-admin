@@ -202,7 +202,8 @@ export const ProductMutationTemplate = () => {
         productName: productData.vitalInformation.productName,
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
-          if (key === "keyword") {
+          //Checking keyword field has value and return to string to submit data
+          if (key === "keyword" && productData.vitalInformation[key]) {
             return {
               name: key,
               value: productData.vitalInformation[key].toString()
