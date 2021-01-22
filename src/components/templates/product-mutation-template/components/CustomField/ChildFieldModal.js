@@ -39,6 +39,7 @@ const ChildFieldModal = ({
       handleSave(formValue);
     }
   };
+
   return (
     <Modal
       centered
@@ -66,7 +67,15 @@ const ChildFieldModal = ({
             <>
               {fields.map((field, index) => (
                 <FieldLayout
-                  {...{ field, index, selectedFieldType, form, isHiddenIconRemove, numberField }}
+                  {...{
+                    field,
+                    index,
+                    selectedFieldType,
+                    form,
+                    isHiddenIconRemove,
+                    numberField,
+                    isOpen
+                  }}
                   numberField={fields.length}
                   remove={() => remove(field.name)}
                   childAble={false}

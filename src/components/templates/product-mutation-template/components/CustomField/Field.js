@@ -30,6 +30,8 @@ const Field = forwardRef(
     const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
     const [isChildModalOpen, setIsChildModalOpen] = useState(false);
     const [childForm] = Form.useForm();
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
 
     useEffect(() => {
       if (fieldValue?.fieldOption) {
@@ -64,10 +66,8 @@ const Field = forwardRef(
     const openChildField = useCallback(
       (index) => {
         setCurrentIndex(index);
+        setIsChildModalOpen(true);
         childForm.setFieldsValue({ childField: childValue[index] });
-        setTimeout(() => {
-          setIsChildModalOpen(true);
-        }, 1);
       },
       [childForm, childValue]
     );
@@ -89,7 +89,8 @@ const Field = forwardRef(
             index,
             productType,
             isHiddenIconRemove,
-            numberField
+            numberField,
+            childForm
           }}
         />
         {isChildModalOpen && (
