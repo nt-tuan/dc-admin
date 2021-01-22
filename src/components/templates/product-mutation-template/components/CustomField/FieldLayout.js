@@ -26,12 +26,13 @@ const FieldLayout = ({
   index,
   productType,
   isHiddenIconRemove,
-  numberField
+  numberField,
+  isOpen,
+  childForm
 }) => {
   const [fieldType, setFieldType] = useState();
   const fieldOptionsRef = useRef();
   const [fileNameValue, setFieldNameValue] = useState("");
-
   useEffect(() => {
     setFieldType(selectedFieldType);
   }, [selectedFieldType]);
@@ -111,8 +112,10 @@ const FieldLayout = ({
                     style={{ width: "90%" }}
                     className="mr-1"
                   >
-                    {FIELD_TYPE.map((type) => (
-                      <Option value={type.value}>{type.label}</Option>
+                    {FIELD_TYPE.map((type, index) => (
+                      <Option value={type.value} key={`type-${index}`}>
+                        {type.label}
+                      </Option>
                     ))}
                   </Select>
                 </Form.Item>
@@ -131,8 +134,7 @@ const FieldLayout = ({
               </Form.Item>
             </div>
           </Card>
-
-          {fieldType && (
+          {
             <Card>
               <CustomFieldOption
                 type={fieldType}
@@ -140,16 +142,18 @@ const FieldLayout = ({
                 ref={fieldOptionsRef}
                 childAble={childAble}
                 fieldName={field.name}
+                modalOpen={isOpen}
                 {...{
                   openChildField,
                   setIsChildModalOpen,
                   childValue,
                   setChildValue,
-                  handleRemove
+                  handleRemove,
+                  index
                 }}
               />
             </Card>
-          )}
+          }
         </Panel>
       </Collapse>
     </div>

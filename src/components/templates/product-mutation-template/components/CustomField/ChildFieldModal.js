@@ -5,7 +5,15 @@ import { FIELD_TYPE } from "../../constants";
 import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 
-const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldType }) => {
+const ChildFieldModal = ({
+  isOpen,
+  closeModal,
+  form,
+  handleSave,
+  selectedFieldType,
+  isHiddenIconRemove,
+  numberField
+}) => {
   const handleOK = (e) => {
     const formValue = form?.getFieldsValue()?.childField;
     const errorField = formValue.find((value) => {
@@ -31,6 +39,7 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldTy
       handleSave(formValue);
     }
   };
+
   return (
     <Modal
       centered
@@ -58,7 +67,16 @@ const ChildFieldModal = ({ isOpen, closeModal, form, handleSave, selectedFieldTy
             <>
               {fields.map((field, index) => (
                 <FieldLayout
-                  {...{ field, index, selectedFieldType, form }}
+                  {...{
+                    field,
+                    index,
+                    selectedFieldType,
+                    form,
+                    isHiddenIconRemove,
+                    numberField,
+                    isOpen
+                  }}
+                  numberField={fields.length}
                   remove={() => remove(field.name)}
                   childAble={false}
                 />

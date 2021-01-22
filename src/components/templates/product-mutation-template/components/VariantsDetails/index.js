@@ -34,6 +34,7 @@ const VariantDetails = ({ form, productDetails }) => {
           <>
             {fields.map((field, index) => (
               <Field
+                key={`${field.key}-${index}`}
                 productType={get(details, `[${index}].type`)}
                 form={form}
                 field={field}
