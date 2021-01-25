@@ -221,7 +221,9 @@ export const ProductMutationTemplate = () => {
           const productId = searchParams.split("uid=")[1];
           delete data.typeId;
           delete data.productName;
-          data.keyword = productData.vitalInformation["keyword"].toString();
+          data.keyword = productData.vitalInformation["keyword"]
+            ? productData.vitalInformation["keyword"].toString()
+            : "";
           data.productId = productId;
           await ProductService.editProduct(data, productId);
           message.success("Edit Successfully");
