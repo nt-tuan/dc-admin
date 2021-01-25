@@ -47,11 +47,16 @@ const VitalInformationForm = ({
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
+
   useEffect(() => {
     if (productDetails) {
       const values = {};
       productDetails.variants.forEach((variant) => {
-        values[variant.name] = variant.value;
+        if (variant.name == "keyword") {
+          values[variant.name] = variant.value.split(",");
+        } else {
+          values[variant.name] = variant.value;
+        }
       });
       form.setFieldsValue(values);
       if (productDetails?.detail) {
