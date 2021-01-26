@@ -24,13 +24,13 @@ export const getSecurityQuestions = async () => {
 };
 
 export const createSecurityQuestions = async (data) => {
-  const res = await backendAPI.post(ApiPathConsts.SECURITY_ANSWER, data);
+  await backendAPI.post(ApiPathConsts.SECURITY_ANSWER, data);
   return true;
 };
 
 export const validateSecurityQuestions = async (data) => {
   const res = await backendAPI.put(ApiPathConsts.SECURITY_ANSWER, data);
-  return res;
+  return true;
 };
 
 export const createPasscode = async (data) => {

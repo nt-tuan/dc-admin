@@ -30,7 +30,7 @@ function TwoStepsVerifycation({
           handleUpdateBankDetail();
         }
       } catch (error) {
-        message.error("Error");
+        message.error(error);
       }
     });
   };
