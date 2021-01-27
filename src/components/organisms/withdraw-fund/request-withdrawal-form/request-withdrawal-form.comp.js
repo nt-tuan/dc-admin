@@ -35,7 +35,12 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
       onSubmit && onSubmit();
     });
   };
-  const onChangeInput = (value) => {
+  const onChangeInput = (event) => {
+    const value = event.target.value;
+    setValueAmount(value);
+  };
+  const onBlur = (event) => {
+    const value = event.target.value;
     setValueAmount(numeral(value).format("0,0.00"));
   };
 
@@ -122,7 +127,8 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                 placeholder="Enter amount"
                 disabled={isDisabled}
                 value={valueAmount}
-                onChange={(e) => onChangeInput(e.target.value)}
+                onChange={onChangeInput}
+                onBlur={onBlur}
               />
               <span className="d-flex justify-content-between">
                 <Form.Item shouldUpdate>
