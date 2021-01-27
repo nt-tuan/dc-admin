@@ -5,12 +5,15 @@ import { RegexConst } from "commons/consts";
 import { FormError } from "components/atoms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { FinancialService } from "services";
+import numeral from "numeral";
 
 const { Option } = Select;
 
 export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [form] = Form.useForm();
+  const [isDisabledButton, setIsDisabledButton] = useState(true);
+  const [valueAmount, setValueAmount] = useState(null);
 
   const handleSubmit = (values) => {
     setIsOpenPopup(true);
@@ -21,7 +24,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
       (account) => account.accountNumber === form.getFieldValue("account")
     );
     const payload = {
-      amount: Number(form.getFieldValue("amount")),
+      amount: numeral(form.getFieldValue("amount")).value(),
       companyBankDetailId: bankAccount.id
     };
     asyncErrorHandlerWrapper(async () => {
@@ -31,6 +34,9 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
       message.success("Withdraw Successfully!");
       onSubmit && onSubmit();
     });
+  };
+  const onChangeInput = (value) => {
+    setValueAmount(numeral(value).format("0,0.00"));
   };
 
   return (
@@ -44,7 +50,10 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
         scrollToFirstError={true}
         onFinish={handleSubmit}
         hideRequiredMark={true}
-        layout="inline"
+        labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
+        wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
+        // layout="inline"
+        labelAlign="left"
       >
         <div className="row">
           <Form.Item
@@ -85,17 +94,25 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                 required: true,
                 message: <FormError msg="This field is required" />
               },
-              {
-                pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
-                message: <FormError msg="Only numberic number greater than 0" />
-              },
+              // {
+              //   pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
+              //   message: <FormError msg="Only numberic number greater than 0" />
+              // },
               {
                 validator: (rule, value) => {
-                  return !isNaN(value) && value > data.available_withdrawal
-                    ? Promise.reject(
-                        <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
-                      )
-                    : Promise.resolve();
+                  const amountNum = numeral(value).value();
+                  if (amountNum > data.available_withdrawal) {
+                    return Promise.reject(
+                      <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
+                    );
+                  }
+                  if (amountNum < 100) {
+                    setIsDisabledButton(true);
+                    return Promise.reject(<FormError msg="Minimum withdrawal amount is 100 USD" />);
+                  } else {
+                    setIsDisabledButton(false);
+                    Promise.resolve();
+                  }
                 }
               }
             ]}
@@ -105,12 +122,14 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                 className="col-md-12 col-lg-5"
                 placeholder="Enter amount"
                 disabled={isDisabled}
+                value={valueAmount}
+                onChange={(e) => onChangeInput(e.target.value)}
               />
               <span className="d-flex justify-content-between">
                 <Form.Item shouldUpdate>
                   {() => {
                     const availableAmount = data.available_withdrawal;
-                    const inputAmount = form.getFieldValue("amount");
+                    const inputAmount = numeral(form.getFieldValue("amount")).value();
                     return (
                       <Fragment>
                         Remaining Account Balance:
@@ -132,7 +151,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             </div>
           </Form.Item>
           <div className="col-12 text-center">
-            <Button htmlType="submit" type="primary" disabled={isDisabled}>
+            <Button htmlType="submit" type="primary" disabled={isDisabled || isDisabledButton}>
               Withdraw
             </Button>
           </div>

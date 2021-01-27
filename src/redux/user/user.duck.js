@@ -111,3 +111,5 @@ export const select2FASettings = (state) => {
   /*tfaMethod: state.user.tfaMethod,
     tfaType: state.user.tfaType*/
 };
+
+export const selectWalletName = (state) => state.user.walletName;

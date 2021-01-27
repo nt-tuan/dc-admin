@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { KYC3_SCHEMA } from "commons/schemas";
 import { Card } from "antd";
-import { areObjectValuesUndefined } from "utils/general.util";
+import { areObjectValuesUndefined } from "utils";
 import countryList from "assets/country.json";
 import "./bank-details-readonly.comp.scss";
 
@@ -13,8 +13,7 @@ export const BankDetailsReadonly = ({
   showHeader = true,
   showTitle = true,
   schema = BANK_DETAILS,
-  label = KYC3_LABEL,
-  classname = "col-12 col-lg-6 mb-4"
+  label = KYC3_LABEL
 }) => {
   const renderTitle = (index) => {
     switch (index) {
@@ -35,11 +34,14 @@ export const BankDetailsReadonly = ({
           <hr />
         </Fragment>
       ) : null}
-      <div className="row m-4">
+      <div className="row">
         {bankDetails
           .filter((account) => areObjectValuesUndefined(account) === false)
           .map((record, index) => (
-            <div key={record.id || index} className={classname}>
+            <div
+              key={record.id || index}
+              className={`col-12 col-lg-${bankDetails.length === 1 ? "12" : "6"} mb-4`}
+            >
               <table className="bank__details">
                 <tr className="bank__details__table-header">
                   <span
@@ -49,7 +51,7 @@ export const BankDetailsReadonly = ({
                   <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
                   your bank’s website
                 </tr>
-                {showTitle && <h5 className="text-primary">{renderTitle(index)}</h5>}
+                {showTitle && <h5 className="text-primary p-2 mb-0">{renderTitle(index)}</h5>}
                 {Object.values(schema).map((field) => (
                   <tr key={`${record.id}-${field}`} className="d-flex justify-content-between">
                     <div className="bank__details__row__content">

@@ -47,14 +47,13 @@ function PassCode() {
         await validateSecurityQuestions(data);
         setIsShowPassCode(true);
         setIsShowQuestion(!isShowQuestion);
-        message.success("Successful");
       });
     } else {
       //** Create question */
       asyncErrorHandlerWrapper(async () => {
         await createSecurityQuestions(data);
+        setIsShowQuestion(!isShowQuestion);
         setIsShowPassCode(true);
-        message.success("Successful");
       });
     }
   };
@@ -64,9 +63,6 @@ function PassCode() {
     asyncErrorHandlerWrapper(async () => {
       const res = await createPasscode({ code });
       setIsShowPassCode(false);
-      if (res) {
-        message.success("Successful");
-      }
     });
   };
 
