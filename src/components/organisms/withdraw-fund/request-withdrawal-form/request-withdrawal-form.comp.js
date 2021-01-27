@@ -60,8 +60,8 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             colon={false}
             className="col-12 mb-3"
             label="Choose bank account"
-            // labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
-            // wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
+            labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
+            wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
             labelAlign="left"
             name="account"
             rules={[
@@ -83,8 +83,8 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             colon={false}
             className="col-12 mb-3"
             label="Enter amount"
-            // labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
-            // wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
+            labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
+            wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
             labelAlign="left"
             name="amount"
             initialValue={0}
@@ -105,13 +105,12 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                     return Promise.reject(
                       <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
                     );
-                  }
-                  if (amountNum < 100) {
+                  } else if (amountNum < 100) {
                     setIsDisabledButton(true);
                     return Promise.reject(<FormError msg="Minimum withdrawal amount is 100 USD" />);
                   } else {
                     setIsDisabledButton(false);
-                    Promise.resolve();
+                    return Promise.resolve();
                   }
                 }
               }
@@ -151,7 +150,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             </div>
           </Form.Item>
           <div className="col-12 text-center">
-            <Button htmlType="submit" type="primary" disabled={isDisabled || isDisabledButton}>
+            <Button htmlType="submit" type="primary" disabled={isDisabled}>
               Withdraw
             </Button>
           </div>
