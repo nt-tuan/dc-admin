@@ -375,7 +375,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             {item.data &&
               item.data.length &&
               item.data.map((val) => (
-                <Option key={`${item.name}-${val.name}`} value={val.alpha2Code}>
+                <Option key={`${item.name}-${val.name}`} value={val.name}>
                   {val.name}
                 </Option>
               ))}
@@ -393,7 +393,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             {item.data &&
               item.data.length &&
               item.data.map((val) => (
-                <Option key={`${item.name}-${val.name}`} value={val.alpha2Code}>
+                <Option key={`${item.name}-${val.name}`} value={val.name}>
                   {val.name}
                 </Option>
               ))}
