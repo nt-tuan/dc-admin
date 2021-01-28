@@ -13,7 +13,8 @@ export const BankDetailsReadonly = ({
   showHeader = true,
   showTitle = true,
   schema = BANK_DETAILS,
-  label = KYC3_LABEL
+  label = KYC3_LABEL,
+  isCopy = false
 }) => {
   const renderTitle = (index) => {
     switch (index) {
@@ -43,18 +44,23 @@ export const BankDetailsReadonly = ({
               className={`col-12 col-lg-${bankDetails.length === 1 ? "12" : "6"} mb-4`}
             >
               <table className="bank__details">
-                <tr className="bank__details__table-header">
-                  <span
-                    onClick={() => handleCopyText(bankDetails)}
-                    className="fe fe-copy mr-2 dtc-cursor-pointer"
-                  />
-                  <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
-                  your bank’s website
-                </tr>
+                {isCopy && (
+                  <tr className="bank__details__table-header">
+                    <span
+                      onClick={() => handleCopyText(bankDetails)}
+                      className="fe fe-copy mr-2 dtc-cursor-pointer"
+                    />
+                    <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
+                    your bank’s website
+                  </tr>
+                )}
                 {showTitle && <h5 className="text-primary p-2 mb-0">{renderTitle(index)}</h5>}
                 {Object.values(schema).map((field) => (
                   <tr key={`${record.id}-${field}`} className="d-flex justify-content-between">
-                    <div className="bank__details__row__content">
+                    <div
+                      className="bank__details__row__content"
+                      style={{ width: `${isCopy ? "70%" : "100%"}` }}
+                    >
                       <b>{label[field]} </b>
                       <div>
                         {field === BANK_DETAILS.nationality
@@ -62,12 +68,14 @@ export const BankDetailsReadonly = ({
                           : record[field]}
                       </div>
                     </div>
-                    <span
-                      className="fe fe-copy dtc-cursor-pointer"
-                      onClick={() => handleCopyText(record[field])}
-                    >
-                      <b style={{ color: "rgb(128, 200, 250)", marginLeft: "0.5rem" }}>Copy</b>
-                    </span>
+                    {isCopy && (
+                      <span
+                        className="fe fe-copy dtc-cursor-pointer"
+                        onClick={() => handleCopyText(record[field])}
+                      >
+                        <b style={{ color: "rgb(128, 200, 250)", marginLeft: "0.5rem" }}>Copy</b>
+                      </span>
+                    )}
                   </tr>
                 ))}
               </table>
