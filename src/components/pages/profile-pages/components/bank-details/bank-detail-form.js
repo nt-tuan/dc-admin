@@ -305,7 +305,8 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.recipientCountry]))
           }
         ]
-      }
+      },
+      data: countryList
     },
     {
       name: FIELDS.recipientPostalCode,
@@ -374,7 +375,25 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             {item.data &&
               item.data.length &&
               item.data.map((val) => (
-                <Option key={`${item.name}-${val.name}`} value={val.alpha2Code}>
+                <Option key={`${item.name}-${val.name}`} value={val.name}>
+                  {val.name}
+                </Option>
+              ))}
+          </Select>
+        );
+      case FIELDS.recipientCountry:
+        return (
+          <Select
+            allowClear
+            showSearch
+            onChange={item.onChange}
+            defaultValue={item.initialValue}
+            placeholder={item.placeholder}
+          >
+            {item.data &&
+              item.data.length &&
+              item.data.map((val) => (
+                <Option key={`${item.name}-${val.name}`} value={val.name}>
                   {val.name}
                 </Option>
               ))}
