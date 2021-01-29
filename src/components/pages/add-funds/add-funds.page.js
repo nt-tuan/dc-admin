@@ -171,6 +171,7 @@ const AddFundsPage = () => {
           label={PCC_BANK_DETAILS_LABEL}
           classname="col-12 mb-4"
           handleCopyText={(text) => handleCopy(text)}
+          isCopy={true}
         />
         <div>
           <b>NOTE:</b> Transactions over USD 100,000 may require additional information such as 3

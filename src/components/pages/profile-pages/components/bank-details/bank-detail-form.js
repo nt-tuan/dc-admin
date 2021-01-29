@@ -4,13 +4,14 @@ import { useSelector } from "react-redux";
 import { selectUsers } from "redux/user/user.duck";
 import { createFormErrorComp } from "utils";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { Form, Input, Select, Button, message } from "antd";
+import { Form, Input, Select, Button, message, Tooltip } from "antd";
 import { REQUIRED_ERR, MUST_BE_ATLEAST_4_CHARACTERS } from "commons/consts";
 import countryList from "assets/country.json";
 import currencyList from "assets/currency.json";
 import { submitBankDetails } from "services/bankDetail.service";
 import { TwoStepsVerifycation } from "../modals";
 import { KYC3_SCHEMA } from "commons/schemas";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const FIELDS = KYC3_SCHEMA.BANK_DETAILS;
 const LABELS = KYC3_SCHEMA.KYC3_LABEL;
@@ -31,6 +32,11 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
   const [labelBankType, setLabelBankType] = useState("SWIFT Code");
   const [disabledField, setDisabledField] = useState([]);
 
+  const [labelBankTypeSecondary, setLabelBankTypeSecondary] = useState("SWIFT Code");
+  const [disabledFieldSecondary, setDisabledFieldSecondary] = useState([]);
+  const [currencyName, setCurrencyName] = useState(null);
+  const [currencyNameSecondary, setCurrencyNameSecondary] = useState(null);
+
   const handleUpdateBankDetail = () => {
     asyncErrorHandlerWrapper(async () => {
       try {
@@ -50,7 +56,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       if (key.includes("secondary")) {
         array[1][key.replace("secondary-", "")] = values[key];
       } else {
-        array[0][key] = values[key];
+        array[0][key.replace("primary-", "")] = values[key];
       }
     });
     const dataFilter = array.filter((value) => Object.keys(value).length !== 0);
@@ -69,6 +75,10 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
         rules: [
+          {
+            required: true,
+            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.accountName]))
+          },
           {
             validator: (rule, value, callback) => {
               const splitValue = value.split(" ");
@@ -98,7 +108,14 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       label: LABELS[FIELDS.name],
       placeholder: "Recipient's Beneficiary Bank",
       className: "d-lg-inline-block col-lg-6",
-      options: {}
+      options: {
+        rules: [
+          {
+            required: true,
+            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.name]))
+          }
+        ]
+      }
     },
     {
       name: FIELDS.bankIdType,
@@ -112,20 +129,12 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.bankIdType]))
           }
         ]
-      },
-      onChange: (value) => {
-        setLabelBankType(BANK_TYPES[value]);
-        if (value === "SWIFT" || value === "CHIPS") {
-          setDisabledField([FIELDS.abaNumber]);
-        } else {
-          setDisabledField([FIELDS.sortCode]);
-        }
       }
     },
     {
       name: FIELDS.swiftCode,
-      label: labelBankType,
-      placeholder: `Recipient's Bank ${labelBankType}`,
+      label: LABELS[FIELDS.swiftCode],
+      placeholder: LABELS[FIELDS.swiftCode],
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
         rules: [
@@ -157,7 +166,12 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       placeholder: "Recipient's Bank IBAN",
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
-        rules: []
+        rules: [
+          {
+            required: true,
+            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.iban]))
+          }
+        ]
       }
     },
     {
@@ -175,7 +189,12 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       placeholder: "Recipient's Bank ABA number",
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
-        rules: []
+        rules: [
+          {
+            required: true,
+            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.abaNumber]))
+          }
+        ]
       }
     },
     {
@@ -209,7 +228,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     {
       name: FIELDS.state,
       label: LABELS[FIELDS.state],
-      placeholder: "Recipient's Bank City",
+      placeholder: "Recipient's Bank State/ Province",
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
         rules: []
@@ -323,7 +342,17 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
   };
 
   useEffect(() => {
-    form.setFieldsValue(...bankDetails);
+    if (bankDetails && bankDetails.length === 1) {
+      const dataPrimary = {};
+      Object.keys(bankDetails[0]).forEach((key) => {
+        dataPrimary[`primary-${key}`] = bankDetails[0][key];
+      });
+      form.setFieldsValue(dataPrimary);
+      setCurrencyName(
+        `${currencyList[bankDetails[0]["currency"]]} (${bankDetails[0]["currency"]})`
+      );
+    }
+
     // Handle Secondary Bank Account default values
     if (bankDetails && bankDetails.length > 1) {
       const dataSecondary = {};
@@ -331,6 +360,9 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
         dataSecondary[`secondary-${key}`] = bankDetails[1][key];
       });
       form.setFieldsValue(dataSecondary);
+      setCurrencyName(
+        `${currencyList[bankDetails[1]["currency"]]} (${bankDetails[0]["currency"]})`
+      );
       addSubBank();
     }
   }, [bankDetails]);
@@ -339,81 +371,176 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     setDataField([]);
   };
 
-  const renderForm = (item) => {
+  const renderForm = (item, type = "") => {
     switch (item.name) {
       case "Beneficiary Address":
         return (
           <>
-            <h5 className="text-primary py-3">{item.name}</h5>
+            <h5 className="text-primary py-1">{item.name}</h5>
           </>
         );
       case FIELDS.bankIdType:
         return (
-          <Select
-            allowClear
-            showSearch
-            onChange={item.onChange}
-            defaultValue={item.initialValue}
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={item.label}
             placeholder={item.placeholder}
+            rules={item.options?.rules}
+            className="label-form-left"
           >
-            {Object.keys(BANK_TYPES).map((key) => (
-              <Select.Option key={key} value={key}>
-                {`${key}`}
-              </Select.Option>
-            ))}
-          </Select>
+            <Select
+              allowClear
+              showSearch
+              onChange={(value) => {
+                if (type === "primary") {
+                  setLabelBankType(BANK_TYPES[value]);
+                  if (value === "ACH" || value === "CHIPS") {
+                    setDisabledField([FIELDS.sortCode]);
+                  }
+                  if (value === "SWIFT") {
+                    setDisabledField([FIELDS.abaNumber]);
+                  }
+                } else {
+                  setLabelBankTypeSecondary(BANK_TYPES[value]);
+                  if (value === "ACH" || value === "CHIPS") {
+                    setDisabledFieldSecondary([FIELDS.sortCode]);
+                  }
+                  if (value === "SWIFT") {
+                    setDisabledFieldSecondary([FIELDS.abaNumber]);
+                  }
+                }
+              }}
+              defaultValue={item.initialValue}
+              placeholder={item.placeholder}
+            >
+              {Object.keys(BANK_TYPES).map((key) => (
+                <Select.Option key={key} value={key}>
+                  {`${key}`}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
         );
       case FIELDS.country:
         return (
-          <Select
-            allowClear
-            showSearch
-            onChange={item.onChange}
-            defaultValue={item.initialValue}
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={item.label}
             placeholder={item.placeholder}
+            rules={item.options?.rules}
+            className="label-form-left"
           >
-            {item.data &&
-              item.data.length &&
-              item.data.map((val) => (
-                <Option key={`${item.name}-${val.name}`} value={val.name}>
-                  {val.name}
-                </Option>
-              ))}
-          </Select>
+            <Select
+              allowClear
+              showSearch
+              onChange={item.onChange}
+              defaultValue={item.initialValue}
+              placeholder={item.placeholder}
+            >
+              {item.data &&
+                item.data.length &&
+                item.data.map((val) => (
+                  <Option key={`${item.name}-${val.name}`} value={val.name}>
+                    {val.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
         );
       case FIELDS.recipientCountry:
         return (
-          <Select
-            allowClear
-            showSearch
-            onChange={item.onChange}
-            defaultValue={item.initialValue}
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={item.label}
             placeholder={item.placeholder}
+            rules={item.options?.rules}
+            className="label-form-left"
           >
-            {item.data &&
-              item.data.length &&
-              item.data.map((val) => (
-                <Option key={`${item.name}-${val.name}`} value={val.name}>
-                  {val.name}
-                </Option>
-              ))}
-          </Select>
+            <Select
+              allowClear
+              showSearch
+              defaultValue={item.initialValue}
+              placeholder={item.placeholder}
+            >
+              {item.data &&
+                item.data.length &&
+                item.data.map((val) => (
+                  <Option key={`${item.name}-${val.name}`} value={val.name}>
+                    {val.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
         );
       case FIELDS.currency:
         return (
-          <Select allowClear size="large" placeholder={item.placeholder}>
-            {Object.keys(item.data).map((key) => (
-              <Select.Option key={key} value={key}>
-                {`${currencyList[key]} (${key})`}
-              </Select.Option>
-            ))}
-          </Select>
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={
+              <span>
+                {item.label}&nbsp;&nbsp;
+                <Tooltip title={`${type === "primary" ? currencyName : currencyNameSecondary}`}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </span>
+            }
+            placeholder={item.placeholder}
+            rules={item.options?.rules}
+            className="label-form-left"
+          >
+            <Select
+              allowClear
+              size="large"
+              defaultValue={item.initialValue}
+              placeholder={item.placeholder}
+              onChange={(val) => {
+                if (type === "primary") {
+                  setCurrencyName(`${currencyList[val]} (${val})`);
+                } else {
+                  setCurrencyNameSecondary(`${currencyList[val]} (${val})`);
+                }
+              }}
+            >
+              {Object.keys(item.data).map((key) => (
+                <Select.Option key={key} value={key}>
+                  {`${currencyList[key]} (${key})`}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        );
+      case FIELDS.swiftCode:
+        return (
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={`${type === null ? labelBankType : labelBankTypeSecondary}`}
+            placeholder={`${type === null ? labelBankType : labelBankTypeSecondary}`}
+            rules={item.options?.rules}
+            className="label-form-left"
+          >
+            <Input />
+          </Form.Item>
         );
       default:
-        return <Input />;
+        return (
+          <Form.Item
+            key={`${type}-${item.name}`}
+            name={`${type}-${item.name}`}
+            label={item.label}
+            placeholder={item.placeholder}
+            rules={item.options?.rules}
+            className="label-form-left"
+          >
+            <Input />
+          </Form.Item>
+        );
     }
   };
-
   return (
     <>
       <Form className="customized_form_controls" layout="vertical" form={form} onFinish={onFinish}>
@@ -427,17 +554,12 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
               );
             } else {
               return (
-                <div className="col-md-6 mb-2">
-                  <Form.Item
-                    key={item.name}
-                    name={item.name}
-                    label={item.label}
-                    placeholder={item.placeholder}
-                    rules={item.options?.rules}
-                    className="label-form-left"
-                  >
-                    {renderForm(item)}
-                  </Form.Item>
+                <div
+                  className={`${
+                    item.name === "Beneficiary Address" ? "col-md-12" : "col-md-6"
+                  } mb-2`}
+                >
+                  {renderForm(item, "primary")}
                 </div>
               );
             }
@@ -460,28 +582,29 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
           )}
         </Form.Item>
 
-        {dataField.map((item) => {
-          if (item.name === "id") {
-            return (
-              <Form.Item key={item.name} name={item.name} style={{ display: "none" }}>
-                <Input />
-              </Form.Item>
-            );
-          } else {
-            return (
-              <Form.Item
-                key={`secondary-${item.name}`}
-                name={`secondary-${item.name}`}
-                label={item.label}
-                placeholder={item.placeholder}
-                rules={item.options?.rules}
-                className="label-form-left"
-              >
-                {renderForm(item)}
-              </Form.Item>
-            );
-          }
-        })}
+        <div className="row">
+          {dataField
+            .filter((field) => !disabledFieldSecondary.includes(field.name))
+            .map((item) => {
+              if (item.name === "id") {
+                return (
+                  <Form.Item key={item.name} name={item.name} style={{ display: "none" }}>
+                    <Input />
+                  </Form.Item>
+                );
+              } else {
+                return (
+                  <div
+                    className={`${
+                      item.name === "Beneficiary Address" ? "col-md-12" : "col-md-6"
+                    } mb-2`}
+                  >
+                    {renderForm(item, "secondary")}
+                  </div>
+                );
+              }
+            })}
+        </div>
         <Form.Item
           wrapperCol={{
             xs: { span: 24, offset: 0 },

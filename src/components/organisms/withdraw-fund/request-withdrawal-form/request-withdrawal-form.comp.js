@@ -37,11 +37,17 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
   };
   const onChangeInput = (event) => {
     const value = event.target.value;
-    setValueAmount(value);
+    if (!isNaN(value)) {
+      setValueAmount(value);
+    } else {
+      setIsDisabledButton(false);
+    }
   };
   const onBlur = (event) => {
     const value = event.target.value;
-    setValueAmount(numeral(value).format("0,0.00"));
+    if (!isNaN(value)) {
+      setValueAmount(numeral(value).format("0,0.00"));
+    }
   };
 
   return (
@@ -99,23 +105,27 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                 required: true,
                 message: <FormError msg="This field is required" />
               },
-              // {
-              //   pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
-              //   message: <FormError msg="Only numberic number greater than 0" />
-              // },
+              {
+                pattern: RegexConst.NUMBER_WITH_ONLY_2_DECIMAL_POSITIONS,
+                message: <FormError msg="Only numberic number greater than 0" />
+              },
               {
                 validator: (rule, value) => {
                   const amountNum = numeral(value).value();
-                  if (amountNum > data.available_withdrawal) {
-                    return Promise.reject(
-                      <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
-                    );
-                  } else if (amountNum < 100) {
-                    setIsDisabledButton(true);
-                    return Promise.reject(<FormError msg="Minimum withdrawal amount is 100 USD" />);
-                  } else {
-                    setIsDisabledButton(false);
-                    return Promise.resolve();
+                  if (!isNaN(value)) {
+                    if (amountNum > data.available_withdrawal) {
+                      return Promise.reject(
+                        <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
+                      );
+                    } else if (amountNum < 100) {
+                      setIsDisabledButton(true);
+                      return Promise.reject(
+                        <FormError msg="Minimum withdrawal amount is 100 USD" />
+                      );
+                    } else {
+                      setIsDisabledButton(false);
+                      return Promise.resolve();
+                    }
                   }
                 }
               }
