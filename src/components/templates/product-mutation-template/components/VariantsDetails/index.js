@@ -7,6 +7,7 @@ import Field from "../CustomField/Field";
 
 const VariantDetails = ({ form, productDetails }) => {
   const [details, setDetails] = useState();
+  const [totalFieldQuantity, setQuantity] = useState(0);
 
   useEffect(() => {
     if (productDetails) {
@@ -16,6 +17,15 @@ const VariantDetails = ({ form, productDetails }) => {
       setDetails(variantDetails);
     }
   }, [productDetails, form]);
+
+  const handleAddingItem = (callback) => {
+    callback({
+      fieldName: "",
+      type: "",
+      fieldOption: [""]
+    });
+  };
+
   return (
     <Form
       form={form}
@@ -32,33 +42,30 @@ const VariantDetails = ({ form, productDetails }) => {
       <Form.List name="variantDetails">
         {(fields, { add, remove }) => (
           <>
-            {fields.map((field, index) => (
-              <Field
-                key={`${field.key}-${index}`}
-                productType={get(details, `[${index}].type`)}
-                form={form}
-                field={field}
-                fieldKey={field.key}
-                index={index}
-                isHiddenIconRemove
-                numberField={fields.length}
-                fieldValue={get(details, `[${index}]`)}
-                remove={() => {
-                  if (fields.length === 1) return;
-                  remove(field.name);
-                }}
-              />
-            ))}
+            {fields.map((field, index) => {
+              return (
+                <Field
+                  key={`${field.key}-${index}`}
+                  productType={get(details, `[${index}].type`)}
+                  form={form}
+                  field={field}
+                  fieldKey={field.key}
+                  index={index}
+                  isHiddenIconRemove
+                  numberField={fields.length}
+                  fieldValue={get(details, `[${index}]`)}
+                  remove={() => {
+                    if (fields.length === 1) return;
+                    remove(field.name);
+                  }}
+                  parentId={index}
+                />
+              );
+            })}
             <Form.Item className="mt-3">
               <Button
                 type="primary"
-                onClick={() =>
-                  add({
-                    fieldName: "",
-                    type: "",
-                    fieldOption: [""]
-                  })
-                }
+                onClick={() => handleAddingItem(add)}
                 style={{ minWidth: "100px" }}
                 icon={<PlusOutlined />}
               >

@@ -67,7 +67,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         // },
         ...data.details.variantDetails
       ],
-      offerDetails: [...data.details.offerDetails]
+      offerDetails: [...data.details?.offerDetails]
     };
     flatData("variantDetails");
     flatData("offerDetails");
@@ -75,6 +75,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
     flatData("certificationDetails");
     return offerDetails;
   }, [data, productDetails]);
+
   return (
     <Fragment>
       <div className="row">
