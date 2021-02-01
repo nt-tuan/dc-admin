@@ -1,10 +1,12 @@
 import { Checkbox, Input, Radio, Form, Modal } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
+
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import get from "lodash/get";
+
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
-import get from "lodash/get";
 
 const initialFieldOptions = {
   label: "",
@@ -83,12 +85,14 @@ const CustomFieldOption = ({
     setIsOpen(false);
     func();
   };
+
   const handleDelete = useCallback((fields, field, index) => {
     if (fields.length === 1) return;
     setDeletedField(field);
     setDeletedIndex(index);
     setIsOpen(true);
   }, []);
+
   const handleRemoveChild = useCallback(
     (index) => {
       const newChildValue = [...childValue];
@@ -98,6 +102,11 @@ const CustomFieldOption = ({
     },
     [childValue, setChildValue, form]
   );
+
+  const handleAddItem = (callback) => {
+    callback();
+  };
+
   const renderDynamicFields = useCallback(() => {
     switch (type || get(form.getFieldsValue(), `childField[${index}].type`)) {
       case "dropdown":
@@ -131,7 +140,7 @@ const CustomFieldOption = ({
                               className="mx-2"
                               onClick={() => {
                                 if (type === "radio" && fields.length === 3) return;
-                                add();
+                                handleAddItem(add);
                               }}
                             />
                             <MinusCircleOutlined
