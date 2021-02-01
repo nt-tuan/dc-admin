@@ -166,12 +166,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       placeholder: "Recipient's Bank IBAN",
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
-        rules: [
-          {
-            required: true,
-            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.iban]))
-          }
-        ]
+        rules: []
       }
     },
     {
@@ -189,12 +184,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       placeholder: "Recipient's Bank ABA number",
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
-        rules: [
-          {
-            required: true,
-            message: createFormErrorComp(REQUIRED_ERR(LABELS[FIELDS.abaNumber]))
-          }
-        ]
+        rules: []
       }
     },
     {
@@ -351,6 +341,14 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       setCurrencyName(
         `${currencyList[bankDetails[0]["currency"]]} (${bankDetails[0]["currency"]})`
       );
+
+      const bankIDTypeData = currencyList[bankDetails[0]["bankIdType"]];
+      if (bankIDTypeData === "ACH" || bankIDTypeData === "CHIPS") {
+        setDisabledField([FIELDS.sortCode]);
+      }
+      if (bankIDTypeData === "SWIFT") {
+        setDisabledField([FIELDS.abaNumber]);
+      }
     }
 
     // Handle Secondary Bank Account default values
@@ -363,6 +361,13 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
       setCurrencyName(
         `${currencyList[bankDetails[1]["currency"]]} (${bankDetails[0]["currency"]})`
       );
+      const bankIDTypeData = currencyList[bankDetails[0]["bankIdType"]];
+      if (bankIDTypeData === "ACH" || bankIDTypeData === "CHIPS") {
+        setDisabledFieldSecondary([FIELDS.sortCode]);
+      }
+      if (bankIDTypeData === "SWIFT") {
+        setDisabledFieldSecondary([FIELDS.abaNumber]);
+      }
       addSubBank();
     }
   }, [bankDetails]);
@@ -390,7 +395,6 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             className="label-form-left"
           >
             <Select
-              allowClear
               showSearch
               onChange={(value) => {
                 if (type === "primary") {
@@ -483,9 +487,11 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             label={
               <span>
                 {item.label}&nbsp;&nbsp;
-                <Tooltip title={`${type === "primary" ? currencyName : currencyNameSecondary}`}>
-                  <InfoCircleOutlined />
-                </Tooltip>
+                {currencyName !== null || currencyNameSecondary !== null ? (
+                  <Tooltip title={`${type === "primary" ? currencyName : currencyNameSecondary}`}>
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                ) : null}
               </span>
             }
             placeholder={item.placeholder}
@@ -499,14 +505,14 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
               placeholder={item.placeholder}
               onChange={(val) => {
                 if (type === "primary") {
-                  setCurrencyName(`${currencyList[val]} (${val})`);
+                  setCurrencyName(`${val}`);
                 } else {
-                  setCurrencyNameSecondary(`${currencyList[val]} (${val})`);
+                  setCurrencyNameSecondary(`${val}`);
                 }
               }}
             >
               {Object.keys(item.data).map((key) => (
-                <Select.Option key={key} value={key}>
+                <Select.Option key={key} value={`${currencyList[key]} (${key})`}>
                   {`${currencyList[key]} (${key})`}
                 </Select.Option>
               ))}
@@ -519,11 +525,10 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             key={`${type}-${item.name}`}
             name={`${type}-${item.name}`}
             label={`${type === null ? labelBankType : labelBankTypeSecondary}`}
-            placeholder={`${type === null ? labelBankType : labelBankTypeSecondary}`}
             rules={item.options?.rules}
             className="label-form-left"
           >
-            <Input />
+            <Input placeholder={`${type === null ? labelBankType : labelBankTypeSecondary}`} />
           </Form.Item>
         );
       default:
@@ -532,11 +537,17 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             key={`${type}-${item.name}`}
             name={`${type}-${item.name}`}
             label={item.label}
-            placeholder={item.placeholder}
             rules={item.options?.rules}
             className="label-form-left"
           >
-            <Input />
+            <Input
+              placeholder={item.placeholder}
+              disabled={
+                type === "primary"
+                  ? disabledField.includes(item.name)
+                  : disabledFieldSecondary.includes(item.name)
+              }
+            />
           </Form.Item>
         );
     }
@@ -545,7 +556,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     <>
       <Form className="customized_form_controls" layout="vertical" form={form} onFinish={onFinish}>
         <div className="row">
-          {FORM_FIELDS.filter((field) => !disabledField.includes(field.name)).map((item) => {
+          {FORM_FIELDS.map((item) => {
             if (item.name === "id") {
               return (
                 <Form.Item key={item.name} name={item.name} style={{ display: "none" }}>
@@ -583,27 +594,25 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
         </Form.Item>
 
         <div className="row">
-          {dataField
-            .filter((field) => !disabledFieldSecondary.includes(field.name))
-            .map((item) => {
-              if (item.name === "id") {
-                return (
-                  <Form.Item key={item.name} name={item.name} style={{ display: "none" }}>
-                    <Input />
-                  </Form.Item>
-                );
-              } else {
-                return (
-                  <div
-                    className={`${
-                      item.name === "Beneficiary Address" ? "col-md-12" : "col-md-6"
-                    } mb-2`}
-                  >
-                    {renderForm(item, "secondary")}
-                  </div>
-                );
-              }
-            })}
+          {dataField.map((item) => {
+            if (item.name === "id") {
+              return (
+                <Form.Item key={item.name} name={item.name} style={{ display: "none" }}>
+                  <Input />
+                </Form.Item>
+              );
+            } else {
+              return (
+                <div
+                  className={`${
+                    item.name === "Beneficiary Address" ? "col-md-12" : "col-md-6"
+                  } mb-2`}
+                >
+                  {renderForm(item, "secondary")}
+                </div>
+              );
+            }
+          })}
         </div>
         <Form.Item
           wrapperCol={{
