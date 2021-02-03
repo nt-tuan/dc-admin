@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { KYC3_SCHEMA } from "commons/schemas";
 import { Card } from "antd";
 import { areObjectValuesUndefined } from "utils";
@@ -16,6 +16,9 @@ export const BankDetailsReadonly = ({
   label = KYC3_LABEL,
   isCopy = false
 }) => {
+  const [isCopyClicked, setIsCopyClicked] = useState(false);
+  const [isCopyClickedList, setIsCopyClickedList] = useState();
+
   const renderTitle = (index) => {
     switch (index) {
       case 0:
@@ -25,6 +28,26 @@ export const BankDetailsReadonly = ({
       default:
         return null;
     }
+  };
+
+  const handleCopyTitle = (value) => {
+    handleCopyText(value);
+    setIsCopyClicked(true);
+    setIsCopyClickedList(true);
+
+    setTimeout(() => {
+      setIsCopyClicked(false);
+    }, 1000);
+  };
+
+  const handleCopyListData = (value) => {
+    handleCopyText(value);
+    setIsCopyClicked(false);
+    setIsCopyClickedList(value);
+
+    setTimeout(() => {
+      setIsCopyClickedList(false);
+    }, 1000);
   };
 
   return (
@@ -47,11 +70,12 @@ export const BankDetailsReadonly = ({
                 {isCopy && (
                   <tr className="bank__details__table-header">
                     <span
-                      onClick={() => handleCopyText(bankDetails)}
-                      className="fe fe-copy mr-2 dtc-cursor-pointer"
-                    />
-                    <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
-                    your bank’s website
+                      onClick={() => handleCopyTitle(bankDetails)}
+                      className={`fe ${isCopyClicked ? "fe-check" : "fe-copy"} dtc-cursor-pointer`}
+                    >
+                      <span style={{ color: "#00b2ff" }}> Copy </span>
+                    </span>
+                    and Paste the details onto your bank’s website
                   </tr>
                 )}
                 {showTitle && <h5 className="text-primary p-2 mb-0">{renderTitle(index)}</h5>}
@@ -61,8 +85,10 @@ export const BankDetailsReadonly = ({
                       className="bank__details__row__content"
                       style={{ width: `${isCopy ? "70%" : "100%"}` }}
                     >
-                      <b>{label[field]} </b>
-                      <div>
+                      <b className={label[field] === "Payment Reference" ? "red-color" : null}>
+                        {label[field]}{" "}
+                      </b>
+                      <div className={field === "paymentReference" ? "red-color font-bold" : null}>
                         {field === BANK_DETAILS.nationality
                           ? countryList.find((c) => c.alpha2Code === record[field]).name
                           : record[field]}
@@ -70,10 +96,15 @@ export const BankDetailsReadonly = ({
                     </div>
                     {isCopy && (
                       <span
-                        className="fe fe-copy dtc-cursor-pointer"
-                        onClick={() => handleCopyText(record[field])}
+                        className={`fe ${
+                          isCopyClickedList === record[field] || isCopyClicked
+                            ? "fe-check"
+                            : "fe-copy"
+                        } dtc-cursor-pointer `}
+                        style={{ color: "#00b2ff" }}
+                        onClick={() => handleCopyListData(record[field])}
                       >
-                        <b style={{ color: "rgb(128, 200, 250)", marginLeft: "0.5rem" }}>Copy</b>
+                        <span style={{ color: "#00b2ff", marginLeft: "0.5rem" }}>Copy</span>
                       </span>
                     )}
                   </tr>
