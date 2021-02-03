@@ -70,7 +70,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
           <Form.Item
             colon={false}
             className="col-12 mb-3"
-            label="Choose bank account"
+            label="Choose Bank Account No:"
             labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
             wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
             labelAlign="left"
@@ -93,7 +93,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
           <Form.Item
             colon={false}
             className="col-12 mb-3"
-            label="Enter amount"
+            label="Enter Amount (USD)"
             labelCol={{ xl: 4, lg: 6, md: 7, sm: 7 }}
             wrapperCol={{ xl: 16, lg: 16, md: 15, sm: 15 }}
             labelAlign="left"
@@ -134,7 +134,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             <div className="d-lg-flex justify-content-between">
               <Input
                 className="col-md-12 col-lg-5"
-                placeholder="Enter amount"
+                placeholder="Enter Amount (USD)"
                 disabled={isDisabled}
                 value={valueAmount}
                 onChange={onChangeInput}
@@ -147,7 +147,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
                     const inputAmount = numeral(form.getFieldValue("amount")).value();
                     return (
                       <Fragment>
-                        Remaining Account Balance:
+                        Remaining Account Balance: &nbsp;
                         <b>
                           {data &&
                             toCurrency(

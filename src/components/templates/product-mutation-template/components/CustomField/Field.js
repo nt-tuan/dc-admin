@@ -42,13 +42,19 @@ const Field = forwardRef(
         setChildValue(selectedChildValue);
       }
     }, [fieldValue]);
+
     const handleSave = useCallback(
       (value) => {
-        let allChildren = form.getFieldValue("childValue") || [];
-        const newChildValue = [...allChildren];
-        newChildValue[currentIndex] = value;
-        form.setFieldsValue({ childValue: newChildValue });
-        setChildValue(newChildValue);
+        //For update the child field to latest
+        const allChildren = form.getFieldValue("childValue") || [];
+        const latestChild = allChildren.concat(value);
+        form.setFieldsValue({ childValue: latestChild });
+
+        //For handle current child added
+        const currentChild = [...childValue];
+        currentChild[currentIndex] = value;
+        setChildValue(currentChild);
+
         setIsChildModalOpen(false);
         if (handleFieldChange) {
           handleFieldChange();

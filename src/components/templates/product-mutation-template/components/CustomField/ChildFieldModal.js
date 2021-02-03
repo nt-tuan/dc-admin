@@ -17,7 +17,6 @@ const ChildFieldModal = ({
   currentPlotOptions
 }) => {
   const handleOK = (e) => {
-    debugger;
     const formValue = [
       { ...form?.getFieldsValue()?.childField[0], parentId, plotOption: currentPlotOptions }
     ];
