@@ -7,6 +7,7 @@ import {
 } from "commons/consts";
 import XLSX from "xlsx";
 import { message } from "antd";
+import numeral from "numeral";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -53,13 +54,14 @@ export const getIdPartFromProductUrl = (str) => {
   return str;
 };
 
-export const toCurrency = (value, defaultCurrency = "$") => {
+export const toCurrency = (value, defaultCurrency = "USD") => {
   const currency =
     process.env.REACT_APP_DEFAULT_CURRENCY_TYPE === "USD"
       ? defaultCurrency
       : process.env.REACT_APP_DEFAULT_CURRENCY_TYPE;
+
   return value !== undefined && !isNaN(value)
-    ? currency + " " + Number(value).toLocaleString()
+    ? currency + " " + numeral(value).format("0,0.00")
     : value;
 };
 

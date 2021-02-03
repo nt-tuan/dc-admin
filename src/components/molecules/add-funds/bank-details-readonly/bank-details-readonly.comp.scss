@@ -12,10 +12,12 @@
     display: inline-block;
     margin-right: 2rem;
     background-color: #e6eef4;
+    span {
+      color: #00b2ff;
+    }
   }
 
   &__row__content {
-    width: 70%;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;

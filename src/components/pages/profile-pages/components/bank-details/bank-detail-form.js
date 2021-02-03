@@ -487,11 +487,9 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             label={
               <span>
                 {item.label}&nbsp;&nbsp;
-                {currencyName !== null || currencyNameSecondary !== null ? (
-                  <Tooltip title={`${type === "primary" ? currencyName : currencyNameSecondary}`}>
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                ) : null}
+                <Tooltip title={`Currency of your local bank account`}>
+                  <InfoCircleOutlined />
+                </Tooltip>
               </span>
             }
             placeholder={item.placeholder}
