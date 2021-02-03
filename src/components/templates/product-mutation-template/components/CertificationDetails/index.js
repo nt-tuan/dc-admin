@@ -44,6 +44,7 @@ const VariantDetails = ({ form, handleFieldChange, productDetails }) => {
                   if (fields.length === 1) return;
                   remove(field.name);
                 }}
+                parentId={index}
               />
             ))}
             <Form.Item className="mt-3">
