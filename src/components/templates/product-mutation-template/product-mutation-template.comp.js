@@ -97,12 +97,12 @@ export const ProductMutationTemplate = () => {
         const formValue = values[formName].map((item, parentId) => {
           if (values["childValue"]) {
             values["childValue"].map((child) => {
-              let id = child[0].parentId;
-              let plotIndex = child[0].plotOption;
+              let id = child.parentId;
+              let plotIndex = child.plotOption;
               if (parentId == id) {
                 item.fieldOption = item.fieldOption.map((opt, index) => {
                   if (index == plotIndex) {
-                    opt.childField = child;
+                    opt.childField = [child];
                   }
                   return opt;
                 });
