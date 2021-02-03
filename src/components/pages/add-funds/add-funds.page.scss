@@ -1,21 +1,46 @@
+@import "assets/styles/mixins.scss";
+
 .list__item {
   list-style-type: square;
-  margin-right: 20rem;
-
+  margin: 15px 0;
+  padding: 0;
+  &__number {
+    display: flex;
+    align-items: center;
+    span {
+      &:first-child {
+        background-color: $darkblue;
+        color: #fff;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: normal;
+      }
+    }
+  }
   li {
-    margin-left: 2rem;
+    margin-left: 2.6rem;
+    margin-bottom: 0.5rem;
   }
 }
 
 .blue-item {
+  color: #00b2ff;
+}
+.red-color {
+  color: #f81d22;
+}
+.font-bold {
   font-weight: bold;
-  color: rgb(128, 200, 250);
 }
 
 .example {
-  width: 35%;
-  margin-left: 5rem;
-
+  width: 40%;
+  margin-left: 2.6rem;
   span {
     display: flex;
     flex-flow: row nowrap;
@@ -27,17 +52,5 @@
 .total__text {
   border-top: 2px solid;
   margin-top: 0.5rem;
-  color: rgb(95, 134, 174);
-}
-
-.step {
-  position: relative;
-  background-color: #005691;
-  color: white;
-  display: inline-block;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 50%;
-  text-align: center;
-  margin-right: 1rem;
+  color: $darkblue;
 }

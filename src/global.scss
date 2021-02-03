@@ -290,3 +290,9 @@ body {
     min-height: 45px;
   }
 }
+
+.customized_form_controls {
+  .ant-form-item-label {
+    padding-bottom: 3px;
+  }
+}

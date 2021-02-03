@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { KYC3_SCHEMA } from "commons/schemas";
 import { Card } from "antd";
-import { areObjectValuesUndefined } from "utils/general.util";
+import { areObjectValuesUndefined } from "utils";
 import countryList from "assets/country.json";
 import "./bank-details-readonly.comp.scss";
 
@@ -14,8 +14,11 @@ export const BankDetailsReadonly = ({
   showTitle = true,
   schema = BANK_DETAILS,
   label = KYC3_LABEL,
-  classname = "col-12 col-lg-6 mb-4"
+  isCopy = false
 }) => {
+  const [isCopyClicked, setIsCopyClicked] = useState(false);
+  const [isCopyClickedList, setIsCopyClickedList] = useState();
+
   const renderTitle = (index) => {
     switch (index) {
       case 0:
@@ -27,6 +30,26 @@ export const BankDetailsReadonly = ({
     }
   };
 
+  const handleCopyTitle = (value) => {
+    handleCopyText(value);
+    setIsCopyClicked(true);
+    setIsCopyClickedList(true);
+
+    setTimeout(() => {
+      setIsCopyClicked(false);
+    }, 1000);
+  };
+
+  const handleCopyListData = (value) => {
+    handleCopyText(value);
+    setIsCopyClicked(false);
+    setIsCopyClickedList(value);
+
+    setTimeout(() => {
+      setIsCopyClickedList(false);
+    }, 1000);
+  };
+
   return (
     <React.Fragment>
       {showHeader ? (
@@ -35,37 +58,55 @@ export const BankDetailsReadonly = ({
           <hr />
         </Fragment>
       ) : null}
-      <div className="row m-4">
+      <div className="row">
         {bankDetails
           .filter((account) => areObjectValuesUndefined(account) === false)
           .map((record, index) => (
-            <div key={record.id || index} className={classname}>
+            <div
+              key={record.id || index}
+              className={`col-12 col-lg-${bankDetails.length === 1 ? "12" : "6"} mb-4`}
+            >
               <table className="bank__details">
-                <tr className="bank__details__table-header">
-                  <span
-                    onClick={() => handleCopyText(bankDetails)}
-                    className="fe fe-copy mr-2 dtc-cursor-pointer"
-                  />
-                  <b style={{ color: "rgb(128, 200, 250)" }}>Copy</b> and Paste the details onto
-                  your bank’s website
-                </tr>
-                {showTitle && <h5 className="text-primary">{renderTitle(index)}</h5>}
+                {isCopy && (
+                  <tr className="bank__details__table-header">
+                    <span
+                      onClick={() => handleCopyTitle(bankDetails)}
+                      className={`fe ${isCopyClicked ? "fe-check" : "fe-copy"} dtc-cursor-pointer`}
+                    >
+                      <span style={{ color: "#00b2ff" }}> Copy </span>
+                    </span>
+                    and Paste the details onto your bank’s website
+                  </tr>
+                )}
+                {showTitle && <h5 className="text-primary p-2 mb-0">{renderTitle(index)}</h5>}
                 {Object.values(schema).map((field) => (
                   <tr key={`${record.id}-${field}`} className="d-flex justify-content-between">
-                    <div className="bank__details__row__content">
-                      <b>{label[field]} </b>
-                      <div>
+                    <div
+                      className="bank__details__row__content"
+                      style={{ width: `${isCopy ? "70%" : "100%"}` }}
+                    >
+                      <b className={label[field] === "Payment Reference" ? "red-color" : null}>
+                        {label[field]}{" "}
+                      </b>
+                      <div className={field === "paymentReference" ? "red-color font-bold" : null}>
                         {field === BANK_DETAILS.nationality
                           ? countryList.find((c) => c.alpha2Code === record[field]).name
                           : record[field]}
                       </div>
                     </div>
-                    <span
-                      className="fe fe-copy dtc-cursor-pointer"
-                      onClick={() => handleCopyText(record[field])}
-                    >
-                      <b style={{ color: "rgb(128, 200, 250)", marginLeft: "0.5rem" }}>Copy</b>
-                    </span>
+                    {isCopy && (
+                      <span
+                        className={`fe ${
+                          isCopyClickedList === record[field] || isCopyClicked
+                            ? "fe-check"
+                            : "fe-copy"
+                        } dtc-cursor-pointer `}
+                        style={{ color: "#00b2ff" }}
+                        onClick={() => handleCopyListData(record[field])}
+                      >
+                        <span style={{ color: "#00b2ff", marginLeft: "0.5rem" }}>Copy</span>
+                      </span>
+                    )}
                   </tr>
                 ))}
               </table>

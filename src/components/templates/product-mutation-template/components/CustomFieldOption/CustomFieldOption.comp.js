@@ -1,10 +1,12 @@
 import { Checkbox, Input, Radio, Form, Modal } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
+
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import get from "lodash/get";
+
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
-import get from "lodash/get";
 
 const initialFieldOptions = {
   label: "",
@@ -83,12 +85,14 @@ const CustomFieldOption = ({
     setIsOpen(false);
     func();
   };
+
   const handleDelete = useCallback((fields, field, index) => {
     if (fields.length === 1) return;
     setDeletedField(field);
     setDeletedIndex(index);
     setIsOpen(true);
   }, []);
+
   const handleRemoveChild = useCallback(
     (index) => {
       const newChildValue = [...childValue];
@@ -98,6 +102,11 @@ const CustomFieldOption = ({
     },
     [childValue, setChildValue, form]
   );
+
+  const handleAddItem = (callback) => {
+    callback();
+  };
+
   const renderDynamicFields = useCallback(() => {
     switch (type || get(form.getFieldsValue(), `childField[${index}].type`)) {
       case "dropdown":
@@ -111,56 +120,58 @@ const CustomFieldOption = ({
               {(fields, { add, remove }) => {
                 return (
                   <>
-                    {fields.map((field, index) => (
-                      <div className="row mt-2">
-                        <div className="col-3">{`Value ${index + 1}`}:</div>
-                        <div className="col-9">
-                          <div className="d-flex align-items-center">
-                            <Form.Item
-                              name={[field.name, "label"]}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: createFormErrorComp(REQUIRED_ERR("option"))
-                                }
-                              ]}
-                            >
-                              <Input placeholder="Enter field value" />
-                            </Form.Item>
-                            <PlusCircleOutlined
-                              className="mx-2"
-                              onClick={() => {
-                                if (type === "radio" && fields.length === 3) return;
-                                add();
-                              }}
-                            />
-                            <MinusCircleOutlined
-                              onClick={() => handleDelete(fields, field, index)}
-                              // onClick={() => remove(field.name)}
-                              style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
-                            />
-                          </div>
-                          {hasChildFields && childAble && (
-                            <>
-                              <Checkbox
-                                className="mt-2"
-                                onClick={() => openChildField(index)}
-                                checked={childValue && !!childValue[index]}
+                    {fields.map((field, index) => {
+                      return (
+                        <div className="row mt-2">
+                          <div className="col-3">{`Value ${index + 1}`}:</div>
+                          <div className="col-9">
+                            <div className="d-flex align-items-center">
+                              <Form.Item
+                                name={[field.name, "label"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: createFormErrorComp(REQUIRED_ERR("option"))
+                                  }
+                                ]}
                               >
-                                Add child field(s) to this value
-                              </Checkbox>
-                              {childValue && childValue[index] && (
-                                <ChildFieldReview
-                                  reOpenModal={() => openChildField(index)}
-                                  data={childValue[index]}
-                                  onRemove={() => handleRemoveChild(index)}
-                                />
-                              )}
-                            </>
-                          )}
+                                <Input placeholder="Enter field value" />
+                              </Form.Item>
+                              <PlusCircleOutlined
+                                className="mx-2"
+                                onClick={() => {
+                                  if (type === "radio" && fields.length === 3) return;
+                                  handleAddItem(add);
+                                }}
+                              />
+                              <MinusCircleOutlined
+                                onClick={() => handleDelete(fields, field, index)}
+                                // onClick={() => remove(field.name)}
+                                style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
+                              />
+                            </div>
+                            {hasChildFields && childAble && (
+                              <>
+                                <Checkbox
+                                  className="mt-2"
+                                  onClick={() => openChildField(index)}
+                                  checked={childValue && !!childValue[index]}
+                                >
+                                  Add child field(s) to this value
+                                </Checkbox>
+                                {childValue && childValue[index] && (
+                                  <ChildFieldReview
+                                    reOpenModal={() => openChildField(index)}
+                                    data={childValue[index]}
+                                    onRemove={() => handleRemoveChild(index)}
+                                  />
+                                )}
+                              </>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                     <Modal
                       centered
                       visible={isOpen}

@@ -1,19 +1,45 @@
 const BANK_DETAILS = {
-  accountHolder: "accountHolder",
-  bankName: "name",
+  accountName: "accountName",
+  name: "name",
+  bankIdType: "bankIdType",
+  swiftCode: "swiftCode",
   accountNumber: "accountNumber",
   iban: "iban",
-  nationality: "nationality",
-  swiftCode: "swiftCode"
+  sortCode: "sortCode",
+  abaNumber: "abaNumber",
+  address: "address",
+  city: "city",
+  state: "state",
+  country: "country",
+  postalCode: "postalCode",
+  currency: "currency",
+  recipientAddress: "recipientAddress",
+  recipientCity: "recipientCity",
+  recipientState: "recipientState",
+  recipientCountry: "recipientCountry",
+  recipientPostalCode: "recipientPostalCode"
 };
 
 const KYC3_LABEL = {
-  [BANK_DETAILS.accountHolder]: "Account holder",
-  [BANK_DETAILS.bankName]: "Bank name",
-  [BANK_DETAILS.accountNumber]: "Account No.",
+  [BANK_DETAILS.accountName]: "Beneficiary Name",
+  [BANK_DETAILS.name]: "Beneficiary Bank",
+  [BANK_DETAILS.bankIdType]: "Bank ID Type",
+  [BANK_DETAILS.swiftCode]: "SWIFT Code",
+  [BANK_DETAILS.accountNumber]: "Beneficiary Bank Account Number",
   [BANK_DETAILS.iban]: "IBAN",
-  [BANK_DETAILS.nationality]: "Nationality",
-  [BANK_DETAILS.swiftCode]: "Swift Code"
+  [BANK_DETAILS.sortCode]: "Sort Code",
+  [BANK_DETAILS.abaNumber]: "ABA Number",
+  [BANK_DETAILS.address]: "Bank Address",
+  [BANK_DETAILS.city]: "Bank City",
+  [BANK_DETAILS.state]: "Bank State/ Province/ Territory",
+  [BANK_DETAILS.country]: "Bank Country",
+  [BANK_DETAILS.postalCode]: "Bank Postal/Zip Code/P.O.Box",
+  [BANK_DETAILS.currency]: "Bank Currency",
+  [BANK_DETAILS.recipientAddress]: "Beneficiary Address",
+  [BANK_DETAILS.recipientCity]: "Beneficiary City",
+  [BANK_DETAILS.recipientState]: "Beneficiary State/ Province/ Territory",
+  [BANK_DETAILS.recipientCountry]: "Beneficiary Country",
+  [BANK_DETAILS.recipientPostalCode]: "Beneficiary Postal/Zip Code/P.O.Box"
 };
 
 export const KYC3_SCHEMA = {

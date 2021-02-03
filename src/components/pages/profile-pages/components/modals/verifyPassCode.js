@@ -5,7 +5,8 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { validatePasscode } from "services/user-profile.service";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { USER_TABS_NAME } from "commons/consts";
+import { USER_TABS_NAME, THREE_STEPS_SECURITY_STATUS } from "commons/consts";
+import moment from "moment";
 
 //** Random array positions */
 const getPositionList = () => {
@@ -28,8 +29,38 @@ function VerifyPassCode({
   const [requiredPositions, setRequiredPositions] = useState(getPositionList());
   const history = useHistory();
 
+  const handle3StepsProcessResponse = (res, successFn, handleError, errStr = "Server error") => {
+    switch (res.status) {
+      case THREE_STEPS_SECURITY_STATUS.SUCCESS:
+        successFn();
+        break;
+      case THREE_STEPS_SECURITY_STATUS.OTP_LOCKED:
+        handleError(
+          `Your account will be locked ${moment
+            .utc(res.updatedDate)
+            .add(1, "h")
+            .fromNow()} due to wrong OTP code 3 times`
+        );
+        break;
+      case THREE_STEPS_SECURITY_STATUS.OTP_EXPIRED:
+        handleError("OTP expired");
+        break;
+      case THREE_STEPS_SECURITY_STATUS.PASSCODE_LOCKED:
+        handleError(
+          `Your account will be locked ${moment
+            .utc(res.updatedDate)
+            .add(1, "d")
+            .fromNow()} due to wrong passcode 3 times`
+        );
+        break;
+      default:
+        handleError(errStr);
+        break;
+    }
+  };
+
   //** Handle Submit Passcode */
-  const onFinish = (values) => {
+  const onFinish = (values, handleError) => {
     const listKey = Object.keys(values);
 
     const array = requiredPositions.map((position) => ({
@@ -43,12 +74,18 @@ function VerifyPassCode({
       asyncErrorHandlerWrapper(async () => {
         try {
           const res = await validatePasscode(data);
-          setShowModalVerifyPassCode(false);
-          setIsShowForm(true);
-          setIsShowView(false);
-          message.success("Verify successful");
+          const successFn = () => {
+            setShowModalVerifyPassCode(false);
+            setIsShowForm(true);
+            setIsShowView(false);
+            message.success("Verify successful");
+          };
+          handle3StepsProcessResponse(res, successFn, handleError, "Incorrect code");
         } catch (error) {
-          message.error("Incorrect passcode");
+          if (error.message === "400") {
+            handleError("Incorrect code");
+          }
+          throw error;
         }
       });
     }

@@ -12,10 +12,14 @@ const ChildFieldModal = ({
   handleSave,
   selectedFieldType,
   isHiddenIconRemove,
-  numberField
+  numberField,
+  parentId,
+  currentPlotOptions
 }) => {
   const handleOK = (e) => {
-    const formValue = form?.getFieldsValue()?.childField;
+    const formValue = [
+      { ...form?.getFieldsValue()?.childField[0], parentId, plotOption: currentPlotOptions }
+    ];
     const errorField = formValue.find((value) => {
       if (!value?.fieldName || !value?.type) {
         return true;
@@ -38,6 +42,14 @@ const ChildFieldModal = ({
       //
       handleSave(formValue);
     }
+  };
+
+  const handleAddItem = (callback) => {
+    callback({
+      fieldName: "",
+      fieldType: "",
+      fieldOption: [""]
+    });
   };
 
   return (
@@ -84,13 +96,7 @@ const ChildFieldModal = ({
               <Form.Item className="mt-3">
                 <Button
                   type="primary"
-                  onClick={() =>
-                    add({
-                      fieldName: "",
-                      fieldType: "",
-                      fieldOption: [""]
-                    })
-                  }
+                  onClick={() => handleAddItem(add)}
                   style={{ minWidth: "100px" }}
                   icon={<PlusOutlined />}
                 >

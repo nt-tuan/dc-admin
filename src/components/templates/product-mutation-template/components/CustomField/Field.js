@@ -1,6 +1,8 @@
 import React, { forwardRef, useCallback, useState, useEffect } from "react";
 import { Modal, Form } from "antd";
+import { useSelector } from "react-redux";
 import get from "lodash/get";
+
 import ChildFieldModal from "./ChildFieldModal";
 import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
@@ -20,7 +22,8 @@ const Field = forwardRef(
       numberField,
       isHiddenIconRemove,
       productType,
-      fieldValue
+      fieldValue,
+      parentId
     },
     ref
   ) => {
@@ -39,12 +42,19 @@ const Field = forwardRef(
         setChildValue(selectedChildValue);
       }
     }, [fieldValue]);
+
     const handleSave = useCallback(
       (value) => {
-        const newChildValue = [...childValue];
-        newChildValue[currentIndex] = value;
-        form.setFieldsValue({ childValue: newChildValue });
-        setChildValue(newChildValue);
+        //For update the child field to latest
+        const allChildren = form.getFieldValue("childValue") || [];
+        const latestChild = allChildren.concat(value);
+        form.setFieldsValue({ childValue: latestChild });
+
+        //For handle current child added
+        const currentChild = [...childValue];
+        currentChild[currentIndex] = value;
+        setChildValue(currentChild);
+
         setIsChildModalOpen(false);
         if (handleFieldChange) {
           handleFieldChange();
@@ -102,6 +112,8 @@ const Field = forwardRef(
             isHiddenIconRemove
             numberField
             selectedFieldType={get(childValue, `[${currentIndex}][0].type`)}
+            parentId={parentId}
+            currentPlotOptions={currentIndex}
           />
         )}
         <Modal

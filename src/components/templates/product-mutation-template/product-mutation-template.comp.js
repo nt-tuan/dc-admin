@@ -84,16 +84,34 @@ export const ProductMutationTemplate = () => {
         });
       } else {
         const formName = Object.keys(values)[0];
-        const formValue = values[formName].map((item, index) => {
-          item.fieldOption = item.fieldOption.map((item, index) => {
-            if (values["childValue"]) {
-              item.childField = values["childValue"][index];
-            }
-            return item;
-          });
+        // const formValue = values[formName].map((item, index) => {
+        //   item.fieldOption = item.fieldOption.map((item, index) => {
+        //     if (values["childValue"]) {
+        //       item.childField = values["childValue"][index];
+        //     }
+        //     return item;
+        //   });
 
+        //   return item;
+        // });
+        const formValue = values[formName].map((item, parentId) => {
+          if (values["childValue"]) {
+            values["childValue"].map((child) => {
+              let id = child.parentId;
+              let plotIndex = child.plotOption;
+              if (parentId == id) {
+                item.fieldOption = item.fieldOption.map((opt, index) => {
+                  if (index == plotIndex) {
+                    opt.childField = [child];
+                  }
+                  return opt;
+                });
+              }
+            });
+          }
           return item;
         });
+
         setProductData({
           ...productData,
           details: { ...productData.details, [formName]: formValue }
@@ -290,6 +308,7 @@ export const ProductMutationTemplate = () => {
   const handleFieldChange = useCallback(() => {
     setSkipAble(false);
   }, []);
+
   return (
     <article>
       <DTCSection>
@@ -351,6 +370,7 @@ export const ProductMutationTemplate = () => {
           )}
         </Form.Provider>
       </DTCSection>
+
       <div className={`footer ${isSkip() && "mb-3"}`}>
         {currentStep !== 1 && (
           <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
