@@ -31,13 +31,13 @@ const KYC3_LABEL = {
   [BANK_DETAILS.abaNumber]: "ABA Number",
   [BANK_DETAILS.address]: "Bank Address",
   [BANK_DETAILS.city]: "Bank City",
-  [BANK_DETAILS.state]: "Bank State/Province",
+  [BANK_DETAILS.state]: "Bank State/ Province/ Territory",
   [BANK_DETAILS.country]: "Bank Country",
   [BANK_DETAILS.postalCode]: "Bank Postal/Zip Code/P.O.Box",
   [BANK_DETAILS.currency]: "Bank Currency",
   [BANK_DETAILS.recipientAddress]: "Beneficiary Address",
   [BANK_DETAILS.recipientCity]: "Beneficiary City",
-  [BANK_DETAILS.recipientState]: "Beneficiary State/Province",
+  [BANK_DETAILS.recipientState]: "Beneficiary State/ Province/ Territory",
   [BANK_DETAILS.recipientCountry]: "Beneficiary Country",
   [BANK_DETAILS.recipientPostalCode]: "Beneficiary Postal/Zip Code/P.O.Box"
 };

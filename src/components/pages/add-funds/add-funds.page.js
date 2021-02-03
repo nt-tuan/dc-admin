@@ -69,51 +69,57 @@ const AddFundsPage = () => {
         </h5>
         <div className="mt-2 mb-3">
           <div className="">
-            To add funds into your wallet, please follow the steps below:
+            <p>To add funds into your wallet, please follow the steps below:</p>
             <ul className="list__item">
-              {" "}
-              <b>
-                1. Log in to your bank's website or visit your local branch and make a wire
-                transfer.
+              <b className="list__item__number">
+                <span>1</span>
+                <span>
+                  Log in to your bank's website or visit your local branch and make a wire transfer.
+                </span>
               </b>
               <li>
-                - Only transfer from your registered Business Bank Account. Funds received from any
-                other Bank account will not be allowed and will be returned. This will cause a delay
-                and you will have to bear any bank charges incurred.
+                <span className="blue-item">-</span> Only transfer from your registered Business
+                Bank Account. Funds received from any other Bank account will not be allowed and
+                will be returned. This will cause a delay and you will have to bear any bank charges
+                incurred.
               </li>
             </ul>
             <ul className="list__item">
-              <b>
-                2. Transfer the required amount in USD into your Trading Wallet using the following
-                information:
+              <b className="list__item__number">
+                <span>2</span>
+                <span>
+                  Transfer the required amount in USD into your Trading Wallet using the following
+                  information:
+                </span>
               </b>
               <li>
-                - <span className="blue-item">Copy</span> and{" "}
-                <span className="blue-item">paste </span>the beneficiary details shown below in to
-                your bank’s website.
+                <span className="blue-item">-</span> Copy and paste the beneficiary details shown
+                below in to your bank’s website.
               </li>
               <li>
-                - Copy and paste the <b>‘Reference number’</b> exactly as shown in ‘Payment
-                reference’ below.<b>This is mandatory</b> and if this is missing or not exactly
-                matching, there will be a delay in your funds reaching your Trading Wallet and may
-                well be returned back to your bank. You will have to bear any bank charges incurred.{" "}
+                <span className="blue-item">-</span> <span className="blue-item">Copy</span> and{" "}
+                <span className="blue-item">Paste </span> the <b>‘Reference number’</b> exactly as
+                shown in ‘Payment reference’ below.<b className="red-color"> This is mandatory</b>{" "}
+                and if this is missing or not exactly matching, there will be a delay in your funds
+                reaching your Trading Wallet and may well be returned back to your bank. You will
+                have to bear any bank charges incurred.{" "}
               </li>
               <li>
-                - We do not charge any Bank charges for receiving funds in to your Wallet. Please
-                ensure you select to pay your local bank’s transfer fees so that the net USD amount
-                received in your Trading Wallet meets the required amount for the total costs of
-                your order transaction(s). If there is any shortage, you will need to submit another
-                transfer to make up the shortfall and will cause delay and additional Transfer fees
-                your bank may charge. <b>As a Tip</b>, it’s always better to add some extra funds as
-                a safety which you can always withdraw anytime after the order transaction is
-                settled.
+                <span className="blue-item">-</span> We do not charge any Bank charges for receiving
+                funds in to your Wallet. Please ensure you select to pay your local bank’s transfer
+                fees so that the net USD amount received in your Trading Wallet meets the required
+                amount for the total costs of your order transaction(s). If there is any shortage,
+                you will need to submit another transfer to make up the shortfall and will cause
+                delay and additional Transfer fees your bank may charge. <b>As a Tip</b>, it’s
+                always better to add some extra funds as a safety which you can always withdraw
+                anytime after the order transaction is settled.
               </li>
               <li>
-                - <b>Example of Total NET funds:</b> Transaction Invoice = $1,000, Logistics = $200,
-                Insurance = $2. For this transaction, you need to specify the received funds at the
-                beneficiary bank is a minimum of $1,202.00 as shown below (we suggest adding a
-                safety round up which in this example will mean Net beneficiary funds received is
-                $1,220):
+                <span className="blue-item">-</span> <b>Example of Total NET funds:</b> Transaction
+                Invoice = $1,000, Logistics = $200, Insurance = $2. For this transaction, you need
+                to specify the received funds at the beneficiary bank is a minimum of $1,202.00 as
+                shown below (we suggest adding a safety round up which in this example will mean Net
+                beneficiary funds received is $1,220):
               </li>
             </ul>
             <div className="example">
