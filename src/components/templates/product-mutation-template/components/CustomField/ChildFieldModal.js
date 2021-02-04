@@ -17,9 +17,14 @@ const ChildFieldModal = ({
   currentPlotOptions
 }) => {
   const handleOK = (e) => {
-    const formValue = [
-      { ...form?.getFieldsValue()?.childField[0], parentId, plotOption: currentPlotOptions }
-    ];
+    let formValue = form?.getFieldsValue()?.childField.map((child) => {
+      return {
+        ...child,
+        parentId,
+        plotOption: currentPlotOptions
+      };
+    });
+
     const errorField = formValue.find((value) => {
       if (!value?.fieldName || !value?.type) {
         return true;
@@ -27,6 +32,7 @@ const ChildFieldModal = ({
       if (value?.fieldOption[0] === "") {
         return true;
       }
+
       if (
         value.fieldOption.find(
           (childValue) => !childValue.label && !childValue.allowInput && !childValue.textboxType
