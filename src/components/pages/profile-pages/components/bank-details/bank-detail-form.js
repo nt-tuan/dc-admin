@@ -83,8 +83,6 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             validator: (rule, value, callback) => {
               const splitValue = value?.toLowerCase().split(" ");
               const splitCompanyName = companyName?.toLowerCase().split(" ");
-              console.log("value: " + splitValue);
-              console.log("splitCompanyName: " + splitCompanyName);
               let isOk = false;
               let i = 0;
               while (isOk === false && i < splitValue.length) {
