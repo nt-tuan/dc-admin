@@ -95,14 +95,22 @@ export const ProductMutationTemplate = () => {
         //   return item;
         // });
         const formValue = values[formName].map((item, parentId) => {
+          //Check if  child values available
           if (values["childValue"]) {
             values["childValue"].map((child) => {
               let id = child.parentId;
               let plotIndex = child.plotOption;
+
+              //Check if parentID match to the child
               if (parentId == id) {
                 item.fieldOption = item.fieldOption.map((opt, index) => {
+                  //Check if plotOption Index match to the child
                   if (index == plotIndex) {
-                    opt.childField = [child];
+                    if (opt.childField) {
+                      opt.childField.push(child);
+                    } else {
+                      opt.childField = [child];
+                    }
                   }
                   return opt;
                 });
