@@ -103,10 +103,6 @@ const CustomFieldOption = ({
     [childValue, setChildValue, form]
   );
 
-  const handleAddItem = (callback) => {
-    callback();
-  };
-
   const renderDynamicFields = useCallback(() => {
     switch (type || get(form.getFieldsValue(), `childField[${index}].type`)) {
       case "dropdown":
@@ -141,7 +137,7 @@ const CustomFieldOption = ({
                                 className="mx-2"
                                 onClick={() => {
                                   if (type === "radio" && fields.length === 3) return;
-                                  handleAddItem(add);
+                                  add();
                                 }}
                               />
                               <MinusCircleOutlined
