@@ -58,7 +58,11 @@ export const ProductMutationTemplate = () => {
         ProductService.getProductCategories(),
         ProductService.getAllHsCode()
       ]);
-      const parseHsCode = hsCode.map((code) => ({ id: code, name: code }));
+      const parseHsCode = hsCode?.content.map((item) => ({
+        ...item,
+        id: item.hsCode,
+        name: item.hsCode
+      }));
       setCategories(categories);
       setHsCode(parseHsCode);
     });
