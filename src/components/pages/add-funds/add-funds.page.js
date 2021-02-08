@@ -31,8 +31,8 @@ const getData = (walletName) => [
     beneficiary: "SECDEX DIGITAL CUSTODIAN LIMITED",
     accountNo: "1504144344",
     bankName: "SIGNATURE BANK, 565 Fifth Avenue New York NY 10017, USA",
-    abaRoutingCode: "26013576",
-    swiftCode: "SIGNUS33XXX",
+    abaRoutingCode: "026013576",
+    swiftCode: "SIGNUS33 or SIGNUS33XXX",
     currency: "USD",
     paymentReference: walletName
   }

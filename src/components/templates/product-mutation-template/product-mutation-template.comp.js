@@ -66,7 +66,7 @@ export const ProductMutationTemplate = () => {
       setCategories(categories);
       setHsCode(parseHsCode);
     });
-  }, []);
+  }, [currentStep]);
 
   const getTypeByCategory = useCallback((catId) => {
     asyncErrorHandlerWrapper(async () => {
@@ -88,23 +88,13 @@ export const ProductMutationTemplate = () => {
         });
       } else {
         const formName = Object.keys(values)[0];
-        // const formValue = values[formName].map((item, index) => {
-        //   item.fieldOption = item.fieldOption.map((item, index) => {
-        //     if (values["childValue"]) {
-        //       item.childField = values["childValue"][index];
-        //     }
-        //     return item;
-        //   });
-
-        //   return item;
-        // });
         const formValue = values[formName].map((item, parentId) => {
           //Check if  child values available
           if (values["childValue"]) {
             values["childValue"].map((child) => {
               let id = child.parentId;
               let plotIndex = child.plotOption;
-
+              if (child.isSet) return;
               //Check if parentID match to the child
               if (parentId == id) {
                 item.fieldOption = item.fieldOption.map((opt, index) => {
@@ -112,8 +102,10 @@ export const ProductMutationTemplate = () => {
                   if (index == plotIndex) {
                     if (opt.childField) {
                       opt.childField.push(child);
+                      child.isSet = true;
                     } else {
                       opt.childField = [child];
+                      child.isSet = true;
                     }
                   }
                   return opt;
@@ -123,14 +115,13 @@ export const ProductMutationTemplate = () => {
           }
           return item;
         });
-
         setProductData({
           ...productData,
           details: { ...productData.details, [formName]: formValue }
         });
       }
     },
-    [productData, currentStep]
+    [currentStep]
   );
 
   const getErrorField = useCallback((form) => {
@@ -245,6 +236,7 @@ export const ProductMutationTemplate = () => {
           };
         })
       };
+
       asyncErrorHandlerWrapper(async () => {
         if (productDetails) {
           const searchParams = window.location.search;
@@ -297,17 +289,17 @@ export const ProductMutationTemplate = () => {
 
   const isSkip = useCallback(() => {
     let isFormDirty = false;
-    if (currentStep === 4 && productDetails) {
-      const detail = JSON.parse(productDetails?.detail);
-      const { packingDetails } = detail;
-      if (packingDetails) {
+
+    if (currentStep === 4 && productData) {
+      let availableForm = Object.keys(productData?.details);
+
+      if (availableForm.some((form) => form == "packingDetails")) {
         isFormDirty = true;
       }
     }
-    if (currentStep === 5 && productDetails) {
-      const detail = JSON.parse(productDetails?.detail);
-      const { certificationDetails } = detail;
-      if (certificationDetails) {
+    if (currentStep === 5 && productData) {
+      let availableForm = Object.keys(productData?.details);
+      if (availableForm.some((form) => form == "certificationDetails")) {
         isFormDirty = true;
       }
     }
@@ -315,7 +307,7 @@ export const ProductMutationTemplate = () => {
       return true;
     }
     return false;
-  }, [currentStep, skipAble, productDetails]);
+  }, [currentStep, skipAble, productData]);
 
   const handleFieldChange = useCallback(() => {
     setSkipAble(false);
