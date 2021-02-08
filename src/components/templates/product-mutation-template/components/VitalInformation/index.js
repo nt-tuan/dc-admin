@@ -49,17 +49,10 @@ const VitalInformationForm = ({
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
 
-  const [hsCodeData, setHsCodeData] = useState({
-    page: 0,
-    data: hsCode
-  });
+  const [hsCodeData, setHsCodeData] = useState(hsCode);
 
   useEffect(() => {
-    setHsCodeData({
-      ...hsCodeData,
-      data: hsCode,
-      keyword: null
-    });
+    setHsCodeData(hsCode);
   }, [hsCode]);
 
   useEffect(() => {
@@ -355,34 +348,40 @@ const VitalInformationForm = ({
         const parseHsCode = req?.content.map((item) => ({
           ...item,
           id: item.hsCode,
-          name: item.hsCode,
-          keyword: value
+          name: item.hsCode
         }));
         setHsCodeData({
-          hsCodeData,
-          ...parseHsCode
+          ...hsCodeData,
+          data: [...hsCodeData.data, parseHsCode],
+          keyword: value
         });
       } else {
         setHsCodeData([]);
       }
     }
   }, 800);
+  console.log(hsCodeData);
 
   const onPopupScroll = debounce(async (value) => {
-    const { keyword, page } = hsCodeData;
+    const { keyword, page, totalPages } = hsCodeData;
     const pageR = page + 1;
-    const req = await ProductService.getAllHsCode(keyword, pageR);
-    if (req && req?.content.length > 0) {
-      const parseHsCode = req?.content.map((item) => ({
-        ...item,
-        id: item.hsCode,
-        name: item.hsCode
-      }));
-      setHsCodeData({
-        ...hsCodeData,
-        parseHsCode,
-        page: pageR
-      });
+    console.log(pageR, totalPages);
+    if (pageR <= totalPages) {
+      const req = await ProductService.getAllHsCode(keyword, pageR);
+      if (req && req?.content.length > 0 && pageR !== req.number) {
+        const parseHsCode = req?.content.map((item) => ({
+          ...item,
+          id: item.hsCode,
+          name: item.hsCode
+        }));
+        setHsCodeData({
+          ...hsCodeData,
+          data: [...hsCodeData.data, ...parseHsCode],
+          parseHsCode,
+          page: pageR,
+          totalPages: req.totalPages
+        });
+      }
     }
   }, 800);
 
