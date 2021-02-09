@@ -10,7 +10,9 @@ import debounce from "lodash/debounce";
 const INPUT_TYPE = {
   SELECT: "SELECT",
   INPUT: "INPUT",
-  NUMBER: "NUMBER"
+  NUMBER: "NUMBER",
+  SELECT_HSCODE_CHAR: "SELECT_HSCODE_CHAR",
+  SELECT_HSCODE_NUMBER: "SELECT_HSCODE_NUMBER"
 };
 
 const { Option } = Select;
@@ -164,16 +166,22 @@ const VitalInformationForm = ({
       {
         label: "HS Code Description",
         name: "hsCodeDescription",
-        type: INPUT_TYPE.INPUT,
+        type: INPUT_TYPE.SELECT_HSCODE_CHAR,
         props: { disabled: true },
         options: {
-          rules: []
+          options: hsCodeData?.data,
+          rules: [
+            {
+              required: true,
+              message: createFormErrorComp(REQUIRED_ERR("HS Code Description"))
+            }
+          ]
         }
       },
       {
         label: "HS Code",
         name: "hsCode",
-        type: INPUT_TYPE.SELECT_HSCODE,
+        type: INPUT_TYPE.SELECT_HSCODE_NUMBER,
         options: {
           options: hsCodeData?.data,
           rules: [
@@ -323,6 +331,21 @@ const VitalInformationForm = ({
               });
             }
           };
+        case "hsCodeDescription":
+          return (code) => {
+            const findCode = hsCodeData?.data.find((item) => item.hsCodeDescription === code);
+            if (findCode) {
+              form.setFieldsValue({ hsCode: findCode.hsCode });
+              form.setFieldsValue({ chapterLabel: findCode.chapterLabel });
+              form.setFieldsValue({ headingLabel: findCode.headingLabel });
+              form.setFieldsValue({ ahecc: findCode.ahecc });
+              form.setFieldsValue({ aheccFullDescription: findCode.aheccDescription });
+              // //Handling for Empty Field from BE
+              form.setFieldsValue({
+                quantity: findCode.unitQuantity !== undefined ? findCode.unitQuantity : ""
+              });
+            }
+          };
         case "ahecc":
           return (selectedCode) => {
             const selectedAheccCode = aheccCode.find((code) => code.id === selectedCode);
@@ -361,8 +384,6 @@ const VitalInformationForm = ({
     }
   }, 800);
 
-  console.log(hsCodeData);
-
   const onPopupScroll = debounce(async () => {
     const { keyword, page, totalPages } = hsCodeData;
     const pageR = page + 1;
@@ -388,7 +409,7 @@ const VitalInformationForm = ({
   const renderSchema = useCallback(
     (schema) => {
       switch (schema.type) {
-        case INPUT_TYPE.SELECT_HSCODE:
+        case INPUT_TYPE.SELECT_HSCODE_NUMBER:
           return (
             <Select
               showSearch
@@ -403,7 +424,28 @@ const VitalInformationForm = ({
               {schema?.options?.options?.map((item) => {
                 return (
                   <Option key={item.id} value={item.id}>
-                    {`${item.hsCode} - ${item.hsCodeDescription}`}
+                    {`${item.hsCode}`}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
+        case INPUT_TYPE.SELECT_HSCODE_CHAR:
+          return (
+            <Select
+              showSearch
+              showArrow={false}
+              filterOption={false}
+              notFoundContent={null}
+              onSearch={onSearchHSCode}
+              mode={schema.mode}
+              onChange={handleFieldChange(schema.name)}
+              onPopupScroll={onPopupScroll}
+            >
+              {schema?.options?.options?.map((item) => {
+                return (
+                  <Option key={`name-${item.id}`} value={item.hsCodeDescription}>
+                    {`${item.hsCodeDescription}`}
                   </Option>
                 );
               })}
