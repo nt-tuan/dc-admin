@@ -352,7 +352,7 @@ const VitalInformationForm = ({
         }));
         setHsCodeData({
           ...hsCodeData,
-          data: [...hsCodeData.data, parseHsCode],
+          data: [...parseHsCode],
           keyword: value
         });
       } else {
@@ -360,15 +360,15 @@ const VitalInformationForm = ({
       }
     }
   }, 800);
+
   console.log(hsCodeData);
 
-  const onPopupScroll = debounce(async (value) => {
+  const onPopupScroll = debounce(async () => {
     const { keyword, page, totalPages } = hsCodeData;
     const pageR = page + 1;
-    console.log(pageR, totalPages);
     if (pageR <= totalPages) {
       const req = await ProductService.getAllHsCode(keyword, pageR);
-      if (req && req?.content.length > 0 && pageR !== req.number) {
+      if (req && req?.content.length > 0) {
         const parseHsCode = req?.content.map((item) => ({
           ...item,
           id: item.hsCode,
