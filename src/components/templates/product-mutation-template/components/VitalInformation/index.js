@@ -1,15 +1,18 @@
 import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { RegexConst, REQUIRED_ERR } from "commons/consts";
-import { Col, Form, Input, Row, Select, InputNumber } from "antd";
+import { Col, Form, Input, Row, Select, InputNumber, Spin } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
+import debounce from "lodash/debounce";
 
 const INPUT_TYPE = {
   SELECT: "SELECT",
   INPUT: "INPUT",
-  NUMBER: "NUMBER"
+  NUMBER: "NUMBER",
+  SELECT_HSCODE_CHAR: "SELECT_HSCODE_CHAR",
+  SELECT_HSCODE_NUMBER: "SELECT_HSCODE_NUMBER"
 };
 
 const { Option } = Select;
@@ -47,6 +50,12 @@ const VitalInformationForm = ({
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
+
+  const [hsCodeData, setHsCodeData] = useState(hsCode);
+
+  useEffect(() => {
+    setHsCodeData(hsCode);
+  }, [hsCode]);
 
   useEffect(() => {
     if (productDetails) {
@@ -153,12 +162,28 @@ const VitalInformationForm = ({
           disabled: !!productDetails
         }
       },
+
+      {
+        label: "HS Code Description",
+        name: "hsCodeDescription",
+        type: INPUT_TYPE.SELECT_HSCODE_CHAR,
+        props: { disabled: true },
+        options: {
+          options: hsCodeData?.data,
+          rules: [
+            {
+              required: true,
+              message: createFormErrorComp(REQUIRED_ERR("HS Code Description"))
+            }
+          ]
+        }
+      },
       {
         label: "HS Code",
         name: "hsCode",
-        type: INPUT_TYPE.SELECT,
+        type: INPUT_TYPE.SELECT_HSCODE_NUMBER,
         options: {
-          options: hsCode,
+          options: hsCodeData?.data,
           rules: [
             {
               required: true,
@@ -185,15 +210,7 @@ const VitalInformationForm = ({
           rules: []
         }
       },
-      {
-        label: "HS Code Description",
-        name: "hsCodeDescription",
-        type: INPUT_TYPE.INPUT,
-        props: { disabled: true },
-        options: {
-          rules: []
-        }
-      },
+
       // Note: remove AHECC, AHECC Full Description field and do not disable Unit of Quantity field for hsb2b
       // {
       //   label: "AHECC",
@@ -292,7 +309,7 @@ const VitalInformationForm = ({
       }
     ];
     return fields;
-  }, [categories, types, hsCode, form, setIsValidProductName]);
+  }, [categories, types, hsCodeData, form, setIsValidProductName]);
 
   const handleFieldChange = useCallback(
     (name) => {
@@ -301,25 +318,33 @@ const VitalInformationForm = ({
           return onCategoryChange;
         case "hsCode":
           return (code) => {
-            asyncErrorHandlerWrapper(async () => {
-              const hsDetails = await ProductService.getHsCodeDetails(code);
-              form.setFieldsValue({ hsCodeDescription: hsDetails[0].hsCodeDescription });
-              form.setFieldsValue({ chapterLabel: hsDetails[0].chapterLabel });
-              form.setFieldsValue({ headingLabel: hsDetails[0].headingLabel });
-              form.setFieldsValue({ ahecc: hsDetails[0].ahecc });
-              form.setFieldsValue({ aheccFullDescription: hsDetails[0].aheccDescription });
-              //Handling for Empty Field from BE
+            const findCode = hsCodeData?.data.find((item) => item.id === code);
+            if (findCode) {
+              form.setFieldsValue({ hsCodeDescription: findCode.hsCodeDescription });
+              form.setFieldsValue({ chapterLabel: findCode.chapterLabel });
+              form.setFieldsValue({ headingLabel: findCode.headingLabel });
+              form.setFieldsValue({ ahecc: findCode.ahecc });
+              form.setFieldsValue({ aheccFullDescription: findCode.aheccDescription });
+              // //Handling for Empty Field from BE
               form.setFieldsValue({
-                quantity: hsDetails[0].unitQuantity !== undefined ? hsDetails[0].unitQuantity : ""
+                quantity: findCode.unitQuantity !== undefined ? findCode.unitQuantity : ""
               });
-              const aheccCode = hsDetails.map((hs) => ({
-                id: hs.ahecc,
-                name: hs.ahecc,
-                aheccDescription: hs.aheccDescription,
-                unitQuantity: hs.unitQuantity
-              }));
-              setAheccCode(aheccCode);
-            });
+            }
+          };
+        case "hsCodeDescription":
+          return (code) => {
+            const findCode = hsCodeData?.data.find((item) => item.hsCodeDescription === code);
+            if (findCode) {
+              form.setFieldsValue({ hsCode: findCode.hsCode });
+              form.setFieldsValue({ chapterLabel: findCode.chapterLabel });
+              form.setFieldsValue({ headingLabel: findCode.headingLabel });
+              form.setFieldsValue({ ahecc: findCode.ahecc });
+              form.setFieldsValue({ aheccFullDescription: findCode.aheccDescription });
+              // //Handling for Empty Field from BE
+              form.setFieldsValue({
+                quantity: findCode.unitQuantity !== undefined ? findCode.unitQuantity : ""
+              });
+            }
           };
         case "ahecc":
           return (selectedCode) => {
@@ -336,12 +361,96 @@ const VitalInformationForm = ({
           return () => {};
       }
     },
-    [onCategoryChange, form, aheccCode]
+    [onCategoryChange, form, aheccCode, hsCodeData]
   );
+
+  const onSearchHSCode = debounce(async (value) => {
+    if (value !== "") {
+      const req = await ProductService.getAllHsCode(value);
+      if (req && req?.content.length > 0) {
+        const parseHsCode = req?.content.map((item) => ({
+          ...item,
+          id: item.hsCode,
+          name: item.hsCode
+        }));
+        setHsCodeData({
+          ...hsCodeData,
+          data: [...parseHsCode],
+          keyword: value
+        });
+      } else {
+        setHsCodeData([]);
+      }
+    }
+  }, 800);
+
+  const onPopupScroll = debounce(async () => {
+    const { keyword, page, totalPages } = hsCodeData;
+    const pageR = page + 1;
+    if (pageR <= totalPages) {
+      const req = await ProductService.getAllHsCode(keyword, pageR);
+      if (req && req?.content.length > 0) {
+        const parseHsCode = req?.content.map((item) => ({
+          ...item,
+          id: item.hsCode,
+          name: item.hsCode
+        }));
+        setHsCodeData({
+          ...hsCodeData,
+          data: [...hsCodeData.data, ...parseHsCode],
+          parseHsCode,
+          page: pageR,
+          totalPages: req.totalPages
+        });
+      }
+    }
+  }, 800);
 
   const renderSchema = useCallback(
     (schema) => {
       switch (schema.type) {
+        case INPUT_TYPE.SELECT_HSCODE_NUMBER:
+          return (
+            <Select
+              showSearch
+              showArrow={false}
+              filterOption={false}
+              notFoundContent={null}
+              onSearch={onSearchHSCode}
+              mode={schema.mode}
+              onChange={handleFieldChange(schema.name)}
+              onPopupScroll={onPopupScroll}
+            >
+              {schema?.options?.options?.map((item) => {
+                return (
+                  <Option key={item.id} value={item.id}>
+                    {`${item.hsCode}`}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
+        case INPUT_TYPE.SELECT_HSCODE_CHAR:
+          return (
+            <Select
+              showSearch
+              showArrow={false}
+              filterOption={false}
+              notFoundContent={null}
+              onSearch={onSearchHSCode}
+              mode={schema.mode}
+              onChange={handleFieldChange(schema.name)}
+              onPopupScroll={onPopupScroll}
+            >
+              {schema?.options?.options?.map((item) => {
+                return (
+                  <Option key={`name-${item.id}`} value={item.hsCodeDescription}>
+                    {`${item.hsCodeDescription}`}
+                  </Option>
+                );
+              })}
+            </Select>
+          );
         case INPUT_TYPE.SELECT:
           return (
             <Select mode={schema.mode} onChange={handleFieldChange(schema.name)}>

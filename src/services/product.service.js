@@ -84,8 +84,10 @@ export class ProductService {
     return result;
   };
 
-  static getAllHsCode = async () => {
-    const result = await backendAPI.get(this.HS_CODE);
+  static getAllHsCode = async (search = null, page = 0, size = 100) => {
+    const result = await backendAPI.get(
+      `${this.HS_CODE}?page=${page}&size=${size}${search !== null ? `&searchText=${search}` : ""}`
+    );
     return result;
   };
 
