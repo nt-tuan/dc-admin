@@ -25,7 +25,12 @@ export const ProductMutationTemplate = () => {
   const [categories, setCategories] = useState([]);
 
   const [types, setTypes] = useState([]);
-  const [hsCode, setHsCode] = useState([]);
+  const [hsCode, setHsCode] = useState({
+    data: [],
+    page: 0,
+    totalPages: null,
+    keyword: null
+  });
   const [skipAble, setSkipAble] = useState(true);
 
   //Set break-point for Progressive bar
@@ -58,9 +63,17 @@ export const ProductMutationTemplate = () => {
         ProductService.getProductCategories(),
         ProductService.getAllHsCode()
       ]);
-      const parseHsCode = hsCode.map((code) => ({ id: code, name: code }));
+      const parseHsCode = hsCode?.content.map((item) => ({
+        ...item,
+        id: item.hsCode,
+        name: item.hsCode
+      }));
       setCategories(categories);
-      setHsCode(parseHsCode);
+      setHsCode({
+        data: [...parseHsCode],
+        page: hsCode.number,
+        totalPages: hsCode.totalPages
+      });
     });
   }, [currentStep]);
 
