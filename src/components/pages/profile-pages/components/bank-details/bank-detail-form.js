@@ -133,8 +133,8 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     },
     {
       name: FIELDS.swiftCode,
-      label: LABELS[FIELDS.swiftCode],
-      placeholder: LABELS[FIELDS.swiftCode],
+      label: labelBankType,
+      placeholder: labelBankType,
       className: "d-lg-inline-block col-lg-6 pr-lg-3",
       options: {
         rules: [
@@ -397,8 +397,17 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             <Select
               showSearch
               onChange={(value) => {
+                if (value === "ACH") {
+                  setLabelBankType("ACH Company ID");
+                }
+                if (value === "SWIFT") {
+                  setLabelBankType("SWIFT Code");
+                }
+                if (value === "CHIPS") {
+                  setLabelBankType("CHIPS UID");
+                }
+
                 if (type === "primary") {
-                  setLabelBankType(BANK_TYPES[value]);
                   if (value === "ACH" || value === "CHIPS") {
                     setDisabledField([FIELDS.sortCode]);
                   }
@@ -522,11 +531,11 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
           <Form.Item
             key={`${type}-${item.name}`}
             name={`${type}-${item.name}`}
-            label={`${type === null ? labelBankType : labelBankTypeSecondary}`}
+            label={`${type === "primary" ? labelBankType : labelBankTypeSecondary}`}
             rules={item.options?.rules}
             className="label-form-left"
           >
-            <Input placeholder={`${type === null ? labelBankType : labelBankTypeSecondary}`} />
+            <Input placeholder={`${type === "primary" ? labelBankType : labelBankTypeSecondary}`} />
           </Form.Item>
         );
       default:
