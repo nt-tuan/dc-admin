@@ -98,12 +98,17 @@ export const ProductMutationTemplate = () => {
       } else {
         const formName = Object.keys(values)[0];
         const formValue = values[formName].map((item, parentId) => {
+          //Reset the child field before adding or removing
+          item.fieldOption.map((opt) => {
+            opt.childField = Array[0];
+            return opt;
+          });
+
           //Check if  child values available
           if (values["childValue"]) {
             values["childValue"].map((child) => {
               let id = child.parentId;
               let plotIndex = child.plotOption;
-              if (child.isSet) return;
               //Check if parentID match to the child
               if (parentId == id) {
                 item.fieldOption = item.fieldOption.map((opt, index) => {
@@ -111,10 +116,8 @@ export const ProductMutationTemplate = () => {
                   if (index == plotIndex) {
                     if (opt.childField) {
                       opt.childField.push(child);
-                      child.isSet = true;
                     } else {
                       opt.childField = [child];
-                      child.isSet = true;
                     }
                   }
                   return opt;
