@@ -68,8 +68,10 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         ...data.details.variantDetails
       ],
       offerDetails: [...data.details?.offerDetails],
-      packingDetails: [...data.details?.packingDetails],
-      certificationDetails: [...data.details?.certificationDetails]
+      packingDetails: data.details?.packingDetails ? [...data.details?.packingDetails] : Array[0],
+      certificationDetails: data.details?.certificationDetails
+        ? [...data.details?.certificationDetails]
+        : Array[0]
     };
     flatData("variantDetails");
     flatData("offerDetails");
