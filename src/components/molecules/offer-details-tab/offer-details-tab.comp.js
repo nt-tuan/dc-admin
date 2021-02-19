@@ -69,43 +69,45 @@ const ProductReviewSection = memo(({ name, data }) => {
   );
 
   return (
-    <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
-      <h5>{SECTION_LABEL[name]}</h5>
-      {name === "certificationDetails" && (
-        <div className="">Please choose certifications applicable for your product</div>
-      )}
-      <div className="row">
-        {data
-          .filter((item) =>
-            item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
-          )
-          .map(({ fieldName, type, fieldOption }, index) => {
-            if (type === "radio") {
-              return (
-                <div key={`${fieldName}${index}`} className="col-12 mt-3 row">
-                  <div className="text-capitalize col-xl-3 col-12">{fieldName}</div>
-                  <div className="col-12 col-xl-9 row">
-                    {mappingType(type, fieldOption, fieldName)}
+    data && (
+      <div className="air__utils__shadow p-3 dtc-br-10 bg-white mb-3">
+        <h5>{SECTION_LABEL[name]}</h5>
+        {name === "certificationDetails" && (
+          <div className="">Please choose certifications applicable for your product</div>
+        )}
+        <div className="row">
+          {data
+            .filter((item) =>
+              item.parentField ? selectedParent[item.rootField]?.includes(item.parentField) : item
+            )
+            .map(({ fieldName, type, fieldOption }, index) => {
+              if (type === "radio") {
+                return (
+                  <div key={`${fieldName}${index}`} className="col-12 mt-3 row">
+                    <div className="text-capitalize col-xl-3 col-12">{fieldName}</div>
+                    <div className="col-12 col-xl-9 row">
+                      {mappingType(type, fieldOption, fieldName)}
+                    </div>
                   </div>
+                );
+              }
+              return (
+                <div
+                  key={`${fieldName}${index}`}
+                  className={`col-12 mt-3 ${
+                    type === "textbox" && fieldOption[0].textboxType === "longText"
+                      ? "col-xl-12"
+                      : "col-xl-6"
+                  }`}
+                >
+                  <div className="text-capitalize">{fieldName}</div>
+                  {mappingType(type, fieldOption, fieldName)}
                 </div>
               );
-            }
-            return (
-              <div
-                key={`${fieldName}${index}`}
-                className={`col-12 mt-3 ${
-                  type === "textbox" && fieldOption[0].textboxType === "longText"
-                    ? "col-xl-12"
-                    : "col-xl-6"
-                }`}
-              >
-                <div className="text-capitalize">{fieldName}</div>
-                {mappingType(type, fieldOption, fieldName)}
-              </div>
-            );
-          })}
+            })}
+        </div>
       </div>
-    </div>
+    )
   );
 });
 
