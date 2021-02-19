@@ -67,7 +67,9 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         // },
         ...data.details.variantDetails
       ],
-      offerDetails: [...data.details?.offerDetails]
+      offerDetails: [...data.details?.offerDetails],
+      packingDetails: [...data.details?.packingDetails],
+      certificationDetails: [...data.details?.certificationDetails]
     };
     flatData("variantDetails");
     flatData("offerDetails");

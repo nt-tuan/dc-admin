@@ -248,7 +248,6 @@ export const ProductMutationTemplate = () => {
           };
         })
       };
-
       asyncErrorHandlerWrapper(async () => {
         if (productDetails) {
           const searchParams = window.location.search;
@@ -386,7 +385,6 @@ export const ProductMutationTemplate = () => {
           )}
         </Form.Provider>
       </DTCSection>
-
       <div className={`footer ${isSkip() && "mb-3"}`}>
         {currentStep !== 1 && (
           <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
