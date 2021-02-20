@@ -226,6 +226,8 @@ const AddRoutePage = () => {
           if (error instanceof APIError) {
             const err = error.errors;
             message.warning(err[0][1]);
+          } else if (error.message == 400) {
+            message.warning(error.errMsg);
           } else {
             throw error;
           }
