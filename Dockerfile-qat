@@ -7,6 +7,7 @@ COPY package.json /app/package.json
 RUN apk add --no-cache git
 RUN yarn install
 RUN yarn add lodash
+RUN yarn add lodash.isequalwith
 COPY . /app
 RUN npm run build-qat
 
