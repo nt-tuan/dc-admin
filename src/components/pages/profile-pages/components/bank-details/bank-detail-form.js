@@ -535,7 +535,11 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             rules={item.options?.rules}
             className="label-form-left"
           >
-            <Input placeholder={`${type === "primary" ? labelBankType : labelBankTypeSecondary}`} />
+            <Input
+              placeholder={`Recipient's Bank ${
+                type === "primary" ? labelBankType : labelBankTypeSecondary
+              }`}
+            />
           </Form.Item>
         );
       default:
