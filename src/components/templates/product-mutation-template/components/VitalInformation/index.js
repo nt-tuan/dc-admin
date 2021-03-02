@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { RegexConst, REQUIRED_ERR } from "commons/consts";
-import { Col, Form, Input, Row, Select, InputNumber, Spin } from "antd";
+import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 import debounce from "lodash/debounce";
 
@@ -25,8 +24,6 @@ const defaultValue1 = {
   chapterLabel: "",
   headingLabel: "",
   hsCodeDescription: "",
-  aheccCode: "",
-  aheccFullDescription: "",
   quantity: "",
   minimumQuantity: "",
   allowedMultiplesQuantity: ""
@@ -46,7 +43,8 @@ const VitalInformationForm = ({
   types,
   hsCode,
   setIsValidProductName,
-  productDetails
+  productDetails,
+  isEditing
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
@@ -128,6 +126,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Category"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails && isEditing
         }
       },
       {
@@ -142,6 +143,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Type"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails && isEditing
         }
       },
       {
@@ -159,7 +163,7 @@ const VitalInformationForm = ({
         props: {
           onChange: (e) => handleChangeName(e.target.value),
           maxLength: 51,
-          disabled: !!productDetails
+          disabled: !!productDetails && isEditing
         }
       },
       {

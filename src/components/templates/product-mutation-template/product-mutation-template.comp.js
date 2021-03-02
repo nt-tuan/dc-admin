@@ -19,7 +19,7 @@ const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
-export const ProductMutationTemplate = ({ productDetails }) => {
+export const ProductMutationTemplate = ({ productDetails, isEditing = false }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
@@ -237,7 +237,7 @@ export const ProductMutationTemplate = ({ productDetails }) => {
         })
       };
       asyncErrorHandlerWrapper(async () => {
-        if (productDetails) {
+        if (isEditing) {
           const searchParams = window.location.search;
           const productId = searchParams.split("uid=")[1];
           delete data.typeId;
@@ -247,10 +247,10 @@ export const ProductMutationTemplate = ({ productDetails }) => {
             : "";
           data.productId = productId;
           await ProductService.editProduct(data, productId);
-          message.success("Edit Successfully");
+          message.success("Product was successfully updated!");
         } else {
           await ProductService.addProduct(data);
-          message.success("Create Successfully");
+          message.success("Product was successfully created!");
         }
         setTimeout(() => {
           window.location.href = "/product-database";
@@ -340,6 +340,7 @@ export const ProductMutationTemplate = ({ productDetails }) => {
               isValidProductName={isValidProductName}
               setIsValidProductName={setIsValidProductName}
               productDetails={productDetails}
+              isEditing={isEditing}
             />
           </div>
           <div className={classNames({ "d-none": currentStep !== 2 })}>
