@@ -89,6 +89,23 @@ const ProductDatabase = () => {
                   Edit
                 </Button>
                 <Button
+                  className="mt-3 w-100"
+                  onClick={(e) => {
+                    dispatch({
+                      type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
+                      payload: { pageName: "EditProductPage" }
+                    });
+                    history.push(
+                      `${RouteConst.EDIT_PRODUCT.replace(":id", `${product.name}`)}?uid=${
+                        product.id
+                      }`
+                    );
+                  }}
+                >
+                  <div className="text-truncate">{`Duplicate ${product.name}`}</div>
+                </Button>
+                <Button
+                  className="mt-3"
                   loading={loading}
                   disabled={loading}
                   onClick={() => handleDeleteProduct(product.id, setLoading, setHidden)}
