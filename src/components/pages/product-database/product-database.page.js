@@ -93,10 +93,10 @@ const ProductDatabase = () => {
                   onClick={(e) => {
                     dispatch({
                       type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
-                      payload: { pageName: "EditProductPage" }
+                      payload: { pageName: "CopyProductPage" }
                     });
                     history.push(
-                      `${RouteConst.EDIT_PRODUCT.replace(":id", `${product.name}`)}?uid=${
+                      `${RouteConst.COPY_PRODUCT.replace(":id", `Copy of ${product.name}`)}?uid=${
                         product.id
                       }`
                     );

@@ -20,6 +20,7 @@ export class RouteConst extends SharedPaths {
       this.PRODUCT_DATABASE,
       this.ADD_PRODUCT,
       this.EDIT_PRODUCT,
+      this.COPY_PRODUCT,
       this.REBATES,
       this.CREATE_REBATES,
       this.EDIT_REBATES,

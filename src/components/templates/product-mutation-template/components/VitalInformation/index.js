@@ -162,7 +162,6 @@ const VitalInformationForm = ({
           disabled: !!productDetails
         }
       },
-
       {
         label: "HS Code Description",
         name: "hsCodeDescription",
@@ -210,39 +209,6 @@ const VitalInformationForm = ({
           rules: []
         }
       },
-
-      // Note: remove AHECC, AHECC Full Description field and do not disable Unit of Quantity field for hsb2b
-      // {
-      //   label: "AHECC",
-      //   name: "ahecc",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode,
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC"))
-      //       }
-      //     ]
-      //   }
-      // },
-      // {
-      //   label: "AHECC Full Description",
-      //   name: "aheccFullDescription",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode.map((code) => ({
-      //       id: code.aheccDescription,
-      //       name: code.aheccDescription
-      //     })),
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC Full Description"))
-      //       }
-      //     ]
-      //   }
-      // },
       {
         label: "Unit of Quantity",
         name: "quantity",
@@ -251,13 +217,7 @@ const VitalInformationForm = ({
           disabled: false
         },
         options: {
-          rules: [
-            //Remove as no long requried field
-            // {
-            //   required: true,
-            //   message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-            // }
-          ]
+          rules: []
         }
       },
       {

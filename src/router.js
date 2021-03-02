@@ -138,7 +138,11 @@ const privateRoutes = [
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
     exact: false
   },
-
+  {
+    path: RouteConst.COPY_PRODUCT,
+    Component: loadable(() => import("components/pages/copy-product/copy-product.page")),
+    exact: false
+  },
   {
     path: RouteConst.ROUTE,
     Component: loadable(() => import("components/pages/route/route.page")),

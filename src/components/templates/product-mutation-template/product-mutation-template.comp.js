@@ -19,7 +19,7 @@ const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
-export const ProductMutationTemplate = () => {
+export const ProductMutationTemplate = ({ productDetails }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
@@ -44,20 +44,8 @@ export const ProductMutationTemplate = () => {
   const [certificationForm] = Form.useForm();
 
   const [isValidProductName, setIsValidProductName] = useState(true);
-  const [productDetails, setProductDetails] = useState();
 
   useEffect(() => {
-    const searchParams = window.location.search;
-    if (searchParams) {
-      const productId = searchParams.split("uid=")[1];
-      asyncErrorHandlerWrapper(async () => {
-        const productDetails = await ProductService.getProductDetails(productId);
-        // const productDetails = await ProductService.getProductDetails(
-        //   "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
-        // );
-        setProductDetails(productDetails);
-      });
-    }
     asyncErrorHandlerWrapper(async () => {
       const [categories, hsCode] = await Promise.all([
         ProductService.getProductCategories(),

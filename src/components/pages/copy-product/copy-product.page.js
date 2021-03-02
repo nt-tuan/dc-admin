@@ -1,11 +1,11 @@
 import { ProductMutationTemplate } from "components/templates";
 import React, { useEffect, useState } from "react";
-import qs from "qs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 import { Helmet } from "react-helmet";
+import qs from "qs";
 
-const EditProductPage = () => {
+const CopyProductPage = () => {
   const { uid: productId } = qs.parse(location.search, {
     ignoreQueryPrefix: true
   });
@@ -13,17 +13,17 @@ const EditProductPage = () => {
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
-      const productDetails = await ProductService.getProductDetails(productId);
-      setProductDetails(productDetails);
+      const details = await ProductService.getProductDetails(productId);
+      setProductDetails({ ...details, name: "Copy of " + details.name });
     });
   }, [productId]);
 
   return (
     <>
-      <Helmet title="Edit Product" />
+      <Helmet title="Add Product" />
       <ProductMutationTemplate productDetails={productDetails} />
     </>
   );
 };
 
-export default EditProductPage;
+export default CopyProductPage;
