@@ -95,11 +95,7 @@ const ProductDatabase = () => {
                       type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
                       payload: { pageName: "CopyProductPage" }
                     });
-                    history.push(
-                      `${RouteConst.COPY_PRODUCT.replace(":id", `Copy of ${product.name}`)}?uid=${
-                        product.id
-                      }`
-                    );
+                    history.push(`${RouteConst.ADD_PRODUCT}?uid=${product.id}`);
                   }}
                 >
                   <div className="text-truncate">{`Duplicate ${product.name}`}</div>

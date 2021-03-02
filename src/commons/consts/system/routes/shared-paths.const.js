@@ -50,9 +50,6 @@ export class SharedPaths {
   static get EDIT_PRODUCT() {
     return "/edit-product/:id";
   }
-  static get COPY_PRODUCT() {
-    return "/add-product/:id";
-  }
   static get REBATES() {
     return "/rebates";
   }
