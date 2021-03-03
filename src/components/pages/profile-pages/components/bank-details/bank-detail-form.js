@@ -81,6 +81,9 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
           },
           {
             validator: (rule, value, callback) => {
+              if (!value || value.length <= 0) {
+                return callback();
+              }
               const splitValue = value?.toLowerCase().split(" ");
               const splitCompanyName = companyName?.toLowerCase().split(" ");
               let isOk = false;
@@ -535,7 +538,11 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
             rules={item.options?.rules}
             className="label-form-left"
           >
-            <Input placeholder={`${type === "primary" ? labelBankType : labelBankTypeSecondary}`} />
+            <Input
+              placeholder={`Recipient's Bank ${
+                type === "primary" ? labelBankType : labelBankTypeSecondary
+              }`}
+            />
           </Form.Item>
         );
       default:

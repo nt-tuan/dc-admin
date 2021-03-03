@@ -50,6 +50,38 @@ export const BankDetailsReadonly = ({
     }, 1000);
   };
 
+  let labelSwiftCodePrimary;
+  let labelSwiftCodeSecondary;
+
+  const renderLabelCode = (value, field, index) => {
+    let labelBank = label[field];
+    if (index === 0 && value === "ACH" && field === "bankIdType") {
+      labelSwiftCodePrimary = "ACH Company ID";
+    }
+    if (index === 1 && value === "ACH" && field === "bankIdType") {
+      labelSwiftCodeSecondary = "ACH Company ID";
+    }
+    if (index === 0 && value === "SWIFT" && field === "bankIdType") {
+      labelSwiftCodePrimary = "SWIFT Code";
+    }
+    if (index === 1 && value === "SWIFT" && field === "bankIdType") {
+      labelSwiftCodeSecondary = "SWIFT Code";
+    }
+    if (index === 0 && value === "CHIPS" && field === "bankIdType") {
+      labelSwiftCodePrimary = "CHIPS UID";
+    }
+    if (index === 1 && value === "CHIPS" && field === "bankIdType") {
+      labelSwiftCodeSecondary = "CHIPS UID";
+    }
+    if (index === 0 && field === "swiftCode") {
+      labelBank = labelSwiftCodePrimary;
+    }
+    if (index === 1 && field === "swiftCode") {
+      labelBank = labelSwiftCodeSecondary;
+    }
+    return labelBank;
+  };
+
   return (
     <React.Fragment>
       {showHeader ? (
@@ -86,7 +118,7 @@ export const BankDetailsReadonly = ({
                       style={{ width: `${isCopy ? "70%" : "100%"}` }}
                     >
                       <b className={label[field] === "Payment Reference" ? "red-color" : null}>
-                        {label[field]}{" "}
+                        {renderLabelCode(record[field], field, index)}{" "}
                       </b>
                       <div className={field === "paymentReference" ? "red-color font-bold" : null}>
                         {field === BANK_DETAILS.nationality

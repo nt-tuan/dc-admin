@@ -5,7 +5,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json /app/package.json
 # COPY yarn.lock /app/yarn.lock
 RUN apk add --no-cache git
-RUN npm install
+RUN yarn install
+RUN yarn add lodash
+RUN yarn add lodash.isequalwith
 COPY . /app
 RUN npm run build-qat
 
