@@ -366,7 +366,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
           <div className={classNames({ "d-none": currentStep !== 6 })}>
             <ProductTemplateImage
               ref={(ref) => (templateImageForm.current = ref)}
-              productDetails={productDetails}
+              productImages={productDetails?.images}
             />
           </div>
           {currentStep === 7 && (
