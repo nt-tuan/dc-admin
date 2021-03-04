@@ -6,8 +6,9 @@ import { PASSWORD_SCHEMA } from "commons/schemas";
 import { PW_2_PASSWORD_NOT_THE_SAME_ERR } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { AuthService } from "services/auth.service";
-import { MESSAGES } from "commons/consts";
+import { MESSAGES, API_ERRORS } from "commons/consts";
 import PropTypes from "prop-types";
+import { isObject } from "lodash";
 
 LoginSetting.propTypes = {};
 
@@ -25,14 +26,25 @@ function LoginSetting() {
             content: MESSAGES.CHANGE_PASSWORD_SUCCESS
           });
         }
-      } catch (error) {
-        if (error instanceof APIError) {
-          message.error({
-            content: "Error"
-          });
+      } catch (errors) {
+        if (errors instanceof APIError) {
+          if (isObject(errors.errors)) {
+            const errorFields = errors.errors.map((error) => {
+              const errorField = error[0];
+              const errorCode = error[1];
+              // message.error({
+              //   content: API_ERRORS[errorCode]
+              // });
+              return {
+                name: errorField,
+                errors: [API_ERRORS[errorCode]]
+              };
+            });
+            form.setFields(errorFields);
+          }
           return;
         }
-        throw error;
+        throw errors;
       }
     });
   };

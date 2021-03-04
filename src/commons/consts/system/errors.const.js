@@ -23,7 +23,7 @@ export const SERVER_UNKNOWN_ERR =
   "There is something wrong with our server, please refresh the page";
 export const CUR_PW_SAME_AS_NEW_PW_ERR = "Current Password and New password can't be the same";
 export const LOGIN_WRONG_OVER_3_TIMES_ERR = `Your account has temporarily been locked due to failed login attempts. Please contact Customer care or click here to recieve an email containing instructions on how to unlock your account.`;
-export const CUR_PW_IS_NOT_VALID = "Wrong current password";
+export const CUR_PW_IS_NOT_VALID = "The password you entered is incorrect, please try again";
 export const WRONG_VERIFICATION_CODE = "Wrong verification code";
 /* user management */
 export const COULD_NOT_CREATE_USER =
