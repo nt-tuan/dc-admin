@@ -13,6 +13,8 @@ import { isObject } from "lodash";
 LoginSetting.propTypes = {};
 
 function LoginSetting() {
+  const [form] = Form.useForm();
+
   const onFinish = (values) => {
     asyncErrorHandlerWrapper(async () => {
       try {
@@ -48,7 +50,7 @@ function LoginSetting() {
       }
     });
   };
-  const [form] = Form.useForm();
+
   const RESET_PW_SCHEMA = {
     currentPassword: {
       name: "currentPassword",
