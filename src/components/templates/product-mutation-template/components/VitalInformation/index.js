@@ -126,9 +126,6 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Category"))
             }
           ]
-        },
-        props: {
-          disabled: !!productDetails && isEditing
         }
       },
       {
@@ -143,9 +140,6 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Type"))
             }
           ]
-        },
-        props: {
-          disabled: !!productDetails && isEditing
         }
       },
       {

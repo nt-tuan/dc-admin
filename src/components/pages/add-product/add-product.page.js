@@ -6,10 +6,10 @@ import qs from "qs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const AddProductPage = () => {
-  const { uid: productId } = qs.parse(location.search, {
+  const { uid: copyProductId } = qs.parse(location.search, {
     ignoreQueryPrefix: true
   });
-  const [productDetails, setProductDetails] = useState(undefined);
+  const [productDetails, setProductDetails] = useState();
 
   const handleCopiedProduct = (details) => {
     const newName = "Copy of " + details.name;
@@ -21,14 +21,13 @@ const AddProductPage = () => {
   };
 
   useEffect(() => {
-    // duplicating product
-    if (productId) {
+    if (copyProductId) {
       asyncErrorHandlerWrapper(async () => {
-        const details = await ProductService.getProductDetails(productId);
+        const details = await ProductService.getProductDetails(copyProductId);
         setProductDetails(handleCopiedProduct(details));
       });
     }
-  }, [productId]);
+  }, [copyProductId]);
 
   return (
     <>

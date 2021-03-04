@@ -284,7 +284,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         setSkipAble(true);
       }, 100);
     }
-  }, [currentStep, handleValidator, productData, vitalForm, productDetails]);
+  }, [currentStep, handleValidator, productData, vitalForm, productDetails, isEditing]);
 
   const isSkip = useCallback(() => {
     let isFormDirty = false;

@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
-  useReducer,
   useState
 } from "react";
 import { ImageService } from "services";
@@ -14,10 +13,8 @@ import "./styles.scss";
 import "antd/es/modal/style";
 import "antd/es/slider/style";
 
-export const ProductTemplateImage = forwardRef((props, ref) => {
-  const { productImages = [] } = props;
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [imgUrl, setImgUrl] = useState(productImages[0]);
+export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => {
+  const [currentImg, setCurrentImg] = useState(productImages[0] || {});
   const [hasError, setHasError] = useState({
     overMaxSize: false,
     emptyUpload: false
@@ -25,20 +22,17 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   const [uploaded, setUploaded] = useState([]);
 
   useEffect(() => {
-    const images = productImages.map((img) => ({
-      uid: "-1",
-      name: img.originalFilename,
-      status: "done",
-      url: img.url
-    }));
-    setUploaded(images);
-  }, [productImages]);
-
-  useEffect(() => {
-    if (productImages[0] && !imgUrl) {
-      setImgUrl(productImages[0]);
+    if (productImages.length) {
+      const images = productImages.map((img) => ({
+        uid: "-1",
+        name: img.originalFilename,
+        status: "done",
+        url: img.url
+      }));
+      setUploaded(images);
+      setCurrentImg(productImages[0]);
     }
-  }, [imgUrl, productImages]);
+  }, [productImages]);
 
   useImperativeHandle(ref, () => ({
     getValues: () => {
@@ -49,14 +43,14 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
         });
         return false;
       }
-      return imgUrl;
+      return currentImg;
     }
   }));
 
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
     if (file.size / 1024 / 1024 < 5) {
       const res = await ImageService.uploadImage(file);
-      setImgUrl(res);
+      setCurrentImg(res);
       onSuccess({ ...res, status: "done", uid: res.name });
     }
   };
@@ -103,7 +97,7 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   };
 
   const onRemove = () => {
-    setImgUrl();
+    setCurrentImg();
   };
 
   return (
@@ -112,7 +106,7 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
         <div className={`${uploaded.length ? "w-50" : ""}`}>
           <ImgCrop rotate>
             <Upload
-              {...(uploaded ? { fileList: uploaded } : {})}
+              {...(uploaded.length ? { fileList: uploaded } : {})}
               accept=".jpg, .jpeg, .png, .tiff, .gif"
               className="upload-product-image"
               listType="picture-card"
