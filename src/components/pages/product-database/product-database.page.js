@@ -71,7 +71,7 @@ const ProductDatabase = () => {
           isLoading={isLoading}
           renderHoverContent={(product, loading, setLoading, setHidden) => {
             return (
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-space-between align-items-center flex-column">
                 <Button
                   onClick={(e) => {
                     dispatch({
