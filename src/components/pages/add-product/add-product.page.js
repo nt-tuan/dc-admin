@@ -1,17 +1,39 @@
-import { Button, Form } from "antd";
 import { ProductMutationTemplate } from "components/templates";
-import React, { useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { ProductService } from "services";
-import { VitalInformationForm } from "./vital-infor-form/vital-infor-form.comp";
+import qs from "qs";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const AddProductPage = () => {
+  const { uid: copyProductId } = qs.parse(location.search, {
+    ignoreQueryPrefix: true
+  });
+  const [productDetails, setProductDetails] = useState();
+
+  const handleCopiedProduct = (details) => {
+    const newName = "Copy of " + details.name;
+    details.variants.map((i) => (i.value === details.name ? (i.value = newName) : i));
+    return {
+      ...details,
+      name: newName
+    };
+  };
+
+  useEffect(() => {
+    if (copyProductId) {
+      asyncErrorHandlerWrapper(async () => {
+        const details = await ProductService.getProductDetails(copyProductId);
+        setProductDetails(handleCopiedProduct(details));
+      });
+    }
+  }, [copyProductId]);
+
   return (
     <>
       <Helmet title="Add Product" />
       <ProductMutationTemplate
-        title="Product Creation"
-        pageName="AddProductPage"
+        productDetails={productDetails}
         mutateServiceFn={ProductService.addProduct}
       />
     </>

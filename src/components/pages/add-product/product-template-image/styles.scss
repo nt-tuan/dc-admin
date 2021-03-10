@@ -5,6 +5,10 @@
 .ant-upload-list-picture-card-container {
   width: 100%;
   height: auto;
+
+  & .ant-upload-select-picture-card {
+    margin-right: 0;
+  }
 }
 .ant-upload-list-picture-card-container .ant-upload-list-item {
   width: 100%;

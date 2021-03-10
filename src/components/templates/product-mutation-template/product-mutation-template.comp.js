@@ -19,7 +19,7 @@ const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
-export const ProductMutationTemplate = () => {
+export const ProductMutationTemplate = ({ productDetails, isEditing = false }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
@@ -44,20 +44,8 @@ export const ProductMutationTemplate = () => {
   const [certificationForm] = Form.useForm();
 
   const [isValidProductName, setIsValidProductName] = useState(true);
-  const [productDetails, setProductDetails] = useState();
 
   useEffect(() => {
-    const searchParams = window.location.search;
-    if (searchParams) {
-      const productId = searchParams.split("uid=")[1];
-      asyncErrorHandlerWrapper(async () => {
-        const productDetails = await ProductService.getProductDetails(productId);
-        // const productDetails = await ProductService.getProductDetails(
-        //   "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
-        // );
-        setProductDetails(productDetails);
-      });
-    }
     asyncErrorHandlerWrapper(async () => {
       const [categories, hsCode] = await Promise.all([
         ProductService.getProductCategories(),
@@ -249,7 +237,7 @@ export const ProductMutationTemplate = () => {
         })
       };
       asyncErrorHandlerWrapper(async () => {
-        if (productDetails) {
+        if (isEditing) {
           const searchParams = window.location.search;
           const productId = searchParams.split("uid=")[1];
           delete data.typeId;
@@ -259,10 +247,10 @@ export const ProductMutationTemplate = () => {
             : "";
           data.productId = productId;
           await ProductService.editProduct(data, productId);
-          message.success("Edit Successfully");
+          message.success("Product was successfully updated!");
         } else {
           await ProductService.addProduct(data);
-          message.success("Create Successfully");
+          message.success("Product was successfully created!");
         }
         setTimeout(() => {
           window.location.href = "/product-database";
@@ -296,7 +284,7 @@ export const ProductMutationTemplate = () => {
         setSkipAble(true);
       }, 100);
     }
-  }, [currentStep, handleValidator, productData, vitalForm, productDetails]);
+  }, [currentStep, handleValidator, productData, vitalForm, productDetails, isEditing]);
 
   const isSkip = useCallback(() => {
     let isFormDirty = false;
@@ -352,6 +340,7 @@ export const ProductMutationTemplate = () => {
               isValidProductName={isValidProductName}
               setIsValidProductName={setIsValidProductName}
               productDetails={productDetails}
+              isEditing={isEditing}
             />
           </div>
           <div className={classNames({ "d-none": currentStep !== 2 })}>
@@ -377,7 +366,7 @@ export const ProductMutationTemplate = () => {
           <div className={classNames({ "d-none": currentStep !== 6 })}>
             <ProductTemplateImage
               ref={(ref) => (templateImageForm.current = ref)}
-              productDetails={productDetails}
+              productImages={productDetails?.images}
             />
           </div>
           {currentStep === 7 && (
