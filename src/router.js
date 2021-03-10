@@ -131,14 +131,13 @@ const privateRoutes = [
   {
     path: RouteConst.ADD_PRODUCT,
     Component: loadable(() => import("components/pages/add-product/add-product.page")),
-    exact: true
+    exact: false
   },
   {
     path: RouteConst.EDIT_PRODUCT,
     Component: loadable(() => import("components/pages/edit-product/edit-product.page")),
     exact: false
   },
-
   {
     path: RouteConst.ROUTE,
     Component: loadable(() => import("components/pages/route/route.page")),

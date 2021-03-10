@@ -71,7 +71,7 @@ const ProductDatabase = () => {
           isLoading={isLoading}
           renderHoverContent={(product, loading, setLoading, setHidden) => {
             return (
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-space-between align-items-center flex-column">
                 <Button
                   onClick={(e) => {
                     dispatch({
@@ -89,6 +89,19 @@ const ProductDatabase = () => {
                   Edit
                 </Button>
                 <Button
+                  className="mt-3 w-100"
+                  onClick={(e) => {
+                    dispatch({
+                      type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
+                      payload: { pageName: "CopyProductPage" }
+                    });
+                    history.push(`${RouteConst.ADD_PRODUCT}?uid=${product.id}`);
+                  }}
+                >
+                  <div className="text-truncate">{`Duplicate ${product.name}`}</div>
+                </Button>
+                <Button
+                  className="mt-3"
                   loading={loading}
                   disabled={loading}
                   onClick={() => handleDeleteProduct(product.id, setLoading, setHidden)}

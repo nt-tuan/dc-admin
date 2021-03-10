@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
 import { RegexConst, REQUIRED_ERR } from "commons/consts";
-import { Col, Form, Input, Row, Select, InputNumber, Spin } from "antd";
+import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 import debounce from "lodash/debounce";
 
@@ -25,8 +24,6 @@ const defaultValue1 = {
   chapterLabel: "",
   headingLabel: "",
   hsCodeDescription: "",
-  aheccCode: "",
-  aheccFullDescription: "",
   quantity: "",
   minimumQuantity: "",
   allowedMultiplesQuantity: ""
@@ -46,7 +43,8 @@ const VitalInformationForm = ({
   types,
   hsCode,
   setIsValidProductName,
-  productDetails
+  productDetails,
+  isEditing
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
@@ -159,10 +157,9 @@ const VitalInformationForm = ({
         props: {
           onChange: (e) => handleChangeName(e.target.value),
           maxLength: 51,
-          disabled: !!productDetails
+          disabled: !!productDetails && isEditing
         }
       },
-
       {
         label: "HS Code Description",
         name: "hsCodeDescription",
@@ -210,39 +207,6 @@ const VitalInformationForm = ({
           rules: []
         }
       },
-
-      // Note: remove AHECC, AHECC Full Description field and do not disable Unit of Quantity field for hsb2b
-      // {
-      //   label: "AHECC",
-      //   name: "ahecc",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode,
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC"))
-      //       }
-      //     ]
-      //   }
-      // },
-      // {
-      //   label: "AHECC Full Description",
-      //   name: "aheccFullDescription",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode.map((code) => ({
-      //       id: code.aheccDescription,
-      //       name: code.aheccDescription
-      //     })),
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC Full Description"))
-      //       }
-      //     ]
-      //   }
-      // },
       {
         label: "Unit of Quantity",
         name: "quantity",
@@ -251,13 +215,7 @@ const VitalInformationForm = ({
           disabled: false
         },
         options: {
-          rules: [
-            //Remove as no long requried field
-            // {
-            //   required: true,
-            //   message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-            // }
-          ]
+          rules: []
         }
       },
       {
