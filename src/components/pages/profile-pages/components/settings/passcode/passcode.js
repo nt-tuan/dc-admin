@@ -31,7 +31,7 @@ function PassCode() {
   }, []);
 
   //** Handle Submit Question */
-  const onFinish = (values) => {
+  const onFinish = (values, { onError }) => {
     const data = [];
     Object.keys(values).map((item) => {
       const index = item.substr(item.length - 1);
@@ -44,16 +44,24 @@ function PassCode() {
     if (existedPasscode) {
       //** Validate Question */
       asyncErrorHandlerWrapper(async () => {
-        await validateSecurityQuestions(data);
-        setIsShowPassCode(true);
-        setIsShowQuestion(!isShowQuestion);
+        try {
+          await validateSecurityQuestions(data);
+          setIsShowPassCode(true);
+          setIsShowQuestion(!isShowQuestion);
+        } catch (errors) {
+          onError(errors);
+        }
       });
     } else {
       //** Create question */
       asyncErrorHandlerWrapper(async () => {
-        await createSecurityQuestions(data);
-        setIsShowQuestion(!isShowQuestion);
-        setIsShowPassCode(true);
+        try {
+          await createSecurityQuestions(data);
+          setIsShowQuestion(!isShowQuestion);
+          setIsShowPassCode(true);
+        } catch (errors) {
+          onError(errors);
+        }
       });
     }
   };
