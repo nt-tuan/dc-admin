@@ -91,6 +91,7 @@ const ProductDatabase = () => {
                 </Button>
                 <Button
                   className="mt-3 w-100"
+                  title={`Duplicate ${product.name}`}
                   onClick={() => {
                     history.push(`${RouteConst.ADD_PRODUCT}?uid=${product.id}`);
                   }}
