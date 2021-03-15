@@ -1,21 +1,24 @@
-import React, { useCallback, useState } from "react";
-import { Collapse, Card, Row, Col, Select, Input, Modal, Switch, Form, Button } from "antd";
+import React, { useEffect } from "react";
+import { Modal, Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { FIELD_TYPE } from "../../constants";
+
 import FieldLayout from "./FieldLayout";
+import { EMPTY_FIELD } from "../../constants";
 import "../../product-mutation-template.comp.scss";
 
 const ChildFieldModal = ({
+  data = [EMPTY_FIELD],
   isOpen,
   closeModal,
   form,
   handleSave,
-  selectedFieldType,
-  isHiddenIconRemove,
-  numberField,
   parentId,
   currentPlotOptions
 }) => {
+  useEffect(() => {
+    form.setFieldsValue({ childField: data });
+  }, [data, form]);
+
   const handleOK = (e) => {
     let formValue = form?.getFieldsValue()?.childField.map((child) => {
       return {
@@ -45,17 +48,16 @@ const ChildFieldModal = ({
     if (errorField) {
       form.validateFields();
     } else {
-      //
       handleSave(formValue);
     }
   };
 
   const handleAddItem = (callback) => {
-    callback({
-      fieldName: "",
-      fieldType: "",
-      fieldOption: [""]
-    });
+    callback(EMPTY_FIELD);
+  };
+
+  const handleRemoveItem = (callback, index) => {
+    callback(index);
   };
 
   return (
@@ -68,37 +70,24 @@ const ChildFieldModal = ({
       width={800}
       onOk={handleOK}
     >
-      <Form
-        form={form}
-        initialValues={{
-          variantDetails: [
-            {
-              fieldName: "",
-              type: "",
-              fieldOption: [""]
-            }
-          ]
-        }}
-      >
+      <Form form={form} initialValues={{ childField: data }}>
         <Form.List name="childField">
           {(fields, { add, remove }) => (
             <>
-              {fields.map((field, index) => (
-                <FieldLayout
-                  {...{
-                    field,
-                    index,
-                    selectedFieldType,
-                    form,
-                    isHiddenIconRemove,
-                    numberField,
-                    isOpen
-                  }}
-                  numberField={fields.length}
-                  remove={() => remove(field.name)}
-                  childAble={false}
-                />
-              ))}
+              {fields.map((field, index) => {
+                return (
+                  <FieldLayout
+                    form={form}
+                    field={field}
+                    index={index}
+                    canDelete={fields.length > 1}
+                    onRemoveField={() => handleRemoveItem(remove, index)}
+                    canAddChildFields={false}
+                    fieldValue={data[index]}
+                    type={data[index]?.type}
+                  />
+                );
+              })}
               <Form.Item className="mt-3">
                 <Button
                   type="primary"

@@ -1,32 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
-import Field from "../CustomField/Field";
 import get from "lodash/get";
 
-const VariantDetails = ({ form, productDetails }) => {
-  const [details, setDetails] = useState();
+import Field from "../CustomField/Field";
+import { EMPTY_FIELD } from "../../constants";
 
+const OfferDetails = ({ form, productDetails }) => {
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { offerDetails } = detail;
       form.setFieldsValue({ offerDetails });
-      setDetails(offerDetails);
     }
   }, [productDetails, form]);
+
+  const handleAddingItem = (callback) => {
+    callback(EMPTY_FIELD);
+  };
+
   return (
     <Form
       form={form}
       initialValues={{
-        offerDetails: [
-          {
-            fieldName: "",
-            type: "",
-            fieldOption: [""]
-          }
-        ]
+        offerDetails: [EMPTY_FIELD]
       }}
     >
       <Form.List name="offerDetails">
@@ -34,30 +31,22 @@ const VariantDetails = ({ form, productDetails }) => {
           <>
             {fields.map((field, index) => (
               <Field
-                productType={get(details, `[${index}].type`)}
+                key={`offer-field-${field.key}`}
                 form={form}
                 field={field}
-                fieldKey={field.key}
                 index={index}
-                isHiddenIconRemove
-                numberField={fields.length}
-                remove={() => {
+                canDelete={fields.length > 1}
+                fieldValue={get(form.getFieldsValue(), `offerDetails.[${index}]`)}
+                onRemove={() => {
                   if (fields.length === 1) return;
-                  remove(field.name);
+                  remove(index);
                 }}
-                parentId={index}
               />
             ))}
             <Form.Item className="mt-3">
               <Button
                 type="primary"
-                onClick={() =>
-                  add({
-                    fieldName: "",
-                    type: "",
-                    fieldOption: [""]
-                  })
-                }
+                onClick={() => handleAddingItem(add)}
                 style={{ minWidth: "100px" }}
                 icon={<PlusOutlined />}
               >
@@ -67,9 +56,8 @@ const VariantDetails = ({ form, productDetails }) => {
           </>
         )}
       </Form.List>
-      <Form.Item name={"childValue"}></Form.Item>
     </Form>
   );
 };
 
-export default VariantDetails;
+export default OfferDetails;

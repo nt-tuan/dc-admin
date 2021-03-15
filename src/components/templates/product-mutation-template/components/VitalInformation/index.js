@@ -126,6 +126,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Category"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails
         }
       },
       {
@@ -140,6 +143,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Type"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails
         }
       },
       {
@@ -164,7 +170,6 @@ const VitalInformationForm = ({
         label: "HS Code Description",
         name: "hsCodeDescription",
         type: INPUT_TYPE.SELECT_HSCODE_CHAR,
-        props: { disabled: true },
         options: {
           options: hsCodeData?.data,
           rules: [
@@ -173,7 +178,8 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("HS Code Description"))
             }
           ]
-        }
+        },
+        props: {}
       },
       {
         label: "HS Code",
@@ -187,7 +193,8 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("HS Code"))
             }
           ]
-        }
+        },
+        props: {}
       },
       {
         label: "Chapter Label",
@@ -211,9 +218,7 @@ const VitalInformationForm = ({
         label: "Unit of Quantity",
         name: "quantity",
         type: INPUT_TYPE.INPUT,
-        props: {
-          disabled: false
-        },
+        props: {},
         options: {
           rules: []
         }
@@ -263,11 +268,12 @@ const VitalInformationForm = ({
         mode: "tags",
         options: {
           rules: []
-        }
+        },
+        props: {}
       }
     ];
     return fields;
-  }, [categories, types, hsCodeData, form, setIsValidProductName]);
+  }, [categories, productDetails, types, isEditing, hsCodeData.data, form, setIsValidProductName]);
 
   const handleFieldChange = useCallback(
     (name) => {
@@ -378,6 +384,7 @@ const VitalInformationForm = ({
               mode={schema.mode}
               onChange={handleFieldChange(schema.name)}
               onPopupScroll={onPopupScroll}
+              {...schema.props}
             >
               {schema?.options?.options?.map((item) => {
                 return (
@@ -399,6 +406,7 @@ const VitalInformationForm = ({
               mode={schema.mode}
               onChange={handleFieldChange(schema.name)}
               onPopupScroll={onPopupScroll}
+              {...schema.props}
             >
               {schema?.options?.options?.map((item) => {
                 return (
@@ -411,7 +419,7 @@ const VitalInformationForm = ({
           );
         case INPUT_TYPE.SELECT:
           return (
-            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)}>
+            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)} {...schema.props}>
               {schema?.options?.options?.map((item) => {
                 return (
                   <Option key={item.id} value={item.id}>

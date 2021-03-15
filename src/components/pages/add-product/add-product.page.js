@@ -13,7 +13,9 @@ const AddProductPage = () => {
 
   const handleCopiedProduct = (details) => {
     const newName = "Copy of " + details.name;
-    details.variants.map((i) => (i.value === details.name ? (i.value = newName) : i));
+    details.variants.map((i) =>
+      i.name.toLowerCase().includes("productname") ? (i.value = newName) : i
+    );
     return {
       ...details,
       name: newName
