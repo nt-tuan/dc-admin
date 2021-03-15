@@ -44,7 +44,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const [certificationForm] = Form.useForm();
   const templateImageForm = useRef();
 
-  const [isValidProductName, setIsValidProductName] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -83,10 +82,10 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     });
   }, []);
 
-  //submit data in current step
+  //submit data in current form
   const handleSubmitForm = useCallback(
-    (name, { values, forms }) => {
-      if (currentStep === 1) {
+    (name, { values }) => {
+      if (name === "vitalInformation") {
         const vitalInfor = { ...values };
         delete vitalInfor.customVital;
         setProductData({
@@ -104,68 +103,32 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         setProductData(updatedProductData);
       }
     },
-    [currentStep, productData]
+    [productData]
   );
 
-  const getErrorField = useCallback((form) => {
-    const formValue = Object.values(form.getFieldsValue())?.length
-      ? Object.values(form.getFieldsValue())[0]
-      : [];
-    const errorField = formValue?.find((value) => {
-      if (!value?.fieldName || !value?.type) {
+  const isValidForm = useCallback((form) => {
+    return form
+      .validateFields()
+      .then(() => {
+        form.submit();
         return true;
-      }
-      if (value?.fieldOption[0] === "") {
-        return true;
-      }
-      if (value.type === "textbox") {
-        if (!value?.fieldOption[0].allowInput || !value?.fieldOption[0].textboxType) {
-          return true;
-        }
-      } else {
-        if (value?.fieldOption?.find((childValue) => !childValue.label)) {
-          return true;
-        }
-      }
-
-      return false;
-    });
-    return errorField;
+      })
+      .catch(() => false);
   }, []);
 
   //TODO: combine submit and get error
-  const handleValidator = useCallback(() => {
+  const handleValidator = useCallback(async () => {
     switch (currentStep) {
       case 1:
-        vitalForm.submit();
-        const ignoreValidatorFieldList = [
-          "headingLabel",
-          "chapterLabel",
-          "hsCodeDescription",
-          "quantity",
-          "customVital",
-          "keyword"
-        ];
-        const formVal = vitalForm.getFieldsValue();
-        const isVitalFormValid = !Object.keys(formVal)
-          .filter((key) => !ignoreValidatorFieldList.includes(key))
-          .some((key) => !formVal[key]);
-        const isFormNewFieldsValid =
-          !vitalForm.getFieldsValue().customVital ||
-          !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);
-        return isVitalFormValid && isFormNewFieldsValid;
+        return isValidForm(vitalForm);
       case 2:
-        variantDetailsForm.submit();
-        return !getErrorField(variantDetailsForm);
+        return isValidForm(variantDetailsForm);
       case 3:
-        offerDetailsForm.submit();
-        return !getErrorField(offerDetailsForm);
+        return isValidForm(offerDetailsForm);
       case 4:
-        packingDetailsForm.submit();
-        return !getErrorField(packingDetailsForm);
+        return isValidForm(packingDetailsForm);
       case 5:
-        certificationForm.submit();
-        return !getErrorField(certificationForm);
+        return isValidForm(certificationForm);
       case 6:
         setProductData({
           ...productData,
@@ -179,12 +142,11 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   }, [
     currentStep,
     vitalForm,
-    templateImageForm,
+    isValidForm,
     variantDetailsForm,
-    getErrorField,
     offerDetailsForm,
-    certificationForm,
     packingDetailsForm,
+    certificationForm,
     productData
   ]);
 
@@ -211,7 +173,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
             isFormDirty = true;
           }
         }
-
         setCanSkip(!isFormDirty);
       } else {
         setCanSkip(false);
@@ -274,40 +235,12 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
       return;
     } else {
       const isValid = await handleValidator();
-      if (!isValid) return;
-      if (currentStep === 1) {
-        const category = vitalForm.getFieldValue("productCategory");
-        const type = vitalForm.getFieldValue("productType");
-        const name = vitalForm.getFieldValue("productName");
-        const isValidName = await ProductService.checkDuplicate({
-          name,
-          category,
-          type
-        });
-        if (!isValidName && !productDetails) {
-          vitalForm.setFields([
-            {
-              name: "productName",
-              errors: ["This product has already been created"]
-            }
-          ]);
-          return;
-        }
-      }
-      setTimeout(() => {
+      if (isValid) {
         checkCanSkip(currentStep + 1);
         setCurrentStep(currentStep + 1);
-      }, 100);
+      }
     }
-  }, [
-    currentStep,
-    productData,
-    isEditing,
-    handleValidator,
-    vitalForm,
-    productDetails,
-    checkCanSkip
-  ]);
+  }, [currentStep, productData, isEditing, handleValidator, checkCanSkip]);
 
   const handleSkip = useCallback(() => {
     checkCanSkip(currentStep + 1);
@@ -345,8 +278,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
                 onCategoryChange={getTypeByCategory}
                 types={types}
                 hsCode={hsCode}
-                isValidProductName={isValidProductName}
-                setIsValidProductName={setIsValidProductName}
                 productDetails={productDetails}
                 isEditing={isEditing}
               />
