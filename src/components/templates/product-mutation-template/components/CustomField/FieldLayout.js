@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Collapse, Card, Row, Col, Select, Input, Form, Switch } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { FIELD_TYPE } from "../../constants";
@@ -12,69 +12,61 @@ const { Option } = Select;
 
 const FieldLayout = ({
   form,
-  type,
-  childAble = true,
+  canAddChildFields = true,
   setTypeModalOpen,
   openChildField,
-  setIsChildModalOpen,
-  remove,
+  onRemoveField,
   field,
-  selectedFieldType,
-  childValue,
-  setChildValue,
-  handleRemove,
   index,
-  productType,
-  isHiddenIconRemove,
-  numberField,
-  isOpen,
-  childForm
+  canDelete,
+  fieldValue
 }) => {
-  const [fieldType, setFieldType] = useState();
-  const fieldOptionsRef = useRef();
-  const [fileNameValue, setFieldNameValue] = useState("");
-  useEffect(() => {
-    setFieldType(selectedFieldType);
-  }, [selectedFieldType]);
+  const [fieldType, setFieldType] = useState(fieldValue?.type || undefined);
+  const [fieldName, setFieldName] = useState(fieldValue?.fieldName || undefined);
 
   useEffect(() => {
-    setFieldType(productType);
-  }, [productType]);
+    if (!fieldType && fieldValue?.type) {
+      setFieldType(fieldValue.type);
+    }
+  }, [fieldType, fieldValue]);
+
+  useEffect(() => {
+    if (!fieldName && fieldValue?.fieldName) {
+      setFieldName(fieldValue.fieldName);
+    }
+  }, [fieldName, fieldValue]);
 
   const handleChange = useCallback(
     (value) => {
       setFieldType(value);
       //reset option if change value of dropdown
       const formValue = form.getFieldsValue();
-      const fieldName = Object.keys(formValue)[0];
-      const newValue = [...formValue[fieldName]];
+      const fieldData = Object.keys(formValue)[0];
+      const newValue = [...formValue[fieldData]];
       newValue[index].fieldOption = [""];
-      form.setFieldsValue({ [fieldName]: newValue });
+      form.setFieldsValue({ [fieldData]: newValue });
     },
     [form, index]
   );
 
-  const genExtra = () => {
-    if (isHiddenIconRemove && numberField > 1) {
+  const genExtra = useCallback(() => {
+    if (canDelete) {
       return (
         <DeleteOutlined
           onClick={(event) => {
-            remove();
-            // fieldOptionsRef.current.onValidateFieldOptions();
-            // If you don't want click extra trigger collapse, you can prevent this:
             event.stopPropagation();
+            onRemoveField();
           }}
         />
       );
-    } else {
-      return null;
     }
-  };
+    return null;
+  }, [canDelete, onRemoveField]);
 
   return (
     <div key={field.key} className="mb-3 customCollapseField">
-      <Collapse defaultActiveKey={["1"]}>
-        <Panel header={fileNameValue} key="1" extra={genExtra()}>
+      <Collapse defaultActiveKey={[field.key]}>
+        <Panel header={fieldName} key={field.key} extra={genExtra()}>
           <Card className="mb-1">
             <Row>
               <Col xs={8} sm={4} md={4} lg={3} xl={3} className="mt-1">
@@ -92,7 +84,7 @@ const FieldLayout = ({
                 >
                   <Input
                     placeholder="Enter field name"
-                    onChange={(e) => setFieldNameValue(e.target.value)}
+                    onChange={(e) => setFieldName(e.target.value)}
                   />
                 </Form.Item>
               </Col>
@@ -106,20 +98,15 @@ const FieldLayout = ({
                     }
                   ]}
                 >
-                  <Select
-                    defaultValue={type}
-                    onChange={handleChange}
-                    style={{ width: "90%" }}
-                    className="mr-1"
-                  >
-                    {FIELD_TYPE.map((type, index) => (
-                      <Option value={type.value} key={`type-${index}`}>
+                  <Select onChange={handleChange} style={{ width: "90%" }} className="mr-1">
+                    {FIELD_TYPE.map((type) => (
+                      <Option value={type.value} key={`type-${type.value}`}>
                         {type.label}
                       </Option>
                     ))}
                   </Select>
                 </Form.Item>
-                {childAble && (
+                {canAddChildFields && (
                   <QuestionCircleOutlined
                     className="question"
                     onClick={() => setTypeModalOpen(true)}
@@ -134,26 +121,16 @@ const FieldLayout = ({
               </Form.Item>
             </div>
           </Card>
-          {
-            <Card>
-              <CustomFieldOption
-                type={fieldType}
-                form={form}
-                ref={fieldOptionsRef}
-                childAble={childAble}
-                fieldName={field.name}
-                modalOpen={isOpen}
-                {...{
-                  openChildField,
-                  setIsChildModalOpen,
-                  childValue,
-                  setChildValue,
-                  handleRemove,
-                  index
-                }}
-              />
-            </Card>
-          }
+          <Card>
+            <CustomFieldOption
+              type={fieldType}
+              form={form}
+              canAddChildFields={canAddChildFields}
+              fieldName={field.name}
+              openChildField={openChildField}
+              fieldIndex={index}
+            />
+          </Card>
         </Panel>
       </Collapse>
     </div>

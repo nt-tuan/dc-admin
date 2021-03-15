@@ -75,8 +75,8 @@ export async function getUserData() {
       icon: "fe fe-package",
       children: [
         {
-          title: "Database",
-          key: "Database",
+          title: "Product Template Database",
+          key: "ProductDatabase",
           url: RouteConst.PRODUCT_DATABASE
         },
         {

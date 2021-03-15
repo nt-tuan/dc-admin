@@ -14,3 +14,9 @@ export const PRODUCT_CREATE_TEMPLATE = [
   { title: "Product Template Image" },
   { title: "Review" }
 ];
+
+export const EMPTY_FIELD = {
+  fieldName: "",
+  type: "",
+  fieldOption: [""]
+};

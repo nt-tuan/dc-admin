@@ -73,6 +73,8 @@ const ProductDatabase = () => {
             return (
               <div className="d-flex justify-space-between align-items-center flex-column">
                 <Button
+                  className="w-100"
+                  title={`Edit ${product.name}`}
                   onClick={(e) => {
                     dispatch({
                       type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
@@ -84,17 +86,12 @@ const ProductDatabase = () => {
                       }`
                     );
                   }}
-                  style={{ width: 80 }}
                 >
-                  Edit
+                  <div className="text-truncate">{`Edit ${product.name}`}</div>
                 </Button>
                 <Button
                   className="mt-3 w-100"
-                  onClick={(e) => {
-                    dispatch({
-                      type: STORAGE_DUCK.CLEAR_FROM_STORAGE,
-                      payload: { pageName: "CopyProductPage" }
-                    });
+                  onClick={() => {
                     history.push(`${RouteConst.ADD_PRODUCT}?uid=${product.id}`);
                   }}
                 >
