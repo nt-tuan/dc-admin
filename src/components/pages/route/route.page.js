@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DefaultRouteTab } from "./tabs/default-route-tab";
+// import { DefaultRouteTab } from "./tabs/default-route-tab";
 import { RouteTab } from "./tabs/route-tab";
 import { Helmet } from "react-helmet";
 import { Button } from "antd";
@@ -12,7 +12,7 @@ const TAB_KEYS = {
 const { DEFAULT_ROUTE, ROUTE } = TAB_KEYS;
 
 const renderRouteTab = () => <RouteTab />;
-const renderDefaultRouteTab = () => <DefaultRouteTab />;
+// const renderDefaultRouteTab = () => <DefaultRouteTab />;
 
 const RoutePage = () => {
   const [tab, setTab] = useState(ROUTE);
@@ -33,11 +33,11 @@ const RoutePage = () => {
     <article>
       <Helmet title="Routes" />
       <div className="flex mb-3 ml-2">
-        {renderTabButton("All Routes", ROUTE)}
-        {renderTabButton("Default Routes", DEFAULT_ROUTE)}
+        {/* {renderTabButton("All Routes", ROUTE)} */}
+        {/* {renderTabButton("Default Routes", DEFAULT_ROUTE)} */}
       </div>
       {tab === ROUTE && renderRouteTab()}
-      {tab === DEFAULT_ROUTE && renderDefaultRouteTab()}
+      {/* {tab === DEFAULT_ROUTE && renderDefaultRouteTab()} */}
     </article>
   );
 };

@@ -59,11 +59,17 @@ export class SharedPaths {
   static get EDIT_REBATES() {
     return "/edit-rebates/:id";
   }
-  static get ROUTE() {
-    return "/routes";
+  static get TRADE_RULES() {
+    return "/trade-routes";
   }
-  static get ADD_ROUTE() {
-    return "/add-routes";
+  static get CREATE_TRADE_ROUTE() {
+    return "/create-trade-route";
+  }
+  // static get ADD_ROUTE() {
+  //   return "/add-routes";
+  // }
+  static get CREATE_TRADE_ROUTE() {
+    return "/create-trade-route";
   }
   static get EDIT_ROUTE() {
     return "/edit-routes";

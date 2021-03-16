@@ -1,7 +1,12 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
 import { DTCSection } from "components/atoms";
-import { DocumentList, DocumentRuleTable, RouteLocationForm } from "components/organisms";
+import {
+  DocumentList,
+  DocumentRuleTable,
+  RouteLocationForm,
+  TaxRulesFrom
+} from "components/organisms";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
@@ -10,6 +15,12 @@ import { useHistory, Link } from "react-router-dom";
 import uniqBy from "lodash/uniqBy";
 import { APIError } from "commons/types";
 import { Helmet } from "react-helmet";
+import {
+  typeTAX,
+  FIELDS,
+  TAX_RULES_TYPE_MAIN_SCHEMA,
+  TAX_RULES_TYPE_OTHER_SCHEMA
+} from "components/organisms/route/forms/tax-rules/tax.chemas";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -29,7 +40,23 @@ const AddRoutePage = () => {
   const isDocListTouched = useRef({});
   const locationFormRef = useRef();
   const documentRuleForms = useRef(new Map());
+  const taxRuleForms = useRef();
   const history = useHistory();
+
+  const [dataSourceTax, setDataSourceTax] = useState({
+    taxMain: [
+      {
+        data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
+        dataFilter: [FIELDS.name]
+      }
+    ],
+    taxOther: [
+      {
+        data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
+        dataFilter: [FIELDS.name]
+      }
+    ]
+  });
 
   const filteredCustomizedDocs = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -193,6 +220,7 @@ const AddRoutePage = () => {
         const docFormRefs = Array.from(documentRuleForms.current.values());
         await Promise.all([
           locationFormRef.current.validateFields(),
+          taxRuleForms.current.validateFields(),
           ...docFormRefs.map((form) => form.validateFields())
         ]);
       });
@@ -204,7 +232,8 @@ const AddRoutePage = () => {
           categoryId: category,
           isDefault: false,
           typeId: type,
-          routeDocumentTypeRequests: []
+          routeDocumentTypeRequests: [],
+          routeTaxPostRequestList: []
         };
         documentRuleForms.current.forEach((formRef, docId) => {
           const values = formRef.getFieldsValue();
@@ -218,34 +247,78 @@ const AddRoutePage = () => {
             }
           });
         });
-        try {
-          await RouteService.create(composedValues);
-          message.success("Created Successfully");
-          history.push(RouteConst.ROUTE);
-        } catch (error) {
-          if (error instanceof APIError) {
-            const err = error.errors;
-            message.warning(err[0][1]);
-          } else if (error.message == 400) {
-            message.warning(error.errMsg);
-          } else {
-            throw error;
+
+        const valueTax = taxRuleForms.current.getFieldsValue();
+
+        const data = [];
+        const dataMain = [];
+        let nameObj;
+        Object.keys(valueTax).map((item) => {
+          const nameParse = item.split("-");
+          if (!nameParse && !nameParse.length) return false;
+          const typeApplyField = nameParse[0];
+          const nameField = nameParse[1];
+          const index = nameParse[2];
+          if (valueTax[item] && typeApplyField === "taxMain") {
+            dataMain[index] = {
+              ...dataMain[index],
+              [nameField]: valueTax[item]
+            };
           }
-        }
+          if (valueTax[item] && typeApplyField === "taxOther") {
+            nameObj = nameField;
+            if (nameField === FIELDS.typeApplyOther) {
+              nameObj = FIELDS.typeApply;
+            }
+            if (nameField === FIELDS.isLumSum && valueTax[item] === 0) {
+              nameObj = FIELDS.lumpSum;
+            } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
+              nameObj = FIELDS.percent;
+            }
+            data[index] = {
+              ...data[index],
+              [FIELDS.typeApply]: typeTAX.OTHER,
+              [nameObj]: valueTax[item]
+            };
+          }
+        });
+        console.log("data", data);
+        console.log("dataMain", dataMain);
+        composedValues.routeTaxPostRequestList = [...dataMain, ...data];
+        console.log(
+          "composedValues.routeTaxPostRequestList",
+          composedValues.routeTaxPostRequestList
+        );
+
+        // try {
+        //   await RouteService.create(composedValues);
+        //   message.success("Created Successfully");
+        //   history.push(RouteConst.ROUTE);
+        // } catch (error) {
+        //   if (error instanceof APIError) {
+        //     const err = error.errors;
+        //     message.warning(err[0][1]);
+        //   } else if (error.message == 400) {
+        //     message.warning(error.errMsg);
+        //   } else {
+        //     throw error;
+        //   }
+        // }
       }
     });
   };
 
   const renderTitle = (isDefault) => {
-    return isDefault ? "Default Route Information" : "Route Information";
+    return isDefault ? "Default Trade Routes Information" : "Trade Routes Information";
   };
 
   return (
     <DTCSection>
-      <Helmet title="Routes Creation" />
+      <Helmet title="Trade Routes Creation" />
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
         <RouteLocationForm onTypeChange={handleTypeChange} ref={locationFormRef} />
+        <TaxRulesFrom dataSource={dataSourceTax} ref={taxRuleForms} />
       </div>
       <Divider />
       <div>
@@ -296,7 +369,7 @@ const AddRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleCreate}>
           Save
         </Button>
-        <Link to={RouteConst.ROUTE}>
+        <Link to={RouteConst.TRADE_RULES}>
           <Button>Cancel</Button>
         </Link>
       </div>
