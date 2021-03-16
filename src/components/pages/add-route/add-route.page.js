@@ -22,6 +22,7 @@ import {
   TAX_RULES_TYPE_OTHER_SCHEMA
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
 import numeral from "numeral";
+
 const isFormValid = async (validateFn) => {
   try {
     await validateFn();

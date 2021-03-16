@@ -222,6 +222,8 @@ export const TaxRulesFrom = memo(
                     ? [...dataForm.taxOther[indexField].data, ...TAX_RULES_OTHER_SCHEMA]
                     : [...TAX_RULES_TYPE_OTHER_SCHEMA]
               };
+              const fieldName = `taxOther-${FIELDS.isLumSum}-${indexField}`;
+              form.setFieldsValue({ [fieldName]: 1 });
               setDataForm({
                 ...dataForm,
                 taxOther: [dataNew]

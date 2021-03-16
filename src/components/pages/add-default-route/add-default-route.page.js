@@ -83,7 +83,7 @@ const AddRoutePage = () => {
         try {
           await RouteService.create(composedValues);
           message.success("Created Successfully");
-          history.push(RouteConst.ROUTE);
+          history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
           if (error.message === "400") {
             message.warning(error.errMsg);

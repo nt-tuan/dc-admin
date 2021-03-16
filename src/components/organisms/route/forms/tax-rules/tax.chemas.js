@@ -1,7 +1,7 @@
 import React from "react";
 import { createFormErrorComp } from "utils/form.util";
-import { REQUIRED_ERR, RegexConst } from "commons/consts";
-import { FormError } from "components/atoms";
+import { REQUIRED_ERR, MAX_CHARS } from "commons/consts";
+// import { FormError } from "components/atoms";
 import numeral from "numeral";
 export const typeTAX = {
   MAIN: "MAIN",
@@ -103,7 +103,11 @@ export const TAX_RULES_MAIN_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("Please enter the tax name"))
+        message: createFormErrorComp("Please enter the tax name")
+      },
+      {
+        max: 20,
+        message: createFormErrorComp(MAX_CHARS(LABELS[FIELDS.name], 20))
       }
     ]
   },
@@ -155,6 +159,10 @@ export const TAX_RULES_OTHER_SCHEMA = [
       {
         required: true,
         message: createFormErrorComp(REQUIRED_ERR("Please enter the tax name"))
+      },
+      {
+        max: 20,
+        message: createFormErrorComp(MAX_CHARS(LABELS[FIELDS.name], 20))
       }
     ]
   },
