@@ -21,7 +21,9 @@ function HoverTax({ data }) {
           <h6 className="text-left">Snapshot of Tax Details</h6>
           <p className="row justify-content-between px-3 text-secondary font-size-12">
             <strong>
-              {mainTax?.type && taxRulesValue.find((item) => item.value === mainTax.type)?.label}
+              {mainTax?.type && mainTax?.type !== "OTHER"
+                ? taxRulesValue.find((item) => item.value === mainTax.type)?.label
+                : mainTax?.name}
             </strong>
             <span>{mainTax?.percent}%</span>
           </p>
@@ -29,17 +31,22 @@ function HoverTax({ data }) {
       )}
 
       {OtherTax && OtherTax.length > 0 ? (
-        <div className="pt-1 pl-2">
+        <div className="pt-1 pl-2 pr-3">
           <h6 className="text-left">Other Taxes:</h6>
           {OtherTax &&
             OtherTax.map((item) => {
               return (
-                <p className="row justify-content-between px-3 text-secondary font-size-12">
-                  <strong className="pl-2">
-                    {item?.type && taxTypeOtherValue.find((val) => val.value === item.type)?.label}
+                <p
+                  className="row justify-content-between px-3 text-secondary font-size-12 pr-2"
+                  style={{ minWidth: "240px" }}
+                >
+                  <strong className="pl-2 pl-3 ">
+                    {item?.type && item?.type !== "OTHER"
+                      ? taxTypeOtherValue.find((val) => val.value === item.type)?.label
+                      : item?.name}
                   </strong>
                   {item?.percent && <span>{item.percent}%</span>}
-                  {item?.lumpSum && <span>{toCurrency(item.lumpSum)}</span>}
+                  {item?.lumpSum && <span>{toCurrency(item.lumpSum, "USD")}</span>}
                 </p>
               );
             })}

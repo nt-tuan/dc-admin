@@ -141,7 +141,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("Please select "))
+        message: createFormErrorComp(REQUIRED_ERR("taxpayer"))
       }
     ]
   },

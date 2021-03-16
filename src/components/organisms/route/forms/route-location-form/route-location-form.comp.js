@@ -164,7 +164,7 @@ export const RouteLocationForm = forwardRef(
             rules={[
               {
                 required: true,
-                message: "Type is required"
+                message: "Product type is required"
               }
             ]}
           >

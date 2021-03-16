@@ -80,7 +80,7 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
         return (
           <Tag color={`${taxDetailResponseList?.length ? "green" : "red"}`}>
             {" "}
-            {taxDetailResponseList ? (
+            {taxDetailResponseList && taxDetailResponseList.length ? (
               <Tooltip color="#ffffff" title={<HoverTax data={taxDetailResponseList} />}>
                 Yes
               </Tooltip>

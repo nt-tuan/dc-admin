@@ -43,7 +43,7 @@ const AddRoutePage = () => {
   const taxRuleForms = useRef();
   const history = useHistory();
 
-  const dataSourceTax = {
+  const objTax = {
     taxMain: [
       {
         data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
@@ -57,6 +57,7 @@ const AddRoutePage = () => {
       }
     ]
   };
+  const dataSourceTax = useRef({ ...objTax });
 
   const filteredCustomizedDocs = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -289,13 +290,7 @@ const AddRoutePage = () => {
             };
           }
         });
-        // console.log("data", data);
-        // console.log("dataMain", dataMain);
         composedValues.routeTaxPostRequestList = [...dataMain, ...data];
-        // console.log(
-        //   "composedValues.routeTaxPostRequestList",
-        //   composedValues.routeTaxPostRequestList
-        // );
 
         try {
           await RouteService.create(composedValues);
@@ -325,7 +320,7 @@ const AddRoutePage = () => {
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
         <RouteLocationForm onTypeChange={handleTypeChange} ref={locationFormRef} />
-        <TaxRulesFrom dataSource={dataSourceTax} ref={taxRuleForms} />
+        <TaxRulesFrom dataSource={dataSourceTax.current} ref={taxRuleForms} />
       </div>
       <Divider />
       <div>
@@ -374,7 +369,7 @@ const AddRoutePage = () => {
       <Divider />
       <div className="d-flex justify-content-center">
         <Button className="mr-2" type="primary" onClick={handleCreate}>
-          Create Default Route
+          Create Trade Routes
         </Button>
         <Link to={RouteConst.TRADE_RULES}>
           <Button>Cancel</Button>

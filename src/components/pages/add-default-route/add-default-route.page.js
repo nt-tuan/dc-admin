@@ -65,7 +65,8 @@ const AddRoutePage = () => {
           categoryId: category,
           isDefault: true,
           typeId: type,
-          routeDocumentTypeRequests: []
+          routeDocumentTypeRequests: [],
+          routeTaxPostRequestList: []
         };
         documentRuleFormsRef.current.forEach((formRef, docId) => {
           const values = formRef.getFieldsValue();
@@ -166,7 +167,7 @@ const AddRoutePage = () => {
       <Divider />
       <div className="d-flex justify-content-center">
         <Button className="mr-2" type="primary" onClick={handleCreate}>
-          Save
+          Create Default Trade Routes
         </Button>
         <Link to={RouteConst.ROUTE}>
           <Button>Cancel</Button>

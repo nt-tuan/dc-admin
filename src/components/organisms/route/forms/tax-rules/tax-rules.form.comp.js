@@ -21,7 +21,7 @@ export const TaxRulesFrom = memo(
       isShow: false,
       index: null
     });
-
+    // console.log("dataSource", dataSource);
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
     useEffect(() => {
@@ -182,9 +182,7 @@ export const TaxRulesFrom = memo(
                       rules: [
                         {
                           required: value === 0 ? true : false,
-                          message: createFormErrorComp(
-                            REQUIRED_ERR("Please enter the Lump-sum amount")
-                          )
+                          message: createFormErrorComp('"Please enter the Lump-sum amount"')
                         }
                       ]
                     };
