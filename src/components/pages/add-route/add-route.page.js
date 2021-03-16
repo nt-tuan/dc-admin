@@ -310,48 +310,6 @@ const AddRoutePage = () => {
           } else {
             throw error;
           }
-          if (valueTax[item] && typeApplyField === "taxOther") {
-            nameObj = nameField;
-            valueObj = valueTax[item];
-            if (nameField === FIELDS.applyTypeOther) {
-              nameObj = FIELDS.applyType;
-            }
-            if (nameField === FIELDS.isLumSum && valueTax[item] === 0) {
-              nameObj = FIELDS.lumpSum;
-            } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
-              nameObj = FIELDS.percent;
-            }
-            if (nameObj === FIELDS.lumpSum) {
-              valueObj = numeral(valueObj).value();
-            }
-            data[index] = {
-              ...data[index],
-              [FIELDS.applyType]: typeTAX.OTHERS,
-              [nameObj]: valueObj
-            };
-          }
-        });
-        // console.log("data", data);
-        // console.log("dataMain", dataMain);
-        composedValues.routeTaxPostRequestList = [...dataMain, ...data];
-        // console.log(
-        //   "composedValues.routeTaxPostRequestList",
-        //   composedValues.routeTaxPostRequestList
-        // );
-
-        try {
-          await RouteService.create(composedValues);
-          message.success("Created Successfully");
-          history.push(RouteConst.TRADE_ROUTES);
-        } catch (error) {
-          if (error instanceof APIError) {
-            const err = error.errors;
-            message.warning(err[0][1]);
-          } else if (error.message == 400) {
-            message.warning(error.errMsg);
-          } else {
-            throw error;
-          }
         }
       }
     });
