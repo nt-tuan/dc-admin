@@ -21,6 +21,7 @@ import {
   TAX_RULES_TYPE_MAIN_SCHEMA,
   TAX_RULES_TYPE_OTHER_SCHEMA
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
+
 import numeral from "numeral";
 const isFormValid = async (validateFn) => {
   try {
@@ -308,7 +309,45 @@ const AddRoutePage = () => {
           } else {
             throw error;
           }
-        }
+          if (valueTax[item] && typeApplyField === "taxOther") {
+            nameObj = nameField;
+            if (nameField === FIELDS.typeApplyOther) {
+              nameObj = FIELDS.typeApply;
+            }
+            if (nameField === FIELDS.isLumSum && valueTax[item] === 0) {
+              nameObj = FIELDS.lumpSum;
+            } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
+              nameObj = FIELDS.percent;
+            }
+            data[index] = {
+              ...data[index],
+              [FIELDS.typeApply]: typeTAX.OTHER,
+              [nameObj]: valueTax[item]
+            };
+          }
+        });
+        console.log("data", data);
+        console.log("dataMain", dataMain);
+        composedValues.routeTaxPostRequestList = [...dataMain, ...data];
+        console.log(
+          "composedValues.routeTaxPostRequestList",
+          composedValues.routeTaxPostRequestList
+        );
+
+        // try {
+        //   await RouteService.create(composedValues);
+        //   message.success("Created Successfully");
+        //   history.push(RouteConst.ROUTE);
+        // } catch (error) {
+        //   if (error instanceof APIError) {
+        //     const err = error.errors;
+        //     message.warning(err[0][1]);
+        //   } else if (error.message == 400) {
+        //     message.warning(error.errMsg);
+        //   } else {
+        //     throw error;
+        //   }
+        // }
       }
     });
   };
