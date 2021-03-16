@@ -1,3 +1,5 @@
+import capitalize from "lodash/capitalize";
+
 export const PW_MIN_MAX_CHARS_ERR = "• Be within 8-32 characters";
 export const PW_ATLEAST_1_SPECIAL_ERR = "• Contain al least 1 special character";
 export const PW_ATLEAST_1_NUM_ERR = "• Contain at least 1 number";
@@ -48,4 +50,7 @@ export const MINIMUM_QUANTITY_CANT_BE_GREATER_THAN_QUANTITY =
 export const WORKING_HOURS_WARNING = "The working hours should be at least 8 hours";
 export const WORKING_DAYS_WARNING = "The working days should be at least 5 days";
 export const MUST_BE_ATLEAST_4_CHARACTERS = (fieldName) =>
-  `${fieldName} must be atleast 4 characters`;
+  `${fieldName} must be at least 4 characters`;
+export const MAX_CHARS = (label, max) => `${capitalize(label)} cannot not exceed ${max} characters`;
+export const DUPLICATE_ITEM_VALUE = (item, attr) =>
+  `Already exists a ${item.toLowerCase()} with the same ${attr.toLowerCase()}`;
