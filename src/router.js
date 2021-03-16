@@ -139,7 +139,7 @@ const privateRoutes = [
     exact: false
   },
   {
-    path: RouteConst.TRADE_RULES,
+    path: RouteConst.TRADE_ROUTES,
     Component: loadable(() => import("components/pages/route/route.page")),
     exact: true
   },

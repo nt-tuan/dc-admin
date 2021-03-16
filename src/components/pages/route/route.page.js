@@ -33,8 +33,8 @@ const RoutePage = () => {
     <article>
       <Helmet title="Routes" />
       <div className="flex mb-3 ml-2">
-        {/* {renderTabButton("All Routes", ROUTE)} */}
-        {/* {renderTabButton("Default Routes", DEFAULT_ROUTE)} */}
+        {renderTabButton("Default Trade Routes", ROUTE)}
+        {/* {renderTabButton("Default Trade Routes", DEFAULT_ROUTE)} */}
       </div>
       {tab === ROUTE && renderRouteTab()}
       {/* {tab === DEFAULT_ROUTE && renderDefaultRouteTab()} */}

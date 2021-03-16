@@ -59,7 +59,7 @@ export const TaxRulesFrom = memo(
 
       const newArr = [...array];
       if (index === 0 && newArr.length === 0) {
-        const fieldName = `taxOther-${FIELDS.typeApplyOther}-${index}`;
+        const fieldName = `taxOther-${FIELDS.applyTypeOther}-${index}`;
         form.setFieldsValue({ [fieldName]: 0 });
         array = [
           {
@@ -112,7 +112,7 @@ export const TaxRulesFrom = memo(
       (name) => {
         const nameParse = name.split("-");
         if (!nameParse && !nameParse.length) return false;
-        const typeApplyField = nameParse[0];
+        const applyTypeField = nameParse[0];
         const nameField = nameParse[1];
         const indexField = nameParse[2];
 
@@ -120,7 +120,7 @@ export const TaxRulesFrom = memo(
           case FIELDS.lumpSum:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${typeApplyField}-${FIELDS.lumpSum}-${indexField}`;
+              const fieldName = `${applyTypeField}-${FIELDS.lumpSum}-${indexField}`;
               if (!isNaN(value)) {
                 form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
               }
@@ -128,7 +128,7 @@ export const TaxRulesFrom = memo(
           case FIELDS.percent:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${typeApplyField}-${FIELDS.percent}-${indexField}`;
+              const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
               if (!isNaN(value) && value.length <= 2) {
                 form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
               } else if (numeral(value).value() < 100) {
@@ -139,10 +139,10 @@ export const TaxRulesFrom = memo(
             return (value) => {
               const dataNew = { ...dataForm };
               const dataUpdate = {
-                ...dataForm[typeApplyField][indexField],
-                dataFilter: value === typeTAX.OTHER ? [] : [FIELDS.name]
+                ...dataForm[applyTypeField][indexField],
+                dataFilter: value === "OTHER" ? [] : [FIELDS.name]
               };
-              dataNew[typeApplyField][indexField] = dataUpdate;
+              dataNew[applyTypeField][indexField] = dataUpdate;
               setDataForm(dataNew);
             };
           case FIELDS.isLumSum:
@@ -195,11 +195,11 @@ export const TaxRulesFrom = memo(
                   }
                 });
                 const dataNew = { ...dataForm };
-                dataNew[typeApplyField][indexField].data = [...dataUpdate];
+                dataNew[applyTypeField][indexField].data = [...dataUpdate];
                 setDataForm(dataNew);
               }
             };
-          case FIELDS.typeApply:
+          case FIELDS.applyType:
             return (e) => {
               const value = e.target.value;
               const dataNew = {
@@ -214,13 +214,13 @@ export const TaxRulesFrom = memo(
                 taxMain: [dataNew]
               });
             };
-          case FIELDS.typeApplyOther:
+          case FIELDS.applyTypeOther:
             return (e) => {
               const value = e.target.value;
               const dataNew = {
                 ...dataForm.taxOther[indexField],
                 data:
-                  value === typeTAX.OTHER
+                  value === typeTAX.OTHERS
                     ? [...dataForm.taxOther[indexField].data, ...TAX_RULES_OTHER_SCHEMA]
                     : [...TAX_RULES_TYPE_OTHER_SCHEMA]
               };
@@ -233,15 +233,15 @@ export const TaxRulesFrom = memo(
             return () => {};
         }
       },
-      [dataForm]
+      [dataForm, form]
     );
 
     return (
       <div>
-        <h5 className="mt-3">Tax Rules</h5>
+        <h5 className="mt-3">Tax Routes</h5>
         <Form
           form={form}
-          initialValues={{ [FIELDS.typeApply]: 0, [FIELDS.typeApplyOther]: 0 }}
+          initialValues={{ [FIELDS.applyType]: 0, [FIELDS.applyTypeOther]: 0 }}
           ref={ref}
         >
           <div className="row justify-content-between" key="wrap-tax">

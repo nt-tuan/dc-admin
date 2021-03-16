@@ -5,7 +5,7 @@ import { FormError } from "components/atoms";
 import numeral from "numeral";
 export const typeTAX = {
   MAIN: "MAIN",
-  OTHER: "OTHER"
+  OTHERS: "OTHERS"
 };
 export const FIELDS = {
   type: "type",
@@ -13,8 +13,8 @@ export const FIELDS = {
   percent: "percent",
   taxPayer: "taxPayer",
   lumpSum: "lumpSum",
-  typeApply: "typeApply",
-  typeApplyOther: "typeApplyOther",
+  applyType: "applyType",
+  applyTypeOther: "applyTypeOther",
   isLumSum: "isLumSum"
 };
 
@@ -24,8 +24,8 @@ const LABELS = {
   [FIELDS.percent]: "Tax% applied to product ",
   [FIELDS.taxPayer]: "To whom should these charges/ tax be applied ?",
   [FIELDS.lumpSum]: "Lump-sum tax applied to the total net invoice (USD)",
-  [FIELDS.typeApply]: "Does this Trade Route and Product Category incur any Tax?",
-  [FIELDS.typeApplyOther]:
+  [FIELDS.applyType]: "Does this Trade Route and Product Category incur any Tax?",
+  [FIELDS.applyTypeOther]:
     "Is there any other tax that is applicable to the total net invoice amount?"
 };
 
@@ -42,21 +42,20 @@ export const taxTypeOtherValue = [
 
 export const taxPayerValue = [
   { label: "Buyer", value: "BUYER" },
-  { label: "Logistics", value: "LOGISTICS" },
-  { label: "Provider", value: "PROVIDER" }
+  { label: "Logistic Provider", value: "LOGISTIC_PROVIDER" }
 ];
 
 export let hiddenFields = [FIELDS.taxName];
 
 export const TAX_RULES_TYPE_MAIN_SCHEMA = [
   {
-    label: LABELS[FIELDS.typeApply],
-    name: FIELDS.typeApply,
+    label: LABELS[FIELDS.applyType],
+    name: FIELDS.applyType,
     type: "radio",
     initValue: 0,
     data: [
       {
-        value: "MAIN",
+        value: typeTAX.MAIN,
         name: "Yes"
       },
       {
@@ -69,13 +68,13 @@ export const TAX_RULES_TYPE_MAIN_SCHEMA = [
 
 export const TAX_RULES_TYPE_OTHER_SCHEMA = [
   {
-    label: LABELS[FIELDS.typeApplyOther],
-    name: FIELDS.typeApplyOther,
+    label: LABELS[FIELDS.applyTypeOther],
+    name: FIELDS.applyTypeOther,
     type: "radio",
     initValue: 0,
     data: [
       {
-        value: "OTHER",
+        value: typeTAX.OTHERS,
         name: "Yes"
       },
       {

@@ -1,13 +1,14 @@
 import React from "react";
 import { sortAlphabetically } from "utils/sort.util";
-import { Button } from "antd";
-
+import { Button, Tag, Tooltip } from "antd";
+import HoverTax from "components/organisms/route/forms/tax-rules/tax-hover.list.comp";
 const FIELDS = {
   timestamp: "createdDate",
   categoryName: "categoryName",
   typeName: "typeName",
   to: "toCountry",
-  from: "fromCountry"
+  from: "fromCountry",
+  taxDetailResponseList: "taxDetailResponseList"
 };
 
 const LABELS = {
@@ -15,7 +16,8 @@ const LABELS = {
   [FIELDS.categoryName]: "Product Category",
   [FIELDS.typeName]: "Product Type",
   [FIELDS.to]: "To",
-  [FIELDS.from]: "From"
+  [FIELDS.from]: "From",
+  [FIELDS.taxDetailResponseList]: "Tax"
 };
 
 // active tab
@@ -67,6 +69,26 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
       sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
       sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
       render: (to) => <CustomHighlighter searchText={searchText} value={to || ""} />
+    },
+    {
+      title: LABELS[FIELDS.taxDetailResponseList],
+      dataIndex: FIELDS.taxDetailResponseList,
+      key: FIELDS.taxDetailResponseList,
+      // sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
+      sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
+      render: (taxDetailResponseList) => {
+        return (
+          <Tag color={`${taxDetailResponseList?.length ? "green" : "red"}`}>
+            {" "}
+            {taxDetailResponseList && (
+              <Tooltip color="#ffffff" title={<HoverTax data={taxDetailResponseList} />}>
+                {taxDetailResponseList?.length ? "Yes" : "No"}
+              </Tooltip>
+            )}
+            {taxDetailResponseList?.length ? "Yes" : "No"}
+          </Tag>
+        );
+      }
     },
     {
       title: "Manage",
