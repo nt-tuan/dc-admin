@@ -17,7 +17,7 @@ const LABELS = {
   [FIELDS.typeName]: "Product Type",
   [FIELDS.to]: "To",
   [FIELDS.from]: "From",
-  [FIELDS.taxDetailResponseList]: "Tax"
+  [FIELDS.taxDetailResponseList]: "Tax Applied"
 };
 
 // active tab
