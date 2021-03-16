@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
-import { RegexConst, REQUIRED_ERR } from "commons/consts";
+import { RegexConst, REQUIRED_ERR, DUPLICATE_ITEM_VALUE, MAX_CHARS } from "commons/consts";
 import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
 import { ProductService } from "services";
@@ -42,7 +42,6 @@ const VitalInformationForm = ({
   onCategoryChange,
   types,
   hsCode,
-  setIsValidProductName,
   productDetails,
   isEditing
 }) => {
@@ -75,44 +74,6 @@ const VitalInformationForm = ({
   }, [productDetails, form, onCategoryChange]);
 
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
-    let timeout;
-
-    const checkProduct = async (name) => {
-      const category = form.getFieldValue("productCategory");
-      const type = form.getFieldValue("productType");
-
-      if (name.length > 50) {
-        form.setFields([
-          {
-            name: "productName",
-            errors: ["The product name can not exceed 50 characters"]
-          }
-        ]);
-      }
-
-      if (category && type) {
-        const isValidName = await ProductService.checkDuplicate({
-          name,
-          category,
-          type
-        });
-        setIsValidProductName(isValidName);
-        if (!isValidName) {
-          form.setFields([
-            {
-              name: "productName",
-              errors: ["This product has already been created"]
-            }
-          ]);
-        }
-      }
-    };
-
-    const handleChangeName = (value) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => checkProduct(value), 500);
-    };
-
     const fields = [
       {
         label: "Product Category",
@@ -157,12 +118,42 @@ const VitalInformationForm = ({
             {
               required: true,
               message: createFormErrorComp(REQUIRED_ERR("Product Name"))
-            }
+            },
+            {
+              type: "string",
+              max: 50,
+              message: createFormErrorComp(MAX_CHARS("Product Name", 50))
+            },
+            () => ({
+              async validator(_, value) {
+                if (!isEditing) {
+                  const { productCategory, productType } = form.getFieldsValue([
+                    "productCategory",
+                    "productType"
+                  ]);
+
+                  if (value && productCategory && productType) {
+                    const isValid = await ProductService.checkDuplicate({
+                      name: value,
+                      category: productCategory,
+                      type: productType
+                    });
+
+                    if (isValid) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      createFormErrorComp(DUPLICATE_ITEM_VALUE("Product", "Name"))
+                    );
+                  }
+                }
+                return Promise.resolve();
+              }
+            })
           ]
         },
         props: {
-          onChange: (e) => handleChangeName(e.target.value),
-          maxLength: 51,
+          maxLength: 50,
           disabled: !!productDetails && isEditing
         }
       },
@@ -273,7 +264,7 @@ const VitalInformationForm = ({
       }
     ];
     return fields;
-  }, [categories, productDetails, types, isEditing, hsCodeData.data, form, setIsValidProductName]);
+  }, [categories, productDetails, types, isEditing, hsCodeData.data, form]);
 
   const handleFieldChange = useCallback(
     (name) => {
