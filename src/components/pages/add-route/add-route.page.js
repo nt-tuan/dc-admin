@@ -43,7 +43,7 @@ const AddRoutePage = () => {
   const taxRuleForms = useRef();
   const history = useHistory();
 
-  const [dataSourceTax, setDataSourceTax] = useState({
+  const dataSourceTax = {
     taxMain: [
       {
         data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
@@ -56,7 +56,7 @@ const AddRoutePage = () => {
         dataFilter: [FIELDS.name]
       }
     ]
-  });
+  };
 
   const filteredCustomizedDocs = useMemo(() => {
     if (defaultRoute === undefined) {
@@ -260,15 +260,19 @@ const AddRoutePage = () => {
           const applyTypeField = nameParse[0];
           const nameField = nameParse[1];
           const index = nameParse[2];
+          nameObj = nameField;
+          valueObj = valueTax[item];
+          if (nameObj === FIELDS.lumpSum || nameObj === FIELDS.percent) {
+            valueObj = numeral(valueObj).value();
+          }
           if (valueTax[item] && applyTypeField === "taxMain") {
             dataMain[index] = {
               ...dataMain[index],
-              [nameField]: valueTax[item]
+              [nameField]: valueObj
             };
           }
+
           if (valueTax[item] && applyTypeField === "taxOther") {
-            nameObj = nameField;
-            valueObj = valueTax[item];
             if (nameField === FIELDS.applyTypeOther) {
               nameObj = FIELDS.applyType;
             }
@@ -277,9 +281,7 @@ const AddRoutePage = () => {
             } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
               nameObj = FIELDS.percent;
             }
-            if (nameObj === FIELDS.lumpSum) {
-              valueObj = numeral(valueObj).value();
-            }
+
             data[index] = {
               ...data[index],
               [FIELDS.applyType]: typeTAX.OTHERS,
