@@ -44,11 +44,24 @@
   justify-content: space-between;
 
   & > .card-name {
-    flex: 1 0 90%;
+    flex: 1 0 85%;
     overflow-wrap: anywhere;
+    display: flex;
+    align-items: flex-start;
+    line-height: 24px; /* same as icon size */
   }
   & > .card-more {
-    flex: 1 0 10%;
-    text-align: right;
+    flex: 1 0 15%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    button:hover,
+    button:focus {
+      background: rgba(0, 0, 0, 0.1);
+    }
   }
+}
+
+:global(.ant-dropdown-menu-item:hover) {
+  background-color: rgba(0, 0, 0, 0.1);
 }

@@ -89,7 +89,7 @@ export const withListItem = (
 
       const renderList = () => {
         return data.length ? (
-          <Row gutter={gutter}>
+          <Row gutter={gutter} type="flex">
             {data.map((item) => {
               return (
                 <Col key={item.id} xxl={xxl} xl={xl} lg={lg} md={md} sm={sm} xs={xs}>

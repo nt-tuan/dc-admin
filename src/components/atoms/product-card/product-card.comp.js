@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Empty, Button, Dropdown, Tooltip } from "antd";
+import { Card, Empty, Button, Dropdown } from "antd";
 import { animated, useTransition } from "react-spring";
 import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import styles from "./styles.module.scss";
@@ -46,7 +46,7 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
             <div className={`${styles["card-name"]} text-secondary`}>{name}</div>
             <div className={styles["card-more"]}>
               <Dropdown trigger={["click"]} overlay={renderMenu({ data, setLoading, setHidden })}>
-                <Button shape="circle" type="text" icon={<MoreOutlined />} />
+                <Button shape="circle" size="small" type="text" icon={<MoreOutlined />} />
               </Dropdown>
             </div>
           </div>
