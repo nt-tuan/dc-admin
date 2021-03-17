@@ -103,7 +103,7 @@ const ProductDatabase = () => {
 
   return (
     <article>
-      <Helmet title="Product Database" />
+      <Helmet title="Product Template Database" />
       <DTCSection className="d-flex justify-content-between align-items-center">
         <SearchBar onSubmit={onSearch} onTyping={() => setIsLoading(true)} />
         <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
