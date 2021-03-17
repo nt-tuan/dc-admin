@@ -1,12 +1,9 @@
+import React, { useCallback, useState } from "react";
 import { Checkbox, Input, Radio, Form, Modal } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
-
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import get from "lodash/get";
-
-import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
+import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 
 const initialFieldOptions = {
   label: "",
@@ -49,68 +46,42 @@ const initialFieldOptions = {
   ]
 };
 
-const CustomFieldOption = ({
-  type,
-  handleRemove,
-  openChildField,
-  childAble,
-  fieldName,
-  childValue,
-  setChildValue,
-  form,
-  index
-}) => {
-  const [fieldOptions, setFieldOptions] = useState([{ ...initialFieldOptions }]);
-  const [isOpen, setIsOpen] = useState(false);
+const CustomFieldOption = (props) => {
+  const { type, openChildField, canAddChildFields, fieldName, form, fieldIndex } = props;
+  const [showDeleteConfirmPopup, setShowDeleteConfirmPopup] = useState(false);
   const [deletedField, setDeletedField] = useState({});
-  const [deletedIndex, setDeletedIndex] = useState({});
-  const [textOptions, setTextOptions] = useState([
-    {
-      allowInput: "string",
-      fieldType: "shortText"
-    }
-  ]);
-
-  useEffect(() => {
-    setFieldOptions([{ ...initialFieldOptions }]);
-    setTextOptions([
-      {
-        allowInput: "string",
-        fieldType: "shortText"
-      }
-    ]);
-  }, [type]);
+  const formName = Object.keys(form.getFieldsValue())[0];
 
   const handleOK = (func) => {
-    setIsOpen(false);
+    setShowDeleteConfirmPopup(false);
     func();
   };
 
-  const handleDelete = useCallback((fields, field, index) => {
+  const handleDelete = useCallback((fields, field) => {
     if (fields.length === 1) return;
     setDeletedField(field);
-    setDeletedIndex(index);
-    setIsOpen(true);
+    setShowDeleteConfirmPopup(true);
   }, []);
 
-  const handleRemoveChild = useCallback(
-    (index) => {
-      const newChildValue = [...childValue];
-      delete newChildValue[index];
-      setChildValue(newChildValue);
-      form.setFieldsValue({ childValue: newChildValue });
+  const handleRemoveAllChildFields = useCallback(
+    (fieldOptionIndex, children) => {
+      const newFormValues = form.getFieldsValue();
+      const fieldId = children[0].parentId;
+      const formName = Object.keys(newFormValues)[0];
+      newFormValues[formName][fieldId].fieldOption[fieldOptionIndex].childField = undefined;
+      form.setFieldsValue(newFormValues);
     },
-    [childValue, setChildValue, form]
+    [form]
   );
 
   const renderDynamicFields = useCallback(() => {
-    switch (type || get(form.getFieldsValue(), `childField[${index}].type`)) {
+    switch (type) {
       case "dropdown":
       case "radio":
       case "multiDropdown": {
-        const hasChildFields = ["dropdown", "radio"].includes(type);
+        const childFieldsAllowed = ["dropdown", "radio"].includes(type);
         return (
-          <section key={type}>
+          <section>
             <p>Enter values(s) for this field:</p>
             <Form.List name={[fieldName, "fieldOption"]}>
               {(fields, { add, remove }) => {
@@ -135,31 +106,44 @@ const CustomFieldOption = ({
                               </Form.Item>
                               <PlusCircleOutlined
                                 className="mx-2"
+                                disabled={true}
                                 onClick={() => {
                                   if (type === "radio" && fields.length === 3) return;
                                   add();
                                 }}
                               />
                               <MinusCircleOutlined
-                                onClick={() => handleDelete(fields, field, index)}
-                                // onClick={() => remove(field.name)}
-                                style={{ opacity: fieldOptions.length === 1 ? 0.5 : 1 }}
+                                onClick={() => handleDelete(fields, field)}
+                                style={{ opacity: fields.length === 1 ? 0.5 : 1 }}
                               />
                             </div>
-                            {hasChildFields && childAble && (
+                            {childFieldsAllowed && canAddChildFields && (
                               <>
                                 <Checkbox
                                   className="mt-2"
                                   onClick={() => openChildField(index)}
-                                  checked={childValue && !!childValue[index]}
+                                  checked={
+                                    form.getFieldsValue()[formName][fieldIndex].fieldOption[index]
+                                      ?.childField || false
+                                  }
                                 >
                                   Add child field(s) to this value
                                 </Checkbox>
-                                {childValue && childValue[index] && (
+                                {form.getFieldsValue()[formName][fieldIndex].fieldOption[index]
+                                  ?.childField && (
                                   <ChildFieldReview
-                                    reOpenModal={() => openChildField(index)}
-                                    data={childValue[index]}
-                                    onRemove={() => handleRemoveChild(index)}
+                                    data={
+                                      form.getFieldsValue()[formName][fieldIndex].fieldOption[index]
+                                        .childField
+                                    }
+                                    onRemove={() =>
+                                      handleRemoveAllChildFields(
+                                        index,
+                                        form.getFieldsValue()[formName][fieldIndex].fieldOption[
+                                          index
+                                        ].childField
+                                      )
+                                    }
                                   />
                                 )}
                               </>
@@ -170,20 +154,16 @@ const CustomFieldOption = ({
                     })}
                     <Modal
                       centered
-                      visible={isOpen}
-                      onCancel={() => setIsOpen(false)}
+                      visible={showDeleteConfirmPopup}
+                      onCancel={() => setShowDeleteConfirmPopup(false)}
                       onOk={() =>
                         handleOK(() => {
                           remove(deletedField.name);
-                          handleRemove(deletedIndex);
                         })
                       }
-                      okText=""
                     >
-                      <p className="mt-3">
-                        If you delete value, your entered data will not be saved. Are you sure you
-                        want to delete it anyway?
-                      </p>
+                      <p className="mt-4 mb-0">Your entered data will not be saved.</p>
+                      <p>Are you sure you want to delete it anyway?</p>
                     </Modal>
                   </>
                 );
@@ -251,22 +231,19 @@ const CustomFieldOption = ({
         return;
     }
   }, [
-    type,
-    fieldOptions,
-    childAble,
-    openChildField,
+    canAddChildFields,
+    deletedField.name,
+    fieldIndex,
     fieldName,
-    childValue,
+    form,
+    formName,
     handleDelete,
-    isOpen,
-    deletedField,
-    deletedIndex,
-    handleRemove,
-    handleRemoveChild,
-    form
+    handleRemoveAllChildFields,
+    openChildField,
+    showDeleteConfirmPopup,
+    type
   ]);
 
-  // return renderDynamicFields();
   return <Form.Item>{renderDynamicFields()}</Form.Item>;
 };
 

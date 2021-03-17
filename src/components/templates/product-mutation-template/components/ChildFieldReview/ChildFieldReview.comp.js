@@ -16,7 +16,7 @@ const sample = [
   }
 ];
 
-const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
+const ChildFieldReview = memo(({ onRemove, data }) => {
   const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
 
   const handleRemove = useCallback(() => {
@@ -83,7 +83,7 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
   return (
     <>
       <Collapse defaultActiveKey={["1"]} className="my-3">
-        <Collapse.Panel header="Child field review" key="1" extra={renderRemoveIcon}>
+        <Collapse.Panel header="Child fields review" key="1" extra={renderRemoveIcon}>
           <div className="row">
             {data?.map(({ fieldName, type, fieldOption }) =>
               renderChildField(fieldName, type, fieldOption)
@@ -95,11 +95,10 @@ const ChildFieldReview = memo(({ onRemove, data, reOpenModal }) => {
         visible={isOpenConfirmPopup}
         onCancel={() => setIsOpenConfirmPopup(false)}
         onOk={handleRemove}
-        okText="Yes"
-        cancelText="No"
-        title="Cancel child field?"
+        title="Remove all child fields"
       >
-        If you cancel this window, the data will not be saved.Are you sure you want to cancel
+        <p className="mb-0">If you proceed, all entered field data will be lost.</p>
+        <p>Are you sure you want to delete all child fields?</p>
       </Modal>
     </>
   );

@@ -1,149 +1,99 @@
-import React, { forwardRef, useCallback, useState, useEffect } from "react";
+import React, { forwardRef, useCallback, useState } from "react";
 import { Modal, Form } from "antd";
-import { useSelector } from "react-redux";
-import get from "lodash/get";
 
 import ChildFieldModal from "./ChildFieldModal";
 import FieldLayout from "./FieldLayout";
 import "../../product-mutation-template.comp.scss";
 
-const Field = forwardRef(
-  (
-    {
-      type,
-      onRemove,
-      name,
-      field,
-      fieldKey,
-      remove,
-      form,
-      index,
-      handleFieldChange,
-      numberField,
-      isHiddenIconRemove,
-      productType,
-      fieldValue,
-      parentId
+const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue }, ref) => {
+  const [showFieldTypeInfoPopup, setShowFieldTypeInfoPopup] = useState(false);
+  const [showRemoveConfirmPopup, setShowRemoveConfirmPopup] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState();
+  const [isChildFieldModalOpen, setIsChildFieldsModalOpen] = useState(false);
+  const [childForm] = Form.useForm();
+
+  const formName = Object.keys(form.getFieldsValue())[0];
+
+  const handleSave = useCallback(
+    (values) => {
+      const fieldId = values[0].parentId;
+      const fieldOptionIndex = values[0].plotOption;
+      const newFormValues = form.getFieldsValue();
+      const formName = Object.keys(newFormValues)[0];
+      newFormValues[formName][fieldId].fieldOption[fieldOptionIndex].childField = values;
+      form.setFieldsValue(newFormValues);
+      setIsChildFieldsModalOpen(false);
     },
-    ref
-  ) => {
-    const [isTypeModalOpen, setTypeModalOpen] = useState(false);
-    const [childValue, setChildValue] = useState([]);
-    const [currentIndex, setCurrentIndex] = useState();
-    const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
-    const [isChildModalOpen, setIsChildModalOpen] = useState(false);
-    const [childForm] = Form.useForm();
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+    [form]
+  );
 
-    useEffect(() => {
-      if (fieldValue?.fieldOption) {
-        const selectedChildValue = fieldValue?.fieldOption.map((x) => x.childField);
-        setChildValue(selectedChildValue);
-      }
-    }, [fieldValue]);
+  const openChildFieldModal = useCallback((index) => {
+    setCurrentIndex(index);
+    setIsChildFieldsModalOpen(true);
+  }, []);
 
-    const handleSave = useCallback(
-      (value) => {
-        //For update the child field to latest
-        const allChildren = form.getFieldValue("childValue") || [];
-        const latestChild = allChildren.concat(value);
-        form.setFieldsValue({ childValue: latestChild });
+  const onConfirmRemove = useCallback(() => {
+    setShowRemoveConfirmPopup(true);
+  }, []);
 
-        //For handle current child added
-        const currentChild = [...childValue];
-        currentChild[currentIndex] = value;
-        setChildValue(currentChild);
+  const onCancelRemove = useCallback(() => {
+    setShowRemoveConfirmPopup(false);
+  }, []);
 
-        setIsChildModalOpen(false);
-        if (handleFieldChange) {
-          handleFieldChange();
-        }
-      },
-      [childValue, currentIndex, form, handleFieldChange]
-    );
+  const onCloseFieldTypeInfo = useCallback(() => {
+    setShowFieldTypeInfoPopup(false);
+  }, []);
 
-    const handleRemove = useCallback(
-      (index) => {
-        const newChildValue = [...childValue];
-        newChildValue.splice(index, 1);
-        setChildValue(newChildValue);
-        form.setFieldsValue({ childValue: newChildValue });
-      },
-      [childValue, form]
-    );
+  const onCloseChildFieldsModal = useCallback(() => {
+    setIsChildFieldsModalOpen(false);
+  }, []);
 
-    const openChildField = useCallback(
-      (index) => {
-        setCurrentIndex(index);
-        setIsChildModalOpen(true);
-        childForm.setFieldsValue({ childField: childValue[index] });
-      },
-      [childForm, childValue]
-    );
-    return (
-      <>
-        <FieldLayout
-          {...{
-            form,
-            type,
-            setTypeModalOpen,
-            fieldKey,
-            setIsChildModalOpen,
-            openChildField,
-            remove,
-            field,
-            childValue,
-            setChildValue,
-            handleRemove,
-            index,
-            productType,
-            isHiddenIconRemove,
-            numberField,
-            childForm
-          }}
+  return (
+    <>
+      <FieldLayout
+        form={form}
+        setTypeModalOpen={setShowFieldTypeInfoPopup}
+        openChildField={openChildFieldModal}
+        onRemoveField={onConfirmRemove}
+        field={field}
+        index={index}
+        canDelete={canDelete}
+        fieldValue={fieldValue}
+      />
+      {isChildFieldModalOpen && (
+        <ChildFieldModal
+          isOpen={isChildFieldModalOpen}
+          closeModal={onCloseChildFieldsModal}
+          form={childForm}
+          field={field}
+          handleSave={handleSave}
+          parentId={index}
+          currentPlotOptions={currentIndex}
+          data={
+            (currentIndex >= 0 &&
+              form.getFieldsValue()[formName][index].fieldOption[currentIndex]?.childField) ||
+            undefined
+          }
         />
-        {isChildModalOpen && (
-          <ChildFieldModal
-            isOpen={isChildModalOpen}
-            closeModal={() => setIsChildModalOpen(false)}
-            form={childForm}
-            handleSave={handleSave}
-            isHiddenIconRemove
-            numberField
-            selectedFieldType={get(childValue, `[${currentIndex}][0].type`)}
-            parentId={parentId}
-            currentPlotOptions={currentIndex}
-          />
-        )}
-        <Modal
-          centered
-          visible={isTypeModalOpen}
-          onCancel={() => setTypeModalOpen(false)}
-          footer={null}
-          okText=""
-        >
-          <p className="mt-3">
-            You can switch a field type by selecting an option from the dropdown menu. When you
-            switch question types, some previously entered data, such as field values and child
-            fields of each value (if any) may not be saved.
-          </p>
-        </Modal>
-        <Modal
-          visible={isOpenConfirmPopup}
-          onCancel={() => setIsOpenConfirmPopup(false)}
-          onOk={() => onRemove(name)}
-          okText="Yes"
-          cancelText="No"
-          title="Are you sure?"
-        >
-          If you delete this field, all the data that you entered will be lost.Are you sure you want
-          to delete the field
-        </Modal>
-        <Form.Item name={[field.name, "childValue"]}></Form.Item>
-      </>
-    );
-  }
-);
+      )}
+      <Modal
+        centered
+        visible={showFieldTypeInfoPopup}
+        onCancel={onCloseFieldTypeInfo}
+        footer={null}
+      >
+        <p className="mt-4">
+          Switch a field type by selecting an option from the dropdown menu. When you switch field
+          types, the previously entered data, such as field values and child fields of each value
+          (if any) may be lost.
+        </p>
+      </Modal>
+      <Modal visible={showRemoveConfirmPopup} onCancel={onCancelRemove} onOk={onRemove}>
+        <p className="mt-4 mb-0">If you proceed, all entered data will be lost.</p>
+        <p>Do you wish to delete this field?</p>
+      </Modal>
+    </>
+  );
+});
 
 export default Field;

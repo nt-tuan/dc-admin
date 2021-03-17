@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
+import { Loader } from "components";
 import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
 import classNames from "classnames";
@@ -19,7 +20,7 @@ const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
-export const ProductMutationTemplate = () => {
+export const ProductMutationTemplate = ({ productDetails, isEditing = false }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
@@ -31,33 +32,30 @@ export const ProductMutationTemplate = () => {
     totalPages: null,
     keyword: null
   });
-  const [skipAble, setSkipAble] = useState(true);
+  const [canSkip, setCanSkip] = useState(false);
 
   //Set break-point for Progressive bar
   const isSmallDevice = isScreensize("lg");
   const [vitalForm] = Form.useForm();
   const [formNewFields] = Form.useForm();
   const [variantDetailsForm] = Form.useForm();
-  const templateImageForm = useRef();
   const [offerDetailsForm] = Form.useForm();
   const [packingDetailsForm] = Form.useForm();
   const [certificationForm] = Form.useForm();
+  const templateImageForm = useRef();
 
-  const [isValidProductName, setIsValidProductName] = useState(true);
-  const [productDetails, setProductDetails] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const searchParams = window.location.search;
-    if (searchParams) {
-      const productId = searchParams.split("uid=")[1];
-      asyncErrorHandlerWrapper(async () => {
-        const productDetails = await ProductService.getProductDetails(productId);
-        // const productDetails = await ProductService.getProductDetails(
-        //   "fefddf2e-8004-40b5-bc08-df2078e3dfb7"
-        // );
-        setProductDetails(productDetails);
-      });
+    if (isEditing && categories.length && hsCode && types.length) {
+      setLoading(false);
     }
+    if (!isEditing && categories.length && hsCode) {
+      setLoading(false);
+    }
+  }, [categories, types, hsCode, isEditing]);
+
+  useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const [categories, hsCode] = await Promise.all([
         ProductService.getProductCategories(),
@@ -84,10 +82,10 @@ export const ProductMutationTemplate = () => {
     });
   }, []);
 
-  //submit data in current step
+  //submit data in current form
   const handleSubmitForm = useCallback(
-    (name, { values, forms }) => {
-      if (currentStep === 1) {
+    (name, { values }) => {
+      if (name === "vitalInformation") {
         const vitalInfor = { ...values };
         delete vitalInfor.customVital;
         setProductData({
@@ -97,104 +95,40 @@ export const ProductMutationTemplate = () => {
         });
       } else {
         const formName = Object.keys(values)[0];
-        const formValue = values[formName].map((item, parentId) => {
-          //Reset the child field before adding or removing
-          item.fieldOption.map((opt) => {
-            opt.childField = Array[0];
-            return opt;
-          });
-
-          //Check if  child values available
-          if (values["childValue"]) {
-            values["childValue"].map((child) => {
-              let id = child.parentId;
-              let plotIndex = child.plotOption;
-              //Check if parentID match to the child
-              if (parentId == id) {
-                item.fieldOption = item.fieldOption.map((opt, index) => {
-                  //Check if plotOption Index match to the child
-                  if (index == plotIndex) {
-                    if (opt.childField) {
-                      opt.childField.push(child);
-                    } else {
-                      opt.childField = [child];
-                    }
-                  }
-                  return opt;
-                });
-              }
-            });
-          }
-          return item;
-        });
-        setProductData({
+        const formValue = values[formName];
+        const updatedProductData = {
           ...productData,
           details: { ...productData.details, [formName]: formValue }
-        });
+        };
+        setProductData(updatedProductData);
       }
     },
-    [currentStep]
+    [productData]
   );
 
-  const getErrorField = useCallback((form) => {
-    const formValue = Object.values(form.getFieldsValue())?.length
-      ? Object.values(form.getFieldsValue())[0]
-      : [];
-    const errorField = formValue?.find((value) => {
-      if (!value?.fieldName || !value?.type) {
+  const isValidForm = useCallback((form) => {
+    return form
+      .validateFields()
+      .then(() => {
+        form.submit();
         return true;
-      }
-      if (value?.fieldOption[0] === "") {
-        return true;
-      }
-      if (value.type === "textbox") {
-        if (!value?.fieldOption[0].allowInput || !value?.fieldOption[0].textboxType) {
-          return true;
-        }
-      } else {
-        if (value?.fieldOption?.find((childValue) => !childValue.label)) {
-          return true;
-        }
-      }
-
-      return false;
-    });
-    return errorField;
+      })
+      .catch(() => false);
   }, []);
 
   //TODO: combine submit and get error
-  const handleValidator = useCallback(() => {
+  const handleValidator = useCallback(async () => {
     switch (currentStep) {
       case 1:
-        vitalForm.submit();
-        const ignoreValidatorFieldList = [
-          "headingLabel",
-          "chapterLabel",
-          "hsCodeDescription",
-          "quantity",
-          "customVital",
-          "keyword"
-        ];
-        const formVal = vitalForm.getFieldsValue();
-        const isVitalFormValid = !Object.keys(formVal)
-          .filter((key) => !ignoreValidatorFieldList.includes(key))
-          .some((key) => !formVal[key]);
-        const isFormNewFieldsValid =
-          !vitalForm.getFieldsValue().customVital ||
-          !vitalForm.getFieldsValue().customVital.some((obj) => !obj.name || !obj.value);
-        return isVitalFormValid && isFormNewFieldsValid;
+        return isValidForm(vitalForm);
       case 2:
-        variantDetailsForm.submit();
-        return !getErrorField(variantDetailsForm);
+        return isValidForm(variantDetailsForm);
       case 3:
-        offerDetailsForm.submit();
-        return !getErrorField(offerDetailsForm);
+        return isValidForm(offerDetailsForm);
       case 4:
-        packingDetailsForm.submit();
-        return !getErrorField(packingDetailsForm);
+        return isValidForm(packingDetailsForm);
       case 5:
-        certificationForm.submit();
-        return !getErrorField(certificationForm);
+        return isValidForm(certificationForm);
       case 6:
         setProductData({
           ...productData,
@@ -208,21 +142,51 @@ export const ProductMutationTemplate = () => {
   }, [
     currentStep,
     vitalForm,
-    templateImageForm,
+    isValidForm,
     variantDetailsForm,
-    getErrorField,
     offerDetailsForm,
-    certificationForm,
     packingDetailsForm,
+    certificationForm,
     productData
   ]);
 
-  const handleChangeStep = useCallback((targetStep) => {
-    // if (handleValidator()) {
-    //   setCurrentStep(targetStep + 1);
-    // }
-    return;
-  }, []);
+  const checkCanSkip = useCallback(
+    (step = currentStep, recentlyChangedValues) => {
+      let isFormDirty = false;
+
+      if (ALLOW_SKIP.includes(step)) {
+        if (recentlyChangedValues) {
+          const formName = Object.keys(recentlyChangedValues)[0];
+          if (recentlyChangedValues[formName]?.length > 0) {
+            isFormDirty = true;
+          }
+        } else {
+          let values;
+          if (step === 4) {
+            values = packingDetailsForm.getFieldsValue();
+          }
+          if (step === 5) {
+            values = certificationForm.getFieldsValue();
+          }
+          const formName = Object.keys(values)[0];
+          if (values[formName]?.length > 0) {
+            isFormDirty = true;
+          }
+        }
+        setCanSkip(!isFormDirty);
+      } else {
+        setCanSkip(false);
+      }
+    },
+    [certificationForm, currentStep, packingDetailsForm]
+  );
+
+  const handleValuesChange = useCallback(
+    (recentlyChangedValues) => {
+      checkCanSkip(currentStep, recentlyChangedValues);
+    },
+    [checkCanSkip, currentStep]
+  );
 
   const handleNext = useCallback(async () => {
     if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
@@ -236,20 +200,21 @@ export const ProductMutationTemplate = () => {
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
           //Checking keyword field has value and return to string to submit data
-          if (key === "keyword" && productData.vitalInformation[key]) {
+          if (key === "keyword" && productData.vitalInformation[key]?.length >= 0) {
             return {
               name: key,
               value: productData.vitalInformation[key].toString()
             };
+          } else {
+            return {
+              name: key,
+              value: productData.vitalInformation[key]
+            };
           }
-          return {
-            name: key,
-            value: productData.vitalInformation[key]
-          };
         })
       };
       asyncErrorHandlerWrapper(async () => {
-        if (productDetails) {
+        if (isEditing) {
           const searchParams = window.location.search;
           const productId = searchParams.split("uid=")[1];
           delete data.typeId;
@@ -259,10 +224,10 @@ export const ProductMutationTemplate = () => {
             : "";
           data.productId = productId;
           await ProductService.editProduct(data, productId);
-          message.success("Edit Successfully");
+          message.success("Product was successfully updated!");
         } else {
           await ProductService.addProduct(data);
-          message.success("Create Successfully");
+          message.success("Product was successfully created!");
         }
         setTimeout(() => {
           window.location.href = "/product-database";
@@ -271,135 +236,98 @@ export const ProductMutationTemplate = () => {
       return;
     } else {
       const isValid = await handleValidator();
-      if (!isValid) return;
-      if (currentStep === 1) {
-        const category = vitalForm.getFieldValue("productCategory");
-        const type = vitalForm.getFieldValue("productType");
-        const name = vitalForm.getFieldValue("productName");
-        const isValidName = await ProductService.checkDuplicate({
-          name,
-          category,
-          type
-        });
-        if (!isValidName && !productDetails) {
-          vitalForm.setFields([
-            {
-              name: "productName",
-              errors: ["This product has already been created"]
-            }
-          ]);
-          return;
-        }
-      }
-      setTimeout(() => {
+      if (isValid) {
+        checkCanSkip(currentStep + 1);
         setCurrentStep(currentStep + 1);
-        setSkipAble(true);
-      }, 100);
-    }
-  }, [currentStep, handleValidator, productData, vitalForm, productDetails]);
-
-  const isSkip = useCallback(() => {
-    let isFormDirty = false;
-
-    if (currentStep === 4 && productData) {
-      let availableForm = Object.keys(productData?.details);
-
-      if (availableForm.some((form) => form == "packingDetails")) {
-        isFormDirty = true;
       }
     }
-    if (currentStep === 5 && productData) {
-      let availableForm = Object.keys(productData?.details);
-      if (availableForm.some((form) => form == "certificationDetails")) {
-        isFormDirty = true;
-      }
-    }
-    if (ALLOW_SKIP.includes(currentStep) && skipAble && !isFormDirty) {
-      return true;
-    }
-    return false;
-  }, [currentStep, skipAble, productData]);
+  }, [currentStep, productData, isEditing, handleValidator, checkCanSkip]);
 
-  const handleFieldChange = useCallback(() => {
-    setSkipAble(false);
-  }, []);
+  const handleSkip = useCallback(() => {
+    checkCanSkip(currentStep + 1);
+    setCurrentStep(currentStep + 1);
+  }, [checkCanSkip, currentStep]);
+
+  const handlePrevious = useCallback(() => {
+    checkCanSkip(currentStep - 1);
+    setCurrentStep(currentStep - 1);
+  }, [checkCanSkip, currentStep]);
 
   return (
     <article>
-      <DTCSection>
-        <Steps
-          className={null}
-          current={currentStep - 1}
-          size="default"
-          direction={isSmallDevice ? "vertical" : "horizontal"}
-          onChange={handleChangeStep}
-          progressDot
-        >
-          {PRODUCT_CREATE_TEMPLATE.map((menu) => (
-            <Step title={menu.title} key={menu.title} />
-          ))}
-        </Steps>
-        <Form.Provider onFormFinish={handleSubmitForm}>
-          {/* create form here form here */}
-          <div className={classNames({ "d-none": currentStep !== 1 })}>
-            <VitalInformation
-              form={vitalForm}
-              formNewFields={formNewFields}
-              categories={categories}
-              onCategoryChange={getTypeByCategory}
-              types={types}
-              hsCode={hsCode}
-              isValidProductName={isValidProductName}
-              setIsValidProductName={setIsValidProductName}
-              productDetails={productDetails}
-            />
-          </div>
-          <div className={classNames({ "d-none": currentStep !== 2 })}>
-            <VariantDetails form={variantDetailsForm} productDetails={productDetails} />
-          </div>
-          <div className={classNames({ "d-none": currentStep !== 3 })}>
-            <OfferDetails form={offerDetailsForm} productDetails={productDetails} />
-          </div>
-          <div className={classNames({ "d-none": currentStep !== 4 })}>
-            <PackingDetails
-              form={packingDetailsForm}
-              {...{ handleFieldChange }}
-              productDetails={productDetails}
-            />
-          </div>
-          <div className={classNames({ "d-none": currentStep !== 5 })}>
-            <CertificationDetails
-              form={certificationForm}
-              {...{ handleFieldChange }}
-              productDetails={productDetails}
-            />
-          </div>
-          <div className={classNames({ "d-none": currentStep !== 6 })}>
-            <ProductTemplateImage
-              ref={(ref) => (templateImageForm.current = ref)}
-              productDetails={productDetails}
-            />
-          </div>
-          {currentStep === 7 && (
-            <ProductTemplateReview data={productData} categories={categories} types={types} />
+      {loading && <Loader />}
+      <>
+        <DTCSection className={classNames({ "d-none": loading })}>
+          <Steps
+            className={null}
+            current={currentStep - 1}
+            size="default"
+            direction={isSmallDevice ? "vertical" : "horizontal"}
+            progressDot
+          >
+            {PRODUCT_CREATE_TEMPLATE.map((menu) => (
+              <Step title={menu.title} key={menu.title} />
+            ))}
+          </Steps>
+          <Form.Provider onFormFinish={handleSubmitForm}>
+            {/* create form here form here */}
+            <div className={classNames({ "d-none": currentStep !== 1 })}>
+              <VitalInformation
+                form={vitalForm}
+                formNewFields={formNewFields}
+                categories={categories}
+                onCategoryChange={getTypeByCategory}
+                types={types}
+                hsCode={hsCode}
+                productDetails={productDetails}
+                isEditing={isEditing}
+              />
+            </div>
+            <div className={classNames({ "d-none": currentStep !== 2 })}>
+              <VariantDetails form={variantDetailsForm} productDetails={productDetails} />
+            </div>
+            <div className={classNames({ "d-none": currentStep !== 3 })}>
+              <OfferDetails form={offerDetailsForm} productDetails={productDetails} />
+            </div>
+            <div className={classNames({ "d-none": currentStep !== 4 })}>
+              <PackingDetails
+                form={packingDetailsForm}
+                handleValuesChange={handleValuesChange}
+                productDetails={productDetails}
+              />
+            </div>
+            <div className={classNames({ "d-none": currentStep !== 5 })}>
+              <CertificationDetails
+                form={certificationForm}
+                handleValuesChange={handleValuesChange}
+                productDetails={productDetails}
+              />
+            </div>
+            <div className={classNames({ "d-none": currentStep !== 6 })}>
+              <ProductTemplateImage
+                ref={(ref) => (templateImageForm.current = ref)}
+                productImages={productDetails?.images}
+              />
+            </div>
+            {currentStep === 7 && (
+              <ProductTemplateReview data={productData} categories={categories} types={types} />
+            )}
+          </Form.Provider>
+        </DTCSection>
+        <div className={classNames("footer", { "d-none": loading, "mb-3": canSkip })}>
+          {currentStep !== 1 && <Button onClick={handlePrevious}>Previous</Button>}
+          {canSkip && (
+            <Button danger onClick={handleSkip}>
+              Skip Section
+            </Button>
           )}
-        </Form.Provider>
-      </DTCSection>
-      <div className={`footer ${isSkip() && "mb-3"}`}>
-        {currentStep !== 1 && (
-          <Button onClick={() => setCurrentStep(currentStep - 1)}>Previous</Button>
-        )}
-        {isSkip() && (
-          <Button danger onClick={() => setCurrentStep(currentStep + 1)}>
-            Skip Section
-          </Button>
-        )}
-        {!isSkip() && (
-          <Button type="primary" onClick={handleNext} className="mb-3">
-            {currentStep === PRODUCT_CREATE_TEMPLATE.length ? "Submit" : "Next"}
-          </Button>
-        )}
-      </div>
+          {!canSkip && (
+            <Button type="primary" onClick={handleNext} className="mb-3">
+              {currentStep === PRODUCT_CREATE_TEMPLATE.length ? "Submit" : "Next"}
+            </Button>
+          )}
+        </div>
+      </>
     </article>
   );
 };

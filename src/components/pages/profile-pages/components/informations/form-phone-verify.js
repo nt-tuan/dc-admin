@@ -1,16 +1,23 @@
 import React, { memo } from "react";
-import { Button, Tooltip, Input, Form, Alert } from "antd";
-import { MESSAGES, WRONG_VERIFICATION_CODE } from "commons/consts";
+import { Button, Tooltip, Input, Form } from "antd";
+import { WRONG_VERIFICATION_CODE } from "commons/consts";
 import PropTypes from "prop-types";
 
 const FormPhoneVerify = memo(({ onShowVerifyPhone, setIsSendCode }) => {
+  const [form] = Form.useForm();
+
   //** Handle Verify Code */
   const handleVerifyCode = (values) => {
-    onShowVerifyPhone(values?.code);
+    if (values?.code !== null) {
+      const onServerError = () => {
+        form.setFields([{ name: "code", errors: [WRONG_VERIFICATION_CODE] }]);
+      };
+      onShowVerifyPhone(values?.code.trim(), { onError: onServerError });
+    }
   };
 
   return (
-    <Form name="customized_form_controls" layout="inline" onFinish={handleVerifyCode}>
+    <Form name="customized_form_controls" layout="inline" onFinish={handleVerifyCode} form={form}>
       <Form.Item
         name="code"
         label="Verify Code"
@@ -28,9 +35,6 @@ const FormPhoneVerify = memo(({ onShowVerifyPhone, setIsSendCode }) => {
         <Button type="primary" htmlType="button" onClick={() => setIsSendCode(false)}>
           <i className="fe fe-x" />
         </Button>
-      </Form.Item>
-      <Form.Item style={{ marginTop: "20px" }}>
-        <Alert message={MESSAGES.PHONE_VERIFICATION_CODE_SENT} type="error" closable />
       </Form.Item>
     </Form>
   );
