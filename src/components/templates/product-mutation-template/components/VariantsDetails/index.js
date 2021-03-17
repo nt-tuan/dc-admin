@@ -1,64 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import get from "lodash/get";
 
 import Field from "../CustomField/Field";
+import { EMPTY_FIELD } from "../../constants";
 
 const VariantDetails = ({ form, productDetails }) => {
-  const [details, setDetails] = useState();
-  const [totalFieldQuantity, setQuantity] = useState(0);
-
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { variantDetails } = detail;
       form.setFieldsValue({ variantDetails });
-      setDetails(variantDetails);
     }
-  }, [productDetails, form]);
+  }, [form, productDetails]);
 
   const handleAddingItem = (callback) => {
-    callback({
-      fieldName: "",
-      type: "",
-      fieldOption: [""]
-    });
+    callback(EMPTY_FIELD);
   };
 
   return (
-    <Form
-      form={form}
-      initialValues={{
-        variantDetails: [
-          {
-            fieldName: "",
-            type: "",
-            fieldOption: [""]
-          }
-        ]
-      }}
-    >
+    <Form form={form} initialValues={{ variantDetails: [EMPTY_FIELD] }}>
       <Form.List name="variantDetails">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => {
               return (
                 <Field
-                  key={`${field.key}-${index}`}
-                  productType={get(details, `[${index}].type`)}
+                  key={`variant-field-${field.key}`}
                   form={form}
                   field={field}
-                  fieldKey={field.key}
                   index={index}
-                  isHiddenIconRemove
-                  numberField={fields.length}
-                  fieldValue={get(details, `[${index}]`)}
-                  remove={() => {
+                  canDelete={fields.length > 1}
+                  fieldValue={get(form.getFieldsValue(), `variantDetails.[${index}]`)}
+                  onRemove={() => {
                     if (fields.length === 1) return;
-                    remove(field.name);
+                    remove(index);
                   }}
-                  parentId={index}
                 />
               );
             })}
@@ -75,7 +53,6 @@ const VariantDetails = ({ form, productDetails }) => {
           </>
         )}
       </Form.List>
-      <Form.Item name={"childValue"}></Form.Item>
     </Form>
   );
 };

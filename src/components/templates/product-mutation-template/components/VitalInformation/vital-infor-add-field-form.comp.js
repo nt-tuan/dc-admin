@@ -1,16 +1,9 @@
 import { Form, Input, Button, Row, Col } from "antd";
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { createFormErrorComp } from "utils/form.util";
+import { REQUIRED_ERR } from "commons/consts";
 import { isScreensize } from "utils/general.util";
-
-// const formItemLayoutWithOutLabel = {
-//   wrapperCol: {
-//     xl: 24,
-//     lg: 24,
-//     md: 24,
-//     sm: 24
-//   }
-// };
 
 export const VitalInformationAddFieldsForm = ({ form }) => {
   const isSmallDevice = isScreensize("sm");
@@ -30,7 +23,9 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                       {...field}
                       name={[field.name, "name"]}
                       fieldKey={[field.fieldKey, "name"]}
-                      rules={[{ required: true, message: "Missing Name" }]}
+                      rules={[
+                        { required: true, message: createFormErrorComp(REQUIRED_ERR("Field Name")) }
+                      ]}
                     >
                       <Input placeholder="Enter field name" className="w-100" />
                     </Form.Item>
@@ -42,7 +37,9 @@ export const VitalInformationAddFieldsForm = ({ form }) => {
                   {...field}
                   name={[field.name, "value"]}
                   fieldKey={[field.fieldKey, "value"]}
-                  rules={[{ required: true, message: "Missing Value" }]}
+                  rules={[
+                    { required: true, message: createFormErrorComp(REQUIRED_ERR("Field Value")) }
+                  ]}
                 >
                   <Input placeholder="Enter field value" className="w-100" />
                 </Form.Item>

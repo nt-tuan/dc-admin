@@ -5,51 +5,52 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
-  useReducer,
   useState
 } from "react";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ImageService } from "services";
 import ImgCrop from "antd-img-crop";
 import "./styles.scss";
 import "antd/es/modal/style";
 import "antd/es/slider/style";
-import get from "lodash/get";
 
-export const ProductTemplateImage = forwardRef((props, ref) => {
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
-  const [imgUrl, setImgUrl] = useState();
-  const [isError, setIsError] = useState({
-    isSizeError: false,
-    isTypeError: false,
-    isEmpty: false
+export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => {
+  const [currentImg, setCurrentImg] = useState(productImages[0] || {});
+  const [hasError, setHasError] = useState({
+    overMaxSize: false,
+    emptyUpload: false
   });
-  const [uploaded, setUploaded] = useState();
+  const [uploaded, setUploaded] = useState([]);
 
   useEffect(() => {
-    if (props.productDetails?.images) {
-      const uploadedImage = {};
-      uploadedImage.uid = "-1";
-      uploadedImage.name = get(props.productDetails, `images[0].originalFileName`);
-      uploadedImage.status = "done";
-      uploadedImage.url = get(props.productDetails, `images[0].url`);
-      setUploaded([uploadedImage]);
+    if (productImages.length) {
+      const images = productImages.map((img) => ({
+        uid: "-1",
+        name: img.originalFilename,
+        status: "done",
+        url: img.url
+      }));
+      setUploaded(images);
+      setCurrentImg(productImages[0]);
     }
-  }, [props.productDetails]);
+  }, [productImages]);
 
   useImperativeHandle(ref, () => ({
     getValues: () => {
-      if (!imgUrl) {
-        setIsError({ ...isError, isEmpty: true });
+      if (!uploaded.length) {
+        setHasError({
+          ...hasError,
+          emptyUpload: true
+        });
+        return false;
       }
-      return imgUrl || get(props.productDetails, `images[0]`);
+      return currentImg;
     }
   }));
 
   const handleUploadImage = async ({ onSuccess, onError, file }) => {
     if (file.size / 1024 / 1024 < 5) {
       const res = await ImageService.uploadImage(file);
-      setImgUrl(res);
+      setCurrentImg(res);
       onSuccess({ ...res, status: "done", uid: res.name });
     }
   };
@@ -62,25 +63,22 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   ));
 
   const renderUploadButton = () => {
-    return imgUrl || uploaded?.length ? null : <UploadButton />;
+    return uploaded.length ? null : <UploadButton />;
   };
 
-  const beforeUpload = useCallback((file) => {
-    setImgUrl(file);
-    return true;
-  }, []);
-
-  const beforeCrop = (file) => {
-    const isSizeError = file.size / 1024 / 1024 >= 5;
-    const fileExt = file.name.substr(file.name.lastIndexOf("."));
-    const isTypeError = ![".png", ".jpg", ".jpeg", ".tiff", ".gif"].includes(fileExt.toLowerCase());
-    if (!isSizeError && !isTypeError) {
-      setIsError({ ...isError, isEmpty: false, isSizeError: false, isTypeError: false });
-    } else {
-      setIsError({ isTypeError, isSizeError });
-    }
-    return !isSizeError && !isTypeError;
-  };
+  const beforeUpload = useCallback(
+    (file) => {
+      const overMaxSize = file.size / 1024 / 1024 >= 5;
+      if (overMaxSize) {
+        setHasError({
+          ...hasError,
+          overMaxSize: true
+        });
+      }
+      return !overMaxSize;
+    },
+    [hasError]
+  );
 
   const renderErrorMessage = useCallback(
     (mess) => (
@@ -92,42 +90,38 @@ export const ProductTemplateImage = forwardRef((props, ref) => {
   );
   const onChange = ({ fileList: newFileList }) => {
     setUploaded(newFileList);
+    setHasError({
+      overMaxSize: false,
+      emptyUpload: false
+    });
   };
+
+  const onRemove = () => {
+    setCurrentImg();
+  };
+
   return (
     <div className="p-5">
-      <div className="d-flex justify-content-center mb-3">
-        <div className={`${imgUrl ? "w-50" : ""}`}>
-          <ImgCrop rotate beforeCrop={beforeCrop}>
+      <div className="d-flex flex-column align-items-center mb-3">
+        <div className={`${uploaded.length ? "w-50" : ""}`}>
+          <ImgCrop rotate>
             <Upload
-              {...(uploaded ? { fileList: uploaded } : {})}
+              {...(uploaded.length ? { fileList: uploaded } : {})}
               accept=".jpg, .jpeg, .png, .tiff, .gif"
               className="upload-product-image"
               listType="picture-card"
               customRequest={handleUploadImage}
               onChange={onChange}
               beforeUpload={beforeUpload}
-              onRemove={(file) => {
-                asyncErrorHandlerWrapper(async () => {
-                  try {
-                    setImgUrl();
-                    // if (file.status === "done") {
-                    //   await ImageService.deleteImage(file.response.name);
-                    // }
-                  } catch (error) {
-                    throw error;
-                  }
-                });
-              }}
+              onRemove={onRemove}
             >
               {renderUploadButton()}
             </Upload>
           </ImgCrop>
-          {isError.isSizeError &&
-            renderErrorMessage("Please upload an image file with size less than 5 mb")}
-          {isError.isTypeError &&
-            renderErrorMessage("Invalid File Type. Accepted type: .png, .jpg, .jpeg")}
-          {isError.isEmpty && !uploaded && renderErrorMessage("Please upload an image")}
         </div>
+        {hasError.overMaxSize &&
+          renderErrorMessage("Please upload an image file with size less than 5 mb")}
+        {hasError.emptyUpload && renderErrorMessage("Please upload an image")}
       </div>
       <Row className="product-template-image-text-container">
         Listings that are missing a main image will not appear in search or browse until you fix the

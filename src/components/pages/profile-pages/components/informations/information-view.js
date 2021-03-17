@@ -26,15 +26,19 @@ const InformationView = memo((props) => {
   };
 
   //** Handle verify form */
-  const onShowVerifyPhone = (code) => {
+  const onShowVerifyPhone = (code, { onError }) => {
     asyncErrorHandlerWrapper(async () => {
-      const res = await verifyPhoneCode(code);
-      setIsSendCode(false);
-      dispatch({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT, payload: false });
-      if (res) {
-        message.success({
-          content: "Verify successful"
-        });
+      try {
+        const res = await verifyPhoneCode(code);
+        setIsSendCode(false);
+        dispatch({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT, payload: false });
+        if (res) {
+          message.success({
+            content: "Verify successful"
+          });
+        }
+      } catch (error) {
+        onError(error);
       }
     });
   };

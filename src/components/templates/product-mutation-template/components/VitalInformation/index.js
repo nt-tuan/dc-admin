@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useState, usecallback, useEffect } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
-import { RegexConst, REQUIRED_ERR } from "commons/consts";
-import { Col, Form, Input, Row, Select, InputNumber, Spin } from "antd";
+import { RegexConst, REQUIRED_ERR, DUPLICATE_ITEM_VALUE, MAX_CHARS } from "commons/consts";
+import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 import debounce from "lodash/debounce";
 
@@ -25,8 +24,6 @@ const defaultValue1 = {
   chapterLabel: "",
   headingLabel: "",
   hsCodeDescription: "",
-  aheccCode: "",
-  aheccFullDescription: "",
   quantity: "",
   minimumQuantity: "",
   allowedMultiplesQuantity: ""
@@ -45,8 +42,8 @@ const VitalInformationForm = ({
   onCategoryChange,
   types,
   hsCode,
-  setIsValidProductName,
-  productDetails
+  productDetails,
+  isEditing
 }) => {
   const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
@@ -61,8 +58,12 @@ const VitalInformationForm = ({
     if (productDetails) {
       const values = {};
       productDetails.variants.forEach((variant) => {
-        if (variant.name == "keyword" && variant.value) {
-          values[variant.name] = variant.value.split(",");
+        if (variant.name === "keyword") {
+          if (!variant.value || variant.value.length === 0) {
+            values[variant.name] = [];
+          } else {
+            values[variant.name] = variant.value?.split(",");
+          }
         } else {
           values[variant.name] = variant.value;
         }
@@ -77,44 +78,6 @@ const VitalInformationForm = ({
   }, [productDetails, form, onCategoryChange]);
 
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
-    let timeout;
-
-    const checkProduct = async (name) => {
-      const category = form.getFieldValue("productCategory");
-      const type = form.getFieldValue("productType");
-
-      if (name.length > 50) {
-        form.setFields([
-          {
-            name: "productName",
-            errors: ["The product name can not exceed 50 characters"]
-          }
-        ]);
-      }
-
-      if (category && type) {
-        const isValidName = await ProductService.checkDuplicate({
-          name,
-          category,
-          type
-        });
-        setIsValidProductName(isValidName);
-        if (!isValidName) {
-          form.setFields([
-            {
-              name: "productName",
-              errors: ["This product has already been created"]
-            }
-          ]);
-        }
-      }
-    };
-
-    const handleChangeName = (value) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => checkProduct(value), 500);
-    };
-
     const fields = [
       {
         label: "Product Category",
@@ -128,6 +91,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Category"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails
         }
       },
       {
@@ -142,6 +108,9 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("Product Type"))
             }
           ]
+        },
+        props: {
+          disabled: !!productDetails
         }
       },
       {
@@ -153,21 +122,49 @@ const VitalInformationForm = ({
             {
               required: true,
               message: createFormErrorComp(REQUIRED_ERR("Product Name"))
-            }
+            },
+            {
+              type: "string",
+              max: 50,
+              message: createFormErrorComp(MAX_CHARS("Product Name", 50))
+            },
+            () => ({
+              async validator(_, value) {
+                if (!isEditing) {
+                  const { productCategory, productType } = form.getFieldsValue([
+                    "productCategory",
+                    "productType"
+                  ]);
+
+                  if (value && productCategory && productType) {
+                    const isValid = await ProductService.checkDuplicate({
+                      name: value,
+                      category: productCategory,
+                      type: productType
+                    });
+
+                    if (isValid) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      createFormErrorComp(DUPLICATE_ITEM_VALUE("Product", "Name"))
+                    );
+                  }
+                }
+                return Promise.resolve();
+              }
+            })
           ]
         },
         props: {
-          onChange: (e) => handleChangeName(e.target.value),
-          maxLength: 51,
-          disabled: !!productDetails
+          maxLength: 50,
+          disabled: !!productDetails && isEditing
         }
       },
-
       {
         label: "HS Code Description",
         name: "hsCodeDescription",
         type: INPUT_TYPE.SELECT_HSCODE_CHAR,
-        props: { disabled: true },
         options: {
           options: hsCodeData?.data,
           rules: [
@@ -176,7 +173,8 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("HS Code Description"))
             }
           ]
-        }
+        },
+        props: {}
       },
       {
         label: "HS Code",
@@ -190,7 +188,8 @@ const VitalInformationForm = ({
               message: createFormErrorComp(REQUIRED_ERR("HS Code"))
             }
           ]
-        }
+        },
+        props: {}
       },
       {
         label: "Chapter Label",
@@ -210,54 +209,13 @@ const VitalInformationForm = ({
           rules: []
         }
       },
-
-      // Note: remove AHECC, AHECC Full Description field and do not disable Unit of Quantity field for hsb2b
-      // {
-      //   label: "AHECC",
-      //   name: "ahecc",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode,
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC"))
-      //       }
-      //     ]
-      //   }
-      // },
-      // {
-      //   label: "AHECC Full Description",
-      //   name: "aheccFullDescription",
-      //   type: INPUT_TYPE.SELECT,
-      //   options: {
-      //     options: aheccCode.map((code) => ({
-      //       id: code.aheccDescription,
-      //       name: code.aheccDescription
-      //     })),
-      //     rules: [
-      //       {
-      //         required: true,
-      //         message: createFormErrorComp(REQUIRED_ERR("AHECC Full Description"))
-      //       }
-      //     ]
-      //   }
-      // },
       {
         label: "Unit of Quantity",
         name: "quantity",
         type: INPUT_TYPE.INPUT,
-        props: {
-          disabled: false
-        },
+        props: {},
         options: {
-          rules: [
-            //Remove as no long requried field
-            // {
-            //   required: true,
-            //   message: createFormErrorComp(REQUIRED_ERR("Unit of Quantity"))
-            // }
-          ]
+          rules: []
         }
       },
       {
@@ -305,11 +263,12 @@ const VitalInformationForm = ({
         mode: "tags",
         options: {
           rules: []
-        }
+        },
+        props: {}
       }
     ];
     return fields;
-  }, [categories, types, hsCodeData, form, setIsValidProductName]);
+  }, [categories, productDetails, types, isEditing, hsCodeData.data, form]);
 
   const handleFieldChange = useCallback(
     (name) => {
@@ -420,6 +379,7 @@ const VitalInformationForm = ({
               mode={schema.mode}
               onChange={handleFieldChange(schema.name)}
               onPopupScroll={onPopupScroll}
+              {...schema.props}
             >
               {schema?.options?.options?.map((item) => {
                 return (
@@ -441,6 +401,7 @@ const VitalInformationForm = ({
               mode={schema.mode}
               onChange={handleFieldChange(schema.name)}
               onPopupScroll={onPopupScroll}
+              {...schema.props}
             >
               {schema?.options?.options?.map((item) => {
                 return (
@@ -453,7 +414,7 @@ const VitalInformationForm = ({
           );
         case INPUT_TYPE.SELECT:
           return (
-            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)}>
+            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)} {...schema.props}>
               {schema?.options?.options?.map((item) => {
                 return (
                   <Option key={item.id} value={item.id}>
