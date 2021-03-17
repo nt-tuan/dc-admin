@@ -90,7 +90,7 @@ export const TAX_RULES_MAIN_SCHEMA = [
     label: LABELS[FIELDS.type],
     name: FIELDS.type,
     type: "select",
-    placeholder: LABELS[FIELDS.type],
+    placeholder: "Type of Tax",
     initValue: [...taxRulesValue],
     rules: [{ required: true, message: createFormErrorComp("Please choose the type of tax") }]
   },
@@ -116,11 +116,11 @@ export const TAX_RULES_MAIN_SCHEMA = [
     name: FIELDS.percent,
     type: "input",
     initValue: null,
-    placeholder: "00.00",
+    placeholder: "Tax Percentage",
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("the tax percentage"))
+        message: createFormErrorComp("Please enter the tax percentage")
       },
       {
         validator: (rule, value, callback) => {
@@ -145,7 +145,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("taxpayer"))
+        message: createFormErrorComp("Please select the Taxpayer")
       }
     ]
   },
@@ -158,7 +158,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("Please enter the tax name"))
+        message: createFormErrorComp("Please enter the tax name")
       },
       {
         max: 20,
@@ -196,7 +196,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
     name: FIELDS.percent,
     type: "input",
     initValue: null,
-    placeholder: "00.00%",
+    placeholder: "Tax Percentage",
     disabled: false,
     or: "OR",
     rules: [

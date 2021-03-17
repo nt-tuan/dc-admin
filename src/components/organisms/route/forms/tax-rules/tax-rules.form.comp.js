@@ -160,7 +160,7 @@ export const TaxRulesFrom = memo(
                       rules: [
                         {
                           required: value === 1 ? true : false,
-                          message: createFormErrorComp(REQUIRED_ERR("the tax percentage"))
+                          message: createFormErrorComp("Please enter the tax percentage")
                         },
                         {
                           validator: (rule, value, callback) => {
@@ -168,7 +168,7 @@ export const TaxRulesFrom = memo(
                             if (inputAmount >= 0 && inputAmount < 100) {
                               return callback();
                             }
-                            return callback(createFormErrorComp("the tax percentage max 2 number"));
+                            return callback(createFormErrorComp("The tax percentage max 2 number"));
                           }
                         }
                       ]
@@ -182,7 +182,7 @@ export const TaxRulesFrom = memo(
                       rules: [
                         {
                           required: value === 0 ? true : false,
-                          message: createFormErrorComp('"Please enter the Lump-sum amount"')
+                          message: createFormErrorComp("Please enter the lump-sum amount")
                         }
                       ]
                     };
