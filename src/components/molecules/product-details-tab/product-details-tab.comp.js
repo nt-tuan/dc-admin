@@ -14,13 +14,17 @@ export const ProductDetailsTab = memo(({ data, categories, types }) => {
           field.value = types.find((item) => item.id === field.value)?.name;
         }
         if (field.key === "keyword") {
-          field.value = field.value?.reduce((acc, item, index) => {
-            if (index == field.value.length - 1) {
-              return acc + item;
-            } else {
-              return acc + item + ", ";
-            }
-          }, "");
+          if (field.value.length === 0) {
+            field.value = "";
+          } else {
+            field.value = field.value.reduce((acc, item, index) => {
+              if (index === field.value.length - 1) {
+                return acc + item;
+              } else {
+                return acc + item + ", ";
+              }
+            }, "");
+          }
         }
       });
     return cloneData;
