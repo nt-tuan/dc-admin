@@ -14,7 +14,7 @@ export const ProductDetailsTab = memo(({ data, categories, types }) => {
           field.value = types.find((item) => item.id === field.value)?.name;
         }
         if (field.key === "keyword") {
-          if (field.value.length === 0) {
+          if (!field.value || field.value.length === 0) {
             field.value = "";
           } else {
             field.value = field.value.reduce((acc, item, index) => {
