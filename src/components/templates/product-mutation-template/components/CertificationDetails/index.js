@@ -23,7 +23,7 @@ const CertificationDetails = ({ form, handleValuesChange, productDetails }) => {
     <Form
       form={form}
       initialValues={{
-        certificationDetails: []
+        certificationDetails: [EMPTY_FIELD]
       }}
       onValuesChange={handleValuesChange}
     >

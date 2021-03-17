@@ -23,7 +23,7 @@ const PackingDetails = ({ form, handleValuesChange, productDetails }) => {
     <Form
       form={form}
       initialValues={{
-        packingDetails: []
+        packingDetails: [EMPTY_FIELD]
       }}
       onValuesChange={handleValuesChange}
     >
