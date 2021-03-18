@@ -125,7 +125,10 @@ export const TAX_RULES_MAIN_SCHEMA = [
       {
         validator: (rule, value, callback) => {
           const inputAmount = numeral(value).value();
-          if (inputAmount >= 0 && inputAmount < 100) {
+          if (inputAmount <= 0) {
+            return callback(createFormErrorComp("The tax percentage must be greater than 0"));
+          }
+          if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
           return callback(createFormErrorComp("The tax percentage max 2 number"));
@@ -207,7 +210,10 @@ export const TAX_RULES_OTHER_SCHEMA = [
       {
         validator: (rule, value, callback) => {
           const inputAmount = numeral(value).value();
-          if (inputAmount >= 0 && inputAmount < 100) {
+          if (inputAmount <= 0) {
+            return callback(createFormErrorComp("The tax percentage must be greater than 0"));
+          }
+          if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
           return callback(createFormErrorComp("The tax percentage max 2 number"));

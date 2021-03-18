@@ -129,9 +129,12 @@ export const TaxRulesFrom = memo(
             return (e) => {
               const value = e.target.value;
               const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
+              const inputAmount = numeral(value).value();
+
               if (!isNaN(value) && value.length <= 2) {
                 form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
-              } else if (numeral(value).value() < 100) {
+              }
+              if (inputAmount < 100) {
                 form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
               }
             };
