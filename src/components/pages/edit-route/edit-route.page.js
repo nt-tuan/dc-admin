@@ -33,6 +33,7 @@ const EditRoutePage = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const isDocListTouched = useRef({});
   const history = useHistory();
+
   const { id: routeId } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   const categoryIdFromDetails = useMemo(() => {
@@ -295,7 +296,8 @@ const EditRoutePage = () => {
           categoryId: category,
           isDefault: false,
           typeId: type,
-          routeDocumentTypeRequests: []
+          routeDocumentTypeRequests: [],
+          taxDetailResponseList: []
         };
         documentRuleForms.current.forEach((formRef, docId) => {
           const values = formRef.getFieldsValue();
@@ -339,6 +341,8 @@ const EditRoutePage = () => {
       isDocListTouched.current = { ...isDocListTouched, ...idsObj };
     }
   }, []);
+
+  // console.log("routeDetails", routeDetails);
 
   return (
     <DTCSection>
