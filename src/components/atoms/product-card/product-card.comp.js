@@ -22,7 +22,11 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
       onClick={(e) => disableNavigation && e.preventDefault()}
       hidden={hidden}
     >
-      <Card className={`${styles["card"]} dtc-br-10 h-100`}>
+      <Card
+        className={`${styles["card"]} ${
+          image ? styles["with-image"] : styles["empty-image"]
+        } dtc-br-10 h-100`}
+      >
         <div className="d-flex flex-column h-100">
           {transition.map(({ item, key, props }) => {
             return (
@@ -39,7 +43,9 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
             {image ? (
               <img className="img-fluid" src={image} alt={name} />
             ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
+              <div className={styles["empty-image"]}>
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
+              </div>
             )}
           </div>
           <div className={`${styles["card-footer"]} pt-3`}>
