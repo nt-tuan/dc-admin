@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import get from "lodash/get";
@@ -6,18 +6,30 @@ import get from "lodash/get";
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
-const PackingDetails = ({ form, handleValuesChange, productDetails }) => {
+const PackingDetails = ({ form, onValuesChange, productDetails, setHasPackingDetails }) => {
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { packingDetails } = detail;
-      form.setFieldsValue({ packingDetails });
+      if (packingDetails) {
+        form.setFieldsValue({ packingDetails });
+        setHasPackingDetails(true);
+      } else {
+        form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
+      }
     }
-  }, [productDetails, form]);
+  }, [productDetails, form, setHasPackingDetails]);
 
   const handleAddingItem = (callback) => {
     callback(EMPTY_FIELD);
   };
+
+  const handleValuesChange = useCallback(
+    (recentlyChangedValues) => {
+      onValuesChange(recentlyChangedValues);
+    },
+    [onValuesChange]
+  );
 
   return (
     <Form

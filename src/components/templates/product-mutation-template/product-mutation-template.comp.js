@@ -45,6 +45,8 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const templateImageForm = useRef();
 
   const [loading, setLoading] = useState(true);
+  const [hasPackingDetails, setHasPackingDetails] = useState(false);
+  const [hasCertificationDetails, setHasCertificationDetails] = useState(false);
 
   useEffect(() => {
     if (isEditing && categories.length && hsCode && types.length) {
@@ -244,9 +246,37 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   }, [currentStep, productData, isEditing, handleValidator, checkCanSkip]);
 
   const handleSkip = useCallback(() => {
+    if (ALLOW_SKIP.includes(currentStep)) {
+      let values;
+      let hasSavedValues = false;
+      if (currentStep === 4) {
+        values = packingDetailsForm.getFieldsValue();
+        hasSavedValues = hasPackingDetails;
+      } else {
+        values = certificationForm.getFieldsValue();
+        hasSavedValues = hasCertificationDetails;
+      }
+
+      if (hasSavedValues) {
+        const formName = Object.keys(values)[0];
+        const updatedProductData = {
+          ...productData,
+          details: { ...productData.details, [formName]: undefined }
+        };
+        setProductData(updatedProductData);
+      }
+    }
     checkCanSkip(currentStep + 1);
     setCurrentStep(currentStep + 1);
-  }, [checkCanSkip, currentStep]);
+  }, [
+    certificationForm,
+    checkCanSkip,
+    currentStep,
+    hasCertificationDetails,
+    hasPackingDetails,
+    packingDetailsForm,
+    productData
+  ]);
 
   const handlePrevious = useCallback(() => {
     checkCanSkip(currentStep - 1);
@@ -284,23 +314,33 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 2 })}>
-              <VariantDetails form={variantDetailsForm} productDetails={productDetails} />
+              <VariantDetails
+                form={variantDetailsForm}
+                productDetails={productDetails}
+                isEditing={isEditing}
+              />
             </div>
             <div className={classNames({ "d-none": currentStep !== 3 })}>
-              <OfferDetails form={offerDetailsForm} productDetails={productDetails} />
+              <OfferDetails
+                form={offerDetailsForm}
+                productDetails={productDetails}
+                isEditing={isEditing}
+              />
             </div>
             <div className={classNames({ "d-none": currentStep !== 4 })}>
               <PackingDetails
                 form={packingDetailsForm}
-                handleValuesChange={handleValuesChange}
+                onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                setHasPackingDetails={setHasPackingDetails}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 5 })}>
               <CertificationDetails
                 form={certificationForm}
-                handleValuesChange={handleValuesChange}
+                onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                setHasCertificationDetails={setHasCertificationDetails}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 6 })}>

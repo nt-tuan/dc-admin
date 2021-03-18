@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import get from "lodash/get";
@@ -6,12 +6,18 @@ import get from "lodash/get";
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
-const VariantDetails = ({ form, productDetails }) => {
+const VariantDetails = ({ form, productDetails, isEditing = false }) => {
+  const [emptyForm, setEmptyForm] = useState(false);
+
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { variantDetails } = detail;
-      form.setFieldsValue({ variantDetails });
+      if (variantDetails) {
+        form.setFieldsValue({ variantDetails });
+      } else {
+        setEmptyForm(true);
+      }
     }
   }, [form, productDetails]);
 
@@ -19,8 +25,24 @@ const VariantDetails = ({ form, productDetails }) => {
     callback(EMPTY_FIELD);
   };
 
+  const handleValuesChange = useCallback(
+    (recentlyChangedValues) => {
+      if (recentlyChangedValues.variantDetails.length === 0) {
+        form.setFieldsValue({ variantDetails: [EMPTY_FIELD] });
+        setEmptyForm(true);
+      } else {
+        setEmptyForm(false);
+      }
+    },
+    [form]
+  );
+
   return (
-    <Form form={form} initialValues={{ variantDetails: [EMPTY_FIELD] }}>
+    <Form
+      form={form}
+      onValuesChange={handleValuesChange}
+      initialValues={{ variantDetails: [EMPTY_FIELD] }}
+    >
       <Form.List name="variantDetails">
         {(fields, { add, remove }) => (
           <>
@@ -31,12 +53,9 @@ const VariantDetails = ({ form, productDetails }) => {
                   form={form}
                   field={field}
                   index={index}
-                  canDelete={fields.length > 1}
+                  canDelete={(isEditing && !emptyForm) || fields.length > 1}
                   fieldValue={get(form.getFieldsValue(), `variantDetails.[${index}]`)}
-                  onRemove={() => {
-                    if (fields.length === 1) return;
-                    remove(index);
-                  }}
+                  onRemove={() => remove(index)}
                 />
               );
             })}
