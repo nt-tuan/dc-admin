@@ -200,16 +200,17 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
           //Checking keyword field has value and return to string to submit data
-          if (key === "keyword" && productData.vitalInformation[key]) {
+          if (key === "keyword" && productData.vitalInformation[key]?.length >= 0) {
             return {
               name: key,
               value: productData.vitalInformation[key].toString()
             };
+          } else {
+            return {
+              name: key,
+              value: productData.vitalInformation[key]
+            };
           }
-          return {
-            name: key,
-            value: productData.vitalInformation[key]
-          };
         })
       };
       asyncErrorHandlerWrapper(async () => {

@@ -58,8 +58,12 @@ const VitalInformationForm = ({
     if (productDetails) {
       const values = {};
       productDetails.variants.forEach((variant) => {
-        if (variant.name == "keyword" && variant.value) {
-          values[variant.name] = variant.value.split(",");
+        if (variant.name === "keyword") {
+          if (!variant.value || variant.value.length === 0) {
+            values[variant.name] = [];
+          } else {
+            values[variant.name] = variant.value?.split(",");
+          }
         } else {
           values[variant.name] = variant.value;
         }
