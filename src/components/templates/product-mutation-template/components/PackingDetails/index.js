@@ -6,19 +6,18 @@ import get from "lodash/get";
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
-const PackingDetails = ({ form, onValuesChange, productDetails, setHasPackingDetails }) => {
+const PackingDetails = ({ form, onValuesChange, productDetails }) => {
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { packingDetails } = detail;
       if (packingDetails) {
         form.setFieldsValue({ packingDetails });
-        setHasPackingDetails(true);
       } else {
         form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
       }
     }
-  }, [productDetails, form, setHasPackingDetails]);
+  }, [productDetails, form]);
 
   const handleAddingItem = (callback) => {
     callback(EMPTY_FIELD);
@@ -26,9 +25,16 @@ const PackingDetails = ({ form, onValuesChange, productDetails, setHasPackingDet
 
   const handleValuesChange = useCallback(
     (recentlyChangedValues) => {
-      onValuesChange(recentlyChangedValues);
+      let isEmpty = false;
+      if (recentlyChangedValues.packingDetails.length === 0) {
+        form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
+        isEmpty = true;
+      } else {
+        isEmpty = true;
+      }
+      onValuesChange(recentlyChangedValues, { empty: isEmpty });
     },
-    [onValuesChange]
+    [form, onValuesChange]
   );
 
   return (

@@ -6,24 +6,18 @@ import get from "lodash/get";
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
-const CertificationDetails = ({
-  form,
-  onValuesChange,
-  productDetails,
-  setHasCertificationDetails
-}) => {
+const CertificationDetails = ({ form, onValuesChange, productDetails }) => {
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
       const { certificationDetails } = detail;
       if (certificationDetails) {
         form.setFieldsValue({ certificationDetails });
-        setHasCertificationDetails(true);
       } else {
         form.setFieldsValue({ certificationDetails: [EMPTY_FIELD] });
       }
     }
-  }, [productDetails, form, setHasCertificationDetails]);
+  }, [productDetails, form]);
 
   const handleAddingItem = (callback) => {
     callback(EMPTY_FIELD);
@@ -31,9 +25,16 @@ const CertificationDetails = ({
 
   const handleValuesChange = useCallback(
     (recentlyChangedValues) => {
-      onValuesChange(recentlyChangedValues);
+      let isEmpty = false;
+      if (recentlyChangedValues.certificationDetails.length === 0) {
+        form.setFieldsValue({ certificationDetails: [EMPTY_FIELD] });
+        isEmpty = true;
+      } else {
+        isEmpty = true;
+      }
+      onValuesChange(recentlyChangedValues, { empty: isEmpty });
     },
-    [onValuesChange]
+    [form, onValuesChange]
   );
 
   return (

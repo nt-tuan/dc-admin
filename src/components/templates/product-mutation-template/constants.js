@@ -18,5 +18,6 @@ export const PRODUCT_CREATE_TEMPLATE = [
 export const EMPTY_FIELD = {
   fieldName: "",
   type: "",
-  fieldOption: [""]
+  fieldOption: [""],
+  isRequired: false
 };

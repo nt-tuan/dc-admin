@@ -15,6 +15,7 @@ import { ProductTemplateImage } from "components/pages/add-product/product-templ
 import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
+import { EMPTY_FIELD } from "./constants";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -45,8 +46,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const templateImageForm = useRef();
 
   const [loading, setLoading] = useState(true);
-  const [hasPackingDetails, setHasPackingDetails] = useState(false);
-  const [hasCertificationDetails, setHasCertificationDetails] = useState(false);
 
   useEffect(() => {
     if (isEditing && categories.length && hsCode && types.length) {
@@ -152,30 +151,40 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     productData
   ]);
 
+  const compare = (obj1, obj2) =>
+    Object.keys(obj1).length === Object.keys(obj2).length &&
+    Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
+
   const checkCanSkip = useCallback(
     (step = currentStep, recentlyChangedValues) => {
       let isFormDirty = false;
+      let values;
+      let formName;
+      let hasEmptyField = false;
 
       if (ALLOW_SKIP.includes(step)) {
         if (recentlyChangedValues) {
           const formName = Object.keys(recentlyChangedValues)[0];
-          if (recentlyChangedValues[formName]?.length > 0) {
-            isFormDirty = true;
-          }
+          isFormDirty = recentlyChangedValues[formName]?.length > 0;
         } else {
-          let values;
           if (step === 4) {
             values = packingDetailsForm.getFieldsValue();
           }
           if (step === 5) {
             values = certificationForm.getFieldsValue();
           }
-          const formName = Object.keys(values)[0];
-          if (values[formName]?.length > 0) {
-            isFormDirty = true;
-          }
+          formName = Object.keys(values)[0];
+          isFormDirty = values[formName]?.length > 0;
+          hasEmptyField =
+            values[formName].length === 1 && compare(values[formName][0], EMPTY_FIELD);
         }
-        setCanSkip(!isFormDirty);
+
+        if (hasEmptyField) {
+          // form can have 1 item with empty values
+          setCanSkip(true);
+        } else {
+          setCanSkip(!isFormDirty);
+        }
       } else {
         setCanSkip(false);
       }
@@ -248,35 +257,23 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const handleSkip = useCallback(() => {
     if (ALLOW_SKIP.includes(currentStep)) {
       let values;
-      let hasSavedValues = false;
       if (currentStep === 4) {
         values = packingDetailsForm.getFieldsValue();
-        hasSavedValues = hasPackingDetails;
       } else {
         values = certificationForm.getFieldsValue();
-        hasSavedValues = hasCertificationDetails;
       }
 
-      if (hasSavedValues) {
-        const formName = Object.keys(values)[0];
-        const updatedProductData = {
-          ...productData,
-          details: { ...productData.details, [formName]: undefined }
-        };
-        setProductData(updatedProductData);
-      }
+      // remove data if skipping
+      const formName = Object.keys(values)[0];
+      const updatedProductData = {
+        ...productData,
+        details: { ...productData.details, [formName]: undefined }
+      };
+      setProductData(updatedProductData);
     }
     checkCanSkip(currentStep + 1);
     setCurrentStep(currentStep + 1);
-  }, [
-    certificationForm,
-    checkCanSkip,
-    currentStep,
-    hasCertificationDetails,
-    hasPackingDetails,
-    packingDetailsForm,
-    productData
-  ]);
+  }, [certificationForm, checkCanSkip, currentStep, packingDetailsForm, productData]);
 
   const handlePrevious = useCallback(() => {
     checkCanSkip(currentStep - 1);
@@ -332,7 +329,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
                 form={packingDetailsForm}
                 onValuesChange={handleValuesChange}
                 productDetails={productDetails}
-                setHasPackingDetails={setHasPackingDetails}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 5 })}>
@@ -340,7 +336,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
                 form={certificationForm}
                 onValuesChange={handleValuesChange}
                 productDetails={productDetails}
-                setHasCertificationDetails={setHasCertificationDetails}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 6 })}>
