@@ -33,14 +33,7 @@
 .card-image {
   flex: 0 0 auto;
 
-  img {
-    height: auto;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 2px;
-  }
-
-  .empty-image {
+  .square-image-placeholder {
     width: 100%;
     position: relative;
     &:after {
@@ -55,6 +48,12 @@
       transform: translate(-50%, -50%);
       margin: 0;
     }
+  }
+
+  img {
+    height: auto;
+    width: 100%;
+    border-radius: 2px;
   }
 }
 

@@ -40,13 +40,13 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
             );
           })}
           <div className={styles["card-image"]}>
-            {image ? (
-              <img className="img-fluid" src={image} alt={name} />
-            ) : (
-              <div className={styles["empty-image"]}>
+            <div className={styles["square-image-placeholder"]}>
+              {image ? (
+                <img className="img-fluid" src={image} alt={name} />
+              ) : (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
-              </div>
-            )}
+              )}
+            </div>
           </div>
           <div className={`${styles["card-footer"]} pt-3`}>
             <div className={`${styles["card-name"]} text-secondary`}>{name}</div>
