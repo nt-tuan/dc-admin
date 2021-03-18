@@ -18,7 +18,6 @@ const CertificationDetails = ({ form, onValuesChange, productDetails, isEditing 
         form.setFieldsValue({ certificationDetails });
       } else {
         setEmptyForm(true);
-        form.setFieldsValue({ certificationDetails: [EMPTY_FIELD] });
       }
     }
   }, [productDetails, form]);

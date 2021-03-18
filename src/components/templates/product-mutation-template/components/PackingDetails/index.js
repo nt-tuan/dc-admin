@@ -18,7 +18,6 @@ const PackingDetails = ({ form, onValuesChange, productDetails, isEditing = fals
         form.setFieldsValue({ packingDetails });
       } else {
         setEmptyForm(true);
-        form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
       }
     }
   }, [productDetails, form]);
