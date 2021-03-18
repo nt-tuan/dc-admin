@@ -176,6 +176,7 @@ export const TaxRulesFrom = memo(
                   } else if (item.name === FIELDS.lumpSum) {
                     const fieldName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
                     form.setFieldsValue({ [fieldName]: null });
+
                     return {
                       ...item,
                       disabled: value === 0 ? false : true,
@@ -223,7 +224,9 @@ export const TaxRulesFrom = memo(
                     : [...TAX_RULES_TYPE_OTHER_SCHEMA]
               };
               const fieldName = `taxOther-${FIELDS.isLumSum}-${indexField}`;
+              const fieldLumsumName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
               form.setFieldsValue({ [fieldName]: 1 });
+              form.setFieldsValue({ [fieldLumsumName]: null });
               setDataForm({
                 ...dataForm,
                 taxOther: [dataNew]
