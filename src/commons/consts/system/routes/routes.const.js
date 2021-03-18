@@ -41,7 +41,7 @@ export class RouteConst extends SharedPaths {
       this.INTRODUCER_DETAILS,
       this.INTRODUCER_EDIT,
       this.PROFILE_PAGES,
-      this.CREATE_TRADE_ROUTE
+      this.CREATE_TRADE_ROUTES
     ];
   }
 

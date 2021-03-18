@@ -144,7 +144,7 @@ const privateRoutes = [
     exact: true
   },
   {
-    path: RouteConst.CREATE_TRADE_ROUTE,
+    path: RouteConst.CREATE_TRADE_ROUTES,
     Component: loadable(() => import("components/pages/add-route/add-route.page")),
     exact: true
   },
