@@ -53,3 +53,8 @@ export const checkExist = (form, targetFieldName, errMsg) => (rule, value, callb
   }
   callback();
 };
+
+// shallow comparison
+export const equalFields = (obj1, obj2) =>
+  Object.keys(obj1).length === Object.keys(obj2).length &&
+  Object.keys(obj1).every((key) => obj1[key] === obj2[key]);

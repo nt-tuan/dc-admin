@@ -4,6 +4,7 @@ import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
 import classNames from "classnames";
 import { isScreensize } from "utils/general.util";
+import { equalFields } from "utils/form.util";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
 import PackingDetails from "./components/PackingDetails";
@@ -151,10 +152,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     productData
   ]);
 
-  const compare = (obj1, obj2) =>
-    Object.keys(obj1).length === Object.keys(obj2).length &&
-    Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
-
   const checkCanSkip = useCallback(
     (step = currentStep, recentlyChangedValues) => {
       let isFormDirty = false;
@@ -166,6 +163,9 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         if (recentlyChangedValues) {
           const formName = Object.keys(recentlyChangedValues)[0];
           isFormDirty = recentlyChangedValues[formName]?.length > 0;
+          hasEmptyField =
+            recentlyChangedValues[formName].length === 1 &&
+            equalFields(recentlyChangedValues[formName][0], EMPTY_FIELD);
         } else {
           if (step === 4) {
             values = packingDetailsForm.getFieldsValue();
@@ -176,7 +176,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
           formName = Object.keys(values)[0];
           isFormDirty = values[formName]?.length > 0;
           hasEmptyField =
-            values[formName].length === 1 && compare(values[formName][0], EMPTY_FIELD);
+            values[formName].length === 1 && equalFields(values[formName][0], EMPTY_FIELD);
         }
 
         if (hasEmptyField) {
@@ -259,8 +259,10 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
       let values;
       if (currentStep === 4) {
         values = packingDetailsForm.getFieldsValue();
+        packingDetailsForm.resetFields();
       } else {
         values = certificationForm.getFieldsValue();
+        certificationForm.resetFields();
       }
 
       // remove data if skipping
@@ -329,6 +331,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
                 form={packingDetailsForm}
                 onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                isEditing={isEditing}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 5 })}>
@@ -336,6 +339,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
                 form={certificationForm}
                 onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                isEditing={isEditing}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 6 })}>

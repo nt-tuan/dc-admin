@@ -1,12 +1,15 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import get from "lodash/get";
+import { equalFields } from "utils/form.util";
 
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
-const PackingDetails = ({ form, onValuesChange, productDetails }) => {
+const PackingDetails = ({ form, onValuesChange, productDetails, isEditing = false }) => {
+  const [emptyForm, setEmptyForm] = useState(false);
+
   useEffect(() => {
     if (productDetails) {
       const detail = JSON.parse(productDetails.detail);
@@ -14,6 +17,7 @@ const PackingDetails = ({ form, onValuesChange, productDetails }) => {
       if (packingDetails) {
         form.setFieldsValue({ packingDetails });
       } else {
+        setEmptyForm(true);
         form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
       }
     }
@@ -25,14 +29,17 @@ const PackingDetails = ({ form, onValuesChange, productDetails }) => {
 
   const handleValuesChange = useCallback(
     (recentlyChangedValues) => {
-      let isEmpty = false;
-      if (recentlyChangedValues.packingDetails.length === 0) {
+      if (
+        recentlyChangedValues.packingDetails.length === 0 ||
+        (recentlyChangedValues.packingDetails.length === 1 &&
+          equalFields(recentlyChangedValues.packingDetails[0], EMPTY_FIELD))
+      ) {
         form.setFieldsValue({ packingDetails: [EMPTY_FIELD] });
-        isEmpty = true;
+        setEmptyForm(true);
       } else {
-        isEmpty = true;
+        setEmptyForm(false);
       }
-      onValuesChange(recentlyChangedValues, { empty: isEmpty });
+      onValuesChange(recentlyChangedValues);
     },
     [form, onValuesChange]
   );
@@ -54,7 +61,7 @@ const PackingDetails = ({ form, onValuesChange, productDetails }) => {
                 form={form}
                 field={field}
                 index={index}
-                canDelete
+                canDelete={(isEditing && !emptyForm) || fields.length > 1}
                 fieldValue={get(form.getFieldsValue(), `packingDetails.[${index}]`)}
                 onRemove={() => remove(index)}
               />
