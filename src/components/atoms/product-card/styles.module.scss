@@ -1,26 +1,7 @@
 @import "assets/styles/mixins.scss";
 @import "assets/styles/theme-seller.scss";
 
-#price {
-  border-color: #fefefe;
-}
-
-.combo {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-
-  text-align: center;
-  color: $white;
-  top: -50px;
-  right: -50px;
-  line-height: 170px;
-  transform: rotate(45deg);
-  text-transform: uppercase;
-  font-size: 13px;
-}
-
-.product-details {
+.overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -29,74 +10,81 @@
   align-items: center;
   width: 100%;
   height: 100%;
-
-  > div {
-    width: 80%;
-  }
-
-  b,
-  p {
-    font-size: 16px;
-    color: #e4e9f0;
-  }
-}
-
-.product-details-content {
-  z-index: 10;
-  opacity: 1;
-}
-
-.product-details-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100%;
-  opacity: 0.9;
-  z-index: 0;
   background-color: $primary;
+  color: white;
+
+  & > .loading {
+    font-size: 40px;
+  }
 }
 
-.background-blur {
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
+.card.empty-image {
+  & > div {
+    height: 100%;
+  }
 }
 
-.favorite {
-  position: absolute;
-  top: rem(20);
-  left: rem(25);
-  color: $gray-3;
+.card.with-image {
+  & > div {
+    height: max-content;
+  }
+}
 
-  &:focus {
-    color: $gray-3;
+.card-image {
+  flex: 0 0 auto;
 
-    &:hover {
-      color: $gray-3;
+  .square-image-placeholder {
+    width: 100%;
+    position: relative;
+    &:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+    & > * {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+  }
+
+  img {
+    height: auto;
+    width: 100%;
+    border-radius: 2px;
+  }
+}
+
+.card-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  & > .card-name {
+    flex: 1 0 85%;
+    overflow-wrap: anywhere;
+    display: flex;
+    align-items: flex-start;
+    line-height: 24px; /* same as icon size */
+  }
+  & > .card-more {
+    flex: 1 0 15%;
+
+    button {
+      position: absolute;
+      right: 0;
+      transform: translateX(40%);
+    }
+    button:hover,
+    button:focus {
+      background: rgba(0, 0, 0, 0.1);
     }
   }
 }
 
-.thumb {
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  overflow: hidden;
-
-  img {
-    margin: auto;
-    max-height: 100%;
-    width: auto;
-  }
-}
-
-.image {
-  display: flex;
-  align-items: center;
-
-  img {
-    margin: auto;
-    max-height: 100%;
-    width: auto;
-  }
+:global(.ant-dropdown-menu-item:hover) {
+  background-color: rgba(0, 0, 0, 0.1);
 }
