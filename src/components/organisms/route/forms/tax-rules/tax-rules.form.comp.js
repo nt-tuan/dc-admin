@@ -52,7 +52,7 @@ export const TaxRulesFrom = memo(
     }, [dataSource, form, handleSetValueForm]);
 
     const onAddTax = () => {
-      setDataForm({
+      const dataNew = {
         ...dataForm,
         taxOther: [
           ...dataForm.taxOther,
@@ -61,7 +61,9 @@ export const TaxRulesFrom = memo(
             dataFilter: [FIELDS.name]
           }
         ]
-      });
+      };
+      handleSetValueForm(dataNew);
+      setDataForm(dataNew);
     };
 
     const onRemoveTax = (index) => {
