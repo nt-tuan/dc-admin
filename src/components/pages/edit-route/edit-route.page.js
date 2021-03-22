@@ -226,8 +226,22 @@ const EditRoutePage = () => {
 
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
-        console.log("dataTax", dataTax);
         setDataSourceTax(dataTax);
+      } else {
+        setDataSourceTax({
+          taxMain: [
+            {
+              data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
+              dataFilter: [FIELDS.name]
+            }
+          ],
+          taxOther: [
+            {
+              data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
+              dataFilter: [FIELDS.name]
+            }
+          ]
+        });
       }
 
       if (_defaultRoute) {
