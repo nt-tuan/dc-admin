@@ -196,6 +196,18 @@ const EditRoutePage = () => {
         obj.taxOther.push(objFieldOther);
       }
     });
+    if (flagMain === 0) {
+      obj.taxMain.push({
+        data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
+        dataFilter: [FIELDS.name]
+      });
+    }
+    if (flagOther === 0) {
+      obj.taxOther.push({
+        data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
+        dataFilter: [FIELDS.name]
+      });
+    }
     return obj;
   };
 
@@ -214,6 +226,7 @@ const EditRoutePage = () => {
 
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
+        console.log("dataTax", dataTax);
         setDataSourceTax(dataTax);
       }
 
@@ -388,6 +401,7 @@ const EditRoutePage = () => {
     const dataMain = [];
     let nameObj;
     let valueObj;
+    // console.log("valueTax", valueTax);
     Object.keys(valueTax).map((item) => {
       const nameParse = item.split("-");
       if (!nameParse && !nameParse.length) return false;
@@ -406,7 +420,7 @@ const EditRoutePage = () => {
         };
       }
 
-      if (valueTax[item] && applyTypeField === "taxOther") {
+      if (valueTax[item] && applyTypeField === "taxOther" && valueTax[item] !== "undefined") {
         if (nameField === FIELDS.applyTypeOther) {
           nameObj = FIELDS.applyType;
         }
@@ -415,7 +429,6 @@ const EditRoutePage = () => {
         } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
           nameObj = FIELDS.percent;
         }
-
         data[index] = {
           ...data[index],
           [FIELDS.applyType]: typeTAX.OTHERS,
@@ -465,7 +478,7 @@ const EditRoutePage = () => {
 
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
-        console.log("aaa", dataParse);
+        // console.log("aaa", dataParse);
         composedValues.routeTaxPostRequestList = dataParse;
 
         try {
