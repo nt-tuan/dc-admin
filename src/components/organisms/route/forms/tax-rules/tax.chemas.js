@@ -208,7 +208,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("the tax percentage"))
+        message: createFormErrorComp("Please enter the tax percentage")
       },
       {
         validator: (rule, value, callback) => {
