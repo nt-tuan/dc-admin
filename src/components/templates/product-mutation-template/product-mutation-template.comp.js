@@ -4,6 +4,7 @@ import { DTCSection } from "components/atoms";
 import { Button, Form, Steps, message } from "antd";
 import classNames from "classnames";
 import { isScreensize } from "utils/general.util";
+import { equalFields } from "utils/form.util";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
 import PackingDetails from "./components/PackingDetails";
@@ -15,6 +16,7 @@ import { ProductTemplateImage } from "components/pages/add-product/product-templ
 import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
+import { EMPTY_FIELD } from "./constants";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -153,27 +155,36 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const checkCanSkip = useCallback(
     (step = currentStep, recentlyChangedValues) => {
       let isFormDirty = false;
+      let values;
+      let formName;
+      let hasEmptyField = false;
 
       if (ALLOW_SKIP.includes(step)) {
         if (recentlyChangedValues) {
           const formName = Object.keys(recentlyChangedValues)[0];
-          if (recentlyChangedValues[formName]?.length > 0) {
-            isFormDirty = true;
-          }
+          isFormDirty = recentlyChangedValues[formName]?.length > 0;
+          hasEmptyField =
+            recentlyChangedValues[formName].length === 1 &&
+            equalFields(recentlyChangedValues[formName][0], EMPTY_FIELD);
         } else {
-          let values;
           if (step === 4) {
             values = packingDetailsForm.getFieldsValue();
           }
           if (step === 5) {
             values = certificationForm.getFieldsValue();
           }
-          const formName = Object.keys(values)[0];
-          if (values[formName]?.length > 0) {
-            isFormDirty = true;
-          }
+          formName = Object.keys(values)[0];
+          isFormDirty = values[formName]?.length > 0;
+          hasEmptyField =
+            values[formName].length === 1 && equalFields(values[formName][0], EMPTY_FIELD);
         }
-        setCanSkip(!isFormDirty);
+
+        if (hasEmptyField) {
+          // form can have 1 item with empty values
+          setCanSkip(true);
+        } else {
+          setCanSkip(!isFormDirty);
+        }
       } else {
         setCanSkip(false);
       }
@@ -200,16 +211,17 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         typeId: productData.vitalInformation.productType,
         variantList: Object.keys(productData.vitalInformation).map((key) => {
           //Checking keyword field has value and return to string to submit data
-          if (key === "keyword" && productData.vitalInformation[key]) {
+          if (key === "keyword" && productData.vitalInformation[key]?.length >= 0) {
             return {
               name: key,
               value: productData.vitalInformation[key].toString()
             };
+          } else {
+            return {
+              name: key,
+              value: productData.vitalInformation[key]
+            };
           }
-          return {
-            name: key,
-            value: productData.vitalInformation[key]
-          };
         })
       };
       asyncErrorHandlerWrapper(async () => {
@@ -243,9 +255,27 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   }, [currentStep, productData, isEditing, handleValidator, checkCanSkip]);
 
   const handleSkip = useCallback(() => {
+    if (ALLOW_SKIP.includes(currentStep)) {
+      let values;
+      if (currentStep === 4) {
+        values = packingDetailsForm.getFieldsValue();
+        packingDetailsForm.resetFields();
+      } else {
+        values = certificationForm.getFieldsValue();
+        certificationForm.resetFields();
+      }
+
+      // remove data if skipping
+      const formName = Object.keys(values)[0];
+      const updatedProductData = {
+        ...productData,
+        details: { ...productData.details, [formName]: undefined }
+      };
+      setProductData(updatedProductData);
+    }
     checkCanSkip(currentStep + 1);
     setCurrentStep(currentStep + 1);
-  }, [checkCanSkip, currentStep]);
+  }, [certificationForm, checkCanSkip, currentStep, packingDetailsForm, productData]);
 
   const handlePrevious = useCallback(() => {
     checkCanSkip(currentStep - 1);
@@ -283,23 +313,33 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 2 })}>
-              <VariantDetails form={variantDetailsForm} productDetails={productDetails} />
+              <VariantDetails
+                form={variantDetailsForm}
+                productDetails={productDetails}
+                isEditing={isEditing}
+              />
             </div>
             <div className={classNames({ "d-none": currentStep !== 3 })}>
-              <OfferDetails form={offerDetailsForm} productDetails={productDetails} />
+              <OfferDetails
+                form={offerDetailsForm}
+                productDetails={productDetails}
+                isEditing={isEditing}
+              />
             </div>
             <div className={classNames({ "d-none": currentStep !== 4 })}>
               <PackingDetails
                 form={packingDetailsForm}
-                handleValuesChange={handleValuesChange}
+                onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                isEditing={isEditing}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 5 })}>
               <CertificationDetails
                 form={certificationForm}
-                handleValuesChange={handleValuesChange}
+                onValuesChange={handleValuesChange}
                 productDetails={productDetails}
+                isEditing={isEditing}
               />
             </div>
             <div className={classNames({ "d-none": currentStep !== 6 })}>

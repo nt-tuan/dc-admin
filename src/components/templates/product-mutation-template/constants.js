@@ -7,7 +7,7 @@ export const FIELD_TYPE = [
 
 export const PRODUCT_CREATE_TEMPLATE = [
   { title: "Vital Information" },
-  { title: "Variant Details" },
+  { title: "Variation Details" },
   { title: "Offer Details" },
   { title: "Packing Details" },
   { title: "Certifications Details" },
@@ -18,5 +18,6 @@ export const PRODUCT_CREATE_TEMPLATE = [
 export const EMPTY_FIELD = {
   fieldName: "",
   type: "",
-  fieldOption: [""]
+  fieldOption: [""],
+  isRequired: false
 };

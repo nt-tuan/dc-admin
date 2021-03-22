@@ -33,7 +33,7 @@ const AddProductPage = () => {
 
   return (
     <>
-      <Helmet title="Add Product" />
+      <Helmet title="Create Product Template" />
       <ProductMutationTemplate
         productDetails={productDetails}
         mutateServiceFn={ProductService.addProduct}

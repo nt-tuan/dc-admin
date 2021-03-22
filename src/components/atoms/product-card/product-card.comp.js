@@ -1,76 +1,63 @@
 import React, { useState } from "react";
+import { Card, Empty, Button, Dropdown } from "antd";
 import { animated, useTransition } from "react-spring";
-import { Card, Empty } from "antd";
+import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 
-export const ProductCard = React.memo(
-  ({ data = {}, renderHoverContent, disableNavigation = false }) => {
-    const { image, name, link } = data;
-    const [showDetails, setShowDetails] = useState(false);
-    const [isHoverContentLoading, setIsHoverContentLoading] = useState(false);
-    const [hidden, setHidden] = useState(false);
-    const transition = useTransition(showDetails, null, {
-      from: { position: "absolute", opacity: 0, zIndex: 2 },
-      enter: { opacity: 1, zIndex: 2 },
-      leave: { opacity: 0, zIndex: 0 }
-    });
+export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigation = false }) => {
+  const { image, name, link } = data;
+  const [loading, setLoading] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const transition = useTransition(loading, null, {
+    from: { position: "absolute", opacity: 0, zIndex: 2 },
+    enter: { opacity: 1, zIndex: 2 },
+    leave: { opacity: 0, zIndex: 0 }
+  });
 
-    const handleMouseMove = () => {
-      renderHoverContent && setShowDetails(true);
-    };
-    const handleMouseLeave = () => {
-      renderHoverContent && setShowDetails(false);
-    };
-
-    return (
-      <Link
-        to={link}
-        title={name}
-        onClick={(e) => disableNavigation && e.preventDefault()}
-        hidden={hidden}
+  return (
+    <Link
+      to={link}
+      title={name}
+      onClick={(e) => disableNavigation && e.preventDefault()}
+      hidden={hidden}
+    >
+      <Card
+        className={`${styles["card"]} ${
+          image ? styles["with-image"] : styles["empty-image"]
+        } dtc-br-10 h-100`}
       >
-        <div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-          <Card hoverable className="mb-3 dtc-br-10 overflow-hidden">
-            {renderHoverContent &&
-              transition.map(({ item, key, props }) => {
-                return (
-                  item && (
-                    <animated.div key={key} style={props} className={styles["product-details"]}>
-                      <div className={styles["product-details-content"]}>
-                        {renderHoverContent(
-                          data,
-                          isHoverContentLoading,
-                          setIsHoverContentLoading,
-                          setHidden
-                        )}
-                      </div>
-                      <div className={styles["product-details-background"]}></div>
-                    </animated.div>
-                  )
-                );
-              })}
-            <div className={`${showDetails ? styles["background-blur"] : ""}`}>
-              <div>
-                <div className={`${styles["image"]} height-250 pb-4`}>
-                  {image ? (
-                    <img className="img-fluid mb-3" src={image} alt={name} />
-                  ) : (
-                    <Empty
-                      className="w-100"
-                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      description="No Image"
-                    />
-                  )}
-                </div>
-                <div className="mb-2 font-weight-bold text-center text-primary text-nowrap text-truncate">
-                  {name}
-                </div>
-              </div>
+        <div className="d-flex flex-column h-100">
+          {transition.map(({ item, key, props }) => {
+            return (
+              item && (
+                <animated.div key={key} style={props} className={`${styles["overlay"]} dtc-br-10`}>
+                  <div className={styles["loading"]}>
+                    <LoadingOutlined />
+                  </div>
+                </animated.div>
+              )
+            );
+          })}
+          <div className={styles["card-image"]}>
+            <div className={styles["square-image-placeholder"]}>
+              {image ? (
+                <img className="img-fluid" src={image} alt={name} />
+              ) : (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
+              )}
             </div>
-          </Card>
+          </div>
+          <div className={`${styles["card-footer"]} pt-3`}>
+            <div className={`${styles["card-name"]} text-secondary`}>{name}</div>
+            <div className={styles["card-more"]}>
+              <Dropdown trigger={["click"]} overlay={renderMenu({ data, setLoading, setHidden })}>
+                <Button shape="circle" size="small" type="text" icon={<MoreOutlined />} />
+              </Dropdown>
+            </div>
+          </div>
         </div>
-      </Link>
-    );
-  }
-);
+      </Card>
+    </Link>
+  );
+});
