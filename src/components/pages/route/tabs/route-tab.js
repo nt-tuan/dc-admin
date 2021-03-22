@@ -2,6 +2,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { message, Modal, Tabs, Button } from "antd";
 import { RouteConst } from "commons/consts";
 import { ROUTE_SCHEMA } from "commons/schemas";
+import { APIError } from "commons/types";
 import { DTCTable } from "components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, Link, useLocation } from "react-router-dom";
@@ -70,9 +71,18 @@ export const RouteTab = () => {
         content: "Do you want to delete this route?",
         onOk() {
           asyncErrorHandlerWrapper(async () => {
-            await RouteService.delete(id);
-            getData(status, setFn);
-            message.success("Deleted Successfully!");
+            try {
+              await RouteService.delete(id);
+              getData(status, setFn);
+              message.success("Deleted Successfully!");
+            } catch (error) {
+              if (error instanceof APIError) {
+                const err = error.errors;
+                message.error(err[0][1]);
+              } else {
+                throw error;
+              }
+            }
           });
         }
       });

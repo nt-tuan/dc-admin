@@ -21,14 +21,37 @@ export const TaxRulesFrom = memo(
       isShow: false,
       index: null
     });
-    // console.log("dataSource", dataSource);
+    // console.log("xxxxxxxxx", dataSource);
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
     useEffect(() => {
+      Object.entries(dataSource).map(([key, valueData]) => {
+        valueData.map((val, idx) => {
+          let filteredFields = val?.data;
+          if (val?.dataFilter) {
+            filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
+          }
+          filteredFields &&
+            filteredFields.map(({ initValue, name }) => {
+              const nameForm = `${key}-${name}-${idx}`;
+              form.setFieldsValue({ [nameForm]: initValue });
+            });
+        });
+      });
       setDataForm({ ...dataSource });
-    }, [dataSource]);
+    }, [dataSource, form]);
 
     const onAddTax = () => {
+      console.log({
+        ...dataForm,
+        taxOther: [
+          ...dataForm.taxOther,
+          {
+            data: [...TAX_RULES_OTHER_SCHEMA],
+            dataFilter: [FIELDS.name]
+          }
+        ]
+      });
       setDataForm({
         ...dataForm,
         taxOther: [
@@ -40,17 +63,6 @@ export const TaxRulesFrom = memo(
         ]
       });
     };
-
-    // const handleResetFieldRemove = (array,index) => {
-    //   const arrayData = array[index].data;
-    //   const arrayFilter = array[index].data;
-    //   if(arrayData){
-    //     arrayData.filter(value => !arrayFilter.includes(value.name)).map(item => {
-    //       const fieldName = `taxOther-${item.name}-${index}`;
-    //       form.setFieldsValue(fieldName,null);
-    //     })
-    //   }
-    // }
 
     const onRemoveTax = (index) => {
       let array = dataForm.taxOther;
@@ -141,6 +153,12 @@ export const TaxRulesFrom = memo(
           case FIELDS.type:
             return (value) => {
               const dataNew = { ...dataForm };
+              const fieldName = TAX_RULES_MAIN_SCHEMA.find((item) => item.name === FIELDS.name);
+              const dataFieldOld = dataForm[applyTypeField][indexField].data;
+              const findName = dataFieldOld.find((field) => field.name === FIELDS.name);
+              if (!findName) {
+                dataFieldOld.push(fieldName);
+              }
               const dataUpdate = {
                 ...dataForm[applyTypeField][indexField],
                 dataFilter: value === "OTHER" ? [] : [FIELDS.name]
@@ -152,11 +170,16 @@ export const TaxRulesFrom = memo(
             return (e) => {
               const value = e.target.value;
               const data = dataForm.taxOther[indexField].data;
+              let isReset = false;
               if (data && data.length) {
                 const dataUpdate = data.map((item) => {
+                  if (item.name === FIELDS.isLumSum && value === item.initValue) {
+                    isReset = true;
+                  }
                   if (item.name === FIELDS.percent) {
                     const fieldName = `taxOther-${FIELDS.percent}-${indexField}`;
-                    form.setFieldsValue({ [fieldName]: null });
+                    form.setFieldsValue({ [fieldName]: isReset ? item.initValue : null });
+
                     return {
                       ...item,
                       disabled: value === 1 ? false : true,
@@ -178,8 +201,7 @@ export const TaxRulesFrom = memo(
                     };
                   } else if (item.name === FIELDS.lumpSum) {
                     const fieldName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
-                    form.setFieldsValue({ [fieldName]: null });
-
+                    form.setFieldsValue({ [fieldName]: isReset ? item.initValue : null });
                     return {
                       ...item,
                       disabled: value === 0 ? false : true,
@@ -211,6 +233,7 @@ export const TaxRulesFrom = memo(
                     ? [...dataForm.taxMain[indexField].data, ...TAX_RULES_MAIN_SCHEMA]
                     : [...TAX_RULES_TYPE_MAIN_SCHEMA]
               };
+
               setDataForm({
                 ...dataForm,
                 taxMain: [dataNew]
@@ -230,6 +253,7 @@ export const TaxRulesFrom = memo(
               const fieldLumsumName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
               form.setFieldsValue({ [fieldName]: 1 });
               form.setFieldsValue({ [fieldLumsumName]: null });
+
               setDataForm({
                 ...dataForm,
                 taxOther: [dataNew]
@@ -245,11 +269,7 @@ export const TaxRulesFrom = memo(
     return (
       <div>
         <h5 className="mt-3">Tax Routes</h5>
-        <Form
-          form={form}
-          initialValues={{ [FIELDS.applyType]: 0, [FIELDS.applyTypeOther]: 0 }}
-          ref={ref}
-        >
+        <Form form={form} ref={ref} key="wrap-tax">
           <div className="row justify-content-between" key="wrap-tax">
             <TaxFormItem
               key="TaxFormItem"
@@ -261,7 +281,7 @@ export const TaxRulesFrom = memo(
             <div className="col-12 text-right mt-3">
               <Button
                 type="primary"
-                disabled={dataForm?.taxOther[0]?.data?.length === 1}
+                disabled={dataForm?.taxOther && dataForm?.taxOther[0]?.data?.length === 1}
                 onClick={onAddTax}
               >
                 Add another tax/charge
