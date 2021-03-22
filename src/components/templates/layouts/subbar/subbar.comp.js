@@ -5,6 +5,10 @@ import { removeIdPartFromProductUrl } from "utils/general.util";
 
 const TEXT_ONLY_PATH = [];
 
+const CUSTOM_TEXT_BREAD = {
+  "edit-product": "edit-product-template"
+};
+
 const _SubBar = () => {
   const location = useLocation();
   const path = location.pathname;
@@ -26,13 +30,15 @@ const _SubBar = () => {
   };
 
   const renderTextonlyBread = (resource) => {
-    return <span className="text-capitalize">{resource.replace(/-/g, " ")}</span>;
+    let breadText = CUSTOM_TEXT_BREAD[resource] || resource;
+    return <span className="text-capitalize">{breadText.replace(/-/g, " ")}</span>;
   };
 
   const renderLinkBread = (resource, path) => {
+    let breadText = CUSTOM_TEXT_BREAD[resource] || resource;
     return (
       <Link className="text-capitalize" to={path}>
-        {resource.replace(/-/g, " ")}
+        {breadText.replace(/-/g, " ")}
       </Link>
     );
   };
