@@ -24,34 +24,34 @@ export const TaxRulesFrom = memo(
     // console.log("xxxxxxxxx", dataSource);
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
-    useEffect(() => {
-      Object.entries(dataSource).map(([key, valueData]) => {
-        valueData.map((val, idx) => {
-          let filteredFields = val?.data;
-          if (val?.dataFilter) {
-            filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
-          }
-          filteredFields &&
-            filteredFields.map(({ initValue, name }) => {
-              const nameForm = `${key}-${name}-${idx}`;
-              form.setFieldsValue({ [nameForm]: initValue });
-            });
+    const handleSetValueForm = useCallback(
+      (dataSource) => {
+        Object.entries(dataSource).map(([key, valueData]) => {
+          valueData.map((val, idx) => {
+            let filteredFields = val?.data;
+            if (val?.dataFilter) {
+              filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
+            }
+            filteredFields &&
+              filteredFields.map(({ initValue, name }) => {
+                const nameForm = `${key}-${name}-${idx}`;
+                if (name === FIELDS.lumpSum || name === FIELDS.percent) {
+                  initValue = numeral(initValue).format("0,0.00");
+                }
+                form.setFieldsValue({ [nameForm]: initValue });
+              });
+          });
         });
-      });
+      },
+      [form]
+    );
+
+    useEffect(() => {
+      handleSetValueForm(dataSource);
       setDataForm({ ...dataSource });
-    }, [dataSource, form]);
+    }, [dataSource, form, handleSetValueForm]);
 
     const onAddTax = () => {
-      console.log({
-        ...dataForm,
-        taxOther: [
-          ...dataForm.taxOther,
-          {
-            data: [...TAX_RULES_OTHER_SCHEMA],
-            dataFilter: [FIELDS.name]
-          }
-        ]
-      });
       setDataForm({
         ...dataForm,
         taxOther: [
@@ -66,9 +66,8 @@ export const TaxRulesFrom = memo(
 
     const onRemoveTax = (index) => {
       let array = dataForm.taxOther;
-      // handleResetFieldRemove(array,index);
-      array.splice(index, 1);
 
+      array.splice(index, 1);
       const newArr = [...array];
       if (index === 0 && newArr.length === 0) {
         const fieldName = `taxOther-${FIELDS.applyTypeOther}-${index}`;
@@ -88,6 +87,7 @@ export const TaxRulesFrom = memo(
         ...dataForm,
         taxOther: [...array]
       };
+      handleSetValueForm(dataNew);
       setDataForm(dataNew);
     };
     const togglePopup = (index, bol) => {
@@ -308,7 +308,7 @@ export const TaxRulesFrom = memo(
                 <Button
                   type="primary"
                   onClick={() => {
-                    console.log("index", isShowPopup.index);
+                    // console.log("index", isShowPopup.index);
                     onRemoveTax(isShowPopup.index);
                     togglePopup(null, false);
                   }}

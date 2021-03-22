@@ -71,8 +71,8 @@ export class SharedPaths {
   // static get CREATE_TRADE_ROUTE() {
   //   return "/create-trade-route";
   // }
-  static get EDIT_ROUTE() {
-    return "/edit-routes";
+  static get EDIT_TRADE_ROUTE() {
+    return "/edit-trade-routes";
   }
   static get ADD_DEFAULT_ROUTE() {
     return "/add-default-routes";

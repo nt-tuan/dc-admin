@@ -154,7 +154,7 @@ const privateRoutes = [
   //   exact: true
   // },
   {
-    path: RouteConst.EDIT_ROUTE,
+    path: RouteConst.EDIT_TRADE_ROUTE,
     Component: loadable(() => import("components/pages/edit-route/edit-route.page")),
     exact: true
   },

@@ -58,7 +58,7 @@ export const RouteTab = () => {
 
   const handleEditClick = useCallback(
     (id) => {
-      history.push(`${RouteConst.EDIT_ROUTE}?id=${id}`);
+      history.push(`${RouteConst.EDIT_TRADE_ROUTE}?id=${id}`);
     },
     [history]
   );
