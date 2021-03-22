@@ -1,8 +1,8 @@
 import React, { memo, forwardRef, useState, useCallback, useEffect } from "react";
 import { Button, Form, Modal } from "antd";
 import { createFormErrorComp } from "utils/form.util";
-import { REQUIRED_ERR } from "commons/consts";
-import { isEmpty } from "lodash/isEmpty";
+// import { REQUIRED_ERR } from "commons/consts";
+// import { isEmpty } from "lodash/isEmpty";
 import {
   TAX_RULES_MAIN_SCHEMA,
   FIELDS,
@@ -209,6 +209,16 @@ export const TaxRulesFrom = memo(
                         {
                           required: value === 0 ? true : false,
                           message: createFormErrorComp("Please enter the lump-sum amount")
+                        },
+                        {
+                          validator: (rule, value, callback) => {
+                            const inputAmount = numeral(value).value();
+                            if (inputAmount <= 0) {
+                              return callback(
+                                createFormErrorComp("The lump-sum amount must be greater than 0")
+                              );
+                            }
+                          }
                         }
                       ]
                     };
