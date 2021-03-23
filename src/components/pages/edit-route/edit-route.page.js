@@ -497,7 +497,7 @@ const EditRoutePage = () => {
 
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
-        console.log("aaa", dataParse);
+        // console.log("aaa", dataParse);
         composedValues.routeTaxPostRequestList = dataParse;
 
         try {

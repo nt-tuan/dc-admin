@@ -132,7 +132,7 @@ export const TAX_RULES_MAIN_SCHEMA = [
           if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
-          return callback(createFormErrorComp("The tax percentage max 2 number"));
+          return callback(createFormErrorComp("The tax percentage max 2 numbers"));
         }
       }
     ]
@@ -219,7 +219,7 @@ export const TAX_RULES_OTHER_SCHEMA = [
           if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
-          return callback(createFormErrorComp("The tax percentage max 2 number"));
+          return callback(createFormErrorComp("The tax percentage max 2 numbers"));
         }
       }
     ]
