@@ -434,7 +434,12 @@ const EditRoutePage = () => {
         };
       }
 
-      if (valueTax[item] && applyTypeField === "taxOther" && valueTax[item] !== "undefined") {
+      if (
+        valueTax[item] &&
+        applyTypeField === "taxOther" &&
+        valueTax[item] !== "undefined" &&
+        valueTax[item] !== "0.00"
+      ) {
         if (nameField === FIELDS.applyTypeOther) {
           nameObj = FIELDS.applyType;
         }
@@ -492,7 +497,7 @@ const EditRoutePage = () => {
 
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
-        // console.log("aaa", dataParse);
+        console.log("aaa", dataParse);
         composedValues.routeTaxPostRequestList = dataParse;
 
         try {
@@ -538,7 +543,7 @@ const EditRoutePage = () => {
             isEdit={true}
           />
         </div>
-        <TaxRulesFrom dataSource={dataSourceTax} ref={taxRuleForms} />
+        <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
         <div className="text-center" hidden={isLoadingLocation === false}>
           <LoadingIndicator />
         </div>

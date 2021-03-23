@@ -15,7 +15,7 @@ import TaxFormItem from "./tax-form-item.comp";
 import numeral from "numeral";
 
 export const TaxRulesFrom = memo(
-  forwardRef(({ dataSource }, ref) => {
+  forwardRef(({ dataSource, isEdit = false }, ref) => {
     const [form] = Form.useForm();
     const [isShowPopup, setShowPopup] = useState({
       isShow: false,
@@ -26,6 +26,7 @@ export const TaxRulesFrom = memo(
 
     const handleSetValueForm = useCallback(
       (dataSource) => {
+        console.log(dataSource);
         Object.entries(dataSource).map(([key, valueData]) => {
           valueData.map((val, idx) => {
             let filteredFields = val?.data;
@@ -47,9 +48,25 @@ export const TaxRulesFrom = memo(
     );
 
     useEffect(() => {
-      handleSetValueForm(dataSource);
+      Object.entries(dataSource).map(([key, valueData]) => {
+        valueData.map((val, idx) => {
+          let filteredFields = val?.data;
+          if (val?.dataFilter) {
+            filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
+          }
+          filteredFields &&
+            filteredFields.map(({ initValue, name }) => {
+              const nameForm = `${key}-${name}-${idx}`;
+
+              if (name === FIELDS.lumpSum || name === FIELDS.percent) {
+                initValue = numeral(initValue).format("0,0.00");
+              }
+              form.setFieldsValue({ [nameForm]: initValue });
+            });
+        });
+      });
       setDataForm({ ...dataSource });
-    }, [dataSource, form, handleSetValueForm]);
+    }, [dataSource, form]);
 
     const onAddTax = () => {
       const dataNew = {
@@ -62,7 +79,10 @@ export const TaxRulesFrom = memo(
           }
         ]
       };
-      handleSetValueForm(dataNew);
+      if (isEdit) {
+        handleSetValueForm(dataNew);
+      }
+
       setDataForm(dataNew);
     };
 
@@ -89,7 +109,10 @@ export const TaxRulesFrom = memo(
         ...dataForm,
         taxOther: [...array]
       };
-      handleSetValueForm(dataNew);
+
+      if (isEdit) {
+        handleSetValueForm(dataNew);
+      }
       setDataForm(dataNew);
     };
     const togglePopup = (index, bol) => {
@@ -211,16 +234,6 @@ export const TaxRulesFrom = memo(
                         {
                           required: value === 0 ? true : false,
                           message: createFormErrorComp("Please enter the lump-sum amount")
-                        },
-                        {
-                          validator: (rule, value, callback) => {
-                            const inputAmount = numeral(value).value();
-                            if (inputAmount <= 0) {
-                              return callback(
-                                createFormErrorComp("The lump-sum amount must be greater than 0")
-                              );
-                            }
-                          }
                         }
                       ]
                     };
