@@ -60,7 +60,7 @@ const CertificationDetails = ({ form, onValuesChange, productDetails, isEditing 
                 form={form}
                 field={field}
                 index={index}
-                canDelete={(isEditing && !emptyForm) || fields.length > 1}
+                canDelete={(isEditing && !emptyForm) || !emptyForm}
                 fieldValue={get(form.getFieldsValue(), `certificationDetails.[${index}]`)}
                 onRemove={() => remove(index)}
               />

@@ -60,7 +60,7 @@ const PackingDetails = ({ form, onValuesChange, productDetails, isEditing = fals
                 form={form}
                 field={field}
                 index={index}
-                canDelete={(isEditing && !emptyForm) || fields.length > 1}
+                canDelete={(isEditing && !emptyForm) || !emptyForm}
                 fieldValue={get(form.getFieldsValue(), `packingDetails.[${index}]`)}
                 onRemove={() => remove(index)}
               />
