@@ -5,6 +5,7 @@ import { Button, Form, Steps, message } from "antd";
 import classNames from "classnames";
 import { isScreensize } from "utils/general.util";
 import { equalFields } from "utils/form.util";
+import { useSubmitApiService } from "hooks/useApiService";
 import VariantDetails from "./components/VariantsDetails";
 import OfferDetails from "./components/OfferDetails";
 import PackingDetails from "./components/PackingDetails";
@@ -46,7 +47,27 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   const [certificationForm] = Form.useForm();
   const templateImageForm = useRef();
 
+  const onAfterSubmit = useCallback(() => {
+    if (isEditing) {
+      message.success("Product was successfully updated!");
+    } else {
+      message.success("Product was successfully created!");
+    }
+    setTimeout(() => {
+      window.location.href = "/product-database";
+    }, 1000);
+  }, [isEditing]);
+
   const [loading, setLoading] = useState(true);
+  const [
+    { isLoading: isSubmitting, success: submitted },
+    { submit: addProduct }
+  ] = useSubmitApiService(ProductService.addProduct, onAfterSubmit);
+  const [
+    { isLoading: isUpdating, success: updated },
+    { submit: editProduct }
+  ] = useSubmitApiService(ProductService.editProduct, onAfterSubmit);
+  const disabledButtons = isUpdating || isSubmitting || updated || submitted;
 
   useEffect(() => {
     if (isEditing && categories.length && hsCode && types.length) {
@@ -118,7 +139,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
       .catch(() => false);
   }, []);
 
-  //TODO: combine submit and get error
   const handleValidator = useCallback(async () => {
     switch (currentStep) {
       case 1:
@@ -199,52 +219,51 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     [checkCanSkip, currentStep]
   );
 
+  const submitTemplate = useCallback(() => {
+    // submit data
+    const data = {
+      detail: JSON.stringify(productData.details),
+      fileName:
+        productData?.ProductUploadImagesForm?.name ||
+        productData?.ProductUploadImagesForm?.fileName,
+      productName: productData.vitalInformation.productName,
+      typeId: productData.vitalInformation.productType,
+      variantList: Object.keys(productData.vitalInformation).map((key) => {
+        //Checking keyword field has value and return to string to submit data
+        if (key === "keyword" && productData.vitalInformation[key]?.length >= 0) {
+          return {
+            name: key,
+            value: productData.vitalInformation[key].toString()
+          };
+        } else {
+          return {
+            name: key,
+            value: productData.vitalInformation[key]
+          };
+        }
+      })
+    };
+    asyncErrorHandlerWrapper(async () => {
+      if (isEditing) {
+        const searchParams = window.location.search;
+        const productId = searchParams.split("uid=")[1];
+        delete data.typeId;
+        delete data.productName;
+        data.keyword = productData.vitalInformation["keyword"]
+          ? productData.vitalInformation["keyword"].toString()
+          : "";
+        data.productId = productId;
+        editProduct(data, productId);
+      } else {
+        addProduct(data);
+      }
+    });
+    return;
+  }, [addProduct, editProduct, isEditing, productData]);
+
   const handleNext = useCallback(async () => {
     if (currentStep === PRODUCT_CREATE_TEMPLATE.length) {
-      // submit data
-      const data = {
-        detail: JSON.stringify(productData.details),
-        fileName:
-          productData?.ProductUploadImagesForm?.name ||
-          productData?.ProductUploadImagesForm?.fileName,
-        productName: productData.vitalInformation.productName,
-        typeId: productData.vitalInformation.productType,
-        variantList: Object.keys(productData.vitalInformation).map((key) => {
-          //Checking keyword field has value and return to string to submit data
-          if (key === "keyword" && productData.vitalInformation[key]?.length >= 0) {
-            return {
-              name: key,
-              value: productData.vitalInformation[key].toString()
-            };
-          } else {
-            return {
-              name: key,
-              value: productData.vitalInformation[key]
-            };
-          }
-        })
-      };
-      asyncErrorHandlerWrapper(async () => {
-        if (isEditing) {
-          const searchParams = window.location.search;
-          const productId = searchParams.split("uid=")[1];
-          delete data.typeId;
-          delete data.productName;
-          data.keyword = productData.vitalInformation["keyword"]
-            ? productData.vitalInformation["keyword"].toString()
-            : "";
-          data.productId = productId;
-          await ProductService.editProduct(data, productId);
-          message.success("Product was successfully updated!");
-        } else {
-          await ProductService.addProduct(data);
-          message.success("Product was successfully created!");
-        }
-        setTimeout(() => {
-          window.location.href = "/product-database";
-        }, 1000);
-      });
-      return;
+      submitTemplate();
     } else {
       const isValid = await handleValidator();
       if (isValid) {
@@ -252,7 +271,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         setCurrentStep(currentStep + 1);
       }
     }
-  }, [currentStep, productData, isEditing, handleValidator, checkCanSkip]);
+  }, [currentStep, submitTemplate, handleValidator, checkCanSkip]);
 
   const handleSkip = useCallback(() => {
     if (ALLOW_SKIP.includes(currentStep)) {
@@ -281,6 +300,37 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     checkCanSkip(currentStep - 1);
     setCurrentStep(currentStep - 1);
   }, [checkCanSkip, currentStep]);
+
+  const NextButton = useCallback(() => {
+    const isFinalStep = currentStep === PRODUCT_CREATE_TEMPLATE.length;
+    let buttonText;
+    const buttonLoading = isSubmitting || isUpdating;
+
+    if (isFinalStep) {
+      if (isSubmitting) {
+        buttonText = "Submitting";
+      } else if (isUpdating) {
+        buttonText = "Updating";
+      } else if (isEditing) {
+        buttonText = "Update";
+      } else {
+        buttonText = "Submit";
+      }
+    } else {
+      buttonText = "Next";
+    }
+    return (
+      <Button
+        type="primary"
+        onClick={handleNext}
+        className="mb-3"
+        disabled={disabledButtons}
+        loading={buttonLoading}
+      >
+        {buttonText}
+      </Button>
+    );
+  }, [currentStep, disabledButtons, handleNext, isEditing, isSubmitting, isUpdating]);
 
   return (
     <article>
@@ -354,17 +404,17 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
           </Form.Provider>
         </DTCSection>
         <div className={classNames("footer", { "d-none": loading, "mb-3": canSkip })}>
-          {currentStep !== 1 && <Button onClick={handlePrevious}>Previous</Button>}
+          {currentStep !== 1 && (
+            <Button onClick={handlePrevious} disabled={disabledButtons}>
+              Previous
+            </Button>
+          )}
           {canSkip && (
-            <Button danger onClick={handleSkip}>
+            <Button danger onClick={handleSkip} disabled={disabledButtons}>
               Skip Section
             </Button>
           )}
-          {!canSkip && (
-            <Button type="primary" onClick={handleNext} className="mb-3">
-              {currentStep === PRODUCT_CREATE_TEMPLATE.length ? "Submit" : "Next"}
-            </Button>
-          )}
+          {!canSkip && NextButton()}
         </div>
       </>
     </article>
