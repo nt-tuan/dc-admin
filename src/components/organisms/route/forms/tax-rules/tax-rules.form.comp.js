@@ -48,25 +48,9 @@ export const TaxRulesFrom = memo(
     );
 
     useEffect(() => {
-      Object.entries(dataSource).map(([key, valueData]) => {
-        valueData.map((val, idx) => {
-          let filteredFields = val?.data;
-          if (val?.dataFilter) {
-            filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
-          }
-          filteredFields &&
-            filteredFields.map(({ initValue, name }) => {
-              const nameForm = `${key}-${name}-${idx}`;
-
-              if (name === FIELDS.lumpSum || name === FIELDS.percent) {
-                initValue = numeral(initValue).format("0,0.00");
-              }
-              form.setFieldsValue({ [nameForm]: initValue });
-            });
-        });
-      });
+      handleSetValueForm(dataSource);
       setDataForm({ ...dataSource });
-    }, [dataSource, form]);
+    }, [dataSource, form, handleSetValueForm]);
 
     const onAddTax = () => {
       const dataNew = {
@@ -336,30 +320,53 @@ export const TaxRulesFrom = memo(
           case FIELDS.applyTypeOther:
             return (e) => {
               const value = e.target.value;
-              const dataNew = {
-                ...dataForm.taxOther[indexField],
-                data:
-                  value === typeTAX.OTHERS
-                    ? [...dataForm.taxOther[indexField].data, ...TAX_RULES_OTHER_SCHEMA]
-                    : [...TAX_RULES_TYPE_OTHER_SCHEMA]
-              };
+              const emptyData = [{ data: TAX_RULES_TYPE_OTHER_SCHEMA, dataFilter: [FIELDS.name] }];
+
+              let dataUpdate = dataForm.taxOther;
+
+              if (isEdit) {
+                if (value !== typeTAX.OTHERS) {
+                  dataUpdate = emptyData;
+                } else {
+                  dataUpdate = [
+                    {
+                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
+                      dataFilter: [FIELDS.name]
+                    }
+                  ];
+                }
+              } else {
+                if (value !== typeTAX.OTHERS) {
+                  dataUpdate = emptyData;
+                } else {
+                  dataUpdate = [
+                    {
+                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
+                      dataFilter: [FIELDS.name]
+                    }
+                  ];
+                }
+              }
               const fieldName = `taxOther-${FIELDS.isLumSum}-${indexField}`;
-              const fieldLumsumName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
+              const fieldlumpSum = `taxOther-${FIELDS.lumpSum}-${indexField}`;
               form.setFieldsValue({ [fieldName]: 1 });
-              form.setFieldsValue({ [fieldLumsumName]: null });
-              // console.log("dataNew", dataNew);
-              const dataN = handleUpdateIntValue(dataNew.data, value, FIELDS.applyTypeOther);
-              dataNew.data = dataN;
+              form.setFieldsValue({ [fieldlumpSum]: null });
+
+              dataUpdate[0].data = handleUpdateIntValue(
+                dataUpdate[0].data,
+                value,
+                FIELDS.applyTypeOther
+              );
               setDataForm({
                 ...dataForm,
-                taxOther: [dataNew]
+                taxOther: dataUpdate
               });
             };
           default:
             return () => {};
         }
       },
-      [dataForm, form]
+      [dataForm, form, isEdit]
     );
 
     return (
