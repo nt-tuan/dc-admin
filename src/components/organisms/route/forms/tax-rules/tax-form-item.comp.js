@@ -8,7 +8,6 @@ const { Option } = Select;
 
 function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
   const renderTaxRules = () => {
-    // console.log("dataForm",dataForm)
     return Object.entries(dataForm).map(([key, valueData]) => {
       if (valueData && valueData?.length) {
         return valueData.map((val, idx) => {
@@ -42,11 +41,12 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
                       type,
                       placeholder,
                       rules,
-                      initValue,
                       data,
                       classNames,
                       disabled,
-                      or
+                      or,
+                      hidden,
+                      initValue
                     },
                     index
                   ) => {
@@ -96,11 +96,12 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
                               placeholder={placeholder}
                               onChange={handleFieldChange(nameForm)}
                             >
-                              {initValue.map((item) => (
-                                <Option key={item.label} value={item.value}>
-                                  {item.label}
-                                </Option>
-                              ))}
+                              {data &&
+                                data.map((item) => (
+                                  <Option key={item.label} value={item.value}>
+                                    {item.label}
+                                  </Option>
+                                ))}
                             </Select>
                           </Form.Item>
                         );
@@ -128,6 +129,7 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
                               labelCol={{ span: 24 }}
                             >
                               <Input
+                                hidden={hidden}
                                 disabled={disabled}
                                 onBlur={handleFieldChange(nameForm)}
                                 suffix={`${name === FIELDS.percent ? "%" : ""}`}

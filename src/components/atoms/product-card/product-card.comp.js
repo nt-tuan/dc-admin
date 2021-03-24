@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Empty, Button, Dropdown, Tooltip } from "antd";
+import { Card, Empty, Button, Dropdown } from "antd";
 import { animated, useTransition } from "react-spring";
 import { MoreOutlined, LoadingOutlined } from "@ant-design/icons";
 import styles from "./styles.module.scss";
@@ -22,7 +22,11 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
       onClick={(e) => disableNavigation && e.preventDefault()}
       hidden={hidden}
     >
-      <Card className={`${styles["card"]} dtc-br-10 h-100`}>
+      <Card
+        className={`${styles["card"]} ${
+          image ? styles["with-image"] : styles["empty-image"]
+        } dtc-br-10 h-100`}
+      >
         <div className="d-flex flex-column h-100">
           {transition.map(({ item, key, props }) => {
             return (
@@ -36,20 +40,20 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
             );
           })}
           <div className={styles["card-image"]}>
-            {image ? (
-              <img className="img-fluid" src={image} alt={name} />
-            ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
-            )}
+            <div className={styles["square-image-placeholder"]}>
+              {image ? (
+                <img className="img-fluid" src={image} alt={name} />
+              ) : (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Image" />
+              )}
+            </div>
           </div>
           <div className={`${styles["card-footer"]} pt-3`}>
             <div className={`${styles["card-name"]} text-secondary`}>{name}</div>
             <div className={styles["card-more"]}>
-              <Tooltip title="More">
-                <Dropdown trigger={["click"]} overlay={renderMenu({ data, setLoading, setHidden })}>
-                  <Button shape="circle" type="text" icon={<MoreOutlined />} />
-                </Dropdown>
-              </Tooltip>
+              <Dropdown trigger={["click"]} overlay={renderMenu({ data, setLoading, setHidden })}>
+                <Button shape="circle" size="small" type="text" icon={<MoreOutlined />} />
+              </Dropdown>
             </div>
           </div>
         </div>

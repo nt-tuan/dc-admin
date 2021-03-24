@@ -116,7 +116,7 @@ const FieldLayout = ({
             </Row>
             <div className="text-right mt-2">
               Make this field required?
-              <Form.Item name={[field.name, "isRequired"]}>
+              <Form.Item name={[field.name, "isRequired"]} valuePropName="checked">
                 <Switch />
               </Form.Item>
             </div>

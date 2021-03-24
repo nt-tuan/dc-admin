@@ -91,7 +91,8 @@ export const TAX_RULES_MAIN_SCHEMA = [
     name: FIELDS.type,
     type: "select",
     placeholder: "Type of Tax",
-    initValue: [...taxRulesValue],
+    data: [...taxRulesValue],
+    initValue: null,
     rules: [{ required: true, message: createFormErrorComp("Please choose the type of tax") }]
   },
   {
@@ -125,10 +126,13 @@ export const TAX_RULES_MAIN_SCHEMA = [
       {
         validator: (rule, value, callback) => {
           const inputAmount = numeral(value).value();
-          if (inputAmount >= 0 && inputAmount < 100) {
+          if (inputAmount <= 0) {
+            return callback(createFormErrorComp("The tax percentage must be greater than 0"));
+          }
+          if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
-          return callback(createFormErrorComp("The tax percentage max 2 number"));
+          return callback(createFormErrorComp("The tax percentage max 2 numbers"));
         }
       }
     ]
@@ -141,7 +145,8 @@ export const TAX_RULES_OTHER_SCHEMA = [
     name: FIELDS.taxPayer,
     type: "select",
     placeholder: "Select Taxpayer",
-    initValue: [...taxPayerValue],
+    data: [...taxPayerValue],
+    initValue: null,
     rules: [
       {
         required: true,
@@ -171,7 +176,8 @@ export const TAX_RULES_OTHER_SCHEMA = [
     name: FIELDS.type,
     type: "select",
     placeholder: LABELS[FIELDS.type],
-    initValue: [...taxTypeOtherValue],
+    data: [...taxTypeOtherValue],
+    initValue: null,
     rules: [{ required: true, message: createFormErrorComp("Please choose the type of tax") }]
   },
   {
@@ -202,15 +208,18 @@ export const TAX_RULES_OTHER_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp(REQUIRED_ERR("the tax percentage"))
+        message: createFormErrorComp("Please enter the tax percentage")
       },
       {
         validator: (rule, value, callback) => {
           const inputAmount = numeral(value).value();
-          if (inputAmount >= 0 && inputAmount < 100) {
+          if (inputAmount <= 0) {
+            return callback(createFormErrorComp("The tax percentage must be greater than 0"));
+          }
+          if (inputAmount > 0 && inputAmount < 100) {
             return callback();
           }
-          return callback(createFormErrorComp("The tax percentage max 2 number"));
+          return callback(createFormErrorComp("The tax percentage max 2 numbers"));
         }
       }
     ]
@@ -229,5 +238,15 @@ export const TAX_RULES_OTHER_SCHEMA = [
       //   message: createFormErrorComp(REQUIRED_ERR("Please enter the Lump-sum amount"))
       // }
     ]
+  }
+];
+
+export const ID_FIELDS = [
+  {
+    name: "id",
+    type: "input",
+    initValue: null,
+    hidden: true,
+    rules: []
   }
 ];

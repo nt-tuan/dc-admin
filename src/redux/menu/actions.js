@@ -60,7 +60,7 @@ export async function getUserData() {
         {
           title: "Trade Routes Creation",
           key: "RouteCreation",
-          url: RouteConst.CREATE_TRADE_ROUTE
+          url: RouteConst.CREATE_TRADE_ROUTES
         },
         {
           title: "Documents",

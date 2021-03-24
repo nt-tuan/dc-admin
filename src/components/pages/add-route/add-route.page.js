@@ -270,6 +270,12 @@ const AddRoutePage = () => {
           if (nameObj === FIELDS.lumpSum || nameObj === FIELDS.percent) {
             valueObj = numeral(valueObj).value();
           }
+          if (nameField === FIELDS.lumpSum && valueObj === 0) {
+            nameObj = FIELDS.percent;
+          }
+          if (nameField === FIELDS.percent && valueObj === 0) {
+            nameObj = FIELDS.lumpSum;
+          }
           if (valueTax[item] && applyTypeField === "taxMain") {
             dataMain[index] = {
               ...dataMain[index],

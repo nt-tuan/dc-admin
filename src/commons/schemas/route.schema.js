@@ -8,7 +8,7 @@ const FIELDS = {
   typeName: "typeName",
   to: "toCountry",
   from: "fromCountry",
-  taxDetailResponseList: "taxDetailResponseList"
+  hasTaxes: "hasTaxes"
 };
 
 const LABELS = {
@@ -17,7 +17,7 @@ const LABELS = {
   [FIELDS.typeName]: "Product Type",
   [FIELDS.to]: "To",
   [FIELDS.from]: "From",
-  [FIELDS.taxDetailResponseList]: "Tax Applied"
+  [FIELDS.hasTaxes]: "Tax Applied"
 };
 
 // active tab
@@ -71,23 +71,24 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
       render: (to) => <CustomHighlighter searchText={searchText} value={to || ""} />
     },
     {
-      title: LABELS[FIELDS.taxDetailResponseList],
-      dataIndex: FIELDS.taxDetailResponseList,
-      key: FIELDS.taxDetailResponseList,
-      // sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
-      sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
-      render: (taxDetailResponseList) => {
+      title: LABELS[FIELDS.hasTaxes],
+      dataIndex: FIELDS.hasTaxes,
+      key: FIELDS.hasTaxes,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.hasTaxes], b[FIELDS.hasTaxes]),
+      sortOrder: sortedInfo.columnKey === FIELDS.hasTaxes && sortedInfo.order,
+      render: (hasTaxes, record) => {
         return (
-          <Tag color={`${taxDetailResponseList?.length ? "green" : "red"}`}>
-            {" "}
-            {taxDetailResponseList && taxDetailResponseList.length ? (
-              <Tooltip color="#ffffff" title={<HoverTax data={taxDetailResponseList} />}>
-                Yes
-              </Tooltip>
+          <>
+            {hasTaxes === "Yes" ? (
+              <Tag color={`green`}>
+                <Tooltip color="#ffffff" title={<HoverTax data={record?.taxDetailResponseList} />}>
+                  {hasTaxes}
+                </Tooltip>
+              </Tag>
             ) : (
-              <span>No</span>
+              <Tag color={`red`}>{hasTaxes}</Tag>
             )}
-          </Tag>
+          </>
         );
       }
     },

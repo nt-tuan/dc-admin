@@ -31,7 +31,7 @@ const RoutePage = () => {
   };
   return (
     <article>
-      <Helmet title="Routes" />
+      <Helmet title="Trade Routes" />
       <div className="flex mb-3 ml-2">
         {renderTabButton("Trade Routes", ROUTE)}
         {renderTabButton("Default Trade Routes", DEFAULT_ROUTE)}
