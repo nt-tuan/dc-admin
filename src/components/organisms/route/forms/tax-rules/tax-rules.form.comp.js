@@ -97,42 +97,27 @@ export const TaxRulesFrom = memo(
     };
 
     const onRemoveTax = (index) => {
-      let array = dataForm.taxOther;
-      // console.log(array.length);
-      array.splice(index, 1);
-      const dataArr = [...array];
-      // console.log(dataArr.length);
-      const fieldNameOther = `taxOther-${FIELDS.applyTypeOther}-0`;
+      const dataUpdate = dataForm.taxOther;
+      const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
+      // console.log("dataUpdate", dataUpdate, index);
+      let dataNew = dataUpdate.filter((item, idx) => idx !== index);
 
-      if (index === 0 && array.length === 0) {
-        const fieldName = `taxOther-${FIELDS.applyTypeOther}-${index}`;
-        form.setFieldsValue({ [fieldName]: 0 });
-        array = [
-          {
-            data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
-            dataFilter: [FIELDS.name]
-          }
-        ];
+      if (index === 0 && dataNew.length > 0) {
+        objApplyType.initValue = typeTAX.OTHERS;
+        dataNew[0].data.unshift(objApplyType);
       }
-
-      if (index === 0 && dataArr.length > 0) {
-        const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
-        const value = dataArr.length > 0 ? typeTAX.OTHERS : 0;
-        objApplyType.initValue = value;
-        array[0].data.unshift(objApplyType);
-
-        form.setFieldsValue({ [fieldNameOther]: value });
-      } else if (dataArr.length === 0) {
-        const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
+      if (index === 0 && dataNew.length === 0) {
         objApplyType.initValue = 0;
-        form.setFieldsValue({ [fieldNameOther]: 0 });
+        dataNew.push({ data: [{ ...objApplyType }], dataFilter: [FIELDS.name] });
       }
-      const dataNew = {
+      // console.log("dataNew", dataNew);
+
+      const dataS = {
         ...dataForm,
-        taxOther: [...array]
+        taxOther: dataNew
       };
-      handleSetValueForm(dataNew);
-      setDataForm(dataNew);
+      handleSetValueForm(dataS);
+      setDataForm(dataS);
     };
     const togglePopup = (index, bol) => {
       setShowPopup({
