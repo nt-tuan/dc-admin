@@ -26,6 +26,7 @@ import {
   TAX_RULES_OTHER_SCHEMA,
   ID_FIELDS
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
+import { Helmet } from "react-helmet";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -529,82 +530,85 @@ const EditRoutePage = () => {
   }, []);
 
   return (
-    <DTCSection>
-      <div>
-        <h3 className="mb-3">{renderTitle(false)}</h3>
-        <div hidden={isLoadingLocation}>
-          <RouteLocationForm
-            onAfterInit={setIsLoadingLocation}
-            onTypeChange={handleTypeChange}
-            onTouch={setIsLocationFormTouched}
-            defaultCategoryId={categoryIdFromDetails}
-            defaultTypeId={typeIdFromDetails}
-            ref={locationFormRef}
-            isEdit={true}
-          />
+    <>
+      <Helmet title="Edit Trade Rules" />
+      <DTCSection>
+        <div>
+          <h3 className="mb-3">{renderTitle(false)}</h3>
+          <div hidden={isLoadingLocation}>
+            <RouteLocationForm
+              onAfterInit={setIsLoadingLocation}
+              onTypeChange={handleTypeChange}
+              onTouch={setIsLocationFormTouched}
+              defaultCategoryId={categoryIdFromDetails}
+              defaultTypeId={typeIdFromDetails}
+              ref={locationFormRef}
+              isEdit={true}
+            />
+          </div>
+          <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
+          <div className="text-center" hidden={isLoadingLocation === false}>
+            <LoadingIndicator />
+          </div>
         </div>
-        <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
-        <div className="text-center" hidden={isLoadingLocation === false}>
-          <LoadingIndicator />
-        </div>
-      </div>
 
-      <Divider />
-      <div>
-        <h5>Documents</h5>
-        <p>
-          You can either select from the document list or{" "}
-          <Link
-            style={{ cursor: "pointer" }}
-            to={{
-              pathname: RouteConst.DOCUMENT,
-              search: "?showCreateDocument=true",
-              state: { previousPage: `${location.pathname}${location.search}` }
-            }}
-            className="text-primary"
-          >
-            create a new document
+        <Divider />
+        <div>
+          <h5>Documents</h5>
+          <p>
+            You can either select from the document list or{" "}
+            <Link
+              style={{ cursor: "pointer" }}
+              to={{
+                pathname: RouteConst.DOCUMENT,
+                search: "?showCreateDocument=true",
+                state: { previousPage: `${location.pathname}${location.search}` }
+              }}
+              className="text-primary"
+            >
+              create a new document
+            </Link>
+          </p>
+          <p>Select the documents required for this route</p>
+          <Row gutter={[30, 0]}>
+            <Col>
+              <DocumentList
+                title="Default Documents"
+                defaultDocs={defaultDocs}
+                documents={defaultDocuments}
+                defaultValue={defaultDocumentIds}
+                onChange={handleDefaultDocListChange}
+                onTouch={handleDocListTouch}
+              />
+            </Col>
+            <Col>
+              <DocumentList
+                title="Customized Documents"
+                defaultValue={docIdsFromDetails}
+                defaultDocs={defaultDocs}
+                documents={filteredCustomizedDocs}
+                onChange={handleCustomizedDocListChange}
+                onTouch={handleDocListTouch}
+              />
+            </Col>
+          </Row>
+        </div>
+        <Divider />
+        <div>
+          <h5>Document Trade Rules</h5>
+          <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
+        </div>
+        <Divider />
+        <div className="d-flex justify-content-center">
+          <Button className="mr-2" type="primary" onClick={handleEdit}>
+            Save
+          </Button>
+          <Link to={RouteConst.TRADE_ROUTES}>
+            <Button>Cancel</Button>
           </Link>
-        </p>
-        <p>Select the documents required for this route</p>
-        <Row gutter={[30, 0]}>
-          <Col>
-            <DocumentList
-              title="Default Documents"
-              defaultDocs={defaultDocs}
-              documents={defaultDocuments}
-              defaultValue={defaultDocumentIds}
-              onChange={handleDefaultDocListChange}
-              onTouch={handleDocListTouch}
-            />
-          </Col>
-          <Col>
-            <DocumentList
-              title="Customized Documents"
-              defaultValue={docIdsFromDetails}
-              defaultDocs={defaultDocs}
-              documents={filteredCustomizedDocs}
-              onChange={handleCustomizedDocListChange}
-              onTouch={handleDocListTouch}
-            />
-          </Col>
-        </Row>
-      </div>
-      <Divider />
-      <div>
-        <h5>Document Trade Rules</h5>
-        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
-      </div>
-      <Divider />
-      <div className="d-flex justify-content-center">
-        <Button className="mr-2" type="primary" onClick={handleEdit}>
-          Save
-        </Button>
-        <Link to={RouteConst.ROUTE}>
-          <Button>Cancel</Button>
-        </Link>
-      </div>
-    </DTCSection>
+        </div>
+      </DTCSection>
+    </>
   );
 };
 
