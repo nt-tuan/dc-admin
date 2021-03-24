@@ -8,7 +8,7 @@ import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
 const CertificationDetails = ({ form, onValuesChange, productDetails, isEditing = false }) => {
-  const [emptyForm, setEmptyForm] = useState(false);
+  const [emptyForm, setEmptyForm] = useState(true);
 
   useEffect(() => {
     if (productDetails) {
@@ -16,8 +16,7 @@ const CertificationDetails = ({ form, onValuesChange, productDetails, isEditing 
       const { certificationDetails } = detail;
       if (certificationDetails) {
         form.setFieldsValue({ certificationDetails });
-      } else {
-        setEmptyForm(true);
+        setEmptyForm(false);
       }
     }
   }, [productDetails, form]);
