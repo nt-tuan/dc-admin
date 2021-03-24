@@ -25,13 +25,16 @@ const FieldLayout = ({
   const [fieldName, setFieldName] = useState(fieldValue?.fieldName || undefined);
 
   useEffect(() => {
-    if (!fieldType && fieldValue?.type) {
+    if ((!fieldType && fieldValue?.type) || (fieldValue?.type && fieldType !== fieldValue.type)) {
       setFieldType(fieldValue.type);
     }
   }, [fieldType, fieldValue]);
 
   useEffect(() => {
-    if (!fieldName && fieldValue?.fieldName) {
+    if (
+      (!fieldName && fieldValue?.fieldName) ||
+      (fieldValue?.fieldName && fieldName !== fieldValue.fieldName)
+    ) {
       setFieldName(fieldValue.fieldName);
     }
   }, [fieldName, fieldValue]);
