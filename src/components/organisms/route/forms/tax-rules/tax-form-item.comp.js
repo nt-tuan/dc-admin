@@ -3,10 +3,28 @@ import { Form, Select, Input, Radio, Button } from "antd";
 import { MinusOutlined } from "@ant-design/icons";
 import { FIELDS } from "./tax.chemas";
 // import { FIELDS } from "./tax.chemas";
+import numeral from "numeral";
 
 const { Option } = Select;
 
-function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
+function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax, form }) {
+  const handleFormatNumber = (fieldName, value, field) => {
+    const inputAmount = numeral(value).value();
+    if (field === FIELDS.lumpSum) {
+      if (isNaN(value)) {
+        form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
+      }
+    }
+    if (field === FIELDS.percent) {
+      if (isNaN(value) && value.length <= 2 && value > 0) {
+        form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
+      }
+      if (inputAmount < 100 && inputAmount > 0) {
+        form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
+      }
+    }
+  };
+
   const renderTaxRules = () => {
     return Object.entries(dataForm).map(([key, valueData]) => {
       if (valueData && valueData?.length) {
@@ -131,9 +149,10 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax }) {
                               <Input
                                 hidden={hidden}
                                 disabled={disabled}
-                                onBlur={handleFieldChange(nameForm)}
+                                onBlur={(e) => handleFormatNumber(nameForm, e.target.value, name)}
                                 suffix={`${name === FIELDS.percent ? "%" : ""}`}
                                 placeholder={placeholder}
+                                onChange={handleFieldChange(nameForm)}
                               />
                             </Form.Item>
                             {or && <span>{or}</span>}

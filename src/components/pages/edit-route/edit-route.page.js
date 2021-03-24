@@ -1,6 +1,7 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
 import { DTCSection, LoadingIndicator } from "components/atoms";
+import { createFormErrorComp } from "utils/form.util";
 import {
   DocumentList,
   DocumentRuleTable,
@@ -24,7 +25,9 @@ import {
   TAX_RULES_TYPE_OTHER_SCHEMA,
   TAX_RULES_MAIN_SCHEMA,
   TAX_RULES_OTHER_SCHEMA,
-  ID_FIELDS
+  ID_FIELDS,
+  RULES_LUMSUM_FORMAT,
+  RULES_PERCENT_FORMAT
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
 import { Helmet } from "react-helmet";
 
@@ -172,6 +175,7 @@ const EditRoutePage = () => {
         }
         objFieldOther.data = arrayFieldOther.map((field) => {
           let initValue = item[field.name];
+          let rulesObj = field.rules;
           if (field.name === FIELDS.type && item[field.name] !== "OTHER") {
             objFieldOther.dataFilter = [FIELDS.name];
           }
@@ -187,11 +191,30 @@ const EditRoutePage = () => {
               initValue = 0;
             }
           }
+          if (field.name === FIELDS.lumpSum) {
+            rulesObj = [
+              {
+                required: true,
+                message: createFormErrorComp("Please enter the lump-sum amount")
+              },
+              RULES_LUMSUM_FORMAT
+            ];
+          }
+          if (field.name === FIELDS.percent) {
+            rulesObj = [
+              {
+                required: true,
+                message: createFormErrorComp("Please enter the tax percentage")
+              },
+              RULES_PERCENT_FORMAT
+            ];
+          }
+
           return {
             ...field,
             disabled: !initValue && field.name !== FIELDS.name ? true : false,
             initValue: initValue,
-            rules: !initValue && field.disabled === false ? [] : field.rules
+            rules: !initValue && !field.disabled ? ["1"] : rulesObj
           };
         });
         obj.taxOther.push(objFieldOther);
@@ -228,6 +251,7 @@ const EditRoutePage = () => {
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
         setDataSourceTax(dataTax);
+        console.log("dataTax", dataTax);
       } else {
         setDataSourceTax({
           taxMain: [

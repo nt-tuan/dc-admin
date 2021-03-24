@@ -9,7 +9,9 @@ import {
   TAX_RULES_OTHER_SCHEMA,
   TAX_RULES_TYPE_MAIN_SCHEMA,
   TAX_RULES_TYPE_OTHER_SCHEMA,
-  typeTAX
+  typeTAX,
+  RULES_PERCENT_FORMAT,
+  RULES_LUMSUM_FORMAT
 } from "./tax.chemas";
 import TaxFormItem from "./tax-form-item.comp";
 import numeral from "numeral";
@@ -150,10 +152,16 @@ export const TaxRulesFrom = memo(
           case FIELDS.lumpSum:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${applyTypeField}-${FIELDS.lumpSum}-${indexField}`;
-              if (!isNaN(value)) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
-              }
+              // const fieldName = `${applyTypeField}-${FIELDS.lumpSum}-${indexField}`;
+              // if (!isNaN(value)) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
+              // }
+              // if (!isNaN(value) && value.length <= 2) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
+              // }
+              // if (inputAmount < 100) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
+              // }
               const dataNew = { ...dataForm };
               const dataUpdate = handleUpdateIntValue(
                 dataForm[applyTypeField][indexField].data,
@@ -178,15 +186,9 @@ export const TaxRulesFrom = memo(
           case FIELDS.percent:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
-              const inputAmount = numeral(value).value();
+              // const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
+              // const inputAmount = numeral(value).value();
 
-              if (!isNaN(value) && value.length <= 2) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
-              }
-              if (inputAmount < 100) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
-              }
               const dataNew = { ...dataForm };
               const dataUpdate = handleUpdateIntValue(
                 dataForm[applyTypeField][indexField].data,
@@ -265,15 +267,7 @@ export const TaxRulesFrom = memo(
                           required: value === 1 ? true : false,
                           message: createFormErrorComp("Please enter the tax percentage")
                         },
-                        {
-                          validator: (rule, value, callback) => {
-                            const inputAmount = numeral(value).value();
-                            if (inputAmount >= 0 && inputAmount < 100) {
-                              return callback();
-                            }
-                            return callback(createFormErrorComp("The tax percentage max 2 number"));
-                          }
-                        }
+                        RULES_PERCENT_FORMAT
                       ]
                     };
                   } else if (item.name === FIELDS.lumpSum) {
@@ -288,7 +282,8 @@ export const TaxRulesFrom = memo(
                         {
                           required: value === 0 ? true : false,
                           message: createFormErrorComp("Please enter the lump-sum amount")
-                        }
+                        },
+                        RULES_LUMSUM_FORMAT
                       ]
                     };
                   } else {
