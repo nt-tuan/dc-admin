@@ -118,15 +118,13 @@ const ProductDatabase = () => {
             <Menu
               onClick={({ key }) => onMenuItemClick({ key, product: data, setLoading, setHidden })}
             >
-              <Menu.Item
-                title={`Edit ${data.name}`}
-                key="edit-product"
-              >{`Edit ${data.name}`}</Menu.Item>
-              <Menu.Item
-                title={`Duplicate ${data.name}`}
-                key="duplicate-product"
-              >{`Duplicate ${data.name}`}</Menu.Item>
-              <Menu.Item title="Delete" danger key="delete-product">
+              <Menu.Item title={`Edit ${data.name}`} key="edit-product">
+                Edit
+              </Menu.Item>
+              <Menu.Item title={`Duplicate ${data.name}`} key="duplicate-product">
+                Duplicate
+              </Menu.Item>
+              <Menu.Item title={`Delete ${data.name}`} danger key="delete-product">
                 Delete
               </Menu.Item>
             </Menu>
