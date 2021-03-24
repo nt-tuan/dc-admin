@@ -1,0 +1,1 @@
+export const TEMPLATE_NAME_MAX_CHARS = 50;

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Button, message, Modal, Menu } from "antd";
-import { RouteConst } from "commons/consts";
+import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "commons/consts";
 import { DTCSection, LoadMoreButton, ProductCard, SearchBar } from "components/atoms";
 import { withListItem } from "HOCs/withListItem";
 import { usePaginatedApiService } from "hooks/useApiService";
@@ -105,7 +105,11 @@ const ProductDatabase = () => {
     <article>
       <Helmet title="Product Template Database" />
       <DTCSection className="d-flex justify-content-between align-items-center">
-        <SearchBar onSubmit={onSearch} onTyping={() => setIsLoading(true)} />
+        <SearchBar
+          onSubmit={onSearch}
+          onTyping={() => setIsLoading(true)}
+          maxLength={TEMPLATE_NAME_MAX_CHARS}
+        />
         <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
           Add Product
         </Button>
