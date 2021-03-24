@@ -5,7 +5,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { validatePasscode } from "services/user-profile.service";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { USER_TABS_NAME, THREE_STEPS_SECURITY_STATUS } from "commons/consts";
+import { USER_TABS_NAME, THREE_STEPS_SECURITY_STATUS, PASSCODE_INVALID } from "commons/consts";
 import moment from "moment";
 
 //** Random array positions */
@@ -83,7 +83,8 @@ function VerifyPassCode({
           handle3StepsProcessResponse(res, successFn, handleError, "Incorrect code");
         } catch (error) {
           if (error.message === "400") {
-            handleError("Incorrect code");
+            message.error(PASSCODE_INVALID);
+            return;
           }
           throw error;
         }

@@ -23,7 +23,7 @@ const BankDetailsTab = () => {
   const [isOTPRequest, setIsOTPRequest] = useState(false);
 
   const [isShowModalVerifyPhone, setShowModalVerifyPhone] = useState(false);
-  const [isShowModalVerifyPassCode, setShowModalVerifyPassCode] = useState(false);
+  const [isShowModalVerifyPassCode, setShowModalVerifyPassCode] = useState(true);
   const [isShowForm, setIsShowForm] = useState(false);
   const [isShowView, setIsShowView] = useState(true);
   const [companyName, setCompanyName] = useState(null);
