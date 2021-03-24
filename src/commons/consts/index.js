@@ -1,3 +1,3 @@
 export * from "./general.const";
 export * from "./system";
-export * from "./product-creation-template";
+export * from "./product-mutation-template.const";
