@@ -26,7 +26,6 @@ export const TaxRulesFrom = memo(
 
     const handleSetValueForm = useCallback(
       (dataSource) => {
-        // console.log("dataSource", dataSource);
         Object.entries(dataSource).map(([key, valueData]) => {
           valueData.map((val, idx) => {
             let filteredFields = val?.data;
@@ -36,7 +35,11 @@ export const TaxRulesFrom = memo(
             filteredFields &&
               filteredFields.map(({ initValue, name }) => {
                 const nameForm = `${key}-${name}-${idx}`;
-                if (name === FIELDS.lumpSum || name === FIELDS.percent) {
+
+                if (
+                  (name === FIELDS.lumpSum && initValue != null) ||
+                  (name === FIELDS.percent && initValue != null)
+                ) {
                   initValue = numeral(initValue).format("0,0.00");
                 }
                 form.setFieldsValue({ [nameForm]: initValue });
@@ -352,11 +355,14 @@ export const TaxRulesFrom = memo(
               form.setFieldsValue({ [fieldName]: 1 });
               form.setFieldsValue({ [fieldlumpSum]: null });
 
-              dataUpdate[0].data = handleUpdateIntValue(
-                dataUpdate[0].data,
-                value,
-                FIELDS.applyTypeOther
-              );
+              dataUpdate[0].data.map((item) => {
+                if (item.name === FIELDS.applyTypeOther) {
+                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: value });
+                } else {
+                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: item.initValue });
+                }
+              });
+
               setDataForm({
                 ...dataForm,
                 taxOther: dataUpdate
