@@ -83,8 +83,9 @@ const ChildFieldModal = ({
                     canDelete={fields.length > 1}
                     onRemoveField={() => handleRemoveItem(remove, index)}
                     canAddChildFields={false}
-                    fieldValue={data[index]}
-                    type={data[index]?.type}
+                    fieldValue={
+                      form.getFieldsValue().childField && form.getFieldsValue().childField[index]
+                    }
                   />
                 );
               })}

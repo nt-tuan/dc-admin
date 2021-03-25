@@ -139,17 +139,22 @@ const privateRoutes = [
     exact: false
   },
   {
-    path: RouteConst.ROUTE,
+    path: RouteConst.TRADE_ROUTES,
     Component: loadable(() => import("components/pages/route/route.page")),
     exact: true
   },
   {
-    path: RouteConst.ADD_ROUTE,
+    path: RouteConst.CREATE_TRADE_ROUTES,
     Component: loadable(() => import("components/pages/add-route/add-route.page")),
     exact: true
   },
+  // {
+  //   path: RouteConst.ADD_ROUTE,
+  //   Component: loadable(() => import("components/pages/add-route/add-route.page")),
+  //   exact: true
+  // },
   {
-    path: RouteConst.EDIT_ROUTE,
+    path: RouteConst.EDIT_TRADE_ROUTE,
     Component: loadable(() => import("components/pages/edit-route/edit-route.page")),
     exact: true
   },
