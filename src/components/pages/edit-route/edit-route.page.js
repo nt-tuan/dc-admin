@@ -529,7 +529,6 @@ const EditRoutePage = () => {
             });
           }
         });
-
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
         // console.log("aaa", dataParse);
