@@ -70,6 +70,7 @@ export const RULES_LUMSUM_FORMAT = {
     if (inputAmount < 0) {
       return callback(createFormErrorComp("The lump-sum amount must be greater than 0"));
     }
+    callback();
   }
 };
 

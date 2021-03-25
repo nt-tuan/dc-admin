@@ -53,6 +53,7 @@ const EditRoutePage = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const isDocListTouched = useRef({});
   const history = useHistory();
+  const [isLoadingButtonEdit, setIsLoadingButtonEdit] = useState(false);
 
   const taxRuleForms = useRef();
   // const dataSourceTax = useRef({});
@@ -192,29 +193,37 @@ const EditRoutePage = () => {
             }
           }
           if (field.name === FIELDS.lumpSum) {
-            rulesObj = [
-              {
-                required: true,
-                message: createFormErrorComp("Please enter the lump-sum amount")
-              },
-              RULES_LUMSUM_FORMAT
-            ];
+            if (initValue != null) {
+              rulesObj = [
+                {
+                  required: true,
+                  message: createFormErrorComp("Please enter the lump-sum amount")
+                },
+                RULES_LUMSUM_FORMAT
+              ];
+            } else {
+              rulesObj = [];
+            }
           }
           if (field.name === FIELDS.percent) {
-            rulesObj = [
-              {
-                required: true,
-                message: createFormErrorComp("Please enter the tax percentage")
-              },
-              RULES_PERCENT_FORMAT
-            ];
+            if (initValue != null) {
+              rulesObj = [
+                {
+                  required: true,
+                  message: createFormErrorComp("Please enter the tax percentage")
+                },
+                RULES_PERCENT_FORMAT
+              ];
+            } else {
+              rulesObj = [];
+            }
           }
 
           return {
             ...field,
             disabled: !initValue && field.name !== FIELDS.name ? true : false,
             initValue: initValue,
-            rules: !initValue && !field.disabled ? ["1"] : rulesObj
+            rules: rulesObj
           };
         });
         obj.taxOther.push(objFieldOther);
@@ -250,8 +259,8 @@ const EditRoutePage = () => {
 
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
+        // console.log("dataTax", dataTax);
         setDataSourceTax(dataTax);
-        console.log("dataTax", dataTax);
       } else {
         setDataSourceTax({
           taxMain: [
@@ -484,6 +493,7 @@ const EditRoutePage = () => {
   };
 
   const handleEdit = () => {
+    setIsLoadingButtonEdit(true);
     asyncErrorHandlerWrapper(async () => {
       const valid = await isFormValid(async () => {
         const docFormRefs = Array.from(documentRuleForms.current.values());
@@ -530,6 +540,7 @@ const EditRoutePage = () => {
           message.success("Edit Successfully");
           history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
+          setIsLoadingButtonEdit(false);
           if (error instanceof APIError) {
             const err = error.errors;
             message.warning(err[0][1]);
@@ -537,6 +548,8 @@ const EditRoutePage = () => {
             throw error;
           }
         }
+      } else {
+        setIsLoadingButtonEdit(false);
       }
     });
   };
@@ -624,7 +637,12 @@ const EditRoutePage = () => {
         </div>
         <Divider />
         <div className="d-flex justify-content-center">
-          <Button className="mr-2" type="primary" onClick={handleEdit}>
+          <Button
+            loading={isLoadingButtonEdit}
+            className="mr-2"
+            type="primary"
+            onClick={handleEdit}
+          >
             Save
           </Button>
           <Link to={RouteConst.TRADE_ROUTES}>

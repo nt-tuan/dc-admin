@@ -11,7 +11,7 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax, form }) {
   const handleFormatNumber = (fieldName, value, field) => {
     const inputAmount = numeral(value).value();
     if (field === FIELDS.lumpSum) {
-      if (isNaN(value)) {
+      if (inputAmount > 0) {
         form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
       }
     }
