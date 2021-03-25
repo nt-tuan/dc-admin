@@ -2,7 +2,7 @@ import React, { Fragment, memo, useMemo } from "react";
 import image from "assets/images/aramex-logo.png";
 import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
-import get from "lodash/get";
+import { flatten, has, get } from "lodash";
 
 export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(
@@ -34,50 +34,35 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
         : [],
     [data]
   );
+
   const preHandleOfferDetails = useMemo(() => {
+    // puts parents and child fields at same root level, in following order:
+    // parent field 1, ...child fields, parent field 2, ...child fields
     const flatData = (name) => {
-      get(data, `details[${name}]`, []).forEach(({ fieldOption, fieldName }) =>
-        fieldOption.forEach(
-          (option) =>
-            option.childField &&
-            option.childField.forEach((child) =>
-              offerDetails[name].push({
+      const orderedData = get(data, `details[${name}]`, []).map((field) => {
+        const children = flatten(
+          field.fieldOption.map((option) => {
+            if (has(option, "childField")) {
+              return option.childField.map((child) => ({
                 ...child,
                 parentField: option.label,
-                rootField: fieldName
-              })
-            )
-        )
-      );
+                rootField: field.fieldName
+              }));
+            }
+            return [];
+          })
+        );
+        return [field, ...children];
+      });
+      return flatten(orderedData);
     };
-    const offerDetails = {
-      ...data.details,
-      variantDetails: [
-        // {
-        //   fieldName: "AHECC Code",
-        //   type: "dropdown",
-        //   fieldOption: [{ label: productDetails.find((item) => item.key === "ahecc")?.value }]
-        // },
-        // {
-        //   fieldName: "AHECC Full Description",
-        //   type: "dropdown",
-        //   fieldOption: [
-        //     { label: productDetails.find((item) => item.key === "aheccFullDescription")?.value }
-        //   ]
-        // },
-        ...data.details.variantDetails
-      ],
-      offerDetails: [...data.details?.offerDetails],
-      packingDetails: data.details?.packingDetails ? [...data.details?.packingDetails] : Array[0],
-      certificationDetails: data.details?.certificationDetails
-        ? [...data.details?.certificationDetails]
-        : Array[0]
-    };
-    flatData("variantDetails");
-    flatData("offerDetails");
-    flatData("packingDetails");
-    flatData("certificationDetails");
-    return offerDetails;
+
+    let offerDetailsTabSections = {};
+    let sections = ["variantDetails", "offerDetails", "packingDetails", "certificationDetails"];
+
+    sections.map((sectName) => (offerDetailsTabSections[sectName] = flatData(sectName)));
+
+    return offerDetailsTabSections;
   }, [data]);
 
   return (
