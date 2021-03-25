@@ -51,10 +51,10 @@ export let hiddenFields = [FIELDS.taxName];
 export const RULES_PERCENT_FORMAT = {
   validator: (rule, value, callback) => {
     const inputAmount = numeral(value).value();
-    if (inputAmount <= 0) {
+    if (inputAmount != null && inputAmount <= 0) {
       return callback(createFormErrorComp("The tax percentage must be greater than 0"));
     }
-    if (inputAmount > 0 && inputAmount < 100) {
+    if (inputAmount != null && inputAmount > 0 && inputAmount < 100) {
       return callback();
     }
     return callback(createFormErrorComp("The tax percentage max 2 numbers"));

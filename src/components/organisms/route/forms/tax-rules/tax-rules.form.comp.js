@@ -257,18 +257,21 @@ export const TaxRulesFrom = memo(
                     const fieldName = `taxOther-${FIELDS.percent}-${indexField}`;
                     const valueFi = isReset ? item.initValue : null;
                     form.setFieldsValue({ [fieldName]: valueFi });
-
+                    let rule = [];
+                    if (value === 1) {
+                      rule = [
+                        {
+                          required: true,
+                          message: createFormErrorComp("Please enter the tax percentage")
+                        },
+                        RULES_PERCENT_FORMAT
+                      ];
+                    }
                     return {
                       ...item,
                       disabled: value === 1 ? false : true,
                       initValue: valueFi,
-                      rules: [
-                        {
-                          required: value === 1 ? true : false,
-                          message: createFormErrorComp("Please enter the tax percentage")
-                        },
-                        RULES_PERCENT_FORMAT
-                      ]
+                      rules: rule
                     };
                   } else if (item.name === FIELDS.lumpSum) {
                     const fieldName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
