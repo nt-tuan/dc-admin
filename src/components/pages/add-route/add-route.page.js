@@ -43,7 +43,7 @@ const AddRoutePage = () => {
   const documentRuleForms = useRef(new Map());
   const taxRuleForms = useRef();
   const history = useHistory();
-
+  const [isLoadingCreate, setIsloadingCreate] = useState(false);
   const objTax = {
     taxMain: [
       {
@@ -218,6 +218,7 @@ const AddRoutePage = () => {
   );
 
   const handleCreate = () => {
+    setIsloadingCreate(true);
     asyncErrorHandlerWrapper(async () => {
       const valid = await isFormValid(async () => {
         const docFormRefs = Array.from(documentRuleForms.current.values());
@@ -307,6 +308,7 @@ const AddRoutePage = () => {
           message.success("Created Successfully");
           history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
+          setIsloadingCreate(false);
           if (error instanceof APIError) {
             const err = error.errors;
             message.warning(err[0][1]);
@@ -316,6 +318,8 @@ const AddRoutePage = () => {
             throw error;
           }
         }
+      } else {
+        setIsloadingCreate(false);
       }
     });
   };
@@ -378,7 +382,7 @@ const AddRoutePage = () => {
       </div>
       <Divider />
       <div className="d-flex justify-content-center">
-        <Button className="mr-2" type="primary" onClick={handleCreate}>
+        <Button loading={isLoadingCreate} className="mr-2" type="primary" onClick={handleCreate}>
           Create Trade Routes
         </Button>
         <Link to={RouteConst.TRADE_RULES}>
