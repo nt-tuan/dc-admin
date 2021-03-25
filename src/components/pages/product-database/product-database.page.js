@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Button, message, Modal, Menu } from "antd";
-import { RouteConst } from "commons/consts";
+import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "commons/consts";
 import { DTCSection, LoadMoreButton, ProductCard, SearchBar } from "components/atoms";
 import { withListItem } from "HOCs/withListItem";
 import { usePaginatedApiService } from "hooks/useApiService";
@@ -105,7 +105,11 @@ const ProductDatabase = () => {
     <article>
       <Helmet title="Product Template Database" />
       <DTCSection className="d-flex justify-content-between align-items-center">
-        <SearchBar onSubmit={onSearch} onTyping={() => setIsLoading(true)} />
+        <SearchBar
+          onSubmit={onSearch}
+          onTyping={() => setIsLoading(true)}
+          maxLength={TEMPLATE_NAME_MAX_CHARS}
+        />
         <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
           Add Product
         </Button>
@@ -118,15 +122,13 @@ const ProductDatabase = () => {
             <Menu
               onClick={({ key }) => onMenuItemClick({ key, product: data, setLoading, setHidden })}
             >
-              <Menu.Item
-                title={`Edit ${data.name}`}
-                key="edit-product"
-              >{`Edit ${data.name}`}</Menu.Item>
-              <Menu.Item
-                title={`Duplicate ${data.name}`}
-                key="duplicate-product"
-              >{`Duplicate ${data.name}`}</Menu.Item>
-              <Menu.Item title="Delete" danger key="delete-product">
+              <Menu.Item title={`Edit ${data.name}`} key="edit-product">
+                Edit
+              </Menu.Item>
+              <Menu.Item title={`Duplicate ${data.name}`} key="duplicate-product">
+                Duplicate
+              </Menu.Item>
+              <Menu.Item title={`Delete ${data.name}`} danger key="delete-product">
                 Delete
               </Menu.Item>
             </Menu>

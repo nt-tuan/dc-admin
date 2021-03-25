@@ -2,6 +2,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { message, Modal, Tabs, Button } from "antd";
 import { RouteConst } from "commons/consts";
 import { ROUTE_SCHEMA } from "commons/schemas";
+import { APIError } from "commons/types";
 import { DTCTable } from "components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, Link, useLocation } from "react-router-dom";
@@ -57,7 +58,7 @@ export const RouteTab = () => {
 
   const handleEditClick = useCallback(
     (id) => {
-      history.push(`${RouteConst.EDIT_ROUTE}?id=${id}`);
+      history.push(`${RouteConst.EDIT_TRADE_ROUTE}?id=${id}`);
     },
     [history]
   );
@@ -70,9 +71,18 @@ export const RouteTab = () => {
         content: "Do you want to delete this route?",
         onOk() {
           asyncErrorHandlerWrapper(async () => {
-            await RouteService.delete(id);
-            getData(status, setFn);
-            message.success("Deleted Successfully!");
+            try {
+              await RouteService.delete(id);
+              getData(status, setFn);
+              message.success("Deleted Successfully!");
+            } catch (error) {
+              if (error instanceof APIError) {
+                const err = error.errors;
+                message.error(err[0][1]);
+              } else {
+                throw error;
+              }
+            }
           });
         }
       });
@@ -83,9 +93,9 @@ export const RouteTab = () => {
   return (
     <div className="air__utils__shadow bg-white p-4 dtc-br-10">
       <div className="d-flex justify-content-end mr-4">
-        <Link to={RouteConst.ADD_ROUTE}>
+        <Link to={RouteConst.CREATE_TRADE_ROUTES}>
           <Button type="primary" className="mb-3">
-            Create Route
+            Trade Routes Creation
           </Button>
         </Link>
       </div>

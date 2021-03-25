@@ -51,6 +51,6 @@ export const WORKING_HOURS_WARNING = "The working hours should be at least 8 hou
 export const WORKING_DAYS_WARNING = "The working days should be at least 5 days";
 export const MUST_BE_ATLEAST_4_CHARACTERS = (fieldName) =>
   `${fieldName} must be at least 4 characters`;
-export const MAX_CHARS = (label, max) => `${capitalize(label)} cannot not exceed ${max} characters`;
+export const MAX_CHARS = (label, max) => `${capitalize(label)} cannot exceed ${max} characters`;
 export const DUPLICATE_ITEM_VALUE = (item, attr) =>
   `Already exists a ${item.toLowerCase()} with the same ${attr.toLowerCase()}`;

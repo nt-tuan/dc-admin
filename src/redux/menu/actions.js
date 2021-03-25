@@ -48,19 +48,19 @@ export async function getUserData() {
       ]
     },
     {
-      title: "Routes",
+      title: "Trade Routes",
       key: "RoutesMain",
       icon: "fe fe-map",
       children: [
         {
-          title: "Routes",
-          key: "Routes",
-          url: RouteConst.ROUTE
+          title: "Trade Routes",
+          key: "TradeRoutes",
+          url: RouteConst.TRADE_ROUTES
         },
         {
-          title: "Route Creation",
+          title: "Trade Routes Creation",
           key: "RouteCreation",
-          url: RouteConst.ADD_ROUTE
+          url: RouteConst.CREATE_TRADE_ROUTES
         },
         {
           title: "Documents",
