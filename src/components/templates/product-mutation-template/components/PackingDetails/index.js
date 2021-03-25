@@ -8,7 +8,7 @@ import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";
 
 const PackingDetails = ({ form, onValuesChange, productDetails, isEditing = false }) => {
-  const [emptyForm, setEmptyForm] = useState(false);
+  const [emptyForm, setEmptyForm] = useState(true);
 
   useEffect(() => {
     if (productDetails) {
@@ -16,8 +16,7 @@ const PackingDetails = ({ form, onValuesChange, productDetails, isEditing = fals
       const { packingDetails } = detail;
       if (packingDetails) {
         form.setFieldsValue({ packingDetails });
-      } else {
-        setEmptyForm(true);
+        setEmptyForm(false);
       }
     }
   }, [productDetails, form]);

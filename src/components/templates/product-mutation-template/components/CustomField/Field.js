@@ -20,6 +20,10 @@ const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue 
       const fieldOptionIndex = values[0].plotOption;
       const newFormValues = form.getFieldsValue();
       const formName = Object.keys(newFormValues)[0];
+      // if parent option isn't filled in, needs to init to an object
+      if (!newFormValues[formName][fieldId].fieldOption[fieldOptionIndex]) {
+        newFormValues[formName][fieldId].fieldOption[fieldOptionIndex] = {};
+      }
       newFormValues[formName][fieldId].fieldOption[fieldOptionIndex].childField = values;
       form.setFieldsValue(newFormValues);
       setIsChildFieldsModalOpen(false);
