@@ -70,7 +70,7 @@ export const DefaultRouteTab = () => {
       <div className="d-flex justify-content-end mr-4">
         <Link to={RouteConst.ADD_DEFAULT_ROUTE}>
           <Button type="primary" className="mb-3">
-            Create Default Route
+            Create Default Routes
           </Button>
         </Link>
       </div>

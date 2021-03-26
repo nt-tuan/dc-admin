@@ -101,7 +101,7 @@ export const usePaginatedApiService = (
   };
 
   const handleSearch = (str) => {
-    searchStr.current = str.trim();
+    searchStr.current = escape(str.trim());
     const params = {
       page: 0,
       size: itemPerPage,
@@ -149,4 +149,34 @@ export const useApiService = (params, serviceFn, onAfterFetch) => {
   }, [innerParams, serviceFn, onAfterFetch]);
 
   return [data, isLoading, setIsLoading];
+};
+
+export const useSubmitApiService = (serviceFn, onSuccess) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [innerParams, setInnerParams] = useState({});
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isLoading) {
+      try {
+        asyncErrorHandlerWrapper(async () => {
+          await serviceFn(...innerParams);
+          onSuccess && onSuccess();
+          setIsLoading(false);
+          setSuccess(true);
+        });
+      } catch (error) {
+        setIsLoading(false);
+        setSuccess(false);
+        throw error;
+      }
+    }
+  }, [innerParams, isLoading, onSuccess, serviceFn]);
+
+  const submit = useCallback((...params) => {
+    setIsLoading(true);
+    setInnerParams(params);
+  }, []);
+
+  return [{ isLoading, success }, { submit }];
 };

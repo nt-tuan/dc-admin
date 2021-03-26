@@ -18,37 +18,73 @@
   }
 }
 
-.card {
+.card.empty-image {
   & > div {
     height: 100%;
   }
 }
 
+.card.with-image {
+  & > div {
+    height: max-content;
+  }
+}
+
 .card-image {
-  flex: 1 0 80%;
-  max-height: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 0 0 auto;
+
+  .square-image-placeholder {
+    width: 100%;
+    position: relative;
+    &:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+    & > * {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+  }
 
   img {
-    max-height: 100%;
+    height: auto;
     width: 100%;
     border-radius: 2px;
   }
 }
 
 .card-footer {
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   & > .card-name {
-    flex: 1 0 90%;
+    flex: 1 0 85%;
     overflow-wrap: anywhere;
+    display: flex;
+    align-items: flex-start;
+    line-height: 24px; /* same as icon size */
   }
   & > .card-more {
-    flex: 1 0 10%;
-    text-align: right;
+    flex: 1 0 15%;
+
+    button {
+      position: absolute;
+      right: 0;
+      transform: translateX(40%);
+    }
+    button:hover,
+    button:focus {
+      background: rgba(0, 0, 0, 0.1);
+    }
   }
+}
+
+:global(.ant-dropdown-menu-item:hover) {
+  background-color: rgba(0, 0, 0, 0.1);
 }

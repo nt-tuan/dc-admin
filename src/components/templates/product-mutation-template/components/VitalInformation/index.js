@@ -1,6 +1,12 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { createFormErrorComp } from "utils/form.util";
-import { RegexConst, REQUIRED_ERR, DUPLICATE_ITEM_VALUE, MAX_CHARS } from "commons/consts";
+import {
+  RegexConst,
+  REQUIRED_ERR,
+  DUPLICATE_ITEM_VALUE,
+  MAX_CHARS,
+  TEMPLATE_NAME_MAX_CHARS
+} from "commons/consts";
 import { Col, Form, Input, Row, Select } from "antd";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
 import { ProductService } from "services";
@@ -125,8 +131,8 @@ const VitalInformationForm = ({
             },
             {
               type: "string",
-              max: 50,
-              message: createFormErrorComp(MAX_CHARS("Product Name", 50))
+              max: TEMPLATE_NAME_MAX_CHARS,
+              message: createFormErrorComp(MAX_CHARS("Product Name", TEMPLATE_NAME_MAX_CHARS))
             },
             () => ({
               async validator(_, value) {
@@ -157,7 +163,7 @@ const VitalInformationForm = ({
           ]
         },
         props: {
-          maxLength: 50,
+          maxLength: TEMPLATE_NAME_MAX_CHARS,
           disabled: !!productDetails && isEditing
         }
       },

@@ -81,13 +81,19 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
       <div className="mt-2 mb-3">
         <div>
           By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’{" "}
-          <Link to={RouteConst.TERMS_AND_CONDITIONS_ROUTE} className="font-weight-bold">
+          <a
+            href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}
+            className="font-weight-bold"
+          >
             Terms & Conditions
-          </Link>{" "}
+          </a>{" "}
           &{" "}
-          <Link to={RouteConst.PRIVACY_POLICY_ROUTE} className="font-weight-bold">
+          <a
+            href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/privacy-policy"}
+            className="font-weight-bold"
+          >
             Privacy Policy
-          </Link>
+          </a>
         </div>
       </div>
     );
