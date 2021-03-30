@@ -29,10 +29,17 @@ function VerifyPassCode({
   const [requiredPositions, setRequiredPositions] = useState(getPositionList());
   const history = useHistory();
 
+  const handleError = (text) => {
+    message.error(text);
+  };
+
   const handle3StepsProcessResponse = (res, successFn, handleError, errStr = "Server error") => {
     switch (res.status) {
       case THREE_STEPS_SECURITY_STATUS.SUCCESS:
         successFn();
+        break;
+      case THREE_STEPS_SECURITY_STATUS.INVALID:
+        handleError(PASSCODE_INVALID);
         break;
       case THREE_STEPS_SECURITY_STATUS.OTP_LOCKED:
         handleError(
@@ -60,7 +67,7 @@ function VerifyPassCode({
   };
 
   //** Handle Submit Passcode */
-  const onFinish = (values, handleError) => {
+  const onFinish = (values) => {
     const listKey = Object.keys(values);
 
     const array = requiredPositions.map((position) => ({
