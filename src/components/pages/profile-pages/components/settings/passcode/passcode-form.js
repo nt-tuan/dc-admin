@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Button, message } from "antd";
 import PassCodeItemForm from "./passcode-item-form";
+import { PASSCODE_INVALID } from "commons/consts";
 
 function PassCodeForm({ handleSubmitPassCode }) {
   const [form] = Form.useForm();
@@ -18,7 +19,7 @@ function PassCodeForm({ handleSubmitPassCode }) {
     if (JSON.stringify(array[0]["code"]) === JSON.stringify(array[1]["confirmCode"])) {
       handleSubmitPassCode(array[0]["code"]);
     } else {
-      message.error("Passcode does not match");
+      message.error(PASSCODE_INVALID);
     }
   };
 

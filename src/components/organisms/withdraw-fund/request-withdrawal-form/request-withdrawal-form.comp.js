@@ -12,11 +12,24 @@ const { Option } = Select;
 export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [form] = Form.useForm();
-  const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [valueAmount, setValueAmount] = useState(null);
+  const [withdrawable, setWithdrawable] = useState(false);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = () => {
     setIsOpenPopup(true);
+  };
+
+  const validateAmount = async (value) => {
+    const amountNum = numeral(value).value();
+    if (!isNaN(value)) {
+      if (amountNum > data.available_withdrawal) {
+        throw new Error(
+          "The withdrawal amount should not exceed the amount of your available funds."
+        );
+      } else if (amountNum < 100) {
+        throw new Error("Minimum withdrawal amount is 100 USD");
+      }
+    }
   };
 
   const handleWithdraw = async () => {
@@ -39,14 +52,17 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
     const value = event.target.value;
     if (!isNaN(value)) {
       setValueAmount(value);
-    } else {
-      setIsDisabledButton(false);
+      validateAmount(value)
+        .then(() => setWithdrawable(true))
+        .catch(() => setWithdrawable(false));
     }
   };
   const onBlur = (event) => {
     const value = event.target.value;
-    if (!isNaN(value)) {
-      setValueAmount(numeral(value).format("0,0.00"));
+    console.log(value, isNaN(value), value < 100);
+    if (isNaN(value) || value < 100) {
+      setValueAmount("100.00");
+      form.setFieldsValue({ amount: "100.00" });
     }
   };
 
@@ -111,22 +127,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
               },
               {
                 validator: (rule, value) => {
-                  const amountNum = numeral(value).value();
-                  if (!isNaN(value)) {
-                    if (amountNum > data.available_withdrawal) {
-                      return Promise.reject(
-                        <FormError msg="The withdrawal amount should not exceed the amount of your available funds." />
-                      );
-                    } else if (amountNum < 100) {
-                      setIsDisabledButton(true);
-                      return Promise.reject(
-                        <FormError msg="Minimum withdrawal amount is 100 USD" />
-                      );
-                    } else {
-                      setIsDisabledButton(false);
-                      return Promise.resolve();
-                    }
-                  }
+                  return validateAmount(value);
                 }
               }
             ]}
@@ -166,7 +167,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
             </div>
           </Form.Item>
           <div className="col-12 text-center">
-            <Button htmlType="submit" type="primary" disabled={isDisabled}>
+            <Button htmlType="submit" type="primary" disabled={isDisabled || !withdrawable}>
               Withdraw
             </Button>
           </div>
