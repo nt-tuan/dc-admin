@@ -36,7 +36,6 @@ function PassCode() {
         await validateSecurityQuestions(data);
         setAnswers(data);
       } catch (error) {
-        console.log(error.message, error.message === "400");
         if (error.message === "400") {
           message.error(PASSCODE_ANSWER_INVALID);
         } else {
