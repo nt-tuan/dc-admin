@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {message} from "antd";
+import { message } from "antd";
 import { getBankDetails } from "services/bankDetail.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { BankDetailsReadonly } from "components/molecules/add-funds/bank-details-readonly/bank-details-readonly.comp";
