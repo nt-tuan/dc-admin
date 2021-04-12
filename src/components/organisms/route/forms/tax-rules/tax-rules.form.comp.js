@@ -9,7 +9,9 @@ import {
   TAX_RULES_OTHER_SCHEMA,
   TAX_RULES_TYPE_MAIN_SCHEMA,
   TAX_RULES_TYPE_OTHER_SCHEMA,
-  typeTAX
+  typeTAX,
+  RULES_PERCENT_FORMAT,
+  RULES_LUMSUM_FORMAT
 } from "./tax.chemas";
 import TaxFormItem from "./tax-form-item.comp";
 import numeral from "numeral";
@@ -26,7 +28,6 @@ export const TaxRulesFrom = memo(
 
     const handleSetValueForm = useCallback(
       (dataSource) => {
-        // console.log("dataSource", dataSource);
         Object.entries(dataSource).map(([key, valueData]) => {
           valueData.map((val, idx) => {
             let filteredFields = val?.data;
@@ -36,7 +37,11 @@ export const TaxRulesFrom = memo(
             filteredFields &&
               filteredFields.map(({ initValue, name }) => {
                 const nameForm = `${key}-${name}-${idx}`;
-                if (name === FIELDS.lumpSum || name === FIELDS.percent) {
+
+                if (
+                  (name === FIELDS.lumpSum && initValue != null) ||
+                  (name === FIELDS.percent && initValue != null)
+                ) {
                   initValue = numeral(initValue).format("0,0.00");
                 }
                 form.setFieldsValue({ [nameForm]: initValue });
@@ -48,25 +53,9 @@ export const TaxRulesFrom = memo(
     );
 
     useEffect(() => {
-      Object.entries(dataSource).map(([key, valueData]) => {
-        valueData.map((val, idx) => {
-          let filteredFields = val?.data;
-          if (val?.dataFilter) {
-            filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
-          }
-          filteredFields &&
-            filteredFields.map(({ initValue, name }) => {
-              const nameForm = `${key}-${name}-${idx}`;
-
-              if (name === FIELDS.lumpSum || name === FIELDS.percent) {
-                initValue = numeral(initValue).format("0,0.00");
-              }
-              form.setFieldsValue({ [nameForm]: initValue });
-            });
-        });
-      });
+      handleSetValueForm(dataSource);
       setDataForm({ ...dataSource });
-    }, [dataSource, form]);
+    }, [dataSource, form, handleSetValueForm]);
 
     const onAddTax = () => {
       const dataNew = {
@@ -97,42 +86,27 @@ export const TaxRulesFrom = memo(
     };
 
     const onRemoveTax = (index) => {
-      let array = dataForm.taxOther;
-      // console.log(array.length);
-      array.splice(index, 1);
-      const dataArr = [...array];
-      // console.log(dataArr.length);
-      const fieldNameOther = `taxOther-${FIELDS.applyTypeOther}-0`;
+      const dataUpdate = dataForm.taxOther;
+      const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
+      // console.log("dataUpdate", dataUpdate, index);
+      let dataNew = dataUpdate.filter((item, idx) => idx !== index);
 
-      if (index === 0 && array.length === 0) {
-        const fieldName = `taxOther-${FIELDS.applyTypeOther}-${index}`;
-        form.setFieldsValue({ [fieldName]: 0 });
-        array = [
-          {
-            data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
-            dataFilter: [FIELDS.name]
-          }
-        ];
+      if (index === 0 && dataNew.length > 0) {
+        objApplyType.initValue = typeTAX.OTHERS;
+        dataNew[0].data.unshift(objApplyType);
       }
-
-      if (index === 0 && dataArr.length > 0) {
-        const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
-        const value = dataArr.length > 0 ? typeTAX.OTHERS : 0;
-        objApplyType.initValue = value;
-        array[0].data.unshift(objApplyType);
-
-        form.setFieldsValue({ [fieldNameOther]: value });
-      } else if (dataArr.length === 0) {
-        const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
+      if (index === 0 && dataNew.length === 0) {
         objApplyType.initValue = 0;
-        form.setFieldsValue({ [fieldNameOther]: 0 });
+        dataNew.push({ data: [{ ...objApplyType }], dataFilter: [FIELDS.name] });
       }
-      const dataNew = {
+      // console.log("dataNew", dataNew);
+
+      const dataS = {
         ...dataForm,
-        taxOther: [...array]
+        taxOther: dataNew
       };
-      handleSetValueForm(dataNew);
-      setDataForm(dataNew);
+      handleSetValueForm(dataS);
+      setDataForm(dataS);
     };
     const togglePopup = (index, bol) => {
       setShowPopup({
@@ -178,10 +152,16 @@ export const TaxRulesFrom = memo(
           case FIELDS.lumpSum:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${applyTypeField}-${FIELDS.lumpSum}-${indexField}`;
-              if (!isNaN(value)) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
-              }
+              // const fieldName = `${applyTypeField}-${FIELDS.lumpSum}-${indexField}`;
+              // if (!isNaN(value)) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("0,0.00")}` });
+              // }
+              // if (!isNaN(value) && value.length <= 2) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
+              // }
+              // if (inputAmount < 100) {
+              //   form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
+              // }
               const dataNew = { ...dataForm };
               const dataUpdate = handleUpdateIntValue(
                 dataForm[applyTypeField][indexField].data,
@@ -206,15 +186,9 @@ export const TaxRulesFrom = memo(
           case FIELDS.percent:
             return (e) => {
               const value = e.target.value;
-              const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
-              const inputAmount = numeral(value).value();
+              // const fieldName = `${applyTypeField}-${FIELDS.percent}-${indexField}`;
+              // const inputAmount = numeral(value).value();
 
-              if (!isNaN(value) && value.length <= 2) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("00.00")}` });
-              }
-              if (inputAmount < 100) {
-                form.setFieldsValue({ [fieldName]: `${numeral(value).format("0.00")}` });
-              }
               const dataNew = { ...dataForm };
               const dataUpdate = handleUpdateIntValue(
                 dataForm[applyTypeField][indexField].data,
@@ -283,26 +257,21 @@ export const TaxRulesFrom = memo(
                     const fieldName = `taxOther-${FIELDS.percent}-${indexField}`;
                     const valueFi = isReset ? item.initValue : null;
                     form.setFieldsValue({ [fieldName]: valueFi });
-
+                    let rule = [];
+                    if (value === 1) {
+                      rule = [
+                        {
+                          required: true,
+                          message: createFormErrorComp("Please enter the tax percentage")
+                        },
+                        RULES_PERCENT_FORMAT
+                      ];
+                    }
                     return {
                       ...item,
                       disabled: value === 1 ? false : true,
                       initValue: valueFi,
-                      rules: [
-                        {
-                          required: value === 1 ? true : false,
-                          message: createFormErrorComp("Please enter the tax percentage")
-                        },
-                        {
-                          validator: (rule, value, callback) => {
-                            const inputAmount = numeral(value).value();
-                            if (inputAmount >= 0 && inputAmount < 100) {
-                              return callback();
-                            }
-                            return callback(createFormErrorComp("The tax percentage max 2 number"));
-                          }
-                        }
-                      ]
+                      rules: rule
                     };
                   } else if (item.name === FIELDS.lumpSum) {
                     const fieldName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
@@ -316,7 +285,8 @@ export const TaxRulesFrom = memo(
                         {
                           required: value === 0 ? true : false,
                           message: createFormErrorComp("Please enter the lump-sum amount")
-                        }
+                        },
+                        RULES_LUMSUM_FORMAT
                       ]
                     };
                   } else {
@@ -351,30 +321,56 @@ export const TaxRulesFrom = memo(
           case FIELDS.applyTypeOther:
             return (e) => {
               const value = e.target.value;
-              const dataNew = {
-                ...dataForm.taxOther[indexField],
-                data:
-                  value === typeTAX.OTHERS
-                    ? [...dataForm.taxOther[indexField].data, ...TAX_RULES_OTHER_SCHEMA]
-                    : [...TAX_RULES_TYPE_OTHER_SCHEMA]
-              };
+              const emptyData = [{ data: TAX_RULES_TYPE_OTHER_SCHEMA, dataFilter: [FIELDS.name] }];
+
+              let dataUpdate = dataForm.taxOther;
+
+              if (isEdit) {
+                if (value !== typeTAX.OTHERS) {
+                  dataUpdate = emptyData;
+                } else {
+                  dataUpdate = [
+                    {
+                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
+                      dataFilter: [FIELDS.name]
+                    }
+                  ];
+                }
+              } else {
+                if (value !== typeTAX.OTHERS) {
+                  dataUpdate = emptyData;
+                } else {
+                  dataUpdate = [
+                    {
+                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
+                      dataFilter: [FIELDS.name]
+                    }
+                  ];
+                }
+              }
               const fieldName = `taxOther-${FIELDS.isLumSum}-${indexField}`;
-              const fieldLumsumName = `taxOther-${FIELDS.lumpSum}-${indexField}`;
+              const fieldlumpSum = `taxOther-${FIELDS.lumpSum}-${indexField}`;
               form.setFieldsValue({ [fieldName]: 1 });
-              form.setFieldsValue({ [fieldLumsumName]: null });
-              // console.log("dataNew", dataNew);
-              const dataN = handleUpdateIntValue(dataNew.data, value, FIELDS.applyTypeOther);
-              dataNew.data = dataN;
+              form.setFieldsValue({ [fieldlumpSum]: null });
+
+              dataUpdate[0].data.map((item) => {
+                if (item.name === FIELDS.applyTypeOther) {
+                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: value });
+                } else {
+                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: item.initValue });
+                }
+              });
+
               setDataForm({
                 ...dataForm,
-                taxOther: [dataNew]
+                taxOther: dataUpdate
               });
             };
           default:
             return () => {};
         }
       },
-      [dataForm, form]
+      [dataForm, form, isEdit]
     );
 
     return (

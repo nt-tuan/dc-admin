@@ -1,6 +1,7 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
 import { DTCSection, LoadingIndicator } from "components/atoms";
+import { createFormErrorComp } from "utils/form.util";
 import {
   DocumentList,
   DocumentRuleTable,
@@ -24,8 +25,11 @@ import {
   TAX_RULES_TYPE_OTHER_SCHEMA,
   TAX_RULES_MAIN_SCHEMA,
   TAX_RULES_OTHER_SCHEMA,
-  ID_FIELDS
+  ID_FIELDS,
+  RULES_LUMSUM_FORMAT,
+  RULES_PERCENT_FORMAT
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
+import { Helmet } from "react-helmet";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -49,6 +53,7 @@ const EditRoutePage = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const isDocListTouched = useRef({});
   const history = useHistory();
+  const [isLoadingButtonEdit, setIsLoadingButtonEdit] = useState(false);
 
   const taxRuleForms = useRef();
   // const dataSourceTax = useRef({});
@@ -171,6 +176,7 @@ const EditRoutePage = () => {
         }
         objFieldOther.data = arrayFieldOther.map((field) => {
           let initValue = item[field.name];
+          let rulesObj = field.rules;
           if (field.name === FIELDS.type && item[field.name] !== "OTHER") {
             objFieldOther.dataFilter = [FIELDS.name];
           }
@@ -186,11 +192,38 @@ const EditRoutePage = () => {
               initValue = 0;
             }
           }
+          if (field.name === FIELDS.lumpSum) {
+            if (initValue != null) {
+              rulesObj = [
+                {
+                  required: true,
+                  message: createFormErrorComp("Please enter the lump-sum amount")
+                },
+                RULES_LUMSUM_FORMAT
+              ];
+            } else {
+              rulesObj = [];
+            }
+          }
+          if (field.name === FIELDS.percent) {
+            if (initValue != null) {
+              rulesObj = [
+                {
+                  required: true,
+                  message: createFormErrorComp("Please enter the tax percentage")
+                },
+                RULES_PERCENT_FORMAT
+              ];
+            } else {
+              rulesObj = [];
+            }
+          }
+
           return {
             ...field,
             disabled: !initValue && field.name !== FIELDS.name ? true : false,
             initValue: initValue,
-            rules: !initValue && field.disabled === false ? [] : field.rules
+            rules: rulesObj
           };
         });
         obj.taxOther.push(objFieldOther);
@@ -226,6 +259,7 @@ const EditRoutePage = () => {
 
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
+        // console.log("dataTax", dataTax);
         setDataSourceTax(dataTax);
       } else {
         setDataSourceTax({
@@ -459,6 +493,7 @@ const EditRoutePage = () => {
   };
 
   const handleEdit = () => {
+    setIsLoadingButtonEdit(true);
     asyncErrorHandlerWrapper(async () => {
       const valid = await isFormValid(async () => {
         const docFormRefs = Array.from(documentRuleForms.current.values());
@@ -494,7 +529,6 @@ const EditRoutePage = () => {
             });
           }
         });
-
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
         // console.log("aaa", dataParse);
@@ -505,6 +539,7 @@ const EditRoutePage = () => {
           message.success("Edit Successfully");
           history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
+          setIsLoadingButtonEdit(false);
           if (error instanceof APIError) {
             const err = error.errors;
             message.warning(err[0][1]);
@@ -512,6 +547,8 @@ const EditRoutePage = () => {
             throw error;
           }
         }
+      } else {
+        setIsLoadingButtonEdit(false);
       }
     });
   };
@@ -529,82 +566,90 @@ const EditRoutePage = () => {
   }, []);
 
   return (
-    <DTCSection>
-      <div>
-        <h3 className="mb-3">{renderTitle(false)}</h3>
-        <div hidden={isLoadingLocation}>
-          <RouteLocationForm
-            onAfterInit={setIsLoadingLocation}
-            onTypeChange={handleTypeChange}
-            onTouch={setIsLocationFormTouched}
-            defaultCategoryId={categoryIdFromDetails}
-            defaultTypeId={typeIdFromDetails}
-            ref={locationFormRef}
-            isEdit={true}
-          />
+    <>
+      <Helmet title="Edit Trade Rules" />
+      <DTCSection>
+        <div>
+          <h3 className="mb-3">{renderTitle(false)}</h3>
+          <div hidden={isLoadingLocation}>
+            <RouteLocationForm
+              onAfterInit={setIsLoadingLocation}
+              onTypeChange={handleTypeChange}
+              onTouch={setIsLocationFormTouched}
+              defaultCategoryId={categoryIdFromDetails}
+              defaultTypeId={typeIdFromDetails}
+              ref={locationFormRef}
+              isEdit={true}
+            />
+          </div>
+          <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
+          <div className="text-center" hidden={isLoadingLocation === false}>
+            <LoadingIndicator />
+          </div>
         </div>
-        <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
-        <div className="text-center" hidden={isLoadingLocation === false}>
-          <LoadingIndicator />
-        </div>
-      </div>
 
-      <Divider />
-      <div>
-        <h5>Documents</h5>
-        <p>
-          You can either select from the document list or{" "}
-          <Link
-            style={{ cursor: "pointer" }}
-            to={{
-              pathname: RouteConst.DOCUMENT,
-              search: "?showCreateDocument=true",
-              state: { previousPage: `${location.pathname}${location.search}` }
-            }}
-            className="text-primary"
+        <Divider />
+        <div>
+          <h5>Documents</h5>
+          <p>
+            You can either select from the document list or{" "}
+            <Link
+              style={{ cursor: "pointer" }}
+              to={{
+                pathname: RouteConst.DOCUMENT,
+                search: "?showCreateDocument=true",
+                state: { previousPage: `${location.pathname}${location.search}` }
+              }}
+              className="text-primary"
+            >
+              create a new document
+            </Link>
+          </p>
+          <p>Select the documents required for this route</p>
+          <Row gutter={[30, 0]}>
+            <Col>
+              <DocumentList
+                title="Default Documents"
+                defaultDocs={defaultDocs}
+                documents={defaultDocuments}
+                defaultValue={defaultDocumentIds}
+                onChange={handleDefaultDocListChange}
+                onTouch={handleDocListTouch}
+              />
+            </Col>
+            <Col>
+              <DocumentList
+                title="Customized Documents"
+                defaultValue={docIdsFromDetails}
+                defaultDocs={defaultDocs}
+                documents={filteredCustomizedDocs}
+                onChange={handleCustomizedDocListChange}
+                onTouch={handleDocListTouch}
+              />
+            </Col>
+          </Row>
+        </div>
+        <Divider />
+        <div>
+          <h5>Document Trade Rules</h5>
+          <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
+        </div>
+        <Divider />
+        <div className="d-flex justify-content-center">
+          <Button
+            loading={isLoadingButtonEdit}
+            className="mr-2"
+            type="primary"
+            onClick={handleEdit}
           >
-            create a new document
+            Save
+          </Button>
+          <Link to={RouteConst.TRADE_ROUTES}>
+            <Button>Cancel</Button>
           </Link>
-        </p>
-        <p>Select the documents required for this route</p>
-        <Row gutter={[30, 0]}>
-          <Col>
-            <DocumentList
-              title="Default Documents"
-              defaultDocs={defaultDocs}
-              documents={defaultDocuments}
-              defaultValue={defaultDocumentIds}
-              onChange={handleDefaultDocListChange}
-              onTouch={handleDocListTouch}
-            />
-          </Col>
-          <Col>
-            <DocumentList
-              title="Customized Documents"
-              defaultValue={docIdsFromDetails}
-              defaultDocs={defaultDocs}
-              documents={filteredCustomizedDocs}
-              onChange={handleCustomizedDocListChange}
-              onTouch={handleDocListTouch}
-            />
-          </Col>
-        </Row>
-      </div>
-      <Divider />
-      <div>
-        <h5>Document Trade Rules</h5>
-        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
-      </div>
-      <Divider />
-      <div className="d-flex justify-content-center">
-        <Button className="mr-2" type="primary" onClick={handleEdit}>
-          Save
-        </Button>
-        <Link to={RouteConst.ROUTE}>
-          <Button>Cancel</Button>
-        </Link>
-      </div>
-    </DTCSection>
+        </div>
+      </DTCSection>
+    </>
   );
 };
 
