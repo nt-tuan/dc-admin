@@ -13,26 +13,12 @@ function PassCodeFormQuestion({ onFinish, securityQuestions }) {
   });
   const [currentQuestions, setCurrentQuestions] = useState([]);
   const [form] = Form.useForm();
-  const handleSubmit = (values) => {
-    const onServerError = (errors) => {
-      const errorFields = errors.map((error) => {
-        const errorField = error[0];
-        const errorCode = error[1];
-        return {
-          name: errorField,
-          errors: [API_ERRORS[errorCode]]
-        };
-      });
-      form.setFields(errorFields);
-    };
-    onFinish(values, { onError: onServerError });
-  };
   return (
     <div className="row">
       <div className="col-lg-12 col-md-12 col-sm-12">
         <h6>Update your passcode</h6>
         <p>The passcode will be used to verify your identity while withdrawing the funds</p>
-        <Form name="customized_form_controls" form={form} onFinish={handleSubmit} layout="vertical">
+        <Form name="customized_form_controls" form={form} onFinish={onFinish} layout="vertical">
           {Object.keys(values).map((question, index) => (
             <div key={index} className="mt-4">
               <Form.Item

@@ -1,26 +1,26 @@
-import React, { useState, useEffect, message } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import {
   getSecurityQuestions,
-  createSecurityQuestions,
   validateSecurityQuestions,
   createPasscode
 } from "services/user-profile.service";
 import { selectUsers } from "redux/user/user.duck";
 import PassCodeFormQuestion from "./passcode-form-question";
 import PassCodeForm from "./passcode-form";
+import { PASSCODE_ANSWER_INVALID, PASSCODE_INVALID } from "commons/consts";
 
 PassCode.propTypes = {};
 
 function PassCode() {
   const users = useSelector(selectUsers);
-  const { existedPasscode } = users;
-  const [isShowQuestion, setIsShowQuestion] = useState(existedPasscode);
+  const { existedPasscode: existedPassCode } = users;
+  const [answers, setAnswers] = useState();
+  const [isShowQuestion, setIsShowQuestion] = useState(!existedPassCode);
   const [securityQuestions, setSecurityQuestions] = useState([]);
-  const [isShowPassCode, setIsShowPassCode] = useState(false);
 
   //** Fetch Question */
   useEffect(() => {
@@ -30,8 +30,23 @@ function PassCode() {
     });
   }, []);
 
+  const verifyAnswer = (data) => {
+    asyncErrorHandlerWrapper(async () => {
+      try {
+        await validateSecurityQuestions(data);
+        setAnswers(data);
+      } catch (error) {
+        if (error.message === "400") {
+          message.error(PASSCODE_ANSWER_INVALID);
+        } else {
+          throw error;
+        }
+      }
+    });
+  };
+
   //** Handle Submit Question */
-  const onFinish = (values, { onError }) => {
+  const handleSubmitAnswer = (values) => {
     const data = [];
     Object.keys(values).map((item) => {
       const index = item.substr(item.length - 1);
@@ -41,43 +56,39 @@ function PassCode() {
         [isAnswer ? "answerContent" : "questionId"]: values[item]
       };
     });
-    if (existedPasscode) {
-      //** Validate Question */
-      asyncErrorHandlerWrapper(async () => {
-        try {
-          await validateSecurityQuestions(data);
-          setIsShowPassCode(true);
-          setIsShowQuestion(!isShowQuestion);
-        } catch (errors) {
-          onError(errors);
-        }
-      });
-    } else {
-      //** Create question */
-      asyncErrorHandlerWrapper(async () => {
-        try {
-          await createSecurityQuestions(data);
-          setIsShowQuestion(!isShowQuestion);
-          setIsShowPassCode(true);
-        } catch (errors) {
-          onError(errors);
-        }
-      });
+    if (existedPassCode) {
+      verifyAnswer(data);
+      return;
     }
+    setAnswers(data);
   };
 
   //** Handle Submit PassCode */
-  const handleSubmitPassCode = (code) => {
+  const handleSubmitPassCode = (newPasscode) => {
     asyncErrorHandlerWrapper(async () => {
-      const res = await createPasscode({ code });
-      setIsShowPassCode(false);
+      try {
+        await createPasscode({ newPasscode, answers });
+        setAnswers(undefined);
+        setIsShowQuestion(false);
+      } catch (error) {
+        if (error.message === "400") {
+          message.error(PASSCODE_INVALID);
+          return;
+        }
+        throw error;
+      }
     });
   };
 
   //**  Toggle PassCode Form */
-  const handleEdit = () => {
-    setIsShowQuestion(!isShowQuestion);
-  };
+  const handleEdit = React.useCallback(() => {
+    if (isShowQuestion) {
+      setIsShowQuestion(false);
+      setAnswers(undefined);
+      return;
+    }
+    setIsShowQuestion(true);
+  }, [isShowQuestion]);
 
   return (
     <>
@@ -86,13 +97,13 @@ function PassCode() {
         <Button
           className="w-10"
           onClick={handleEdit}
-          icon={!isShowQuestion ? <CloseOutlined /> : <EditOutlined />}
+          icon={isShowQuestion ? <CloseOutlined /> : <EditOutlined />}
         />
       </div>
-      {!isShowQuestion && (
-        <PassCodeFormQuestion onFinish={onFinish} securityQuestions={securityQuestions} />
+      {isShowQuestion && !answers && (
+        <PassCodeFormQuestion onFinish={handleSubmitAnswer} securityQuestions={securityQuestions} />
       )}
-      {isShowPassCode && <PassCodeForm handleSubmitPassCode={handleSubmitPassCode} />}
+      {isShowQuestion && answers && <PassCodeForm handleSubmitPassCode={handleSubmitPassCode} />}
     </>
   );
 }

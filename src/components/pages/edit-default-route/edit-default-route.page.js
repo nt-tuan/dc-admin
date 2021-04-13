@@ -120,7 +120,7 @@ const EditRoutePage = () => {
         try {
           await RouteService.edit(routeDetails.id, composedValues);
           message.success("Created Successfully");
-          history.push(RouteConst.ROUTE);
+          history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
           if (error.message === "400") {
             message.warning(error.errMsg);
@@ -222,7 +222,7 @@ const EditRoutePage = () => {
         <Button className="mr-2" type="primary" onClick={handleEdit}>
           Save
         </Button>
-        <Link to={RouteConst.ROUTE}>
+        <Link to={RouteConst.TRADE_ROUTES}>
           <Button>Cancel</Button>
         </Link>
       </div>

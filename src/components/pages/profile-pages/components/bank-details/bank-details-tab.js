@@ -27,7 +27,7 @@ const BankDetailsTab = () => {
   const [isShowForm, setIsShowForm] = useState(false);
   const [isShowView, setIsShowView] = useState(true);
   const [companyName, setCompanyName] = useState(null);
-  const [bankDetails, setBankDetails] = useState([]);
+  const [bankDetails, setBankDetails] = useState();
 
   //** Fetch Bank details */
   useEffect(() => {

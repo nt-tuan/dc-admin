@@ -55,29 +55,43 @@ export const BankDetailsReadonly = ({
 
   const renderLabelCode = (value, field, index) => {
     let labelBank = label[field];
-    if (index === 0 && value === "ACH" && field === "bankIdType") {
-      labelSwiftCodePrimary = "ACH Company ID";
-    }
-    if (index === 1 && value === "ACH" && field === "bankIdType") {
-      labelSwiftCodeSecondary = "ACH Company ID";
-    }
-    if (index === 0 && value === "SWIFT" && field === "bankIdType") {
-      labelSwiftCodePrimary = "SWIFT Code";
-    }
-    if (index === 1 && value === "SWIFT" && field === "bankIdType") {
-      labelSwiftCodeSecondary = "SWIFT Code";
-    }
-    if (index === 0 && value === "CHIPS" && field === "bankIdType") {
-      labelSwiftCodePrimary = "CHIPS UID";
-    }
-    if (index === 1 && value === "CHIPS" && field === "bankIdType") {
-      labelSwiftCodeSecondary = "CHIPS UID";
-    }
-    if (index === 0 && field === "swiftCode") {
-      labelBank = labelSwiftCodePrimary;
-    }
-    if (index === 1 && field === "swiftCode") {
-      labelBank = labelSwiftCodeSecondary;
+
+    /**
+     * Bank Details will return 2 Bank Type which is Primary and Secondary Bank Account ( as user registered secondary bank account)
+     * index === 0 => Primary Bank Account
+     * index === 1 => Secondary Bank Account
+     * **/
+
+    // Render Primary Bank
+    if (index === 0) {
+      if (value === "ACH" && field === "bankIdType") {
+        labelSwiftCodePrimary = "ACH Company ID";
+      }
+      if (value === "SWIFT" && field === "bankIdType") {
+        labelSwiftCodePrimary = "SWIFT Code";
+      }
+      if (value === "CHIPS" && field === "bankIdType") {
+        labelSwiftCodePrimary = "CHIPS UID";
+      }
+      if (field === "swiftCode") {
+        labelBank = labelSwiftCodePrimary || "SWIFT Code";
+      }
+    } else {
+      if (value === "ACH" && field === "bankIdType") {
+        labelSwiftCodeSecondary = "ACH Company ID";
+      }
+
+      if (value === "SWIFT" && field === "bankIdType") {
+        labelSwiftCodeSecondary = "SWIFT Code";
+      }
+
+      if (value === "CHIPS" && field === "bankIdType") {
+        labelSwiftCodeSecondary = "CHIPS UID";
+      }
+
+      if (field === "swiftCode") {
+        labelBank = labelSwiftCodeSecondary;
+      }
     }
     return labelBank;
   };
