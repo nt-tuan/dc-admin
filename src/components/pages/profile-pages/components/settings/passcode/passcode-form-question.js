@@ -11,7 +11,9 @@ function PassCodeFormQuestion({ onFinish, securityQuestions }) {
     question1: {},
     question2: {}
   });
-  const [currentQuestions, setCurrentQuestions] = useState([]);
+
+  const [currentQuestions, setCurrentQuestions] = useState([undefined, undefined, undefined]);
+  console.log(currentQuestions);
   const [form] = Form.useForm();
   return (
     <div className="row">
@@ -36,15 +38,21 @@ function PassCodeFormQuestion({ onFinish, securityQuestions }) {
                   placeholder={`Security Question ${index + 1}`}
                   onChange={(value) => {
                     form.setFieldsValue({ [`answer${index}`]: "" });
-                    currentQuestions[index] = value;
-                    setCurrentQuestions(currentQuestions);
+                    setCurrentQuestions(
+                      currentQuestions.map((question, questionIndex) =>
+                        index === questionIndex ? value : question
+                      )
+                    );
                   }}
                 >
                   {securityQuestions
                     .map((question) => question)
-                    .filter((question) => !currentQuestions.includes(question.id))
                     .map((question, index) => (
-                      <Select.Option value={question.id} key={`${index}-${index}`}>
+                      <Select.Option
+                        value={question.id}
+                        key={`${index}-${index}`}
+                        disabled={currentQuestions.includes(question.id)}
+                      >
                         {question.content}
                       </Select.Option>
                     ))}
