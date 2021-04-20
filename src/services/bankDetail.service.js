@@ -4,12 +4,8 @@ import { ApiPathConsts } from "commons/consts";
 import isString from "lodash/isString";
 
 export const getCompanyInfo = async () => {
-  const accessToken = await getAccessToken();
-  if (accessToken) {
-    const companyInfo = await backendAPI.get(accessToken)(ApiPathConsts.COMPANY_INFO);
-    return companyInfo;
-  }
-  return {};
+  const companyInfo = await backendAPI.get(ApiPathConsts.GET_COMPANY_ME);
+  return companyInfo;
 };
 
 export const updateCompanyInfo = async (values) => {

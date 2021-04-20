@@ -42,7 +42,7 @@ export const ProductTemplateReview = memo(({ data = sample, categories, types })
       const orderedData = get(data, `details[${name}]`, []).map((field) => {
         const children = flatten(
           field.fieldOption.map((option) => {
-            if (has(option, "childField")) {
+            if (option?.childField) {
               return option.childField.map((child) => ({
                 ...child,
                 parentField: option.label,

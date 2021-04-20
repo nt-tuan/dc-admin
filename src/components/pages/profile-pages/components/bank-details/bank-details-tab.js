@@ -3,31 +3,53 @@ import { Button, message } from "antd";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-// import PropTypes from "prop-types";
-// import { Link, useHistory } from "react-router-dom";
-
-//** Components */
-import { selectUsers } from "redux/user/user.duck";
-import { VerifyPhoneModal, OTPVerifyModal, VerifyPassCode } from "../modals";
-import BankDetailForm from "./bank-detail-form";
+import { selectCompanyName, selectUsers } from "redux/user/user.duck";
 import BankDetailView from "./bank-detail-view";
-import { getCompanyMe, getBankDetails } from "services/bankDetail.service";
+import { getBankDetails, getCompanyInfo } from "services/bankDetail.service";
+import { PhoneUnverifiedModal } from "components/pages/profile-pages/components/modals/phone-unverified-modal.comp";
+import { PasscodeRequiredModal } from "../modals/passcode-required-modal.comp";
+import { PhoneVerifierModal } from "../modals/phone-verifier.comp";
+import { PasscodeVerifierModal } from "../modals/passcode-verifier-modal.comp";
+import { BankDetailForm } from "./bank-detail-form";
+
+const STATUS = {
+  VIEW: "VIEW",
+  PASSCODE_NOT_EXISTED: "PASSCODE_NOT_EXISTED",
+  PHONE_NOT_VERIFIED: "PHONE_NOT_VERIFIED",
+  VERIFYING_PHONE: "VERIFYING_PHONE",
+  VERIFYING_PASSCODE: "VERIFYING_PASSCODE",
+  EDITING: "EDITING"
+};
 
 const BankDetailsTab = () => {
   const users = useSelector(selectUsers);
-  // const dispatch = useDispatch();
-  // const history = useHistory();
-
-  const { phoneVerified } = users;
-  // const [isEdit, setIsEdit] = useState(phoneVerified);
-  const [isOTPRequest, setIsOTPRequest] = useState(false);
-
-  const [isShowModalVerifyPhone, setShowModalVerifyPhone] = useState(false);
-  const [isShowModalVerifyPassCode, setShowModalVerifyPassCode] = useState(false);
-  const [isShowForm, setIsShowForm] = useState(false);
+  const [companyName, setCompanyName] = React.useState();
+  const [isOTPVerified, setOTPVerified] = useState(false);
+  const [isPasscodeVerified, setPasscodeVerified] = useState(false);
   const [isShowView, setIsShowView] = useState(true);
-  const [companyName, setCompanyName] = useState(null);
   const [bankDetails, setBankDetails] = useState();
+  React.useEffect(() => {
+    getCompanyInfo().then((company) => setCompanyName(company.name));
+  }, []);
+
+  const status = React.useMemo(() => {
+    if (isShowView) return STATUS.VIEW;
+    if (!users.phoneVerified) {
+      return STATUS.PHONE_NOT_VERIFIED;
+    }
+    if (!users.existedPasscode) {
+      return STATUS.PASSCODE_NOT_EXISTED;
+    }
+    if (!isOTPVerified) {
+      return STATUS.VERIFYING_PHONE;
+    }
+    if (!isPasscodeVerified) {
+      return STATUS.VERIFYING_PASSCODE;
+    }
+    return STATUS.EDITING;
+  }, [isShowView, users, isOTPVerified, isPasscodeVerified]);
+
+  console.log(companyName, status);
 
   //** Fetch Bank details */
   useEffect(() => {
@@ -41,28 +63,16 @@ const BankDetailsTab = () => {
     });
   }, []);
 
-  useEffect(() => {
-    asyncErrorHandlerWrapper(async () => {
-      try {
-        const res = await getCompanyMe();
-        setCompanyName(res?.name);
-      } catch (error) {
-        message.error("Get Company Name Error");
-      }
-    });
-  }, []);
-
   //** Handle Edit toggle */
   const toggleEdit = () => {
-    //** Check Verify Phone */
-
-    if (!phoneVerified) {
-      setShowModalVerifyPhone(!isShowModalVerifyPhone);
-    } else {
-      //** Show Modal PassCode */
-      setIsOTPRequest(true);
-    }
+    setIsShowView(false);
   };
+
+  const switchToView = React.useCallback(() => {
+    setIsShowView(true);
+    setOTPVerified(false);
+    setPasscodeVerified(false);
+  }, []);
 
   return (
     <div className="row">
@@ -72,48 +82,35 @@ const BankDetailsTab = () => {
           <Button
             className="w-10"
             onClick={toggleEdit}
-            icon={!isShowForm ? <EditOutlined /> : <CloseOutlined />}
+            icon={isShowView ? <EditOutlined /> : <CloseOutlined />}
           />
         </div>
         <h6>Bank Accounts linked to you wallet for removing and adding funds.</h6>
         <hr />
       </div>
 
-      {/* Show modal verify form */}
-      {isShowModalVerifyPhone && (
-        <VerifyPhoneModal
-          isShowModalVerifyPhone={isShowModalVerifyPhone}
-          setShowModalVerifyPhone={setShowModalVerifyPhone}
-        />
-      )}
+      <PhoneUnverifiedModal visible={status === STATUS.PHONE_NOT_VERIFIED} onClose={switchToView} />
+      <PasscodeRequiredModal
+        visible={status === STATUS.PASSCODE_NOT_EXISTED}
+        onCancel={switchToView}
+      />
+      <PhoneVerifierModal
+        visible={status === STATUS.VERIFYING_PHONE}
+        onCancel={switchToView}
+        onVerified={() => setOTPVerified(true)}
+      />
+      <PasscodeVerifierModal
+        visible={status === STATUS.VERIFYING_PASSCODE}
+        onCancel={switchToView}
+        onVerified={() => setPasscodeVerified(true)}
+      />
 
-      {/* Show modal Verify code OTP */}
-      {isOTPRequest && (
-        <OTPVerifyModal
-          isOTPRequest={isOTPRequest}
-          setIsOTPRequest={setIsOTPRequest}
-          setShowModalVerifyPassCode={setShowModalVerifyPassCode}
-        />
-      )}
-
-      {/* Show Modal verify passcode */}
-      {isShowModalVerifyPassCode && (
-        <VerifyPassCode
-          setShowModalVerifyPassCode={setShowModalVerifyPassCode}
-          isShowModalVerifyPassCode={isShowModalVerifyPassCode}
-          setIsShowForm={setIsShowForm}
-          setIsShowView={(val) => setIsShowView(val)}
-        />
-      )}
-
-      {/* Show Form Bank Detail */}
-      {isShowForm && (
+      {status === STATUS.EDITING && (
         <div className="col-lg-12 col-md-12 col-sm-12">
           <BankDetailForm
             bankDetails={bankDetails}
             companyName={companyName}
-            setIsShowForm={(val) => setIsShowForm(val)}
-            setIsShowView={(val) => setIsShowView(val)}
+            onUpdated={switchToView}
           />
         </div>
       )}

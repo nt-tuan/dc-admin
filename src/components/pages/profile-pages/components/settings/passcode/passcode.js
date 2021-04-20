@@ -11,7 +11,7 @@ import {
 import { selectUsers } from "redux/user/user.duck";
 import PassCodeFormQuestion from "./passcode-form-question";
 import PassCodeForm from "./passcode-form";
-import { PASSCODE_ANSWER_INVALID, PASSCODE_INVALID } from "commons/consts";
+import { PASSCODE_INVALID } from "commons/consts";
 
 PassCode.propTypes = {};
 
@@ -37,7 +37,7 @@ function PassCode() {
         setAnswers(data);
       } catch (error) {
         if (error.message === "400") {
-          message.error(PASSCODE_ANSWER_INVALID);
+          message.error(PASSCODE_INVALID);
         } else {
           throw error;
         }

@@ -8,7 +8,7 @@ import { TwoStepsVerifycation } from "../modals";
 import { FormView } from "./bank-detail-form-view";
 import { submitBankDetails } from "services/bankDetail.service";
 
-function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails }) {
+export function BankDetailForm({ companyName, onUpdated, bankDetails }) {
   const [primaryForm] = Form.useForm();
   const users = useSelector(selectUsers);
   const { email } = users;
@@ -18,9 +18,7 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     asyncErrorHandlerWrapper(async () => {
       try {
         await submitBankDetails(submittedData);
-        setIsShowView(true);
-        setIsShowForm(false);
-        setSubmittedData(undefined);
+        onUpdated && onUpdated();
         message.success("Update Successful");
       } catch (error) {
         message.error("Error");
@@ -82,5 +80,3 @@ function BankDetailForm({ companyName, setIsShowView, setIsShowForm, bankDetails
     </>
   );
 }
-
-export default BankDetailForm;
