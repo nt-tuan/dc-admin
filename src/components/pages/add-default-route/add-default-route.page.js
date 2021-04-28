@@ -70,15 +70,17 @@ const AddRoutePage = () => {
         };
         documentRuleFormsRef.current.forEach((formRef, docId) => {
           const values = formRef.getFieldsValue();
-          composedValues.routeDocumentTypeRequests.push({
-            id: docId,
-            routeDocumentRuleDto: {
-              provider: ACTORS[values.provider],
-              viewer1: ACTORS[values.viewer1],
-              viewer2: ACTORS[values.viewer2],
-              viewer3: ACTORS[values.viewer3]
-            }
-          });
+          if (Object.keys(values).length > 0) {
+            composedValues.routeDocumentTypeRequests.push({
+              id: docId,
+              routeDocumentRuleDto: {
+                provider: ACTORS[values.provider],
+                viewer1: ACTORS[values.viewer1],
+                viewer2: ACTORS[values.viewer2],
+                viewer3: ACTORS[values.viewer3]
+              }
+            });
+          }
         });
         try {
           await RouteService.create(composedValues);

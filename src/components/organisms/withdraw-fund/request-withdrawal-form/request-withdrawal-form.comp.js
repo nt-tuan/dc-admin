@@ -59,7 +59,6 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit }) => {
   };
   const onBlur = (event) => {
     const value = event.target.value;
-    console.log(value, isNaN(value), value < 100);
     if (isNaN(value) || value < 100) {
       setValueAmount("100.00");
       form.setFieldsValue({ amount: "100.00" });

@@ -49,8 +49,6 @@ const BankDetailsTab = () => {
     return STATUS.EDITING;
   }, [isShowView, users, isOTPVerified, isPasscodeVerified]);
 
-  console.log(companyName, status);
-
   //** Fetch Bank details */
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
