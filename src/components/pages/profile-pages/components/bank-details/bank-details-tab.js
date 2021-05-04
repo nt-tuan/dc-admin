@@ -49,8 +49,6 @@ const BankDetailsTab = () => {
     return STATUS.EDITING;
   }, [isShowView, users, isOTPVerified, isPasscodeVerified]);
 
-  console.log(companyName, status);
-
   //** Fetch Bank details */
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -65,7 +63,7 @@ const BankDetailsTab = () => {
 
   //** Handle Edit toggle */
   const toggleEdit = () => {
-    setIsShowView(false);
+    setIsShowView((state) => !state);
   };
 
   const switchToView = React.useCallback(() => {
