@@ -259,7 +259,6 @@ const EditRoutePage = () => {
 
       if (details?.taxDetailResponseList && details?.taxDetailResponseList?.length) {
         const dataTax = parseDataTax(details?.taxDetailResponseList);
-        // console.log("dataTax", dataTax);
         setDataSourceTax(dataTax);
       } else {
         setDataSourceTax({
@@ -449,7 +448,6 @@ const EditRoutePage = () => {
     const dataMain = [];
     let nameObj;
     let valueObj;
-    // console.log("valueTax", valueTax);
     Object.keys(valueTax).map((item) => {
       const nameParse = item.split("-");
       if (!nameParse && !nameParse.length) return false;
@@ -531,7 +529,6 @@ const EditRoutePage = () => {
         });
         const valueTax = taxRuleForms.current.getFieldsValue();
         const dataParse = parseDataFormEdit(valueTax);
-        // console.log("aaa", dataParse);
         composedValues.routeTaxPostRequestList = dataParse;
 
         try {

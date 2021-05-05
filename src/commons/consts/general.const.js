@@ -71,7 +71,7 @@ export const DOCUMENT_RULE_ACTOR = Object.freeze({
 export const ACTORS = {
   Seller: "SELLER",
   Buyer: "BUYER",
-  "Logistics Service Provider": "LOGISTIC_SERVICE_PROVIDER",
+  "Logistic Service Provider": "LOGISTIC_SERVICE_PROVIDER",
   "Inspection Provider": "INSPECTION_SERVICE_PROVIDER"
 };
 
