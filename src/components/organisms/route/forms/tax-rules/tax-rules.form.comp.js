@@ -23,7 +23,6 @@ export const TaxRulesFrom = memo(
       isShow: false,
       index: null
     });
-    // console.log("xxxxxxxxx", dataSource);
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
     const handleSetValueForm = useCallback(
@@ -88,7 +87,6 @@ export const TaxRulesFrom = memo(
     const onRemoveTax = (index) => {
       const dataUpdate = dataForm.taxOther;
       const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
-      // console.log("dataUpdate", dataUpdate, index);
       let dataNew = dataUpdate.filter((item, idx) => idx !== index);
 
       if (index === 0 && dataNew.length > 0) {
@@ -99,8 +97,6 @@ export const TaxRulesFrom = memo(
         objApplyType.initValue = 0;
         dataNew.push({ data: [{ ...objApplyType }], dataFilter: [FIELDS.name] });
       }
-      // console.log("dataNew", dataNew);
-
       const dataS = {
         ...dataForm,
         taxOther: dataNew
@@ -405,7 +401,6 @@ export const TaxRulesFrom = memo(
                 <Button
                   type="primary"
                   onClick={() => {
-                    // console.log("index", isShowPopup.index);
                     onRemoveTax(isShowPopup.index);
                     togglePopup(null, false);
                   }}

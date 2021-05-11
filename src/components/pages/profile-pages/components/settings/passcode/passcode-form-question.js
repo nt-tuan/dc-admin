@@ -13,7 +13,6 @@ function PassCodeFormQuestion({ onFinish, securityQuestions }) {
   });
 
   const [currentQuestions, setCurrentQuestions] = useState([undefined, undefined, undefined]);
-  console.log(currentQuestions);
   const [form] = Form.useForm();
   return (
     <div className="row">
