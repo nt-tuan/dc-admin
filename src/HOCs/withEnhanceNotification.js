@@ -55,6 +55,7 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_ADDRESS:
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER: {
       const res = await getRelevantUser(subjectId);
+      if (!res) break;
       targetRoute = `${RouteConst.USER_DETAILS}?username=${res.username}&companyId=${res.id}`;
       break;
     }
