@@ -8,6 +8,7 @@ import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import "utils/monkey-patch.util";
 import { handleSagaError } from "utils/saga.util";
+import { hotjar } from "hotjar/hotjar";
 // app styles
 import "./global.scss";
 import reducers from "./redux/reducers";
@@ -27,6 +28,10 @@ const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     : compose;
+
+if (process.env.REACT_APP_HOTJAR_ID && process.env.REACT_APP_HOTJAR_SV) {
+  hotjar(process.env.REACT_APP_HOTJAR_ID, process.env.REACT_APP_HOTJAR_SV);
+}
 
 const store = createStore(reducers(history), composeEnhancers(applyMiddleware(...middlewares)));
 sagaMiddleware.run(sagas);
