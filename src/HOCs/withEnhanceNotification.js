@@ -2,6 +2,9 @@ import { NOTIFICATION_TYPE, RouteConst } from "commons/consts";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
+import { UserService } from "services/user.service";
+import { message } from "antd";
 
 export const withEnhanceNotification = (NotificationItemComp) => {
   return React.memo(({ data }) => {
@@ -26,6 +29,17 @@ export const withEnhanceNotification = (NotificationItemComp) => {
   });
 };
 
+const getRelevantUser = async (companyId) => {
+  let result;
+  try {
+    const data = await getAllRecordsFromAPI(UserService.getAllUsers);
+    result = data.find((user) => user.id === companyId);
+  } catch (error) {
+    message.error(error);
+  }
+  return result;
+};
+
 const getNavigateRoute = async (notificationType, subjectId, callback) => {
   let targetRoute = "";
 
@@ -40,7 +54,9 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
     }
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_ADDRESS:
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER: {
-      targetRoute = `${RouteConst.ROUTE}?tab=pending`;
+      const res = await getRelevantUser(subjectId);
+      if (!res) break;
+      targetRoute = `${RouteConst.USER_DETAILS}?username=${res.username}&companyId=${res.id}`;
       break;
     }
     case NOTIFICATION_TYPE.ADMIN_REBATE_CREDIT_ADD_NEW_USER: {
@@ -52,6 +68,5 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
       break;
     }
   }
-
   return targetRoute;
 };
