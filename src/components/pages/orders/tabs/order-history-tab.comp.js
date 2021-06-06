@@ -34,7 +34,9 @@ export const OrderHistoryTab = () => {
     asyncErrorHandlerWrapper(async () => {
       const now = dayjs().format();
       const dateAfterSubtract = subtractDateTime(now, days, "days");
-      const res = await getAllRecordsFromAPI(OrderService.getAllOrderHistory);
+      const fn = (options) =>
+        OrderService.getAllOrderHistory({ ...options, createdDate: dateAfterSubtract });
+      const res = await getAllRecordsFromAPI(fn);
       const filterData = res.filter((item) => {
         return isBetweenTwoDate(item[FIELDS.timestamp], dateAfterSubtract, now);
       });
