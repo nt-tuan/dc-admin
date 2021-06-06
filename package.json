@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "set PORT=3001 && react-app-rewired start",
+    "start": "react-app-rewired start",
     "dev": "env-cmd -f .env.dev react-app-rewired start",
     "qat": "env-cmd -f .env.qat react-app-rewired start",
     "staging": "env-cmd -f .env.staging react-app-rewired start",
