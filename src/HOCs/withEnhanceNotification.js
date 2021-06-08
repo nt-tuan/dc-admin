@@ -64,6 +64,10 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
       targetRoute = `${RouteConst.USER_DETAILS}?username=${username}&companyId=${companyId}`;
       break;
     }
+    case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_ORDER: {
+      targetRoute = `${RouteConst.CREATE_TRADE_ROUTES}`;
+      break;
+    }
     default: {
       break;
     }

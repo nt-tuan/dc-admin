@@ -22,6 +22,7 @@ import {
   TAX_RULES_TYPE_OTHER_SCHEMA
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
 import numeral from "numeral";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -44,6 +45,16 @@ const AddRoutePage = () => {
   const taxRuleForms = useRef();
   const history = useHistory();
   const [isLoadingCreate, setIsloadingCreate] = useState(false);
+  const location = useLocation();
+  const initialValues = React.useMemo(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+    const category = searchParams.get("category");
+    const type = searchParams.get("type");
+    return { from, to, category, type };
+  }, [location]);
+
   const objTax = {
     taxMain: [
       {
@@ -333,7 +344,11 @@ const AddRoutePage = () => {
       <Helmet title="Trade Routes Creation" />
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
-        <RouteLocationForm onTypeChange={handleTypeChange} ref={locationFormRef} />
+        <RouteLocationForm
+          initialValues={initialValues}
+          onTypeChange={handleTypeChange}
+          ref={locationFormRef}
+        />
         <TaxRulesFrom dataSource={dataSourceTax.current} ref={taxRuleForms} />
       </div>
       <Divider />
