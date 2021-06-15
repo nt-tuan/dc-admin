@@ -76,7 +76,6 @@ export const OrderActiveTab = () => {
           </Button>
         </div>
       </div>
-
       <DTCTable
         showSettings={false}
         loading={loading}

@@ -44,7 +44,8 @@ const ORDER_STATUS = {
   INSPECTION: "INSPECTION",
   REVIEW: "REVIEW",
   DONE: "DONE",
-  CANCEL: "CANCEL"
+  CANCEL: "CANCEL",
+  CONFIRM_PROFORMA_INVOICE: "CONFIRM_PROFORMA_INVOICE"
 };
 
 const ORDER_STATUS_LABELS = {
@@ -60,7 +61,9 @@ const ORDER_STATUS_LABELS = {
   [ORDER_STATUS.INSPECTION]: "Buyer's Inspection Report",
   [ORDER_STATUS.REVIEW]: "Review",
   [ORDER_STATUS.DONE]: "Order Completed",
-  [ORDER_STATUS.CANCEL]: "Order Cancelled"
+  [ORDER_STATUS.CANCEL]: "Order Cancelled",
+  [ORDER_STATUS.CONFIRM_PROFORMA_INVOICE]: "Confirm Pro Forma Invoice",
+  EXTERNAL_ORDER_PAYMENT: "Completed via External Payment & Services"
 };
 
 export const ORDERS_SCHEMA = Object.freeze({

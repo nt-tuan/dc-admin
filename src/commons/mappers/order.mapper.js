@@ -2,7 +2,7 @@ import { ORDERS_SCHEMA } from "commons/schemas";
 import { toNumber, toCurrency } from "utils/general.util";
 import { DatetimeUtils } from "utils/date-time.util";
 
-const { FIELDS, LABELS, ORDER_STATUS_LABELS } = ORDERS_SCHEMA;
+const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
 const { formatDateTime } = DatetimeUtils;
 
 const parseActiveOrderToExcel = (order) => {
@@ -120,12 +120,15 @@ const parseHistoryOrderToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((account) => {
-      const { createdDate, unitPrice, total, number, process } = account;
+      const { createdDate, unitPrice, total, number, process, isExternalPayment } = account;
       return {
         ...account,
         id: number,
         createdDate: createdDate ? formatDateTime(createdDate) : "",
-        process: ORDER_STATUS_LABELS[process],
+        process:
+          isExternalPayment && process === ORDER_STATUS.DONE
+            ? ORDER_STATUS_LABELS.EXTERNAL_ORDER_PAYMENT
+            : ORDER_STATUS_LABELS[process],
         unitPrice: toCurrency(unitPrice),
         total: toCurrency(total)
       };
