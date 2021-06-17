@@ -7,8 +7,9 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 export const RouteLocationForm = forwardRef(
   (
     {
-      initialValues,
       hiddenFields = [],
+      defaultFromCountry,
+      defaultToCountry,
       defaultCategoryId,
       defaultTypeId,
       onTypeChange,
@@ -101,7 +102,13 @@ export const RouteLocationForm = forwardRef(
         name="basic"
         colon={false}
         layout="vertical"
-        initialValues={{ ...initialValues, remember: true }}
+        initialValues={{
+          remember: true,
+          from: defaultFromCountry,
+          to: defaultToCountry,
+          category: defaultCategoryId,
+          type: defaultTypeId
+        }}
         ref={ref}
       >
         <div className="row px-2 w-100">

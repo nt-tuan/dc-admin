@@ -33,7 +33,21 @@ const isFormValid = async (validateFn) => {
   }
 };
 
+const usePrefill = () => {
+  const location = useLocation();
+  const { productType, productCategory, fromCountry, toCountry } = React.useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const productType = params.get("productType");
+    const productCategory = params.get("productCategory");
+    const fromCountry = params.get("from");
+    const toCountry = params.get("to");
+    return { productType, productCategory, fromCountry, toCountry };
+  }, [location]);
+  return { productType, productCategory, fromCountry, toCountry };
+};
+
 const AddRoutePage = () => {
+  const { productType, productCategory, fromCountry, toCountry } = usePrefill();
   const [documents, setDocuments] = useState([]);
   const [defaultRoute, setDefaultRoute] = useState();
   const [defaultDocs, setDefaultDocs] = useState([]);
@@ -44,6 +58,7 @@ const AddRoutePage = () => {
   const documentRuleForms = useRef(new Map());
   const taxRuleForms = useRef();
   const history = useHistory();
+
   const [isLoadingCreate, setIsloadingCreate] = useState(false);
   const location = useLocation();
   const initialValues = React.useMemo(() => {
@@ -345,7 +360,10 @@ const AddRoutePage = () => {
       <div>
         <h3 className="mb-3">{renderTitle(false)}</h3>
         <RouteLocationForm
-          initialValues={initialValues}
+          defaultFromCountry={fromCountry}
+          defaultToCountry={toCountry}
+          defaultTypeId={productType}
+          defaultCategoryId={productCategory}
           onTypeChange={handleTypeChange}
           ref={locationFormRef}
         />

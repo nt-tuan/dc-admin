@@ -22,4 +22,8 @@ export class OrderService {
     });
     return result;
   };
+
+  static getOrderById = async (orderId) => {
+    return await backendAPI.get(`${ApiPathConsts.GET_ORDER_PREFIX}/${orderId}`);
+  };
 }

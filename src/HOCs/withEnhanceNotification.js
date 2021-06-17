@@ -5,6 +5,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { UserService } from "services/user.service";
 import { message } from "antd";
+import { OrderService } from "services";
 
 export const withEnhanceNotification = (NotificationItemComp) => {
   return React.memo(({ data }) => {
@@ -40,6 +41,11 @@ const getRelevantUser = async (companyId) => {
   return result;
 };
 
+const getTradeRoutePath = async (subjectId) => {
+  const order = await OrderService.getOrderById(subjectId);
+  return `${RouteConst.CREATE_TRADE_ROUTES}?productType=${order.productType}&productCategory=${order.productCategory}&from=${order.sellerCountry}&to=${order.buyerCountry}`;
+};
+
 const getNavigateRoute = async (notificationType, subjectId, callback) => {
   let targetRoute = "";
 
@@ -65,8 +71,7 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
       break;
     }
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_ORDER: {
-      targetRoute = `${RouteConst.CREATE_TRADE_ROUTES}`;
-      break;
+      return await getTradeRoutePath(subjectId);
     }
     default: {
       break;

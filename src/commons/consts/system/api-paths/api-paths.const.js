@@ -57,6 +57,10 @@ export class ApiPathConsts {
     return `${this.#ORDER_PREFIX}/history`;
   }
 
+  static get GET_ORDER_PREFIX() {
+    return this.#ORDER_PREFIX;
+  }
+
   static get GET_WALLET_DASHBOARD() {
     return `${this.#WALLET_PREFIX}`;
   }
