@@ -5,6 +5,11 @@ on:
       - develop
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  PROJECT_ID: ds-sharedsvc
+  IMAGE: distichain/develop/admin-frontend
+
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -18,3 +23,43 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  setup-build-publish:
+    name: Setup, Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+              # Build the Docker image
+        - name: Configure gcloud
+          run: |-
+            gcloud --quiet auth configure-docker europe-west3-docker.pkg.dev
+
+        - name: Build docker image
+          run: |-
+                docker build -f Dockerfile-alberto . \
+                --tag "europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+                --build-arg GITHUB_SHA="$GITHUB_SHA" \
+                --build-arg GITHUB_REF="$GITHUB_REF" \
+
+        - name: Publish docker image
+          if: ${{ github.event_name == 'push'}}
+          run: docker push "europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+
+        - name: dispatch update-manifest
+          if: ${{ github.event_name == 'push'}}
+          uses: Stockopedia/action-octommit@v1
+          with:
+            github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+            script: |
+                octommit.update()
+                    .org("Distichain")
+                    .repository("env-marketplace")
+                    .sourceBranch("develop")
+                    .outputBranch("develop")
+                    .sourcePath("values.yaml")
+                    .outputPath("values.yaml")
+                    .set("adminFrontend:image:tag", process.env.GITHUB_SHA)
+                    .commit("Auto - adminFrontend deployment")
+                    .run();
