@@ -9,6 +9,7 @@ import { LoadingIndicator } from "components/atoms";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { CreateIntroducerForm } from "components/molecules";
 import { Helmet } from "react-helmet";
+import { getCompanyName } from "utils/config.util";
 
 const IntroducerDetailsPage = memo(() => {
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ const IntroducerDetailsPage = memo(() => {
     });
   }, [id]);
 
-  if (process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"]) {
+  if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
     return <Redirect to="/" />;
   }
   return (

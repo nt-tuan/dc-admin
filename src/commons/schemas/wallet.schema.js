@@ -1,4 +1,5 @@
 import React from "react";
+import { getCompanyName } from "utils/config.util";
 import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
@@ -73,7 +74,7 @@ export const WALLET_DESCRIPTIONS = Object.freeze({
   [WALLET_TRANSACTION_TYPES.ORDER_PAYMENT]: "Order Payment",
   [WALLET_TRANSACTION_TYPES.DEPOSIT]: "Funds Deposited by User",
   [WALLET_TRANSACTION_TYPES.DEPOSIT_IVS]: "Invoice Value Settlement​",
-  [WALLET_TRANSACTION_TYPES.BILLING_DC]: `${process.env.REACT_APP_COMPANY_NAME} Commission`,
+  [WALLET_TRANSACTION_TYPES.BILLING_DC]: `${getCompanyName()} Commission`,
   [WALLET_TRANSACTION_TYPES.BILLING_PCC]: "Marketplace Commission"
 });
 

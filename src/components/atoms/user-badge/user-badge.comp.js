@@ -14,6 +14,7 @@ import UserVerifiedBadge from "assets/icons/badges/user-verified-badge.png";
 import { BADGE_TYPES } from "commons/consts";
 import React from "react";
 import { toCurrency } from "utils";
+import { getBadgeNumbers, getBadgeValues } from "utils/config.util";
 
 const CUSTOM_BADGES = {
   VERIFIED: {
@@ -24,20 +25,22 @@ const CUSTOM_BADGES = {
   }
 };
 
-const {
-  REACT_APP_NUMBER_BADGE_NONE: numberBadgeNone,
-  REACT_APP_NUMBER_BADGE_1: numberBadgeLevel1,
-  REACT_APP_NUMBER_BADGE_2: numberBadgeLevel2,
-  REACT_APP_NUMBER_BADGE_3: numberBadgeLevel3,
-  REACT_APP_NUMBER_BADGE_4: numberBadgeLevel4,
-  REACT_APP_NUMBER_BADGE_5: numberBadgeLevel5,
-  REACT_APP_VALUE_BADGE_NONE: valueBadgeNone,
-  REACT_APP_VALUE_BADGE_1: valueBadgelevel1,
-  REACT_APP_VALUE_BADGE_2: valueBadgelevel2,
-  REACT_APP_VALUE_BADGE_3: valueBadgelevel3,
-  REACT_APP_VALUE_BADGE_4: valueBadgelevel4,
-  REACT_APP_VALUE_BADGE_5: valueBadgelevel5
-} = process.env;
+const [
+  numberBadgeNone,
+  numberBadgeLevel1,
+  numberBadgeLevel2,
+  numberBadgeLevel3,
+  numberBadgeLevel4,
+  numberBadgeLevel5
+] = getBadgeNumbers();
+const [
+  valueBadgeNone,
+  valueBadgelevel1,
+  valueBadgelevel2,
+  valueBadgelevel3,
+  valueBadgelevel4,
+  valueBadgelevel5
+] = getBadgeValues();
 
 export const UserBadge = ({ type, value }) => {
   const [tooltipText, Badge] = getBadge(type, value);

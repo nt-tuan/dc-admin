@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
+import { getCompanyName } from "utils/config.util";
 import AuthLayout from "./auth/auth.layout";
 import { PublicLayout } from "./public/public.layout";
 
@@ -72,7 +73,7 @@ export const Layout = React.memo(({ children }) => {
 
   return (
     <Fragment>
-      <Helmet titleTemplate={`${process.env.REACT_APP_COMPANY_NAME} - %s`} />
+      <Helmet titleTemplate={`${getCompanyName()} - %s`} />
       {BootstrappedLayout()}
     </Fragment>
   );

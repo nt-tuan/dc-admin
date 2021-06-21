@@ -9,6 +9,7 @@ import { selectCurrentUser } from "redux/user/user.duck";
 import { getMenuData, getPrefixUrl } from "utils/general.util";
 import Scrollbars from "react-custom-scrollbars";
 import styles from "./menu-left-comp.module.scss";
+import { getCompanyName } from "utils/config.util";
 
 const { Sider } = Layout;
 const { selectSetting } = SETTING_DUCK;
@@ -78,7 +79,7 @@ export const MenuLeft = () => {
           </li>
         );
       }
-      if (key === "New Users" && `${process.env.REACT_APP_COMPANY_NAME}` !== "Extravaganza") return;
+      if (key === "New Users" && `${getCompanyName()}` !== "Extravaganza") return;
 
       return (
         <li

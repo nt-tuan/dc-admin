@@ -5,6 +5,7 @@ import { IntroducerActiveTab } from "./tab/introducer-active-tab.comp";
 import { IntroducerInActiveTab } from "./tab/introducer-inactive-tab.comp";
 import { MARKETPLACE_NAME } from "commons/consts";
 import { Redirect } from "react-router-dom";
+import { getCompanyName } from "utils/config.util";
 
 const TAB_KEYS = {
   ACTIVE: "ACTIVE",
@@ -32,7 +33,7 @@ const IntroducersPage = memo(() => {
     );
   };
 
-  if (process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"]) {
+  if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
     return <Redirect to="/" />;
   }
 

@@ -5,11 +5,12 @@ import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
+import { getCompanyName } from "utils/config.util";
 
 const CreateIntroducerPage = memo(() => {
   const dispatch = useDispatch();
 
-  if (process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"]) {
+  if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
     return <Redirect to="/" />;
   }
   const createIntroducer = (addIntroducerData, { onError }) => {

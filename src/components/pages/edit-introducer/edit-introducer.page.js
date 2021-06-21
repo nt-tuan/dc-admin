@@ -11,6 +11,7 @@ import { CreateIntroducerForm } from "components/molecules";
 import { useDispatch } from "react-redux";
 import * as USER_DUCK from "redux/user/user.duck";
 import { Helmet } from "react-helmet";
+import { getCompanyName } from "utils/config.util";
 
 const EditIntroducerPage = memo(() => {
   const [loading, setLoading] = useState(true);
@@ -45,7 +46,7 @@ const EditIntroducerPage = memo(() => {
     });
   }, []);
 
-  if (process.env.REACT_APP_COMPANY_NAME !== MARKETPLACE_NAME["8Corners"]) {
+  if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
     return <Redirect to="/" />;
   }
 

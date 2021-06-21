@@ -15,6 +15,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst } from "commons/consts";
+import { getCompanyName } from "utils/config.util";
 
 const UserDetails = () => {
   const [data, setData] = useState({});
@@ -132,7 +133,7 @@ const UserDetails = () => {
               </Checkbox>
             </div>
           {/* )} */}
-          {`${process.env.REACT_APP_COMPANY_NAME}` === "Extravaganza" ? (
+          {`${getCompanyName()}` === "Extravaganza" ? (
             <div>
               <div className="w-50 mt-3">
                 <h5 className="text-danger">Product Creation</h5>

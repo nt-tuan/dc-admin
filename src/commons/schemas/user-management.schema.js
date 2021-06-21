@@ -4,6 +4,7 @@ import { UserBadge } from "components/atoms/user-badge/user-badge.comp";
 import { sortAlphabetically } from "utils/sort.util";
 import { Link } from "react-router-dom";
 import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
+import { getCompanyName } from "utils/config.util";
 
 const FIELDS = {
   id: "id",
@@ -247,7 +248,7 @@ export const userMgtTableSchema = ({
 
   if (hiddenStatus) {
     columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.userStatus);
-    if (process.env.REACT_APP_COMPANY_NAME === MARKETPLACE_NAME["8Corners"]) {
+    if (getCompanyName() === MARKETPLACE_NAME["8Corners"]) {
       columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.enableMarketplaceCredit);
     }
   }

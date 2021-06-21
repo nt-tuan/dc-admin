@@ -1,17 +1,9 @@
 import axios from "axios";
+import { getAPIEndPoint } from "./config.util";
 import { axiosErrorHandler } from "./error-handler.util";
 
 class HttpApi {
   constructor(config) {
-    // config sample
-    // see axios doc for more info
-    // {
-    //   baseURL: process.env.REACT_APP_API_ENDPOINT,
-    //   timeout: 5000,
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // }
     this.api = axios.create(config);
   }
 
@@ -106,7 +98,7 @@ class HttpApi {
 }
 
 export const backendAPI = new HttpApi({
-  baseURL: process.env.REACT_APP_API_ENDPOINT,
+  baseURL: getAPIEndPoint(),
   timeout: 25000,
   headers: {
     "Content-Type": "application/json"

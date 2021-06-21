@@ -2,6 +2,7 @@ import { log } from "utils/logger.util";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { getAccessToken } from "./auth.util";
+import { getAPIEndPoint } from "./config.util";
 
 export class WSClient {
   static #config = {
@@ -23,7 +24,7 @@ export class WSClient {
     const wsClient = new Client({ ...this.#config, ...config });
 
     wsClient.webSocketFactory = () => {
-      return new SockJS(`${process.env.REACT_APP_API_ENDPOINT}/ws`);
+      return new SockJS(`${getAPIEndPoint()}/ws`);
     };
 
     wsClient.onStompError = (frame) => {

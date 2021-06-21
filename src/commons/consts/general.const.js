@@ -1,3 +1,5 @@
+import { getCompanyName } from "utils/config.util";
+
 export const MARKETPLACE_NAME = Object.freeze({
   Distichain: "Distichain",
   Extravaganza: "Extravaganza",
@@ -153,7 +155,7 @@ export const USER_TABS_NAME = Object.freeze({
 });
 
 export const MESSAGES = Object.freeze({
-  LOGIN_SUCCESS_MSG: `You have successfully logged in to ${process.env.REACT_APP_COMPANY_NAME}!`,
+  LOGIN_SUCCESS_MSG: `You have successfully logged in to ${getCompanyName()}!`,
   LOGIN_SUCCESS_TITLE: "Logged In",
   CHANGE_PASSWORD_SUCCESS: "Change Password Success",
   RESET_PASSWORD_SUCCESS: "Reset Password Success",

@@ -1,6 +1,7 @@
 import XLSX from "xlsx";
 import { message } from "antd";
 import { MARKETPLACE_NAME } from "commons/consts";
+import { getCompanyName, getDefaultCurrency } from "./config.util";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -126,10 +127,7 @@ export const getAllRecordsFromAPI = async (
 };
 
 export const toCurrency = (value, defaultCurrency = "$") => {
-  const currency =
-    process.env.REACT_APP_DEFAULT_CURRENCY_TYPE === "USD"
-      ? defaultCurrency
-      : process.env.REACT_APP_DEFAULT_CURRENCY_TYPE;
+  const currency = getDefaultCurrency() === "USD" ? defaultCurrency : getDefaultCurrency();
   return value !== undefined && !isNaN(value)
     ? currency + " " + Number(value).toLocaleString()
     : value;
@@ -149,7 +147,7 @@ const filterMenuData = (exceptionArr, menuData) =>
 
 export const getMenuData = (data) => {
   let menuData = data;
-  switch (process.env.REACT_APP_COMPANY_NAME) {
+  switch (getCompanyName()) {
     case MARKETPLACE_NAME["8Corners"]: {
       const EightCornersException = ["Marketplace Credit"];
       menuData = filterMenuData(EightCornersException, menuData);

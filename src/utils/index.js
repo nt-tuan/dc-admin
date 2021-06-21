@@ -8,6 +8,7 @@ import {
 import XLSX from "xlsx";
 import { message } from "antd";
 import numeral from "numeral";
+import { getCompanyName, getDefaultCurrency } from "./config.util";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -55,10 +56,7 @@ export const getIdPartFromProductUrl = (str) => {
 };
 
 export const toCurrency = (value, defaultCurrency = "USD") => {
-  const currency =
-    process.env.REACT_APP_DEFAULT_CURRENCY_TYPE === "USD"
-      ? defaultCurrency
-      : process.env.REACT_APP_DEFAULT_CURRENCY_TYPE;
+  const currency = getDefaultCurrency() === "USD" ? defaultCurrency : getDefaultCurrency();
 
   return value !== undefined && !isNaN(value)
     ? currency + " " + numeral(value).format("0,0.00")
@@ -320,7 +318,7 @@ export const getMenuData = (data, isCoopType = false) => {
   const ExtravaganzaException = ["Traders"];
   const DefaultException = ["Traders", "Product Creation"];
   let menuData = data;
-  switch (process.env.REACT_APP_COMPANY_NAME) {
+  switch (getCompanyName()) {
     case MARKETPLACE_NAME["8Corners"]: {
       menuData = filterMenuData(menuData, EightCornersException);
       if (!isCoopType) {

@@ -11,20 +11,21 @@ import { LoginFormContext, LoginFormProvider } from "./login-form-provider.comp"
 import { LOGIN_SCHEMA } from "./login-form.schema";
 import { LoginFormFooter } from "./login-form-footer.comp";
 import { withPlugin } from "plugins/with-plugin";
+import { getCompanyName, getMarketplaceEndPoint } from "utils/config.util";
 const TermAndPolicy = () => {
   return (
     <div className="mt-2 mb-3">
       <div>
-        By Signing up, you agree to {process.env.REACT_APP_COMPANY_NAME}’{" "}
+        By Signing up, you agree to {getCompanyName()}’{" "}
         <a
-          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}
+          href={getMarketplaceEndPoint() + "/policies/terms-and-conditions"}
           className="font-weight-bold"
         >
           Terms & Conditions
         </a>{" "}
         &{" "}
         <a
-          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/privacy-policy"}
+          href={getMarketplaceEndPoint() + "/policies/privacy-policy"}
           className="font-weight-bold"
         >
           Privacy Policy

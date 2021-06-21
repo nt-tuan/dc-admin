@@ -7,6 +7,7 @@ import styles from "./topbar-comp.module.scss";
 import { RouteConst } from "commons/consts";
 import { Link } from "react-router-dom";
 import { NotificationPopup } from "components";
+import { getCompanyName } from "utils/config.util";
 
 export const TopBar = () => {
   return (
@@ -18,7 +19,7 @@ export const TopBar = () => {
           src={`${process.env.PUBLIC_URL}/images/${
             isScreensize("sm") ? "logo-notext.png" : "logo.png"
           }`}
-          alt={`${process.env.REACT_APP_COMPANY_NAME} logo`}
+          alt={`${getCompanyName()} logo`}
         />
       </div>
       <div className="d-flex align-items-center">
