@@ -101,7 +101,7 @@ export const usePaginatedApiService = (
   };
 
   const handleSearch = (str) => {
-    searchStr.current = escape(str.trim());
+    searchStr.current = str.trim();
     const params = {
       page: 0,
       size: itemPerPage,

@@ -64,7 +64,7 @@ export const RULES_PERCENT_FORMAT = {
 export const RULES_LUMSUM_FORMAT = {
   validator: (rule, value, callback) => {
     const inputAmount = numeral(value).value();
-    if (isNaN(value)) {
+    if (isNaN(inputAmount)) {
       return callback(createFormErrorComp("The lump-sum amount is the number"));
     }
     if (inputAmount < 0) {
