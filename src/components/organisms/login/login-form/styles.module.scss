@@ -29,3 +29,19 @@
     margin: rem(5) rem(14);
   }
 }
+
+.subTitleLogin {
+  font-size: 20px;
+  margin-bottom: 2rem;
+  @media only screen and (max-width: 768px) {
+    font-size: rem(18);
+  }
+}
+
+.colorBlack {
+  color: #0a0a0a !important;
+}
+
+.textUnderline {
+  text-decoration: underline;
+}

@@ -18,15 +18,15 @@ const TermAndPolicy = () => {
       <div>
         By Signing up, you agree to {getCompanyName()}’{" "}
         <a
-          href={getMarketplaceEndPoint() + "/policies/terms-and-conditions"}
-          className="font-weight-bold"
+          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}
+          className={`font-weight-bold ${style.colorBlack} ${style.textUnderline}`}
         >
           Terms & Conditions
         </a>{" "}
-        &{" "}
+        and the{" "}
         <a
-          href={getMarketplaceEndPoint() + "/policies/privacy-policy"}
-          className="font-weight-bold"
+          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/privacy-policy"}
+          className={`font-weight-bold ${style.colorBlack} ${style.textUnderline}`}
         >
           Privacy Policy
         </a>
@@ -53,10 +53,13 @@ const ErrorMessage = () => {
 const FormHeader = () => {
   return (
     <>
-      <div style={{ fontSize: "40px", lineHeight: "47px" }}>Sign in</div>
-      <div style={{ fontSize: "20px", lineHeight: "23px" }} className="mb-4 mt-1">
-        Please login to your account.
+      <div
+        className="text-uppercase font-weight-bold"
+        style={{ fontSize: "21px", lineHeight: "25px" }}
+      >
+        Sign in
       </div>
+      <div className={`${style.subTitleLogin} mt-1`}>Please login to your account.</div>
     </>
   );
 };
