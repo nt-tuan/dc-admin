@@ -73,7 +73,7 @@ const publicRoutes = [
 const privateRoutes = [
   {
     path: RouteConst.HOME_ROUTE,
-    Component: loadable(() => import("components/pages/home/home.page")),
+    Component: loadable(() => import("components/pages/orders/orders.page")),
     exact: true
   },
   {
