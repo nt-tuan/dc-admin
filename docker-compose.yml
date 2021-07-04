@@ -1,0 +1,17 @@
+#DUMMY COMPOSE - WE ARE FOCUSED ON THE DEV ONE FOR NOW
+version: "3.9"
+
+networks:
+  distichain:
+    external:
+      name: distichain.localhost
+
+services:
+  mp-frontend:
+    image: maven:3-openjdk-11
+    networks:
+      - distichain
+
+
+volumes:
+  db-data:
