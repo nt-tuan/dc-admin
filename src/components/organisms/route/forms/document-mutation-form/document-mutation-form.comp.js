@@ -1,36 +1,19 @@
 import React, { forwardRef, useReducer, useState } from "react";
 import { Form, Input, Select, Upload, Button } from "antd";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RouteService } from "services";
-
-const normFile = (e) => {
-  return (
-    e &&
-    e.fileList.map((file) =>
-      file.status === "done" ? { ...file.response, type: file.type } : file
-    )
-  );
-};
+import { UploadFile } from "components/atoms/field/upload-file-input";
 
 export const DocumentMutationForm = forwardRef((props, ref) => {
   const [form] = Form.useForm();
-  const [documentType, setDocumentType] = useState();
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  const renderUploadButton = () => {
-    return form.getFieldValue("sampleFile") &&
-      form.getFieldValue("sampleFile").length >= 1 ? null : (
-      <Button type="link">Upload Sample File</Button>
-    );
+  const [fileType, setFileType] = useState();
+  const uploadFile = async (file) => {
+    return await RouteService.uploadDocument(file);
   };
-
-  const handleUploadImage = async ({ onSuccess, onError, file }) => {
-    try {
-      const res = await RouteService.uploadDocument(file);
-      onSuccess({ ...res, status: "done", uid: res.name, name: res.originalName });
-    } catch (error) {
-      onError(error);
-    }
+  const handleChangeDocumentType = (value) => {
+    setFileType(value);
+    form.setFieldsValue({
+      sampleFile: null
+    });
   };
 
   return (
@@ -58,13 +41,9 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
         label="Document Type"
         name="documentType"
         rules={[{ required: true, message: "Please input your Document Type!" }]}
+        shouldUpdate
       >
-        <Select
-          onChange={(value) => {
-            form.setFieldsValue({ sampleFile: [] });
-            setDocumentType(acceptTypes[value]);
-          }}
-        >
+        <Select onChange={handleChangeDocumentType}>
           {fileTypes.map(({ value, label }) => (
             <Select.Option key={value} value={value}>
               {label}
@@ -74,38 +53,31 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
       </Form.Item>
 
       <Form.Item
-        shouldUpdate
         name="sampleFile"
+        wrapperCol={24}
+        labelCol={24}
+        label="Please upload the Certification of Registration of the Company"
         rules={[
           {
-            validator: (rule, fileList) => {
-              if (fileList === undefined || fileList.length === 0) {
+            validator: (rule, value) => {
+              const documentType = form.getFieldValue("documentType");
+              if (!value) {
                 return Promise.resolve();
               }
-              const documentType = form.getFieldValue("documentType");
-              return fileList[0].type === FILE_TYPES[documentType]
+              return value.name.toLowerCase().endsWith(acceptTypes[documentType].toLowerCase())
                 ? Promise.resolve()
                 : Promise.reject("Please upload a file with type as Document Type");
             }
           }
         ]}
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
       >
-        <Upload
-          customRequest={handleUploadImage}
-          onChange={() => forceUpdate()}
-          onRemove={(file) => {
-            asyncErrorHandlerWrapper(async () => {
-              if (file.status === "done") {
-                await RouteService.deleteDocumentFile(file.uid);
-              }
-            });
-          }}
-          accept={documentType}
-        >
-          {renderUploadButton()}
-        </Upload>
+        <UploadFile
+          disabled={!acceptTypes[fileType]}
+          accept={acceptTypes[fileType]}
+          title="Upload"
+          maxSize={5000}
+          uploadHandler={uploadFile}
+        />
       </Form.Item>
     </Form>
   );

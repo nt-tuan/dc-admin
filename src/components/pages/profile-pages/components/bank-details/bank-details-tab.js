@@ -3,7 +3,7 @@ import { Button, message } from "antd";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { selectCompanyName, selectUsers } from "redux/user/user.duck";
+import { selectUsers } from "redux/user/user.duck";
 import BankDetailView from "./bank-detail-view";
 import { getBankDetails, getCompanyInfo } from "services/bankDetail.service";
 import { PhoneUnverifiedModal } from "components/pages/profile-pages/components/modals/phone-unverified-modal.comp";

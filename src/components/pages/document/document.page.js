@@ -63,15 +63,13 @@ const OrderActiveTab = () => {
     formRef.current.setFieldsValue({
       documentName: targetDoc.name,
       documentType: targetDoc.routeDocumentTypeEnum,
-      sampleFile: targetDoc.url
-        ? [
-            {
-              name: targetDoc.name,
-              url: targetDoc.url,
-              uid: targetDoc.fileName,
-              status: "done"
-            }
-          ]
+      sampleFile: targetDoc
+        ? {
+            name: targetDoc.name,
+            originalName: targetDoc.originalName ?? targetDoc.id,
+            url: targetDoc.url,
+            uid: targetDoc.fileName
+          }
         : undefined
     });
   };

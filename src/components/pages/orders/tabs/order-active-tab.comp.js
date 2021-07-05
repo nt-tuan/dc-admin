@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
 import { OrderService } from "services";
-import { DATETIME_FORMAT, DATE_FORMAT, TIME_FIELDS, TIME_LABELS } from "commons/consts";
+import { TIME_FIELDS, TIME_LABELS } from "commons/consts";
 import { DatetimeUtils } from "utils/date-time.util";
 import { activeOrderMapper } from "commons/mappers";
 

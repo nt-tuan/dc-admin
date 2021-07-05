@@ -7,7 +7,6 @@ import { PW_2_PASSWORD_NOT_THE_SAME_ERR } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { AuthService } from "services/auth.service";
 import { MESSAGES, API_ERRORS } from "commons/consts";
-import PropTypes from "prop-types";
 import { isObject } from "lodash";
 
 LoginSetting.propTypes = {};

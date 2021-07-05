@@ -60,15 +60,6 @@ const AddRoutePage = () => {
   const history = useHistory();
 
   const [isLoadingCreate, setIsloadingCreate] = useState(false);
-  const location = useLocation();
-  const initialValues = React.useMemo(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
-    const category = searchParams.get("category");
-    const type = searchParams.get("type");
-    return { from, to, category, type };
-  }, [location]);
 
   const objTax = {
     taxMain: [

@@ -4,8 +4,6 @@ import { UserManagementBuyerTab } from "./tabs/user-mgt-buyer-tab.comp";
 import { UserManagementSellerTab } from "./tabs/user-mgt-seller-tab.comp";
 import { Helmet } from "react-helmet";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
-import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 
 const TAB_KEYS = {
   BUYER: "BUYER",

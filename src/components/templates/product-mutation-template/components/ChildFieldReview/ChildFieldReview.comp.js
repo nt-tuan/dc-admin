@@ -4,18 +4,6 @@ import React, { memo, useCallback, useMemo, useState } from "react";
 
 import "./ChildFieldReview.comp.scss";
 
-const sample = [
-  {
-    fieldName: "custom child field 1",
-    type: "dropdown",
-    fieldOption: [
-      { label: "child label 1" },
-      { label: "child label 2" },
-      { label: "child label 3" }
-    ]
-  }
-];
-
 const ChildFieldReview = memo(({ onRemove, data }) => {
   const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);
 

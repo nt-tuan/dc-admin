@@ -101,7 +101,7 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 productTemplateImage">
       <div className="d-flex flex-column align-items-center mb-3">
         <div className={`${uploaded.length ? "w-50" : ""}`}>
           <ImgCrop rotate>

@@ -2,7 +2,7 @@ import React, { Fragment, memo, useMemo } from "react";
 import image from "assets/images/aramex-logo.png";
 import { Tabs } from "antd";
 import { OfferDetailsTab, ProductDetailsTab } from "components/molecules";
-import { flatten, has, get } from "lodash";
+import { flatten, get } from "lodash";
 
 export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(

@@ -5,47 +5,6 @@ import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 
-const initialFieldOptions = {
-  label: "",
-  isError: false,
-  childField: [
-    {
-      fieldName: "time of breakfast",
-      type: "dropdown",
-      fieldOption: [{ label: "6AM" }, { label: "7AM" }, { label: "8AM" }]
-    },
-    {
-      fieldName: "note",
-      type: "textbox",
-      fieldOption: [
-        {
-          allowInput: "string",
-          fieldType: "shortText"
-        }
-      ]
-    },
-    {
-      fieldName: "price of breakfast",
-      type: "radio",
-      fieldOption: [
-        { label: "$100 hrhtr erhrtyt erye" },
-        { label: "$200 ggw egewew" },
-        { label: "$300" }
-      ]
-    },
-    {
-      fieldName: "note",
-      type: "textbox",
-      fieldOption: [
-        {
-          allowInput: "string",
-          fieldType: "longText"
-        }
-      ]
-    }
-  ]
-};
-
 const CustomFieldOption = (props) => {
   const { type, openChildField, canAddChildFields, fieldName, form, fieldIndex } = props;
   const [showDeleteConfirmPopup, setShowDeleteConfirmPopup] = useState(false);
