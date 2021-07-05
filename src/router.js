@@ -8,6 +8,7 @@ import { Route } from "react-router-dom";
 import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { RouteConst } from "commons/consts";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const mapStateToProps = ({ settings }) => ({ settings });
 
@@ -73,7 +74,7 @@ const publicRoutes = [
 const privateRoutes = [
   {
     path: RouteConst.HOME_ROUTE,
-    Component: loadable(() => import("components/pages/orders/orders.page")),
+    Component: () => <Redirect to={RouteConst.ORDERS} />,
     exact: true
   },
   {

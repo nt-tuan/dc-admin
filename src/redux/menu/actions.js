@@ -13,22 +13,16 @@ export default actions;
 export async function getUserData() {
   return [
     {
-      title: "Home",
-      key: "Home",
-      icon: "fa fa-home",
-      url: "/"
+      title: "Orders",
+      key: "Orders",
+      icon: "fe fe-layers",
+      url: RouteConst.ORDERS
     },
     {
       title: "Services",
       key: "Services",
       icon: "fe fe-phone-call",
       url: RouteConst.SERVICE
-    },
-    {
-      title: "Orders",
-      key: "Orders",
-      icon: "fe fe-layers",
-      url: RouteConst.ORDERS
     },
     {
       title: "User Management",
