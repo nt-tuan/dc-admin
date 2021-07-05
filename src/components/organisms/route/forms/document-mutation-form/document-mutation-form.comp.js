@@ -56,7 +56,7 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
         name="sampleFile"
         wrapperCol={24}
         labelCol={24}
-        label="Please upload the Certification of Registration of the Company"
+        label="Please upload a sample file of the document."
         rules={[
           {
             validator: (rule, value) => {
