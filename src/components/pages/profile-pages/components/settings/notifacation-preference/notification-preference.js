@@ -20,7 +20,9 @@ function NotificationPreference() {
     const parsedValues = {
       byEmail: values[fieldName].includes(NOTIFICATION_CHANNELS.EMAIL),
       byWeb: values[fieldName].includes(NOTIFICATION_CHANNELS.WEB),
-      byWhatsapp: values[fieldName].includes(NOTIFICATION_CHANNELS.WHATSAPP),
+      byWhatsapp: phoneVerified
+        ? values[fieldName].includes(NOTIFICATION_CHANNELS.WHATSAPP)
+        : false,
       bySms: values[fieldName].includes(NOTIFICATION_CHANNELS.SMS)
     };
     if (parsedValues) {
@@ -103,7 +105,7 @@ function NotificationPreference() {
             byWeb ? NOTIFICATION_CHANNELS.WEB : null,
             byEmail ? NOTIFICATION_CHANNELS.EMAIL : null,
             bySms ? NOTIFICATION_CHANNELS.SMS : null,
-            byWhatsapp ? NOTIFICATION_CHANNELS.WHATSAPP : null
+            byWhatsapp && phoneVerified ? NOTIFICATION_CHANNELS.WHATSAPP : null
           ]
         }}
       >
