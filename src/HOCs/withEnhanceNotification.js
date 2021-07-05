@@ -73,6 +73,12 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_ORDER: {
       return await getTradeRoutePath(subjectId);
     }
+    case NOTIFICATION_TYPE.ADMIN_CONFIRM_EXTERNAL_ORDER: {
+      const params = new URLSearchParams();
+      params.append("isPastOrders", "1");
+      targetRoute = `${RouteConst.ORDERS}?${params.toString()}`;
+      break;
+    }
     default: {
       break;
     }

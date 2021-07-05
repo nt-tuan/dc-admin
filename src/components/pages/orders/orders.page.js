@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { OrderActiveTab } from "./tabs/order-active-tab.comp";
-import { OrderHistoryTab } from "./tabs/order-history-tab.comp";
 import { Helmet } from "react-helmet";
 import { Button } from "antd";
+import { useHistory, useLocation } from "react-router-dom";
+
+import { OrderActiveTab } from "./tabs/order-active-tab.comp";
+import { OrderHistoryTab } from "./tabs/order-history-tab.comp";
+import { getURLParams } from "utils/url.util";
 
 const TAB_KEYS = {
   PAST_ORDERS: "PAST_ORDERS",
@@ -15,7 +18,22 @@ const renderActive = () => <OrderActiveTab />;
 const renderHistory = () => <OrderHistoryTab />;
 
 const OrdersPage = () => {
-  const [tab, setTab] = useState(ACTIVE_ORDERS);
+  const { search } = useLocation();
+  const history = useHistory();
+
+  //Check URL to return Order Tab
+  const isPastOrders = React.useMemo(
+    () => search && getURLParams(search).find((item) => item.isPastOrders),
+    [search]
+  );
+
+  const [tab, setTab] = useState(isPastOrders ? PAST_ORDERS : ACTIVE_ORDERS);
+
+  const handleChangeTab = (key) => {
+    setTab(key);
+    //Reset the search keyword when toggle between tabs
+    if (search) history.replace({ search: "" });
+  };
 
   const renderTabButton = (tabName, key) => {
     return (
@@ -23,7 +41,7 @@ const OrdersPage = () => {
         shape="round"
         type={tab === key ? "primary" : "default"}
         className="mr-2"
-        onClick={() => setTab(key)}
+        onClick={() => handleChangeTab(key)}
       >
         {tabName}
       </Button>
