@@ -5,12 +5,10 @@ import { UploadFile } from "components/atoms/field/upload-file-input";
 
 export const DocumentMutationForm = forwardRef((props, ref) => {
   const [form] = Form.useForm();
-  const [fileType, setFileType] = useState();
   const uploadFile = async (file) => {
     return await RouteService.uploadDocument(file);
   };
   const handleChangeDocumentType = (value) => {
-    setFileType(value);
     form.setFieldsValue({
       sampleFile: null
     });
@@ -51,33 +49,45 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
           ))}
         </Select>
       </Form.Item>
-
-      <Form.Item
-        name="sampleFile"
-        wrapperCol={24}
-        labelCol={24}
-        label="Please upload a sample file of the document."
-        rules={[
-          {
-            validator: (rule, value) => {
-              const documentType = form.getFieldValue("documentType");
-              if (!value) {
-                return Promise.resolve();
-              }
-              return value.name.toLowerCase().endsWith(acceptTypes[documentType].toLowerCase())
-                ? Promise.resolve()
-                : Promise.reject("Please upload a file with type as Document Type");
-            }
-          }
-        ]}
-      >
-        <UploadFile
-          disabled={!acceptTypes[fileType]}
-          accept={acceptTypes[fileType]}
-          title="Upload"
-          maxSize={5000}
-          uploadHandler={uploadFile}
-        />
+      <Form.Item shouldUpdate>
+        {() => {
+          const fileType = form.getFieldValue("documentType");
+          return (
+            <Form.Item
+              name="sampleFile"
+              wrapperCol={{ span: 24 }}
+              labelCol={{ span: 24 }}
+              label="Please upload a sample file of the document."
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload a file with type as Document Type"
+                },
+                {
+                  validator: (rule, value) => {
+                    const documentType = form.getFieldValue("documentType");
+                    if (!value) {
+                      return Promise.resolve();
+                    }
+                    return value.name
+                      .toLowerCase()
+                      .endsWith(acceptTypes[documentType].toLowerCase())
+                      ? Promise.resolve()
+                      : Promise.reject("Please upload a file with type as Document Type");
+                  }
+                }
+              ]}
+            >
+              <UploadFile
+                disabled={!acceptTypes[fileType]}
+                accept={acceptTypes[fileType]}
+                title="Upload"
+                maxSize={5000}
+                uploadHandler={uploadFile}
+              />
+            </Form.Item>
+          );
+        }}
       </Form.Item>
     </Form>
   );

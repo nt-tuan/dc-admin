@@ -19,6 +19,12 @@ const parseDocument = (doc) => ({
   ...doc,
   createdDate: DatetimeUtils.formatDateTime(doc.createdDate)
 });
+const composeDocumentForm = (data) => ({
+  fileName: data.sampleFile?.name,
+  originalFileName: data.sampleFile?.originalName,
+  name: data.documentName,
+  routeDocumentTypeEnum: data.documentType
+});
 const OrderActiveTab = () => {
   //   const [data, setData] = useState([]);
   const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
@@ -64,10 +70,10 @@ const OrderActiveTab = () => {
     formRef.current.setFieldsValue({
       documentName: targetDoc.name,
       documentType: targetDoc.routeDocumentTypeEnum,
-      sampleFile: targetDoc
+      sampleFile: targetDoc?.fileName
         ? {
-            name: targetDoc.name,
-            originalName: targetDoc.originalName ?? targetDoc.id,
+            name: targetDoc.fileName,
+            originalName: targetDoc.originalFileName ?? targetDoc.fileName,
             url: targetDoc.url,
             uid: targetDoc.fileName
           }
@@ -103,12 +109,7 @@ const OrderActiveTab = () => {
       const isValid = await handleFormValidate();
       if (isValid) {
         const data = formRef.current.getFieldsValue();
-        const composedData = {
-          fileName: data?.sampleFile[0]?.uid,
-          name: data.documentName,
-          routeDocumentTypeEnum: data.documentType,
-          originalFileName: data?.sampleFile[0]?.originalName
-        };
+        const composedData = composeDocumentForm(data);
         try {
           await RouteService.createDocument(composedData);
           setShowDocumentMutationModal(false);
@@ -135,12 +136,7 @@ const OrderActiveTab = () => {
       const isValid = await handleFormValidate();
       if (isValid) {
         const data = formRef.current.getFieldsValue();
-        const composedData = {
-          fileName: data.sampleFile && data.sampleFile[0] && data.sampleFile[0].uid,
-          name: data.documentName,
-          routeDocumentTypeEnum: data.documentType,
-          originalFileName: data.sampleFile && data.sampleFile[0] && data.sampleFile[0].originalName
-        };
+        const composedData = composeDocumentForm(data);
         try {
           await RouteService.editDocument(selectedDocument.current.id, composedData);
           setShowDocumentMutationModal(false);
