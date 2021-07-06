@@ -60,10 +60,6 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
               label="Please upload a sample file of the document."
               rules={[
                 {
-                  required: true,
-                  message: "Please upload a file with type as Document Type"
-                },
-                {
                   validator: (rule, value) => {
                     const documentType = form.getFieldValue("documentType");
                     if (!value) {
