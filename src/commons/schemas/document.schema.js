@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { sortAlphabetically } from "utils/sort.util";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 
 const FIELDS = {
   createdDate: "createdDate",
@@ -55,19 +55,6 @@ const getTableSchema = (onEditClick, onDeleteClick, defaultDocuments) => (
       render: (type) => <CustomHighlighter searchText={searchText} value={type || ""} />
     },
     {
-      title: LABELS[FIELDS.url],
-      dataIndex: FIELDS.url,
-      key: FIELDS.url,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.url], b[FIELDS.url]),
-      sortOrder: sortedInfo.columnKey === FIELDS.url && sortedInfo.order,
-      render: (url) =>
-        url ? (
-          <a target="_blank" rel="noopener noreferrer" href={url}>
-            Link
-          </a>
-        ) : null
-    },
-    {
       title: LABELS[FIELDS.countRoutes],
       dataIndex: FIELDS.countRoutes,
       key: FIELDS.countRoutes,
@@ -97,6 +84,16 @@ const getTableSchema = (onEditClick, onDeleteClick, defaultDocuments) => (
             >
               <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
             </Button>
+            <Tooltip title="Download sample document">
+              <Button
+                className="dtc-min-width-50 mr-2"
+                type="primary"
+                disabled={!doc.url}
+                href={doc.url}
+              >
+                <i className="fe fe-download" style={{ verticalAlign: "middle" }} />
+              </Button>
+            </Tooltip>
           </Fragment>
         </React.Fragment>
       )
