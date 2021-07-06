@@ -15,12 +15,16 @@ import { APIError } from "commons/types";
 import { Helmet } from "react-helmet";
 
 const { confirm } = Modal;
-
+const parseDocument = (doc) => ({
+  ...doc,
+  createdDate: DatetimeUtils.formatDateTime(doc.createdDate)
+});
 const OrderActiveTab = () => {
   //   const [data, setData] = useState([]);
   const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
   const [mutationTitle, setMutationTitle] = useState("");
   const [documents, setDocuments] = useState([]);
+  const [defaultDocuments, setDefaultDocuments] = useState([]);
   const [forceRender, setForceRender] = useState(true);
   const formRef = useRef();
   const isEdit = useRef(false);
@@ -41,12 +45,9 @@ const OrderActiveTab = () => {
   const handleGetAllDocs = useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
       const docs = await getAllRecordsFromAPI(RouteService.getDocuments);
-      setDocuments(
-        docs.map((record) => ({
-          ...record,
-          createdDate: DatetimeUtils.formatDateTime(record.createdDate)
-        }))
-      );
+      const defaultDocs = await RouteService.getDefaultDocuments();
+      setDocuments(docs.map(parseDocument));
+      setDefaultDocuments(defaultDocs.map(parseDocument));
     });
   }, []);
 
@@ -186,7 +187,11 @@ const OrderActiveTab = () => {
         showSettings={false}
         loading={false}
         dataSource={documents}
-        schema={DOCUMENT_SCHEMA.getTableSchema(handleEditClick, handleDeleteClick)}
+        schema={DOCUMENT_SCHEMA.getTableSchema(
+          handleEditClick,
+          handleDeleteClick,
+          defaultDocuments
+        )}
       />
       <Modal
         onCancel={handleCancelDocumentMutation}

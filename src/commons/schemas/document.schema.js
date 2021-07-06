@@ -19,12 +19,14 @@ const LABELS = {
 };
 
 // active tab
-const getTableSchema = (onEditClick, onDeleteClick) => (
+const getTableSchema = (onEditClick, onDeleteClick, defaultDocuments) => (
   sortedInfo,
   CustomHighlighter,
   searchText,
   hiddenColumns
 ) => {
+  const isDefaultDocument = (doc) =>
+    defaultDocuments?.some((defaultDoc) => defaultDoc.id === doc.id);
   const columnsSchema = [
     {
       title: LABELS[FIELDS.createdDate],
@@ -80,7 +82,7 @@ const getTableSchema = (onEditClick, onDeleteClick) => (
         <React.Fragment>
           <Fragment>
             <Button
-              disabled={doc.name === "Order Invoice"}
+              disabled={isDefaultDocument(doc)}
               type="primary"
               className="dtc-min-width-50 mr-2"
               onClick={() => onEditClick(doc.id)}
@@ -91,7 +93,7 @@ const getTableSchema = (onEditClick, onDeleteClick) => (
               type="danger"
               className="dtc-min-width-50 mr-2"
               onClick={() => onDeleteClick(doc.id)}
-              disabled={doc.name === "Order Invoice"}
+              disabled={isDefaultDocument(doc)}
             >
               <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
             </Button>
