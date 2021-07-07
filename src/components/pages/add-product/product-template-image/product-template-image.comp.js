@@ -107,7 +107,12 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
           <ImgCrop rotate>
             <Upload
               {...(uploaded.length
-                ? { fileList: uploaded.map((file) => ({ ...file, url: file?.response?.url })) }
+                ? {
+                    fileList: uploaded.map((file) => ({
+                      ...file,
+                      url: file?.url ?? file?.response?.url
+                    }))
+                  }
                 : {})}
               accept=".jpg, .jpeg, .png, .tiff, .gif"
               className="upload-product-image"
