@@ -1,11 +1,7 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Checkbox, Form, Input } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import React from "react";
 import style from "./styles.module.scss";
-import { isScreensize } from "utils/general.util";
-import { API_ERRORS } from "commons/consts/system/api-error-code.const";
-import { CAPTCHA_NOT_FINISH_ERR, LOGIN_WRONG_OVER_3_TIMES_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils";
 import { LoginFormContext, LoginFormProvider } from "./login-form-provider.comp";
 import { LOGIN_SCHEMA } from "./login-form.schema";
@@ -37,17 +33,6 @@ const TermAndPolicy = () => {
 const ErrorMessage = () => {
   const { serverError } = React.useContext(LoginFormContext);
   let Message = createFormErrorComp(serverError);
-  if (serverError === LOGIN_WRONG_OVER_3_TIMES_ERR) {
-    const _serverError = serverError;
-    const splittedArray = _serverError.split("here");
-    Message = (
-      <React.Fragment>
-        {splittedArray[0]}
-        <a>here</a>
-        {splittedArray[1]}
-      </React.Fragment>
-    );
-  }
   return serverError ? <div className="text-danger mb-3">{Message}</div> : null;
 };
 const FormHeader = () => {

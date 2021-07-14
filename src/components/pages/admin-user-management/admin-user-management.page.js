@@ -132,7 +132,7 @@ const AdminUserManagement = () => {
 
   const getSchema = (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => [
     {
-      title: "User Name",
+      title: "Username",
       dataIndex: "username",
       key: "username",
       sorter: (a, b) => sortAlphabetically(a.username, b.username),
