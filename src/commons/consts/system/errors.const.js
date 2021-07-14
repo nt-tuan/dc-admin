@@ -18,7 +18,7 @@ export const USERNAME_ALREADY_USED_ERR =
   "The username already exists. Please use a different username.";
 export const USERNAME_NOT_CONTAIN_WHITESPACE_AND_SPECIAL_CHARACTERS_ERR =
   "Username must not contain whitespaces or special characters";
-export const EMAIL_NOT_VALID_ERR = "The input is not valid E-mail!";
+export const EMAIL_NOT_VALID_ERR = "Please enter a valid E-mail.";
 export const EMAIL_IS_ALREADY_USED_ERR = "The email is already in use";
 //new messages
 export const SERVER_UNKNOWN_ERR =
