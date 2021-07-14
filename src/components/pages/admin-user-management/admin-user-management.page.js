@@ -132,11 +132,19 @@ const AdminUserManagement = () => {
 
   const getSchema = (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => [
     {
+      title: "User Name",
+      dataIndex: "username",
+      key: "username",
+      sorter: (a, b) => sortAlphabetically(a.username, b.username),
+      sortOrder: sortedInfo.columnKey === "username" && sortedInfo.username,
+      render: (username) => <CustomHighlighter searchText={searchText} value={username} />
+    },
+    {
       title: "First Name",
       dataIndex: "firstName",
       key: "firstName",
       sorter: (a, b) => sortAlphabetically(a.firstName, b.firstName),
-      sortOrder: sortedInfo.firstName,
+      sortOrder: sortedInfo.columnKey === "firstName" && sortedInfo.firstName,
       render: (firstName) => <CustomHighlighter searchText={searchText} value={firstName} />
     },
     {
@@ -144,7 +152,7 @@ const AdminUserManagement = () => {
       dataIndex: "lastName",
       key: "lastName",
       sorter: (a, b) => sortAlphabetically(a.lastName, b.lastName),
-      sortOrder: sortedInfo.lastName,
+      sortOrder: sortedInfo.columnKey === "lastName" && sortedInfo.lastName,
       render: (lastName) => <CustomHighlighter searchText={searchText} value={lastName} />
     },
     {
@@ -152,7 +160,7 @@ const AdminUserManagement = () => {
       dataIndex: "email",
       key: "email",
       sorter: (a, b) => sortAlphabetically(a.email, b.email),
-      sortOrder: sortedInfo.email,
+      sortOrder: sortedInfo.columnKey === "email" && sortedInfo.email,
       render: (email) => <CustomHighlighter searchText={searchText} value={email} />
     },
     {
@@ -160,7 +168,7 @@ const AdminUserManagement = () => {
       dataIndex: "status",
       key: "status",
       sorter: (a, b) => sortAlphabetically(a.status, b.status),
-      sortOrder: sortedInfo.status,
+      sortOrder: sortedInfo.columnKey === "status" && sortedInfo.status,
       render: (status) => (
         <CustomHighlighter
           className={`text-uppercase ${

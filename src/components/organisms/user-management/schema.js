@@ -1,5 +1,5 @@
-import { REQUIRED_ERR, EMAIL_NOT_VALID_ERR } from "commons/consts";
-
+import { EMAIL_NOT_VALID_ERR } from "commons/consts";
+export const REQUIRED_ERR = (label) => `Please enter the ${label} of the user`;
 export const USER_SCHEMA = {
   firstName: {
     name: "firstName",
