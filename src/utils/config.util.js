@@ -11,7 +11,9 @@ export const getPlugins = () => {
   const plugins = tryGetJSONValue(pluginsJSON, []);
   return plugins;
 };
-
+export const getCompanyShortName = () => {
+  return window._env_.REACT_COMPANY_SHORT_NAME ?? "";
+};
 export const getAPIEndPoint = () => window._env_.REACT_APP_API_ENDPOINT;
 export const getMarketplaceEndPoint = () => window._env_.REACT_APP_CCC_ENDPOINT;
 export const getBadgeNumbers = () => [

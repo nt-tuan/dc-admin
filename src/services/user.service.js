@@ -86,4 +86,28 @@ export class UserService {
       `${this.#USER_MANAGEMENT_PREFIX}/${companyId}/update/marketplace-credit?isEnable=${isEnable}`
     );
   };
+
+  static getAdminUsers = async (params) => {
+    return backendAPI.get("/users", params);
+  };
+
+  static addAdminUser = async (user) => {
+    return backendAPI.post("/users", user);
+  };
+
+  static disableAdminUser = async (userId) => {
+    return backendAPI.patch(`/users/${userId}/disable`);
+  };
+
+  static enableAdminUser = async (userId) => {
+    return backendAPI.patch(`/users/${userId}/enable`);
+  };
+
+  static editAdminUser = async (userId, payload) => {
+    return backendAPI.put(`/users/${userId}`, payload);
+  };
+
+  static deleteAdminUser = async (userId) => {
+    return backendAPI.delete(`/users/${userId}`);
+  };
 }

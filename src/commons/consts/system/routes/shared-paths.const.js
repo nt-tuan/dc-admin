@@ -5,6 +5,9 @@ export class SharedPaths {
   static get LOGIN_ROUTE() {
     return "/login";
   }
+  static get EMAIL_VERIFICATION() {
+    return "/email-verification";
+  }
   static get REGISTER_ROUTE() {
     return "/register";
   }
@@ -127,5 +130,11 @@ export class SharedPaths {
   }
   static get PROFILE_PAGES() {
     return "/profile/:tabName";
+  }
+  static get ADMIN_USER_MANAGEMENT() {
+    return "/users";
+  }
+  static get ADD_ADMIN_USER() {
+    return "/users/add-user";
   }
 }

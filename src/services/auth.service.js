@@ -26,4 +26,7 @@ export class AuthService {
     await backendAPI.post(ApiPathConsts.CHANGE_PASSWORD, data);
     return true;
   };
+  static verifyConfirmEmailToken = async (data) => {
+    return backendAPI.get(ApiPathConsts.GET_EMAIL_VERIFICATION, data);
+  };
 }

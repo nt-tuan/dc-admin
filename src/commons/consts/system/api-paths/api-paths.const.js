@@ -15,6 +15,10 @@ export class ApiPathConsts {
   static #TWO_FACTOR_AUTH_PREFIX = "/two-factor-auth";
   static #BUSSINESS_DETAIL = "/company-product-rules";
 
+  static get GET_ADMIN_USER() {
+    return `${this.#USER_MANAGEMENT_PREFIX}`;
+  }
+
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
   }
@@ -222,5 +226,8 @@ export class ApiPathConsts {
   }
   static get GET_GOOGLE_AUTHENTICATOR_QRCODE() {
     return `${this.#TWO_FACTOR_AUTH_PREFIX}/google-authenticator`;
+  }
+  static get GET_EMAIL_VERIFICATION() {
+    return `${this.#PUBLIC_PREFIX}/tokens/registration`;
   }
 }

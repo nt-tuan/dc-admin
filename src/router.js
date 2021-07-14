@@ -68,6 +68,13 @@ const publicRoutes = [
     path: RouteConst.LOGIN_ROUTE,
     Component: loadable(() => import("components/pages/login/login.page")),
     exact: true
+  },
+  {
+    path: RouteConst.EMAIL_VERIFICATION,
+    Component: loadable(() =>
+      import("components/pages/email-confirmation/email-confirmation.comp")
+    ),
+    exact: true
   }
 ];
 
@@ -189,6 +196,18 @@ const privateRoutes = [
   {
     path: RouteConst.NOTIFICATION,
     Component: loadable(() => import("components/pages/notification/notification.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.ADMIN_USER_MANAGEMENT,
+    Component: loadable(() =>
+      import("components/pages/admin-user-management/admin-user-management.page")
+    ),
+    exact: true
+  },
+  {
+    path: RouteConst.ADD_ADMIN_USER,
+    Component: loadable(() => import("components/pages/add-admin-user/add-admin-user.page")),
     exact: true
   },
   {

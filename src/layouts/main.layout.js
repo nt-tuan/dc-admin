@@ -18,6 +18,7 @@ const Layouts = {
 
 export const Layout = React.memo(({ children }) => {
   const location = useLocation();
+  const isLogin = location.pathname === RouteConst.LOGIN_ROUTE;
   const user = useSelector(selectCurrentUser);
   const { pathname } = location;
   const isPrivateRoute = useRouteMatch({
@@ -61,6 +62,10 @@ export const Layout = React.memo(({ children }) => {
 
     if (isUserAuthorized === false && isPrivateLayout) {
       return <Redirect to="/login" />;
+    }
+
+    if (!isPrivateLayout && !isLogin) {
+      return Container ? <Container>{children}</Container> : children;
     }
 
     if (isUserAuthorized && isPrivateLayout === false) {

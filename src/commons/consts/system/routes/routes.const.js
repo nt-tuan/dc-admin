@@ -2,7 +2,7 @@ import { SharedPaths } from "./shared-paths.const";
 
 export class RouteConst extends SharedPaths {
   static get PUBLIC_ROUTES() {
-    return [this.LOGIN_ROUTE];
+    return [this.LOGIN_ROUTE, this.EMAIL_VERIFICATION];
   }
 
   static get PRIVATE_ROUTES() {
@@ -41,7 +41,9 @@ export class RouteConst extends SharedPaths {
       this.INTRODUCER_DETAILS,
       this.INTRODUCER_EDIT,
       this.PROFILE_PAGES,
-      this.CREATE_TRADE_ROUTES
+      this.CREATE_TRADE_ROUTES,
+      this.ADMIN_USER_MANAGEMENT,
+      this.ADD_ADMIN_USER
     ];
   }
 
