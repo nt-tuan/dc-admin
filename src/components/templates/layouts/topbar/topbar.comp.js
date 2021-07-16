@@ -7,7 +7,7 @@ import styles from "./topbar-comp.module.scss";
 import { RouteConst } from "commons/consts";
 import { Link } from "react-router-dom";
 import { NotificationPopup } from "components";
-import { getCompanyName } from "utils/config.util";
+import { getAssetURL, getCompanyName } from "utils/config.util";
 
 export const TopBar = () => {
   return (
@@ -16,9 +16,7 @@ export const TopBar = () => {
         <img
           style={{ maxHeight: 60 }}
           className="ml-md-0 ml-4"
-          src={`${process.env.PUBLIC_URL}/images/${
-            isScreensize("sm") ? "logo-notext.png" : "logo.png"
-          }`}
+          src={getAssetURL(`/images/${isScreensize("sm") ? "logo-notext.png" : "logo.png"}`)}
           alt={`${getCompanyName()} logo`}
         />
       </div>

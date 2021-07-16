@@ -9,6 +9,8 @@ import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { RouteConst } from "commons/consts";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Helmet } from "react-helmet";
+import { getAssetURL } from "utils/config.util";
 
 const mapStateToProps = ({ settings }) => ({ settings });
 
@@ -21,6 +23,21 @@ class Router extends React.Component {
     } = this.props;
     return (
       <ConnectedRouter history={history}>
+        <Helmet>
+          <link rel="shortcut icon" href={getAssetURL("/favicon.png")} />
+          <link rel="icon" type="image/x-icon" href={getAssetURL("/favicon/favicon.ico")} />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href={getAssetURL("/favicon/apple-touch-icon.png")}
+          />
+          <link
+            rel="mask-icon"
+            href={getAssetURL("/favicon/safari-pinned-tab.svg")}
+            color="#5bbad5"
+          />
+          <meta name="msapplication-config" content={getAssetURL("/browserconfig.xml")} />
+        </Helmet>
         <MenuDataManager />
         <Layout>
           <Suspense fallback={<Loader />}>

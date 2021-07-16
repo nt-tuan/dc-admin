@@ -150,8 +150,7 @@ export const MenuLeft = () => {
           <Avatar shape="square" className="text-primary" size="large" icon={getRoleIcon(role)} />
         </div>
         <div>
-          {/* <div className={styles.air__menuLeft__user__name}>{user.username}</div> */}
-          <div className={styles.air__menuLeft__user__name}>User</div>
+          <div className={styles.air__menuLeft__user__name}>{user.username}</div>
           <div className={styles.air__menuLeft__user__role}>{user.role}</div>
         </div>
       </Link>

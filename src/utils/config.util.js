@@ -44,3 +44,6 @@ export const getHotjarID = () => {
 export const getHotjarSV = () => {
   return window._env_.REACT_APP_HOTJAR_SV;
 };
+export const getAssetURL = (path) => {
+  return (window._env_?.ASSET_URL ?? "") + (path ?? "");
+};
