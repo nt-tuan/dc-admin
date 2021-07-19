@@ -87,7 +87,10 @@ const BankDetailsTab = () => {
         <hr />
       </div>
 
-      <PhoneUnverifiedModal visible={status === STATUS.PHONE_NOT_VERIFIED} onClose={switchToView} />
+      <PhoneUnverifiedModal
+        visible={status === STATUS.PHONE_NOT_VERIFIED}
+        onCancel={switchToView}
+      />
       <PasscodeRequiredModal
         visible={status === STATUS.PASSCODE_NOT_EXISTED}
         onCancel={switchToView}
