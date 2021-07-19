@@ -104,29 +104,41 @@ const OrderActiveTab = () => {
     }
   };
 
+  const handleCreadDocumentFailed = (error) => {
+    if (error instanceof APIError) {
+      const err = error.errors;
+      message.warning(err[0][1]);
+      return;
+    }
+    if (error?.errMsg === "Document name existed") {
+      formRef.current.setFields([
+        {
+          name: "documentName",
+          errors: ["This document has been created, please create a new one."]
+        }
+      ]);
+      return;
+    }
+    throw error;
+  };
+
   const handleCreateDocument = () => {
     asyncErrorHandlerWrapper(async () => {
       const isValid = await handleFormValidate();
-      if (isValid) {
-        const data = formRef.current.getFieldsValue();
-        const composedData = composeDocumentForm(data);
-        try {
-          await RouteService.createDocument(composedData);
-          setShowDocumentMutationModal(false);
-          if (showCreateDocument && routeState) {
-            history.push(routeState.previousPage);
-          } else {
-            message.success("Created Successfully");
-            handleGetAllDocs();
-          }
-        } catch (error) {
-          if (error instanceof APIError) {
-            const err = error.errors;
-            message.warning(err[0][1]);
-          } else {
-            throw error;
-          }
+      if (!isValid) return;
+      const data = formRef.current.getFieldsValue();
+      const composedData = composeDocumentForm(data);
+      try {
+        await RouteService.createDocument(composedData);
+        setShowDocumentMutationModal(false);
+        if (showCreateDocument && routeState) {
+          history.push(routeState.previousPage);
+          return;
         }
+        message.success("Created Successfully");
+        handleGetAllDocs();
+      } catch (error) {
+        handleCreadDocumentFailed(error);
       }
     });
   };

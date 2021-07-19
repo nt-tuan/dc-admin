@@ -11,9 +11,9 @@ import {
 import PropTypes from "prop-types";
 
 export const ERRORS = {
-  FILE_LIMIT_EXCEED: "FILE_LIMIT_EXCEED",
-  INVALID_FILE_TYPE: "INVALID_FILE_TYPE",
-  UNEXPECTED: "UNEXPECTED"
+  FILE_LIMIT_EXCEED: "File size shouldn’t exceed 5MB",
+  INVALID_FILE_TYPE: (type) => `Please upload ${type} files only`,
+  UNEXPECTED: "Unexpected error. Please try again later"
 };
 const supportedFiles = [
   {
@@ -43,7 +43,7 @@ const getIcon = (file) => {
 };
 
 const UploadedFile = ({ file, disabled, onRemove }) => {
-  if (!file) return <></>;
+  if (!file || !file.name) return <></>;
   return (
     <div className="d-flex align-items-baseline mt-2">
       <a href={file.url} target="_blank" rel="noopener noreferrer">
@@ -83,7 +83,7 @@ export const UploadFile = ({
         return false;
       }
       if (accept && file.name.toLowerCase().match(accept) == null) {
-        onChange({ error: ERRORS.INVALID_FILE_TYPE });
+        onChange({ error: ERRORS.INVALID_FILE_TYPE(accept) });
         return false;
       }
       return true;
@@ -100,7 +100,7 @@ export const UploadFile = ({
         onChange && onChange(uploadedFile);
       } catch (error) {
         onError(error);
-        onChange({ error: ERRORS.ERROR_UNEXPECTED });
+        onChange({ error: ERRORS.UNEXPECTED });
       } finally {
         setLoading(false);
       }

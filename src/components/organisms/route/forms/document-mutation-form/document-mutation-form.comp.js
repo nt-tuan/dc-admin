@@ -65,6 +65,9 @@ export const DocumentMutationForm = forwardRef((props, ref) => {
                     if (!value) {
                       return Promise.resolve();
                     }
+                    if (value.error) {
+                      return Promise.reject(value.error);
+                    }
                     return value.name
                       .toLowerCase()
                       .endsWith(acceptTypes[documentType].toLowerCase())
