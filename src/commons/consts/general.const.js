@@ -158,7 +158,7 @@ export const USER_TABS_NAME = Object.freeze({
 export const MESSAGES = Object.freeze({
   LOGIN_SUCCESS_MSG: `You have successfully logged in to ${getCompanyName()}!`,
   LOGIN_SUCCESS_TITLE: "Logged In",
-  CHANGE_PASSWORD_SUCCESS: "Change Password Success",
+  CHANGE_PASSWORD_SUCCESS: "Your password has been changed successfully.",
   RESET_PASSWORD_SUCCESS: "Reset Password Success",
   PHONE_VERIFICATION_CODE_SENT: "We've sent you a verification code to the above phone number.",
   SEND_VERIFICATION_CODE: "Send Verification Code",
