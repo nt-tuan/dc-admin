@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, message } from "antd";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
@@ -12,11 +12,13 @@ import { selectUsers } from "redux/user/user.duck";
 import PassCodeFormQuestion from "./passcode-form-question";
 import PassCodeForm from "./passcode-form";
 import { PASSCODE_INVALID } from "commons/consts";
+import * as USER_ACTIONS from "redux/user/user.duck";
 
 PassCode.propTypes = {};
 
 function PassCode() {
   const users = useSelector(selectUsers);
+  const dispatch = useDispatch();
   const { existedPasscode: existedPassCode } = users;
   const [answers, setAnswers] = useState();
   const [isShowQuestion, setIsShowQuestion] = useState(!existedPassCode);
@@ -70,6 +72,7 @@ function PassCode() {
         await createPasscode({ newPasscode, answers });
         setAnswers(undefined);
         setIsShowQuestion(false);
+        dispatch({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT });
       } catch (error) {
         if (error.message === "400") {
           message.error(PASSCODE_INVALID);

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node initEnv && react-app-rewired start",
+    "dev": "node initEnv ./.env.dev && react-app-rewired start",
     "qat": "node initEnv ./.env.qat && react-app-rewired start",
     "staging": "node initEnv ./.env.staging && react-app-rewired start",
     "build": "react-app-rewired build",
