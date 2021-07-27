@@ -21,10 +21,16 @@ const USER_STATUSES = {
   DELETED: "DELETED"
 };
 
-const ActionList = ({ user, setUsers, canDelete }) => {
+const USER_STATUS_LABELS = {
+  ACTIVE: "ACTIVE",
+  DISABLED: "INACTIVE",
+  INACTIVE: "PENDING",
+  DELETED: "DELETED"
+};
+
+const ActionList = ({ user, setUsers }) => {
   const [deletingUser, setDeletingUser] = useState();
   const [editingUser, setEditingUser] = useState();
-  console.log(canDelete);
   const updateUserStatus = (updatedData) => (users) => {
     return users.map((currentUser) => {
       if (currentUser.id !== user.id) return currentUser;
@@ -76,7 +82,7 @@ const ActionList = ({ user, setUsers, canDelete }) => {
           <a>Activate</a>
         </Menu.Item>
       )}
-      {user.status === USER_STATUSES.ACTIVE && canDelete && (
+      {user.status === USER_STATUSES.ACTIVE && (
         <Menu.Item key="1" onClick={handleDeactiveUser}>
           <a>Deactivate</a>
         </Menu.Item>
@@ -86,7 +92,7 @@ const ActionList = ({ user, setUsers, canDelete }) => {
           <a>Edit</a>
         </Menu.Item>
       )}
-      {user.status !== USER_STATUSES.DELETED && canDelete && (
+      {user.status !== USER_STATUSES.DELETED && (
         <>
           <Menu.Item key="3" onClick={() => showConfirmModal()}>
             <a style={{ color: "red" }}>Delete</a>
@@ -175,14 +181,14 @@ const AdminUserManagement = () => {
             status === USER_STATUSES.ACTIVE ? "bg-success" : "bg-secondary"
           } text-white py-1 px-2 font-size-12`}
           searchText={searchText}
-          value={status}
+          value={USER_STATUS_LABELS[status]}
         />
       )
     },
     {
       title: "Manage",
       render: (user) => {
-        return <ActionList user={user} setUsers={setUsers} canDelete={users?.length > 1} />;
+        return <ActionList user={user} setUsers={setUsers} />;
       }
     }
   ];
