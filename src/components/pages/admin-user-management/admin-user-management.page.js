@@ -9,7 +9,8 @@ import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { DeleteUserModal } from "./delete-user-modal.comp";
 import { EditUserModal } from "./edit-user-modal.comp";
-
+import style from "./style.module.scss";
+import cl from "classnames";
 const sortAlphabetically = (stringA, stringB) => {
   return stringA.localeCompare(stringB, "en", { sensitivity: "base" });
 };
@@ -177,9 +178,11 @@ const AdminUserManagement = () => {
       sortOrder: sortedInfo.columnKey === "status" && sortedInfo.status,
       render: (status) => (
         <CustomHighlighter
-          className={`text-uppercase ${
-            status === USER_STATUSES.ACTIVE ? "bg-success" : "bg-secondary"
-          } text-white py-1 px-2 font-size-12`}
+          className={cl("text-uppercase text-white py-1 px-2 font-size-12 rounded-lg", {
+            "bg-success": status === USER_STATUSES.ACTIVE,
+            [style["bg-pending"]]: status === USER_STATUSES.INACTIVE,
+            "bg-secondary": status !== USER_STATUSES.ACTIVE && status !== USER_STATUSES.INACTIVE
+          })}
           searchText={searchText}
           value={USER_STATUS_LABELS[status]}
         />
