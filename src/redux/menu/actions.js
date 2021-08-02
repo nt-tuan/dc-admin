@@ -19,12 +19,6 @@ export async function getUserData() {
       url: RouteConst.ORDERS
     },
     {
-      title: "Services",
-      key: "Services",
-      icon: "fe fe-phone-call",
-      url: RouteConst.SERVICE
-    },
-    {
       title: "User Management",
       key: "User Management",
       icon: "fe fe-users",
