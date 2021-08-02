@@ -27,6 +27,7 @@ function LoginSetting() {
             content: MESSAGES.CHANGE_PASSWORD_SUCCESS
           });
         }
+        form.resetFields();
       } catch (errors) {
         if (errors instanceof APIError) {
           if (isObject(errors.errors)) {
