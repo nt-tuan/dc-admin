@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import classNames from "classnames";
-import { MenuLeft, SubBar, TopBar } from "components";
+import { Footer, MenuLeft, SubBar, TopBar } from "components";
 import React from "react";
 import { connect } from "react-redux";
 
@@ -45,9 +45,9 @@ const AuthLayout = ({
           <SubBar />
           <section className="pl-3 pr-3 pt-1">{children}</section>
         </Layout.Content>
-        {/* <Layout.Footer>
-            <Footer />
-          </Layout.Footer> */}
+        <Layout.Footer>
+          <Footer />
+        </Layout.Footer>
       </Layout>
     </Layout>
   );
