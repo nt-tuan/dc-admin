@@ -48,5 +48,5 @@ export const getAssetURL = (path) => {
   return (window._env_?.ASSET_URL ?? "") + (path ?? "");
 };
 export const getTermsAndConditionVersion = () => {
-  return window._env_?.REACT_APP_TERMS_AND_CONDITIONS_VERSION ?? "";
+  return window._env_?.APPLICATION_VERSION ?? "";
 };
