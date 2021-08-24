@@ -3,7 +3,7 @@ import store from "store";
 import { ApiPathConsts } from "commons/consts/system/api-paths/api-paths.const";
 
 export class UserService {
-  static #USER_MANAGEMENT_PREFIX = "/users";
+  static #USER_MANAGEMENT_PREFIX = "/admin/users";
 
   static getCurrentAccount = async () => {
     const localStorageAuth = await store.get("auth");
@@ -92,22 +92,22 @@ export class UserService {
   };
 
   static addAdminUser = async (user) => {
-    return backendAPI.post("/users", user);
+    return backendAPI.post("/admin/users", user);
   };
 
   static disableAdminUser = async (userId) => {
-    return backendAPI.patch(`/users/${userId}/disable`);
+    return backendAPI.patch(`/admin/users/${userId}/disable`);
   };
 
   static enableAdminUser = async (userId) => {
-    return backendAPI.patch(`/users/${userId}/enable`);
+    return backendAPI.patch(`/admin/users/${userId}/enable`);
   };
 
   static editAdminUser = async (userId, payload) => {
-    return backendAPI.put(`/users/${userId}`, payload);
+    return backendAPI.put(`/admin/users/${userId}`, payload);
   };
 
   static deleteAdminUser = async (userId) => {
-    return backendAPI.delete(`/users/${userId}`);
+    return backendAPI.delete(`/admin/users/${userId}`);
   };
 }

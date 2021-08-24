@@ -1,7 +1,7 @@
 import { backendAPI } from "utils/httpAPI.util";
 
 export class RouteService {
-  static #BASE_URL = "/routes";
+  static #BASE_URL = "/admin/routes";
 
   static get = async (id) => {
     const result = await backendAPI.get(`${this.#BASE_URL}/${id}`);
@@ -33,12 +33,12 @@ export class RouteService {
   };
 
   static getCategories = async () => {
-    const result = await backendAPI.get(`${this.#BASE_URL}/categories`);
+    const result = await backendAPI.get(`products/category`);
     return result;
   };
 
   static getTypes = async (categoryId) => {
-    const result = await backendAPI.get(`${this.#BASE_URL}/categories/${categoryId}`);
+    const result = await backendAPI.get(`products/category/${categoryId}`);
     return result;
   };
 

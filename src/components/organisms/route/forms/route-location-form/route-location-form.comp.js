@@ -39,10 +39,8 @@ export const RouteLocationForm = forwardRef(
             });
         } else {
           const categoriesRes = await RouteService.getCategories();
-          const typeRes = await RouteService.getTypes(defaultCategoryId);
 
           setCategories(categoriesRes);
-          setTypes(typeRes);
 
           isEdit &&
             form.setFieldsValue({

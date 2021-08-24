@@ -1,10 +1,11 @@
 export class ApiPathConsts {
   static #PUBLIC_PREFIX = "/public";
   static #USER_PREFIX = "/me";
-  static #USER_MANAGEMENT_PREFIX = "/users";
+  static #USER_MANAGEMENT_PREFIX = "/admin/users";
   static #ORDER_PREFIX = "/orders";
   static #WALLET_PREFIX = "/wallet";
   static #COMPANY_PREFIX = "/companies";
+  static #ADMIN_PRODUCT_PREFIX = "/admin/products";
   static #PRODUCT_PREFIX = "/products";
   static #BRANDS_PREFIX = "/brands";
   static #REBATES_PREFIX = "/rebates";
@@ -90,35 +91,35 @@ export class ApiPathConsts {
   }
 
   static get ADD_PRODUCT() {
-    return `${this.#PRODUCT_PREFIX}`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}`;
   }
 
   static get CHECK_DUPLICATE_PRODUCT() {
-    return `${this.#PRODUCT_PREFIX}/check`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/check`;
   }
 
   static get EDIT_PRODUCT() {
-    return `${this.#PRODUCT_PREFIX}/:id`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/:id`;
   }
 
   static get GET_PRODUCTS() {
-    return `${this.#PRODUCT_PREFIX}/global`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/global`;
   }
 
   static get GET_PRODUCT_CATEGORIES() {
-    return `${this.#PRODUCT_PREFIX}/category`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/category`;
   }
 
   static get GET_PRODUCT_SALE_CHANNEL() {
-    return `${this.#PRODUCT_PREFIX}/salesChannel`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/salesChannel`;
   }
 
   static get DELETE_PRODUCT() {
-    return `${this.#PRODUCT_PREFIX}/:id`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/:id`;
   }
 
   static get GET_PRODUCT_DETAILS() {
-    return `${this.#PRODUCT_PREFIX}/:id`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/:id`;
   }
 
   static get UPLOAD_PRODUCT_IMAGE() {
@@ -130,10 +131,10 @@ export class ApiPathConsts {
   }
 
   static get GET_PRODUCT_NAMES_BY_TYPE_ID() {
-    return `${this.#PRODUCT_PREFIX}/types/:id`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/types/:id`;
   }
   static get ADD_AVAILABLE_PRODUCT() {
-    return `${this.#PRODUCT_PREFIX}/map/:sourceId/:targetId`;
+    return `${this.#ADMIN_PRODUCT_PREFIX}/map/:sourceId/:targetId`;
   }
   static get GET_BUYER_COMPANY() {
     return `${this.#COMPANY_PREFIX}`;
