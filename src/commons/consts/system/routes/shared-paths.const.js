@@ -1,140 +1,140 @@
 export class SharedPaths {
   static get HOME_ROUTE() {
-    return "/";
+    return "/admin/";
   }
   static get LOGIN_ROUTE() {
-    return "/login";
+    return "/admin/login";
   }
   static get EMAIL_VERIFICATION() {
-    return "/email-verification";
+    return "/admin/email-verification";
   }
   static get REGISTER_ROUTE() {
-    return "/register";
+    return "/admin/register";
   }
   static get NOT_FOUND_ERROR_ROUTE() {
-    return "/404";
+    return "/admin/404";
   }
   static get UNEXPECTED_ERROR_ROUTE() {
-    return "/500";
+    return "/admin/500";
   }
   static get ORDERS() {
-    return "/orders";
+    return "/admin/orders";
   }
   static get USER_MANAGEMENT() {
-    return "/user-management";
+    return "/admin/user-management";
   }
   static get NEW_USER() {
-    return "/new-user";
+    return "/admin/new-user";
   }
   static get SERVICE() {
-    return "/services";
+    return "/admin/services";
   }
   static get WALLET() {
-    return "/wallet";
+    return "/admin/wallet";
   }
   static get ACCOUNT_SUMMARY() {
-    return "/account-summary";
+    return "/admin/account-summary";
   }
   static get WITHDRAW_FUND() {
-    return "/withdraw-funds";
+    return "/admin/withdraw-funds";
   }
   static get ADD_FUNDS() {
-    return "/add-funds";
+    return "/admin/add-funds";
   }
   static get ORDER_TRACK_AND_TRACE() {
-    return "/orders/:orderNumber/track-and-trace";
+    return "/admin/orders/:orderNumber/track-and-trace";
   }
   static get PRODUCT_DATABASE() {
-    return "/product-database";
+    return "/admin/product-database";
   }
   static get ADD_PRODUCT() {
-    return "/add-product";
+    return "/admin/add-product";
   }
   static get EDIT_PRODUCT() {
-    return "/edit-product/:id";
+    return "/admin/edit-product/:id";
   }
   static get REBATES() {
-    return "/rebates";
+    return "/admin/rebates";
   }
   static get CREATE_REBATES() {
-    return "/create-rebates";
+    return "/admin/create-rebates";
   }
   static get EDIT_REBATES() {
-    return "/edit-rebates/:id";
+    return "/admin/edit-rebates/:id";
   }
   static get TRADE_ROUTES() {
-    return "/trade-routes";
+    return "/admin/trade-routes";
   }
   static get CREATE_TRADE_ROUTES() {
-    return "/create-trade-routes";
+    return "/admin/create-trade-routes";
   }
   // static get ADD_ROUTE() {
-  //   return "/add-routes";
+  //   return "/admin/add-routes";
   // }
   // static get CREATE_TRADE_ROUTE() {
-  //   return "/create-trade-route";
+  //   return "/admin/create-trade-route";
   // }
   static get EDIT_TRADE_ROUTE() {
-    return "/edit-trade-routes";
+    return "/admin/edit-trade-routes";
   }
   static get ADD_DEFAULT_ROUTE() {
-    return "/add-default-routes";
+    return "/admin/add-default-routes";
   }
   static get EDIT_DEFAULT_ROUTE() {
-    return "/edit-default-routes";
+    return "/admin/edit-default-routes";
   }
   static get DOCUMENT() {
-    return "/documents";
+    return "/admin/documents";
   }
   static get USER_DETAILS() {
-    return "/user-details";
+    return "/admin/user-details";
   }
   static get CREDIT_REQUEST() {
-    return "/credit-request";
+    return "/admin/credit-request";
   }
   static get CREDIT_STATUS() {
-    return "/credit-status";
+    return "/admin/credit-status";
   }
   static get CREDIT_USERS() {
-    return "/credit-users";
+    return "/admin/credit-users";
   }
   static get PURCHASE_ORDER() {
-    return "/purchase-order";
+    return "/admin/purchase-order";
   }
   static get NOTIFICATION() {
-    return "/notifications";
+    return "/admin/notifications";
   }
   static get CREATE_INTRODUCER() {
-    return "/create-introducer";
+    return "/admin/create-introducer";
   }
   static get INTRODUCERS() {
-    return "/introducers";
+    return "/admin/introducers";
   }
   static get INTRODUCER_DETAILS() {
-    return "/introducers/introducer-details";
+    return "/admin/introducers/introducer-details";
   }
   static get INTRODUCER_EDIT() {
-    return "/introducers/introducer-edit";
+    return "/admin/introducers/introducer-edit";
   }
   static get CREATE_TRADE_RULES() {
-    return "/create-trade-rules";
+    return "/admin/create-trade-rules";
   }
   static get TRADE_RULES() {
-    return "/trade-rules";
+    return "/admin/trade-rules";
   }
   static get EDIT_TRADE_RULES() {
-    return "/edit-trader-rules";
+    return "/admin/edit-trader-rules";
   }
   static get REQUESTED_PRODUCTS() {
-    return "/requested-products";
+    return "/admin/requested-products";
   }
   static get PROFILE_PAGES() {
-    return "/profile/:tabName";
+    return "/admin/profile/:tabName";
   }
   static get ADMIN_USER_MANAGEMENT() {
-    return "/users";
+    return "/admin/users";
   }
   static get ADD_ADMIN_USER() {
-    return "/users/add-user";
+    return "/admin/users/add-user";
   }
 }

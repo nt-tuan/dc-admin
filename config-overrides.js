@@ -16,6 +16,12 @@ const setGlobalObject = (value) => (config) => {
   // mutate config as you want
   config.output.globalObject = value;
 
+  config.output = {
+    ...config.output,
+    filename: `admin/${config.output.filename}`,
+    chunkFilename: `admin/${config.output.chunkFilename}`
+  };
+
   // return config so the next function in the pipeline receives it as argument
   return config;
 };
