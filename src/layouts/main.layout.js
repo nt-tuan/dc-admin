@@ -61,7 +61,7 @@ export const Layout = React.memo(({ children }) => {
     }
 
     if (isUserAuthorized === false && isPrivateLayout) {
-      return <Redirect to="/login" />;
+      return <Redirect to={RouteConst.LOGIN_ROUTE} />;
     }
 
     if (!isPrivateLayout && !isLogin) {
@@ -69,7 +69,7 @@ export const Layout = React.memo(({ children }) => {
     }
 
     if (isUserAuthorized && isPrivateLayout === false) {
-      return <Redirect to="/" />;
+      return <Redirect to={RouteConst.HOME_ROUTE} />;
     }
 
     // in other case render previously set layout
