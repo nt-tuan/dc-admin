@@ -1,6 +1,6 @@
 // import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
-import { REQUIRED_ERR } from "commons/consts";
+import { REQUIRED_ERR, RouteConst, USER_TABS_NAME } from "commons/consts";
 import { KYC3_SCHEMA } from "commons/schemas";
 import { LoadingIndicator, RequestWithdrawalForm } from "components";
 import { FormError } from "components/atoms";
@@ -11,7 +11,7 @@ import { useBooleanState } from "hooks/utilHooks";
 import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { areObjectValuesUndefined, getPrefixUrl, toCurrency } from "utils/general.util";
+import { areObjectValuesUndefined, toCurrency } from "utils/general.util";
 import { FinancialService, CompanyService } from "services";
 
 const FIELDS = KYC3_SCHEMA.BANK_DETAILS;
@@ -25,8 +25,6 @@ export const RequestWithdrawalTab = () => {
   const [loading, setLoading] = useState(true);
   const [isEdit] = useBooleanState(false);
   const location = useLocation();
-  const prefixUrl = getPrefixUrl(location.pathname);
-  // let formRefArr = [];
 
   const isDisabled =
     bankDetails.filter((account) => areObjectValuesUndefined(account) === false).length === 0;
@@ -82,7 +80,7 @@ export const RequestWithdrawalTab = () => {
           {isDisabled && (
             <Row className="dtc-br-10 dtc-bg-red px-4 py-3 text-white mb-3">
               Some infomation in your bank account requires review, please
-              <Link to={`/profile/bank-details`} className="mx-1">
+              <Link to={`${RouteConst.PROFILE}/${USER_TABS_NAME.bankDetails}`} className="mx-1">
                 click here{" "}
               </Link>
               to review them before requesting withdrawal

@@ -3,7 +3,7 @@ import React, { memo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { IntroducerActiveTab } from "./tab/introducer-active-tab.comp";
 import { IntroducerInActiveTab } from "./tab/introducer-inactive-tab.comp";
-import { MARKETPLACE_NAME } from "commons/consts";
+import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 import { Redirect } from "react-router-dom";
 import { getCompanyName } from "utils/config.util";
 
@@ -34,7 +34,7 @@ const IntroducersPage = memo(() => {
   };
 
   if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
-    return <Redirect to="/" />;
+    return <Redirect to={RouteConst.HOME_ROUTE} />;
   }
 
   return (

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import * as USER_DUCK from "redux/user/user.duck";
 import styles from "./style.module.scss";
 import { disableLinkClick } from "utils/general.util";
-import { RouteConst } from "commons/consts";
+import { RouteConst, USER_TABS_NAME } from "commons/consts";
 
 const AuthorizedMenuItem = ({ canView, data = {} }) => {
   const { title, iconClassesNames, url } = data;
@@ -80,7 +80,7 @@ const _ProfileMenu = () => {
       menuItems: [
         {
           title: "My Profile",
-          url: `/profile/profile-info`,
+          url: `profile/${USER_TABS_NAME.profileInfo}`,
           iconClassesNames: ["fe fe-user"],
           disabledOnly: true
         },

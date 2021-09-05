@@ -5,7 +5,12 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { validatePasscode } from "services/user-profile.service";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { USER_TABS_NAME, THREE_STEPS_SECURITY_STATUS, PASSCODE_INVALID } from "commons/consts";
+import {
+  USER_TABS_NAME,
+  THREE_STEPS_SECURITY_STATUS,
+  PASSCODE_INVALID,
+  RouteConst
+} from "commons/consts";
 import moment from "moment";
 
 //** Random array positions */
@@ -107,7 +112,7 @@ export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
           />
           <a
             className="text-primary"
-            onClick={() => history.push(`/profile/${USER_TABS_NAME.settings}`)}
+            onClick={() => history.push(`${RouteConst.PROFILE}/${USER_TABS_NAME.settings}`)}
           >
             Forgot passcode?
           </a>

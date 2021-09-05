@@ -10,6 +10,7 @@ import { getMenuData, getPrefixUrl } from "utils/general.util";
 import Scrollbars from "react-custom-scrollbars";
 import styles from "./menu-left-comp.module.scss";
 import { getCompanyName } from "utils/config.util";
+import { RouteConst } from "commons/consts";
 
 const { Sider } = Layout;
 const { selectSetting } = SETTING_DUCK;
@@ -142,7 +143,7 @@ export const MenuLeft = () => {
     return (
       <Link
         title="User Profile"
-        to="/"
+        to={RouteConst.HOME_ROUTE}
         className={classNames(styles.air__menuLeft__user)}
         style={{ cursor: "pointer" }}
       >

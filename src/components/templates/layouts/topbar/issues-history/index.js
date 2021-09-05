@@ -2,6 +2,7 @@ import React from "react";
 import { Menu, Dropdown } from "antd";
 import { Link } from "react-router-dom";
 import styles from "./style.module.scss";
+import { RouteConst } from "commons/consts";
 
 class IssuesHistory extends React.Component {
   render() {
@@ -9,23 +10,23 @@ class IssuesHistory extends React.Component {
       <Menu selectable={false}>
         <Menu.ItemGroup title="Active">
           <Menu.Item>
-            <Link to="/">Project Management</Link>
+            <Link to={RouteConst.HOME_ROUTE}>Project Management</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/">User Interface Development</Link>
+            <Link to={RouteConst.HOME_ROUTE}>User Interface Development</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/">Documentation</Link>
+            <Link to={RouteConst.HOME_ROUTE}>Documentation</Link>
           </Menu.Item>
         </Menu.ItemGroup>
         <Menu.ItemGroup title="Inactive">
           <Menu.Item>
-            <Link to="/">Marketing</Link>
+            <Link to={RouteConst.HOME_ROUTE}>Marketing</Link>
           </Menu.Item>
         </Menu.ItemGroup>
         <Menu.Divider />
         <Menu.Item>
-          <Link to="/">
+          <Link to={RouteConst.HOME_ROUTE}>
             <i className={`${styles.menuIcon} fe fe-settings`} /> Settings
           </Link>
         </Menu.Item>

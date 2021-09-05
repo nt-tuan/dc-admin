@@ -1,3 +1,4 @@
+import { RouteConst } from "commons/consts";
 import React from "react";
 import { Link } from "react-router-dom";
 import style from "../errors-shared-styles.module.scss";
@@ -9,7 +10,7 @@ export const Error404 = () => {
         <div className="font-weight-bold mb-3">Page not found</div>
         <div>This page is deprecated, deleted, or does not exist at all</div>
         <div className="font-weight-bold font-size-70 mb-1">404</div>
-        <Link to="/" className="btn btn-outline-primary dtc-min-width-100">
+        <Link to={`${RouteConst.HOME_ROUTE}`} className="btn btn-outline-primary dtc-min-width-100">
           Go Back
         </Link>
       </div>

@@ -12,7 +12,6 @@ const CUSTOM_TEXT_BREAD = {
 const _SubBar = () => {
   const location = useLocation();
   const path = location.pathname;
-  // const prefixUrl = getPrefixUrl(path);
   const resourceNames = path === "/" ? [" "] : path.split("/");
   const title = removeIdPartFromProductUrl(resourceNames[resourceNames.length - 1]); //use the last breadcrumb as title
   const isTextOnlyPath = (link) => {

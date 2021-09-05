@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Form, Checkbox, Popconfirm, Button, notification } from "antd";
-import { NOTIFICATION_CHANNELS, MESSAGES } from "commons/consts";
+import { NOTIFICATION_CHANNELS, MESSAGES, RouteConst } from "commons/consts";
 import { selectUsers } from "redux/user/user.duck";
 import { USER_TABS_NAME } from "commons/consts";
 import { updateNotificationChannel } from "services/user-profile.service";
@@ -43,7 +43,7 @@ function NotificationPreference() {
 
   const onConfirmPhone = () => {
     history.push({
-      pathname: `/profile/${USER_TABS_NAME.profileInfo}`,
+      pathname: `${RouteConst.PROFILE}/${USER_TABS_NAME.profileInfo}`,
       state: { isVerified: true }
     });
   };

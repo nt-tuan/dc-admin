@@ -1,4 +1,4 @@
-import { MARKETPLACE_NAME } from "commons/consts";
+import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 import { CreateIntroducerForm } from "components/molecules";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet";
@@ -11,7 +11,7 @@ const CreateIntroducerPage = memo(() => {
   const dispatch = useDispatch();
 
   if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
-    return <Redirect to="/" />;
+    return <Redirect to={RouteConst.HOME_ROUTE} />;
   }
   const createIntroducer = (addIntroducerData, { onError }) => {
     dispatch({

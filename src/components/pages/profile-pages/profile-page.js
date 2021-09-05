@@ -31,7 +31,8 @@ const ProfilePage = memo(() => {
   const largestTransactionValue = useSelector(selectLargestTransactionValue);
   const username = useSelector(selectUsername);
   const company = useSelector(selectCompanyName);
-  const roleUrl = getPrefixUrl(location.pathname);
+  const arrSubPaths = location?.pathname?.split("/");
+  const roleUrl = `${arrSubPaths[0]}/${arrSubPaths[1]}/${arrSubPaths[2]}`;
 
   //** Set default when access from URL */
   useEffect(() => {

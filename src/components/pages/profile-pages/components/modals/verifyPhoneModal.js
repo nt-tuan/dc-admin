@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button } from "antd";
-import { USER_TABS_NAME } from "commons/consts";
+import { RouteConst, USER_TABS_NAME } from "commons/consts";
 import { useHistory } from "react-router-dom";
 
 function VerifyPhoneModal({ isShowModalVerifyPhone, setShowModalVerifyPhone }) {
@@ -19,7 +19,7 @@ function VerifyPhoneModal({ isShowModalVerifyPhone, setShowModalVerifyPhone }) {
             type="primary"
             onClick={() => {
               history.push({
-                pathname: `/profile/${USER_TABS_NAME.profileInfo}`,
+                pathname: `${RouteConst.PROFILE}/${USER_TABS_NAME.profileInfo}`,
                 state: { isVerified: true }
               });
             }}

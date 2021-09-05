@@ -1,6 +1,6 @@
 export class SharedPaths {
   static get HOME_ROUTE() {
-    return "/admin/";
+    return "/admin";
   }
   static get LOGIN_ROUTE() {
     return "/admin/login";
@@ -130,6 +130,9 @@ export class SharedPaths {
   }
   static get PROFILE_PAGES() {
     return "/admin/profile/:tabName";
+  }
+  static get PROFILE() {
+    return "/admin/profile";
   }
   static get ADMIN_USER_MANAGEMENT() {
     return "/admin/users";

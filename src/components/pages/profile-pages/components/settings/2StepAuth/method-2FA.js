@@ -1,6 +1,6 @@
 import React from "react";
 import { Radio, Modal, Button, Popconfirm } from "antd";
-import { MESSAGES } from "commons/consts";
+import { MESSAGES, RouteConst } from "commons/consts";
 import { USER_TABS_NAME } from "commons/consts";
 import { useBooleanState } from "hooks/utilHooks";
 import GoogleAuthenticator from "../../modals/GoogleAuthenticator";
@@ -21,7 +21,7 @@ function Method2FA({
   const [showGoogleAuthenticator, toogleGoogleAuthenticator] = useBooleanState(false);
   const onConfirmVerifyPhone = () => {
     history.push({
-      pathname: `/profile/${USER_TABS_NAME.profileInfo}`,
+      pathname: `${RouteConst.PROFILE}/${USER_TABS_NAME.profileInfo}`,
       state: { isVerified: true }
     });
   };

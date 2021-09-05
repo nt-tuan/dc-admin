@@ -1,4 +1,4 @@
-import { MARKETPLACE_NAME } from "commons/consts";
+import { MARKETPLACE_NAME, RouteConst } from "commons/consts";
 import React, { memo, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import qs from "qs";
@@ -47,7 +47,7 @@ const EditIntroducerPage = memo(() => {
   }, []);
 
   if (getCompanyName() !== MARKETPLACE_NAME["8Corners"]) {
-    return <Redirect to="/" />;
+    return <Redirect to={RouteConst.HOME_ROUTE} />;
   }
 
   const updateIntroducerDetailsFormAPI = (data, { onError }) => {
