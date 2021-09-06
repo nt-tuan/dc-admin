@@ -2,6 +2,7 @@
   "name": "distichain-admin-frontend",
   "version": "1.0.0",
   "private": true,
+  "homepage": "/admin",
   "scripts": {
     "start": "node initEnv && react-app-rewired start",
     "dev": "node initEnv ./.env.dev && react-app-rewired start",

@@ -15,28 +15,6 @@ const {
 const setGlobalObject = (value) => (config) => {
   // mutate config as you want
   config.output.globalObject = value;
-
-  config.output = {
-    ...config.output,
-    filename: `admin/${config.output.filename}`,
-    chunkFilename: `admin/${config.output.chunkFilename}`
-  };
-
-  config.plugins.map((plugin, i) => {
-    if (
-      plugin.options && plugin.options.filename && (
-        plugin.options.filename.includes('static/css')
-        || plugin.options.filename.includes('static/media')
-      )
-    ){
-      config.plugins[i].options = {
-        ...config.plugins[i].options,
-        filename : `admin/${plugin.options.filename}`,
-        chunkFilename : `admin/${plugin.options.chunkFilename}`
-      }
-    }
-  });
-
   // return config so the next function in the pipeline receives it as argument
   return config;
 };
