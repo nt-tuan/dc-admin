@@ -8,10 +8,14 @@ networks:
 
 services:
   mp-frontend:
-    image: maven:3-openjdk-11
+    build:
+      context: .
+      dockerfile: Dockerfile-alberto
     networks:
       - distichain
+    ports:
 
+    - 8080:80
 
 volumes:
   db-data:
