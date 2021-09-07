@@ -18,12 +18,15 @@ import { ProductTemplateReview } from "components/organisms";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { ProductService } from "services";
 import { EMPTY_FIELD } from "./constants";
+import { RouteConst } from "commons/consts";
+import { useHistory } from "react-router-dom";
 
 const ALLOW_SKIP = [4, 5];
 
 const { Step } = Steps;
 
 export const ProductMutationTemplate = ({ productDetails, isEditing = false }) => {
+  const history = useHistory();
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});
   const [categories, setCategories] = useState([]);
@@ -54,7 +57,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
       message.success("Product was successfully created!");
     }
     setTimeout(() => {
-      window.location.href = "/product-database";
+      history.push(RouteConst.PRODUCT_DATABASE);
     }, 1000);
   }, [isEditing]);
 
