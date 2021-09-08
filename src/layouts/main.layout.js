@@ -46,6 +46,7 @@ export const Layout = React.memo(({ children }) => {
     const Container = Layouts[getLayout(pathname)];
     const isUserAuthorized = user.authorized;
     const isUserLoading = user.loading;
+    const isAdminUser = user.companyType === "PCC";
     const isPrivateLayout = getLayout() === "private";
     const isErrorPage = getLayout() === "error";
     const isNotFoundPage = getLayout() === "notfound";
@@ -68,8 +69,12 @@ export const Layout = React.memo(({ children }) => {
       return Container ? <Container>{children}</Container> : children;
     }
 
-    if (isUserAuthorized && isPrivateLayout === false) {
+    if (isUserAuthorized && isAdminUser && isPrivateLayout === false) {
       return <Redirect to={RouteConst.HOME_ROUTE} />;
+    }
+
+    if (isPrivateLayout && !isAdminUser) {
+      return <Redirect to={RouteConst.LOGIN_ROUTE} />;
     }
 
     // in other case render previously set layout

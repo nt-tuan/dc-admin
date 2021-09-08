@@ -5,7 +5,7 @@ export class ApiPathConsts {
   static #ORDER_PREFIX = "/orders";
   static #WALLET_PREFIX = "/wallet";
   static #COMPANY_PREFIX = "/companies";
-  static #ADMIN_PRODUCT_PREFIX = "/products";
+  static #ADMIN_PRODUCT_PREFIX = "/admin/products";
   static #PRODUCT_PREFIX = "/products";
   static #BRANDS_PREFIX = "/brands";
   static #REBATES_PREFIX = "/rebates";
@@ -103,7 +103,7 @@ export class ApiPathConsts {
   }
 
   static get GET_PRODUCTS() {
-    return `${this.#ADMIN_PRODUCT_PREFIX}/global`;
+    return `${this.#PRODUCT_PREFIX}/global`;
   }
 
   static get GET_PRODUCT_CATEGORIES() {
