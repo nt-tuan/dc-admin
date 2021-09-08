@@ -1,7 +1,7 @@
 export class ApiPathConsts {
   static #PUBLIC_PREFIX = "/public";
   static #USER_PREFIX = "/me";
-  static #USER_MANAGEMENT_PREFIX = "/users";
+  static #USER_MANAGEMENT_PREFIX = "/admin/users";
   static #ORDER_PREFIX = "/orders";
   static #WALLET_PREFIX = "/wallet";
   static #COMPANY_PREFIX = "/companies";
