@@ -28,20 +28,9 @@ export const RouteLocationForm = forwardRef(
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
-        if (defaultCategoryId === undefined && defaultTypeId === undefined) {
-          const categoriesRes = await RouteService.getCategories();
-
-          setCategories(categoriesRes);
-
-          isEdit &&
-            form.setFieldsValue({
-              category: categoriesRes[0].id
-            });
-        } else {
-          const categoriesRes = await RouteService.getCategories();
-
-          setCategories(categoriesRes);
-
+        if (defaultCategoryId != null) {
+          const typeResponse = await RouteService.getTypes(defaultCategoryId);
+          setTypes(typeResponse);
           isEdit &&
             form.setFieldsValue({
               category: defaultCategoryId,
@@ -58,6 +47,8 @@ export const RouteLocationForm = forwardRef(
         countries.current = countryJson.filter((c) => countriesRes.includes(c.alpha2Code));
         setCountriesFrom(countries.current);
         setCountriesTo(countries.current);
+        const categoriesRes = await RouteService.getCategories();
+        setCategories(categoriesRes);
       });
     }, []);
 
@@ -85,14 +76,6 @@ export const RouteLocationForm = forwardRef(
       onTypeChange && onTypeChange({ categoryId, typeId });
       onTouch && onTouch(true);
     };
-
-    // const onFromChange = (countryCode) => {
-    //   setCountriesTo(countries.current.filter((c) => c.alpha2Code !== countryCode));
-    // };
-
-    // const onToChange = (countryCode) => {
-    //   setCountriesFrom(countries.current.filter((c) => c.alpha2Code !== countryCode));
-    // };
 
     return (
       <Form
