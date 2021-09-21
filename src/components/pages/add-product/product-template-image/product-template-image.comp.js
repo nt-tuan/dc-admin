@@ -96,10 +96,6 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
     });
   };
 
-  const onRemove = () => {
-    setCurrentImg();
-  };
-
   return (
     <div className="p-5 productTemplateImage">
       <div className="d-flex flex-column align-items-center mb-3">
@@ -120,7 +116,6 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
               customRequest={handleUploadImage}
               onChange={onChange}
               beforeUpload={beforeUpload}
-              onRemove={onRemove}
             >
               {renderUploadButton()}
             </Upload>
