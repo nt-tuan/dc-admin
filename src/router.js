@@ -92,6 +92,23 @@ const publicRoutes = [
       import("components/pages/email-confirmation/email-confirmation.comp")
     ),
     exact: true
+  },
+  {
+    path: RouteConst.FORGOT_PASSWORD_ROUTE,
+    Component: loadable(() => import("components/pages/forgot-password/forgot-password.page")),
+    exact: true
+  },
+  {
+    path: RouteConst.FORGOT_PASSWORD_SUCCESS_ROUTE,
+    Component: loadable(() =>
+      import("components/pages/forgot-password-success/forgot-password-success.page")
+    ),
+    exact: true
+  },
+  {
+    path: RouteConst.RESET_PASSWORD_ROUTE,
+    Component: loadable(() => import("components/pages/reset-password/reset-password.page")),
+    exact: true
   }
 ];
 

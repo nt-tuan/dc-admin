@@ -231,4 +231,13 @@ export class ApiPathConsts {
   static get GET_EMAIL_VERIFICATION() {
     return `${this.#PUBLIC_PREFIX}/tokens/registration`;
   }
+  static get SEND_RESET_PW_LINK() {
+    return `${this.#PUBLIC_PREFIX}/sendResetPasswordLink`;
+  }
+  static get RESET_PW() {
+    return `${this.#PUBLIC_PREFIX}/resetPassword`;
+  }
+  static get CHECK_RESET_PW_TOKEN() {
+    return `${this.#PUBLIC_PREFIX}/tokens/password`;
+  }
 }

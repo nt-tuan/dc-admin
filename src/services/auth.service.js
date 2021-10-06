@@ -29,4 +29,16 @@ export class AuthService {
   static verifyConfirmEmailToken = async (data) => {
     return backendAPI.get(ApiPathConsts.GET_EMAIL_VERIFICATION, data);
   };
+  static sendResetPwEmail = async (email) => {
+    await backendAPI.post(`${ApiPathConsts.SEND_RESET_PW_LINK}?email=${email}`);
+    return true;
+  };
+  static resetPassword = async (values) => {
+    await backendAPI.post(ApiPathConsts.RESET_PW, values);
+    return true;
+  };
+  static verifyResetPasswordToken = async (token) => {
+    await backendAPI.get(ApiPathConsts.CHECK_RESET_PW_TOKEN, { token });
+    return true;
+  };
 }

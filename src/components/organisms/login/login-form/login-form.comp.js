@@ -7,7 +7,10 @@ import { LoginFormContext, LoginFormProvider } from "./login-form-provider.comp"
 import { LOGIN_SCHEMA } from "./login-form.schema";
 import { LoginFormFooter } from "./login-form-footer.comp";
 import { withPlugin } from "plugins/with-plugin";
-import { getCompanyName, getMarketplaceEndPoint } from "utils/config.util";
+import { getCompanyName } from "utils/config.util";
+import { RouteConst } from "commons/consts";
+import { Link } from "react-router-dom";
+
 const TermAndPolicy = () => {
   return (
     <div className="mt-2 mb-3">
@@ -96,7 +99,7 @@ const FormContent = () => {
         >
           <Checkbox>{rememberMe.label}</Checkbox>
         </Form.Item>
-        {/* <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link> */}
+        <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
       </div>
       {/* other things */}
       <TermAndPolicy />

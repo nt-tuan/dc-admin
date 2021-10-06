@@ -5,6 +5,15 @@ export class SharedPaths {
   static get LOGIN_ROUTE() {
     return "/admin/login";
   }
+  static get FORGOT_PASSWORD_ROUTE() {
+    return "/admin/forgot-password";
+  }
+  static get FORGOT_PASSWORD_SUCCESS_ROUTE() {
+    return "/admin/forgot-password-success";
+  }
+  static get RESET_PASSWORD_ROUTE() {
+    return "/admin/reset-password";
+  }
   static get EMAIL_VERIFICATION() {
     return "/admin/email-verification";
   }

@@ -281,6 +281,17 @@ body {
       text-align: left;
     }
   }
+  .bg-dark-purple {
+    background-color: $darkpurple;
+    border-color: $darkpurple;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $darkpurple;
+      border-color: $darkpurple;
+    }
+  }
 }
 
 //** Custom Collapse Field for product creation
