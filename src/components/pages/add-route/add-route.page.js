@@ -5,7 +5,7 @@ import {
   DocumentList,
   DocumentRuleTable,
   RouteLocationForm,
-  TaxRulesFrom
+  TradeRouteTaxForm
 } from "components/organisms";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RouteService } from "services";
@@ -18,8 +18,7 @@ import { Helmet } from "react-helmet";
 import {
   typeTAX,
   FIELDS,
-  TAX_RULES_TYPE_MAIN_SCHEMA,
-  TAX_RULES_TYPE_OTHER_SCHEMA
+  TAX_RULES_TYPE_MAIN_SCHEMA
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
 import numeral from "numeral";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
@@ -65,12 +64,6 @@ const AddRoutePage = () => {
     taxMain: [
       {
         data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
-        dataFilter: [FIELDS.name]
-      }
-    ],
-    taxOther: [
-      {
-        data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
         dataFilter: [FIELDS.name]
       }
     ]
@@ -358,7 +351,7 @@ const AddRoutePage = () => {
           onTypeChange={handleTypeChange}
           ref={locationFormRef}
         />
-        <TaxRulesFrom dataSource={dataSourceTax.current} ref={taxRuleForms} />
+        <TradeRouteTaxForm dataSource={dataSourceTax.current} ref={taxRuleForms} />
       </div>
       <Divider />
       <div>

@@ -1,14 +1,10 @@
 import React, { memo, forwardRef, useState, useCallback, useEffect } from "react";
-import { Button, Form, Modal } from "antd";
+import { Form } from "antd";
 import { createFormErrorComp } from "utils/form.util";
-// import { REQUIRED_ERR } from "commons/consts";
-// import { isEmpty } from "lodash/isEmpty";
 import {
   TAX_RULES_MAIN_SCHEMA,
   FIELDS,
-  TAX_RULES_OTHER_SCHEMA,
   TAX_RULES_TYPE_MAIN_SCHEMA,
-  TAX_RULES_TYPE_OTHER_SCHEMA,
   typeTAX,
   RULES_PERCENT_FORMAT,
   RULES_LUMSUM_FORMAT
@@ -16,13 +12,9 @@ import {
 import TaxFormItem from "./tax-form-item.comp";
 import numeral from "numeral";
 
-export const TaxRulesFrom = memo(
-  forwardRef(({ dataSource, isEdit = false }, ref) => {
+export const TradeRouteTaxForm = memo(
+  forwardRef(({ dataSource }, ref) => {
     const [form] = Form.useForm();
-    const [isShowPopup, setShowPopup] = useState({
-      isShow: false,
-      index: null
-    });
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
     const handleSetValueForm = useCallback(
@@ -56,22 +48,6 @@ export const TaxRulesFrom = memo(
       setDataForm({ ...dataSource });
     }, [dataSource, form, handleSetValueForm]);
 
-    const onAddTax = () => {
-      const dataNew = {
-        ...dataForm,
-        taxOther: [
-          ...dataForm.taxOther,
-          {
-            data: [...TAX_RULES_OTHER_SCHEMA],
-            dataFilter: [FIELDS.name]
-          }
-        ]
-      };
-
-      handleSetValueForm(dataNew);
-      setDataForm(dataNew);
-    };
-
     const handleUpdateIntValue = (data, value, field) => {
       if (!data) return;
       return data.map((item) =>
@@ -82,57 +58,6 @@ export const TaxRulesFrom = memo(
             }
           : item
       );
-    };
-
-    const onRemoveTax = (index) => {
-      const dataUpdate = dataForm.taxOther;
-      const objApplyType = TAX_RULES_TYPE_OTHER_SCHEMA[0];
-      let dataNew = dataUpdate.filter((item, idx) => idx !== index);
-
-      if (index === 0 && dataNew.length > 0) {
-        objApplyType.initValue = typeTAX.OTHERS;
-        dataNew[0].data.unshift(objApplyType);
-      }
-      if (index === 0 && dataNew.length === 0) {
-        objApplyType.initValue = 0;
-        dataNew.push({ data: [{ ...objApplyType }], dataFilter: [FIELDS.name] });
-      }
-      const dataS = {
-        ...dataForm,
-        taxOther: dataNew
-      };
-      handleSetValueForm(dataS);
-      setDataForm(dataS);
-    };
-    const togglePopup = (index, bol) => {
-      setShowPopup({
-        isShow: bol,
-        index
-      });
-    };
-
-    //** Handle Remove Tax */
-    const handleRemoveTax = (index) => {
-      const array = dataForm.taxOther[index].data;
-      const arrayFilter = dataForm.taxOther[index].data;
-      let isEmpty = false;
-      const arrayFieldsRequired = [FIELDS.type, FIELDS.taxPayer, FIELDS.lumpSum, FIELDS.percent];
-      if (array) {
-        array
-          .filter((value) => !arrayFilter.includes(value.name))
-          .map((item) => {
-            const fieldName = `taxOther-${item.name}-${index}`;
-            const valueForm = form.getFieldValue(fieldName);
-            if (arrayFieldsRequired.includes(item.name) && valueForm) {
-              isEmpty = true;
-            }
-          });
-      }
-      if (isEmpty) {
-        togglePopup(index, true);
-      } else {
-        onRemoveTax(index);
-      }
     };
 
     //** Handle change field */
@@ -314,59 +239,11 @@ export const TaxRulesFrom = memo(
                 taxMain: [dataNew]
               });
             };
-          case FIELDS.applyTypeOther:
-            return (e) => {
-              const value = e.target.value;
-              const emptyData = [{ data: TAX_RULES_TYPE_OTHER_SCHEMA, dataFilter: [FIELDS.name] }];
-
-              let dataUpdate = dataForm.taxOther;
-
-              if (isEdit) {
-                if (value !== typeTAX.OTHERS) {
-                  dataUpdate = emptyData;
-                } else {
-                  dataUpdate = [
-                    {
-                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
-                      dataFilter: [FIELDS.name]
-                    }
-                  ];
-                }
-              } else {
-                if (value !== typeTAX.OTHERS) {
-                  dataUpdate = emptyData;
-                } else {
-                  dataUpdate = [
-                    {
-                      data: [...TAX_RULES_TYPE_OTHER_SCHEMA, ...TAX_RULES_OTHER_SCHEMA],
-                      dataFilter: [FIELDS.name]
-                    }
-                  ];
-                }
-              }
-              const fieldName = `taxOther-${FIELDS.isLumSum}-${indexField}`;
-              const fieldlumpSum = `taxOther-${FIELDS.lumpSum}-${indexField}`;
-              form.setFieldsValue({ [fieldName]: 1 });
-              form.setFieldsValue({ [fieldlumpSum]: null });
-
-              dataUpdate[0].data.map((item) => {
-                if (item.name === FIELDS.applyTypeOther) {
-                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: value });
-                } else {
-                  form.setFieldsValue({ [`taxOther-${item.name}-${indexField}`]: item.initValue });
-                }
-              });
-
-              setDataForm({
-                ...dataForm,
-                taxOther: dataUpdate
-              });
-            };
           default:
             return () => {};
         }
       },
-      [dataForm, form, isEdit]
+      [dataForm, form]
     );
 
     return (
@@ -377,46 +254,11 @@ export const TaxRulesFrom = memo(
             <TaxFormItem
               key="TaxFormItem"
               handleFieldChange={handleFieldChange}
-              onRemoveTax={handleRemoveTax}
               dataForm={dataForm}
               form={form}
             />
-            <div className="col-12 text-right mt-3">
-              <Button
-                type="primary"
-                disabled={dataForm?.taxOther && dataForm?.taxOther[0]?.data?.length === 1}
-                onClick={onAddTax}
-              >
-                Add another tax/charge
-              </Button>
-            </div>
           </div>
         </Form>
-        {isShowPopup.isShow && (
-          <Modal
-            visible={isShowPopup}
-            onCancel={() => setShowPopup(false)}
-            footer={[
-              <>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    onRemoveTax(isShowPopup.index);
-                    togglePopup(null, false);
-                  }}
-                >
-                  Delete
-                </Button>
-                <Button type="primary" onClick={() => togglePopup(null, false)}>
-                  Cancel
-                </Button>
-              </>
-            ]}
-            title="Confirm Deletion"
-          >
-            Do you want to delete the Tax details ?
-          </Modal>
-        )}
       </div>
     );
   })

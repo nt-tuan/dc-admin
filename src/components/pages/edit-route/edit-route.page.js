@@ -1,12 +1,11 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
 import { DTCSection, LoadingIndicator } from "components/atoms";
-import { createFormErrorComp } from "utils/form.util";
 import {
   DocumentList,
   DocumentRuleTable,
   RouteLocationForm,
-  TaxRulesFrom
+  TradeRouteTaxForm
 } from "components/organisms";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { RouteService } from "services";
@@ -22,12 +21,8 @@ import {
   typeTAX,
   FIELDS,
   TAX_RULES_TYPE_MAIN_SCHEMA,
-  TAX_RULES_TYPE_OTHER_SCHEMA,
   TAX_RULES_MAIN_SCHEMA,
-  TAX_RULES_OTHER_SCHEMA,
-  ID_FIELDS,
-  RULES_LUMSUM_FORMAT,
-  RULES_PERCENT_FORMAT
+  ID_FIELDS
 } from "components/organisms/route/forms/tax-rules/tax.chemas";
 import { Helmet } from "react-helmet";
 
@@ -134,10 +129,7 @@ const EditRoutePage = () => {
       taxOther: []
     };
     let arrayFieldMain = [...TAX_RULES_MAIN_SCHEMA];
-    let arrayFieldOther = [...TAX_RULES_OTHER_SCHEMA];
-    let flagOther = 0;
     let flagMain = 0;
-
     data.map((item) => {
       if (item.applyType === typeTAX.MAIN) {
         flagMain++;
@@ -162,82 +154,10 @@ const EditRoutePage = () => {
         });
         obj.taxMain.push(objField);
       }
-      if (item.applyType === typeTAX.OTHERS) {
-        flagOther++;
-        let objFieldOther = { data: [], dataFilter: [] };
-        if (flagOther === 1) {
-          arrayFieldOther = [
-            ...TAX_RULES_TYPE_OTHER_SCHEMA,
-            ...TAX_RULES_OTHER_SCHEMA,
-            ...ID_FIELDS
-          ];
-        } else {
-          arrayFieldOther = [...TAX_RULES_OTHER_SCHEMA, ...ID_FIELDS];
-        }
-        objFieldOther.data = arrayFieldOther.map((field) => {
-          let initValue = item[field.name];
-          let rulesObj = field.rules;
-          if (field.name === FIELDS.type && item[field.name] !== "OTHER") {
-            objFieldOther.dataFilter = [FIELDS.name];
-          }
-          if (field.name === FIELDS.applyTypeOther) {
-            initValue = item[FIELDS.applyType];
-          }
-          if (field.name === "id") {
-            initValue = item.id;
-          }
-          if (field.name === FIELDS.isLumSum) {
-            initValue = 1;
-            if (item[FIELDS.lumpSum]) {
-              initValue = 0;
-            }
-          }
-          if (field.name === FIELDS.lumpSum) {
-            if (initValue != null) {
-              rulesObj = [
-                {
-                  required: true,
-                  message: createFormErrorComp("Please enter the lump-sum amount")
-                },
-                RULES_LUMSUM_FORMAT
-              ];
-            } else {
-              rulesObj = [];
-            }
-          }
-          if (field.name === FIELDS.percent) {
-            if (initValue != null) {
-              rulesObj = [
-                {
-                  required: true,
-                  message: createFormErrorComp("Please enter the tax percentage")
-                },
-                RULES_PERCENT_FORMAT
-              ];
-            } else {
-              rulesObj = [];
-            }
-          }
-
-          return {
-            ...field,
-            disabled: !initValue && field.name !== FIELDS.name ? true : false,
-            initValue: initValue,
-            rules: rulesObj
-          };
-        });
-        obj.taxOther.push(objFieldOther);
-      }
     });
     if (flagMain === 0) {
       obj.taxMain.push({
         data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
-        dataFilter: [FIELDS.name]
-      });
-    }
-    if (flagOther === 0) {
-      obj.taxOther.push({
-        data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
         dataFilter: [FIELDS.name]
       });
     }
@@ -265,12 +185,6 @@ const EditRoutePage = () => {
           taxMain: [
             {
               data: [...TAX_RULES_TYPE_MAIN_SCHEMA],
-              dataFilter: [FIELDS.name]
-            }
-          ],
-          taxOther: [
-            {
-              data: [...TAX_RULES_TYPE_OTHER_SCHEMA],
               dataFilter: [FIELDS.name]
             }
           ]
@@ -579,7 +493,7 @@ const EditRoutePage = () => {
               isEdit={true}
             />
           </div>
-          <TaxRulesFrom dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
+          <TradeRouteTaxForm dataSource={dataSourceTax} isEdit={true} ref={taxRuleForms} />
           <div className="text-center" hidden={isLoadingLocation === false}>
             <LoadingIndicator />
           </div>

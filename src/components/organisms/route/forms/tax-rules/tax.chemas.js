@@ -25,9 +25,7 @@ const LABELS = {
   [FIELDS.percent]: "Tax% applied to product ",
   [FIELDS.taxPayer]: "To whom should these charges/ tax be applied ?",
   [FIELDS.lumpSum]: "Lump-sum tax applied to the total net invoice (USD)",
-  [FIELDS.applyType]: "Does this Trade Route and Product Category incur any Tax?",
-  [FIELDS.applyTypeOther]:
-    "Is there any other tax that is applicable to the total net invoice amount?"
+  [FIELDS.applyType]: "Does this Trade Route and Product Category incur any Tax?"
 };
 
 export const taxRulesValue = [
@@ -93,25 +91,6 @@ export const TAX_RULES_TYPE_MAIN_SCHEMA = [
   }
 ];
 
-export const TAX_RULES_TYPE_OTHER_SCHEMA = [
-  {
-    label: LABELS[FIELDS.applyTypeOther],
-    name: FIELDS.applyTypeOther,
-    type: "radio",
-    initValue: 0,
-    data: [
-      {
-        value: typeTAX.OTHERS,
-        name: "Yes"
-      },
-      {
-        value: 0,
-        name: "No"
-      }
-    ]
-  }
-];
-
 export const TAX_RULES_MAIN_SCHEMA = [
   {
     label: LABELS[FIELDS.type],
@@ -147,99 +126,6 @@ export const TAX_RULES_MAIN_SCHEMA = [
         message: createFormErrorComp("Please enter the tax name")
       },
       RULES_PERCENT_FORMAT
-    ]
-  }
-];
-
-export const TAX_RULES_OTHER_SCHEMA = [
-  {
-    label: LABELS[FIELDS.taxPayer],
-    name: FIELDS.taxPayer,
-    type: "select",
-    placeholder: "Select Taxpayer",
-    data: [...taxPayerValue],
-    initValue: null,
-    rules: [
-      {
-        required: true,
-        message: createFormErrorComp("Please select the Taxpayer")
-      }
-    ]
-  },
-  {
-    label: LABELS[FIELDS.name],
-    name: FIELDS.name,
-    type: "input",
-    placeholder: "Enter Tax Name",
-    initValue: null,
-    rules: [
-      {
-        required: true,
-        message: createFormErrorComp("Please enter the tax name")
-      },
-      {
-        max: 20,
-        message: createFormErrorComp(MAX_CHARS(LABELS[FIELDS.name], 20))
-      }
-    ]
-  },
-  {
-    label: LABELS[FIELDS.type],
-    name: FIELDS.type,
-    type: "select",
-    placeholder: LABELS[FIELDS.type],
-    data: [...taxTypeOtherValue],
-    initValue: null,
-    rules: [{ required: true, message: createFormErrorComp("Please choose the type of tax") }]
-  },
-  {
-    label: LABELS[FIELDS.isLumSum],
-    name: FIELDS.isLumSum,
-    type: "radio",
-    initValue: 1,
-    classNames: "col-6",
-    data: [
-      {
-        value: 1,
-        name: "Tax% applied to total net invoice"
-      },
-      {
-        value: 0,
-        name: "Lump-sum tax applied to the total net invoice (USD)"
-      }
-    ]
-  },
-  {
-    label: null,
-    name: FIELDS.percent,
-    type: "input",
-    initValue: null,
-    placeholder: "Tax Percentage",
-    disabled: false,
-    or: "OR",
-    rules: [
-      {
-        required: true,
-        message: createFormErrorComp("Please enter the tax percentage")
-      },
-      {
-        ...RULES_PERCENT_FORMAT
-      }
-    ]
-  },
-  {
-    label: null,
-    name: FIELDS.lumpSum,
-    type: "input",
-    placeholder: "Lump-sum amount",
-    initValue: null,
-    disabled: true,
-    or: "",
-    rules: [
-      // {
-      //   pattern: RegexConst.ONLY_NUMBER_REGEX,
-      //   message: createFormErrorComp("TheLump-sum amount number only")
-      // }
     ]
   }
 ];

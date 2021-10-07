@@ -1,8 +1,6 @@
 import React from "react";
-import { Form, Select, Input, Radio, Button } from "antd";
-import { MinusOutlined } from "@ant-design/icons";
+import { Form, Select, Input, Radio } from "antd";
 import { FIELDS } from "./tax.chemas";
-// import { FIELDS } from "./tax.chemas";
 import numeral from "numeral";
 
 const { Option } = Select;
@@ -35,21 +33,6 @@ function TaxFormItem({ handleFieldChange, dataForm, onRemoveTax, form }) {
           }
           return (
             <>
-              {key === "taxOther" && (
-                <div className="col-12 text-right ">
-                  <Button
-                    disabled={dataForm?.taxOther[0]?.data?.length === 1}
-                    // className="position-absolute"
-                    // style={{top:'100%',right:'15px'}}
-                    onClick={() => onRemoveTax(idx)}
-                    type="primary"
-                    danger
-                    size="small"
-                    shape="circle"
-                    icon={<MinusOutlined />}
-                  />
-                </div>
-              )}
               {filteredFields &&
                 filteredFields.map(
                   (
