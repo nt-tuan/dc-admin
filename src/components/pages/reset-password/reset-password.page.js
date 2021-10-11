@@ -11,7 +11,7 @@ import { Loader } from "components";
 
 const ResetPasswordPage = () => {
   const [isTokenValid, setIsTokenValid] = useState(undefined);
-  const [isChecking, setIsChecking] = useState(false);
+  const [isChecking, setIsChecking] = useState(undefined);
   const history = useHistory();
   const location = useLocation();
   const { token } = qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -53,6 +53,7 @@ const ResetPasswordPage = () => {
   };
 
   const renderContent = () => {
+    if (isChecking === undefined) return;
     if (isChecking) return <Loader />;
 
     if (isTokenValid) {
