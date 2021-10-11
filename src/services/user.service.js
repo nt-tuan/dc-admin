@@ -108,6 +108,6 @@ export class UserService {
   };
 
   static deleteAdminUser = async (userId) => {
-    return backendAPI.delete(`/admin/users/${userId}`);
+    return backendAPI.delete(`/users/${userId}`);
   };
 }
