@@ -34,9 +34,7 @@ const ResetPasswordPage = () => {
       });
   }, [location, token]);
 
-  const onResetPassword = ({ values, errorFields }) => {
-    if (errorFields.length > 0) return;
-
+  const onResetPassword = (values) => {
     asyncErrorHandlerWrapper(async () => {
       const parsedValues = {
         newPassword: values.password,

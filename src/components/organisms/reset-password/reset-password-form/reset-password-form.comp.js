@@ -9,13 +9,7 @@ export const ResetPasswordForm = ({ handleSubmit }) => {
   return (
     <div className="mb-5">
       <h3 className="mb-4 mt-1">Reset your password</h3>
-      <Form
-        form={form}
-        layout="vertical"
-        hideRequiredMark
-        onFinishFailed={handleSubmit}
-        className="mb-4"
-      >
+      <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} className="mb-4">
         <Form.Item name={password.name} label={password.label} {...password.options}>
           <Input.Password placeholder={password.placeholder} />
         </Form.Item>
