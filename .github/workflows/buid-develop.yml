@@ -19,6 +19,26 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
+      - run: |
+          git fetch origin develop
+          git checkout develop
+          git checkout ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+          cache: "yarn"
+          
+      - run: yarn
+      - run: yarn test --coverage
+      - run: sed -i "s|$PWD|.|g" ./coverage/lcov.info
+      
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   setup-build-publish:
     name: Setup, Build and Publish
     runs-on: ubuntu-latest
@@ -32,12 +52,6 @@ jobs:
         with:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ secrets.GKE_PROJECT }}
-          
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - run: |-
           gcloud --quiet auth configure-docker europe-west3-docker.pkg.dev

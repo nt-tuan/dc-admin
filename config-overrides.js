@@ -6,7 +6,6 @@ const {
   override,
   fixBabelImports,
   addLessLoader,
-  useEslintRc,
   addDecoratorsLegacy,
   addWebpackModuleRule,
   addWebpackPlugin
@@ -21,7 +20,6 @@ const setGlobalObject = (value) => (config) => {
 
 module.exports = override(
   addDecoratorsLegacy(),
-  useEslintRc(),
   fixBabelImports("import", {
     libraryName: "antd",
     libraryDirectory: "es",
