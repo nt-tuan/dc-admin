@@ -5,6 +5,7 @@
 @import "assets/styles/nprogress/style";
 @import "assets/styles/font-google/font-google.css";
 @import "assets/styles/theme-seller.scss";
+@import "./font-custom.scss";
 
 * {
   a:hover {
@@ -306,4 +307,8 @@ body {
   .ant-form-item-label {
     padding-bottom: 3px;
   }
+}
+
+.text-faded {
+  color: #8c8c8c;
 }

@@ -100,6 +100,18 @@ export async function getUserData() {
           url: RouteConst.ADD_FUNDS
         }
       ]
+    },
+    {
+      title: "Configuration",
+      key: "Configuration",
+      icon: "fe fe-tool",
+      children: [
+        {
+          title: "Feature Toggles",
+          key: "Feature Toggles",
+          url: RouteConst.FEATURE_TOGGLES
+        }
+      ]
     }
   ];
 }

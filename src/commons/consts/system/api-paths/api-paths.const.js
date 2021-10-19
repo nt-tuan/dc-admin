@@ -1,5 +1,6 @@
 export class ApiPathConsts {
   static #PUBLIC_PREFIX = "/public";
+  static #ADMIN_PREFIX = "/admin";
   static #USER_PREFIX = "/me";
   static #USER_MANAGEMENT_PREFIX = "/admin/users";
   static #ORDER_PREFIX = "/orders";
@@ -56,6 +57,14 @@ export class ApiPathConsts {
 
   static get GET_ALL_ACTIVE_ORDERS() {
     return `${this.#ORDER_PREFIX}/active`;
+  }
+
+  static get GET_ALL_FEATURE_FLAGS() {
+    return `${this.#ADMIN_PREFIX}/feature-flag`;
+  }
+
+  static get UPDATE_FEATURE_FLAG() {
+    return `${this.#ADMIN_PREFIX}/feature-flag/:featureId`;
   }
 
   static get GET_ALL_ORDERS_HISTORY() {

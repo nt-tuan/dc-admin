@@ -3,10 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { removeIdPartFromProductUrl } from "utils/general.util";
 
-const TEXT_ONLY_PATH = [];
+const TEXT_ONLY_PATH = ["configuration"];
 
 const CUSTOM_TEXT_BREAD = {
-  "edit-product": "edit-product-template"
+  "edit-product": "edit-product-template",
+  "feature-toggles": "Feature Toggle"
 };
 
 const _SubBar = () => {
@@ -14,6 +15,7 @@ const _SubBar = () => {
   const path = location.pathname;
   const resourceNames = path === "/" ? [" "] : path.split("/");
   const title = removeIdPartFromProductUrl(resourceNames[resourceNames.length - 1]); //use the last breadcrumb as title
+
   const isTextOnlyPath = (link) => {
     const isTextOnly =
       TEXT_ONLY_PATH.some((path) => path.includes(link) || link.includes(path)) && path !== "";
@@ -30,6 +32,9 @@ const _SubBar = () => {
 
   const renderTextonlyBread = (resource) => {
     let breadText = CUSTOM_TEXT_BREAD[resource] || resource;
+    if (TEXT_ONLY_PATH.includes(resource))
+      return <span className="text-capitalize text-faded">{breadText}</span>;
+
     return <span className="text-capitalize">{breadText.replace(/-/g, " ")}</span>;
   };
 

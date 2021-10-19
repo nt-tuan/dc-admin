@@ -23,18 +23,20 @@ describe("renderContent", () => {
         throw new Error();
       });
     });
-    waitFor(() => {
+    await waitFor(() => {
       expect(container.querySelector(".loader")).not.toBeInTheDocument();
       expect(getByText("Sorry, your link has expired.")).toBeInTheDocument();
     });
   });
 
   test("showing reset password form when isTokenValid = true", async () => {
-    const { getByRole, container } = renderResetPasswordPage();
     await act(async () => {
       AuthService.verifyResetPasswordToken = jest.fn(() => Promise.resolve(true));
     });
-    waitFor(() => {
+
+    const { getByRole, container } = renderResetPasswordPage();
+
+    await waitFor(() => {
       expect(container.querySelector(".loader")).not.toBeInTheDocument();
       expect(getByRole("button")).toBeInTheDocument();
     });

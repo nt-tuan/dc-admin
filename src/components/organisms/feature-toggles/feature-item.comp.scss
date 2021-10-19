@@ -1,0 +1,10 @@
+.feature-flag {
+  gap: 16px;
+
+  &__content {
+    &__desc {
+      margin-top: 4px;
+      font-size: 12px;
+    }
+  }
+}

@@ -149,6 +149,11 @@ const privateRoutes = [
     exact: true
   },
   {
+    path: RouteConst.FEATURE_TOGGLES,
+    Component: loadable(() => import("components/pages/feature-toggles/feature-toggles.page")),
+    exact: true
+  },
+  {
     path: RouteConst.ADD_FUNDS,
     Component: loadable(() => import("components/pages/add-funds/add-funds.page")),
     exact: true

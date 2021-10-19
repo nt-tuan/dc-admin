@@ -41,6 +41,9 @@ export class SharedPaths {
   static get WALLET() {
     return "/admin/wallet";
   }
+  static get FEATURE_TOGGLES() {
+    return "/configuration/feature-toggles";
+  }
   static get ACCOUNT_SUMMARY() {
     return "/admin/account-summary";
   }
