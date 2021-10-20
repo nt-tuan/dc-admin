@@ -3,8 +3,7 @@ import { ApiPathConsts } from "commons/consts/system";
 
 export class FeatureFlagService {
   static getAllFeatureFlags = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ALL_FEATURE_FLAGS);
-    return result.content;
+    return await backendAPI.get(ApiPathConsts.GET_ALL_FEATURE_FLAGS);
   };
 
   static updateFeatureFlag = async (featureId, enabled) => {
