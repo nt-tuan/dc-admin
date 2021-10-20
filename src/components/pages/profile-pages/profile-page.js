@@ -4,8 +4,6 @@ import { Helmet } from "react-helmet";
 import { Row, Col } from "antd";
 import { useRouteMatch, useLocation } from "react-router-dom";
 import capitalize from "lodash/capitalize";
-//** Const */
-import { getPrefixUrl } from "utils";
 
 //** Components */
 import ProfileCard from "./profile-card";

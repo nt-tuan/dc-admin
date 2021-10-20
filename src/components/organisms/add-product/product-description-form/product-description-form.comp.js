@@ -23,7 +23,7 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
                 noStyle
                 initialValue={currencyOptions[0].value}
                 name={PROD_DES_FIELDS.currency}
-                key={name}
+                key={fieldName}
               >
                 <Select style={{ width: 100 }}>
                   {currencyOptions.map(({ label, value }) => (
@@ -55,7 +55,7 @@ export const ProductDescriptionForm = forwardRef((props, ref) => {
                 noStyle
                 initialValue={sizeOptions[0].value}
                 name={PROD_DES_FIELDS.sizeMeasurement}
-                key={name}
+                key={fieldName}
               >
                 <Select style={{ width: 100 }}>
                   {sizeOptions.map(({ label, value }) => (

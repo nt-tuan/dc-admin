@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import qs from "qs";
 import { APIError } from "commons/types";
 import uniqBy from "lodash/uniqBy";
@@ -48,6 +48,7 @@ const EditRoutePage = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const isDocListTouched = useRef({});
   const history = useHistory();
+  const location = useLocation();
   const [isLoadingButtonEdit, setIsLoadingButtonEdit] = useState(false);
 
   const taxRuleForms = useRef();

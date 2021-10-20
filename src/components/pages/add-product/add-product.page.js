@@ -4,8 +4,10 @@ import { Helmet } from "react-helmet";
 import { ProductService } from "services";
 import qs from "qs";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const AddProductPage = () => {
+  const location = useLocation();
   const { uid: copyProductId } = qs.parse(location.search, {
     ignoreQueryPrefix: true
   });

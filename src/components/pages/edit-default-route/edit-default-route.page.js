@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst, ACTORS, ACTORS_REVERSE } from "commons/consts";
 import qs from "qs";
 import { Link } from "react-router-dom";
@@ -29,6 +29,7 @@ const EditRoutePage = () => {
   const documentRuleFormsRef = useRef(new Map());
   const isDocListTouched = useRef({});
   const history = useHistory();
+  const location = useLocation();
   const { id: routeId } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   const docIdsFromDetails = useMemo(() => {

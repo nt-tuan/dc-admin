@@ -105,7 +105,7 @@ const parseDataToWalletDashBoard = (data) => {
       icon: <i className="fas fa-folder-minus"></i>,
       title: "Pending Withdrawal",
       value: data.pendingWithdrawal,
-      func: () => history.push(RouteConst.WALLET),
+      func: () => window.history.push(RouteConst.WALLET),
       description: "Funds being processed for your withdrawal request"
     }
   };

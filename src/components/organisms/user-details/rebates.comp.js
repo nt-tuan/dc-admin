@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { RouteConst } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RebatesService } from "services";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 export const RebatesInfo = ({
   data,
@@ -14,6 +15,7 @@ export const RebatesInfo = ({
   getUserDetails,
   isEditable
 }) => {
+  const location = useLocation();
   const handleDeleteRebate = (id) => {
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {

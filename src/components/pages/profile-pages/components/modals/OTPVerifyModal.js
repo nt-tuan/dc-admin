@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Modal, Form, Input, message } from "antd";
 import { useSelector } from "react-redux";
 import { selectUsers } from "redux/user/user.duck";
-import { createFormErrorComp } from "utils";
-import { REQUIRED_ERR, THREE_STEPS_SECURITY_STATUS } from "commons/consts";
+import { THREE_STEPS_SECURITY_STATUS } from "commons/consts";
 import { createOTP, validateOTP } from "services/user-profile.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 

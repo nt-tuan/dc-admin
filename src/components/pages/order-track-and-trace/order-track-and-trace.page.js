@@ -2,7 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import { isScreensize } from "utils/general.util";
 import { OrderTimeline } from "components/organisms";
 import qs from "qs";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { Map, Marker, Polyline, Popup, TileLayer } from "react-leaflet";
 
 const fakedData = {
@@ -43,6 +43,7 @@ const data = [
 
 const OrderTrackAndTrace = () => {
   const [orderDetail, setOrderDetail] = useState();
+  const location = useLocation();
   const { oid: orderId } = qs.parse(location.search, { ignoreQueryPrefix: true });
   const params = useParams();
   const orderNumber = params.orderNumber;

@@ -5,6 +5,7 @@ import { USER_TABS_NAME } from "commons/consts";
 import { useBooleanState } from "hooks/utilHooks";
 import GoogleAuthenticator from "../../modals/GoogleAuthenticator";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 const radioStyle = {
   display: "block",
@@ -19,6 +20,7 @@ function Method2FA({
   handleUpdate
 }) {
   const [showGoogleAuthenticator, toogleGoogleAuthenticator] = useBooleanState(false);
+  const history = useHistory();
   const onConfirmVerifyPhone = () => {
     history.push({
       pathname: `${RouteConst.PROFILE}/${USER_TABS_NAME.profileInfo}`,
