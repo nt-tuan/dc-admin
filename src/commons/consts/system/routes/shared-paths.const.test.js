@@ -29,7 +29,7 @@ test("should return url of UNEXPECTED_ERROR_ROUTE correctly", () => {
 });
 
 test("should return url of FEATURE_TOGGLES correctly", () => {
-  expect(SharedPaths.FEATURE_TOGGLES).toBe("/configuration/feature-toggles");
+  expect(SharedPaths.FEATURE_TOGGLES).toBe("/admin/configuration/feature-toggles");
 });
 
 test("should return url of ORDERS correctly", () => {
