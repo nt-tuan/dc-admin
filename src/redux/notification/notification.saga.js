@@ -9,15 +9,16 @@ let _wsClient;
 const { setStateAction } = NOTIFICATION_DUCK;
 const { selectCurrentUser } = USER_DUCK;
 
-// eslint-disable-next-line
-function* createSocketChannel(wsClient, userId) {
-  return new eventChannel((emit) => {
-    wsClient.subscribe(`/notification/admin/${userId}`, (m) => {
+function createSocketChannel(wsClient, userId) {
+  return eventChannel((emit) => {
+    const subscription = wsClient.subscribe(`/notification/admin/${userId}`, (m) => {
       const message = JSON.parse(m.body);
       emit(message);
     });
 
-    return () => {};
+    return () => {
+      subscription.unsubscribe();
+    };
   });
 }
 
@@ -28,26 +29,48 @@ export function* INIT() {
   if (user.authorized === false) {
     return;
   }
+  const channel = eventChannel((emit) => {
+    _wsClient.onConnect = () => {
+      emit({
+        type: NOTIFICATION_DUCK.LISTEN,
+        payload: {
+          user,
+          wsClient: _wsClient
+        }
+      });
+    };
+    return () => {};
+  });
+
+  if (_wsClient.connected === false) {
+    _wsClient.activate();
+  }
+  try {
+    while (true) {
+      const action = yield take(channel);
+      yield put(action);
+    }
+  } finally {
+    channel.close();
+  }
+}
+
+function* LISTEN(action) {
+  const { user, wsClient } = action.payload;
   const { content, totalPages } = yield getNotificationList(0, 5);
   yield put(setStateAction({ newMessage: user && !user.messageRead }));
   yield put(setStateAction({ popupList: content, totalPages }));
-
-  yield new Promise((r) => {
-    _wsClient.onConnect = (frame) => {
-      r(_wsClient.connected);
-    };
-
-    if (_wsClient.connected === false) {
-      _wsClient.activate();
+  const channel = createSocketChannel(wsClient, user.id);
+  try {
+    while (true) {
+      const payload = yield take(channel);
+      yield put(setStateAction({ newMessage: true }));
+      yield put(setStateAction({ isLoadingNewMessage: true }));
+      yield put({ type: NOTIFICATION_DUCK.PUSH_MESSAGE, payload });
+      yield put(setStateAction({ isLoadingNewMessage: false }));
     }
-  });
-  const channel = yield createSocketChannel(_wsClient, user.id);
-  while (true) {
-    const payload = yield take(channel);
-    yield put(setStateAction({ newMessage: true }));
-    yield put(setStateAction({ isLoadingNewMessage: true }));
-    yield put({ type: NOTIFICATION_DUCK.PUSH_MESSAGE, payload });
-    yield put(setStateAction({ isLoadingNewMessage: false }));
+  } finally {
+    channel.close();
   }
 }
 
@@ -72,12 +95,15 @@ export function* LOAD_MESSAGE({ payload }) {
 }
 
 export function* DEACTIVATE() {
+  _wsClient?.beforeSubscribe && _wsClient.beforeSubscribe();
+  _wsClient?.beforeCreate && _wsClient.beforeCreate();
   yield _wsClient.deactivate();
 }
 
 export default function* rootSaga() {
   yield all([
     takeLatest(NOTIFICATION_DUCK.INIT, INIT),
+    takeLatest(NOTIFICATION_DUCK.LISTEN, LISTEN),
     takeLatest(NOTIFICATION_DUCK.LOAD_MESSAGE, LOAD_MESSAGE),
     takeLatest(NOTIFICATION_DUCK.INIT_PAGINATED_MESSAGE, INIT_PAGINATED_MESSAGE),
     takeLatest(NOTIFICATION_DUCK.DEACTIVATE, DEACTIVATE)
