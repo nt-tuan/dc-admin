@@ -80,7 +80,7 @@ const _ProfileMenu = () => {
       menuItems: [
         {
           title: "My Profile",
-          url: `profile/${USER_TABS_NAME.profileInfo}`,
+          url: `/admin/profile/${USER_TABS_NAME.profileInfo}`,
           iconClassesNames: ["fe fe-user"],
           disabledOnly: true
         },
