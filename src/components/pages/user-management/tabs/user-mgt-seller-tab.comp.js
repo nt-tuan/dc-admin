@@ -100,6 +100,7 @@ export const UserManagementSellerTab = () => {
         companyId={currentCompanyId}
         getListUsers={getListSellers}
         setLoading={setLoading}
+        username={data?.find((comp) => comp.id === currentCompanyId)?.username}
       />
     </Fragment>
   );
