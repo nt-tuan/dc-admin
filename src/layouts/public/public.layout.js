@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./public-layout.module.scss";
 import footer from "assets/images/login/login-right.png";
-import powerdBy from "assets/images/login/powerd-by.png";
 import { getAssetURL } from "utils/config.util";
 
 export const PublicLayout = React.memo(({ children }) => {
@@ -26,11 +25,6 @@ export const PublicLayout = React.memo(({ children }) => {
                 alt="logo"
               />
               {children}
-            </div>
-            <div className={styles.powerBy}>
-              <a href="https://distichain.com/">
-                <img src={powerdBy} alt="logo" />
-              </a>
             </div>
           </div>
           <img
