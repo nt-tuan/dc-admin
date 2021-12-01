@@ -49,7 +49,9 @@ export const ProductCard = React.memo(({ data = {}, renderMenu, disableNavigatio
             </div>
           </div>
           <div className={`${styles["card-footer"]} pt-3`}>
-            <div className={`${styles["card-name"]} text-secondary`}>{name}</div>
+            <div className={`${styles["card-name"]} ${styles["ellipsis-title"]} text-secondary`}>
+              {name}
+            </div>
             <div className={styles["card-more"]}>
               <Dropdown trigger={["click"]} overlay={renderMenu({ data, setLoading, setHidden })}>
                 <Button shape="circle" size="small" type="text" icon={<MoreOutlined />} />

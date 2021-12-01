@@ -70,6 +70,13 @@
     align-items: flex-start;
     line-height: 24px; /* same as icon size */
   }
+  & > .ellipsis-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
   & > .card-more {
     flex: 1 0 15%;
 
