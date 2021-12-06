@@ -15,7 +15,7 @@ const TermAndPolicy = () => {
   return (
     <div className="mt-2 mb-3">
       <div>
-        By Signing up, you agree to {getCompanyName()}’{" "}
+        By Signing up, you agree to {getCompanyName()}’s{" "}
         <a
           href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}
           className={`font-weight-bold ${style.colorBlack} ${style.textUnderline}`}
