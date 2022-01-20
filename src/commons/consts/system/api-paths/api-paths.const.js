@@ -80,7 +80,7 @@ export class ApiPathConsts {
   }
 
   static get GET_WALLET_TRANSACTION_DETAILS() {
-    return `${this.#WALLET_PREFIX}/transactions/details`;
+    return `${this.#WALLET_PREFIX}/transactions`;
   }
 
   static get GET_ACCOUNT_SUMMARY() {

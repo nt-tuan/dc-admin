@@ -17,7 +17,7 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timestamp]: "Time Stamp",
+  [FIELDS.timestamp]: "Timestamp",
   [FIELDS.orderNumber]: "Order Number",
   [FIELDS.productCategory]: "Product Category",
   [FIELDS.productType]: "Product Type",

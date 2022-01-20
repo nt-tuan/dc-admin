@@ -12,7 +12,7 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timestamp]: "Time Stamp",
+  [FIELDS.timestamp]: "Timestamp",
   [FIELDS.categoryName]: "Product Category",
   [FIELDS.typeName]: "Product Type",
   [FIELDS.to]: "To",

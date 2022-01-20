@@ -13,7 +13,7 @@ const parseDataToExcel = (wallet) => {
   }
 
   const columns = {
-    [FIELDS.timestamp]: 0,
+    [FIELDS.createdDate]: 0,
     [FIELDS.type]: 1,
     [FIELDS.number]: 2,
     [FIELDS.productDetails]: 3,
@@ -33,7 +33,7 @@ const parseDataToExcel = (wallet) => {
     let row = new Array(12);
     Object.keys(item).forEach((field) => {
       if (columns[field] !== undefined) {
-        if (field === FIELDS.timestamp) {
+        if (field === FIELDS.createdDate) {
           row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
         } else if (
           [
@@ -61,7 +61,7 @@ const parseDataToGridView = (data) => {
   if (newData && Array.isArray(newData)) {
     newData = newData.map((wallet) => {
       const {
-        timestamp,
+        createdDate,
         blockedFund,
         credit,
         debit,
@@ -74,7 +74,7 @@ const parseDataToGridView = (data) => {
       return {
         ...wallet,
         id: number,
-        timestamp: timestamp ? formatDateTime(timestamp) : "",
+        createdDate: createdDate ? formatDateTime(createdDate) : "",
         blockedFund: toCurrency(blockedFund),
         credit: toCurrency(credit),
         debit: toCurrency(debit),

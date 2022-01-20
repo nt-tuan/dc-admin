@@ -3,9 +3,9 @@ import { getCompanyName } from "utils/config.util";
 import { sortAlphabetically, sortPrice } from "utils/sort.util";
 
 const FIELDS = {
-  timestamp: "timestamp",
+  createdDate: "createdDate",
   type: "type",
-  number: "number",
+  orderNumber: "orderNumber",
   productDetails: "productDetails",
   description: "description",
   currency: "currency",
@@ -18,9 +18,9 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.timestamp]: "Time Stamp",
+  [FIELDS.createdDate]: "Timestamp",
   [FIELDS.type]: "Transaction Type",
-  [FIELDS.number]: "Order Number",
+  [FIELDS.orderNumber]: "Order Number",
   [FIELDS.productDetails]: "Product Details",
   [FIELDS.description]: "Description",
   [FIELDS.currency]: "Currency",
@@ -96,12 +96,14 @@ export const getAccountSummarySchema = () => (
 ) => {
   const columnsSchema = [
     {
-      title: LABELS[FIELDS.timestamp],
-      dataIndex: FIELDS.timestamp,
-      key: FIELDS.timestamp,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.timestamp], b[FIELDS.timestamp]),
-      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
-      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
+      title: LABELS[FIELDS.createdDate],
+      dataIndex: FIELDS.createdDate,
+      key: FIELDS.createdDate,
+      sorter: (a, b) => sortAlphabetically(a[FIELDS.createdDate], b[FIELDS.createdDate]),
+      sortOrder: sortedInfo.columnKey === FIELDS.createdDate && sortedInfo.order,
+      render: (createdDate) => (
+        <CustomHighlighter searchText={searchText} value={createdDate || ""} />
+      )
     },
     {
       title: LABELS[FIELDS.type],
@@ -114,11 +116,11 @@ export const getAccountSummarySchema = () => (
       )
     },
     {
-      title: LABELS[FIELDS.number],
-      dataIndex: FIELDS.number,
-      key: FIELDS.number,
-      sorter: (a, b) => a[FIELDS.number] - b[FIELDS.number],
-      sortOrder: sortedInfo.columnKey === FIELDS.number && sortedInfo.order,
+      title: LABELS[FIELDS.orderNumber],
+      dataIndex: FIELDS.orderNumber,
+      key: FIELDS.orderNumber,
+      sorter: (a, b) => a[FIELDS.orderNumber] - b[FIELDS.orderNumber],
+      sortOrder: sortedInfo.columnKey === FIELDS.orderNumber && sortedInfo.order,
       render: (orderNumber) => <CustomHighlighter searchText={searchText} value={orderNumber} />
     },
     {

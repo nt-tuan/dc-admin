@@ -1,3 +1,4 @@
+import React from "react";
 import { RouteConst } from "commons/consts";
 
 const actions = {

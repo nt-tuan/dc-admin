@@ -7,10 +7,8 @@ export class FinancialService {
     return result;
   };
 
-  static getWalletTransactionDetails = async ({ page, size, sort }) => {
+  static getWalletTransactionDetails = async ({ sort }) => {
     const result = await backendAPI.get(ApiPathConsts.GET_WALLET_TRANSACTION_DETAILS, {
-      page,
-      size,
       sort
     });
     return result;

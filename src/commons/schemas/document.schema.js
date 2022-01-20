@@ -11,7 +11,7 @@ const FIELDS = {
 };
 
 const LABELS = {
-  [FIELDS.createdDate]: "Time Stamp",
+  [FIELDS.createdDate]: "Timestamp",
   [FIELDS.name]: "Document Name",
   [FIELDS.type]: "Document Type",
   [FIELDS.url]: "Document Sample",
