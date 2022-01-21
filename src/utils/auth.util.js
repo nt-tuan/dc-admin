@@ -1,5 +1,5 @@
 import store from "store";
-const AUTH_LOCALSTORAGE_KEY = "auth";
+export const AUTH_LOCALSTORAGE_KEY = "admin-auth";
 
 export const getAccessToken = async () => {
   const authCredential = store.get(AUTH_LOCALSTORAGE_KEY);

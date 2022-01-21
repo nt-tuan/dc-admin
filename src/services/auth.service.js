@@ -1,6 +1,7 @@
 import store from "store";
 import { backendAPI } from "utils/httpAPI.util";
 import { ApiPathConsts } from "commons/consts/system";
+import { AUTH_LOCALSTORAGE_KEY } from "utils";
 
 export class AuthService {
   static login = async (values) => {
@@ -13,12 +14,12 @@ export class AuthService {
       rememberMe: rememberMe,
       createdDate: new Date()
     };
-    await store.set("auth", userCredentials);
+    await store.set(AUTH_LOCALSTORAGE_KEY, userCredentials);
     return true;
   };
 
   static logout = async () => {
-    await store.remove("auth");
+    await store.remove(AUTH_LOCALSTORAGE_KEY);
     backendAPI.removeAuthHeader();
     return true;
   };

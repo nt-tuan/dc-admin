@@ -1,12 +1,13 @@
 import { backendAPI } from "utils/httpAPI.util";
 import store from "store";
 import { ApiPathConsts } from "commons/consts/system/api-paths/api-paths.const";
+import { AUTH_LOCALSTORAGE_KEY } from "utils";
 
 export class UserService {
   static #USER_MANAGEMENT_PREFIX = "/admin/users";
 
   static getCurrentAccount = async () => {
-    const localStorageAuth = await store.get("auth");
+    const localStorageAuth = await store.get(AUTH_LOCALSTORAGE_KEY);
     if (localStorageAuth) {
       const { accessToken } = localStorageAuth;
       backendAPI.setAuthHeader(accessToken);
