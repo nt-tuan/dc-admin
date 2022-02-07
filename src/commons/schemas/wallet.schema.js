@@ -23,13 +23,8 @@ const LABELS = {
   [FIELDS.orderNumber]: "Order Number",
   [FIELDS.productDetails]: "Product Details",
   [FIELDS.description]: "Description",
-  [FIELDS.currency]: "Currency",
-  [FIELDS.blockedFund]: "Blocked",
   [FIELDS.credit]: "Credit",
-  [FIELDS.debit]: "Debit",
-  [FIELDS.totalBlockFund]: "Total Blocked",
-  [FIELDS.availableBalance]: "Available Balance",
-  [FIELDS.currentBalance]: "Current Total Balance"
+  [FIELDS.debit]: "Debit"
 };
 
 const BANK_DETAILS = {
@@ -142,22 +137,6 @@ export const getAccountSummarySchema = () => (
       render: (description) => <CustomHighlighter searchText={searchText} value={description} />
     },
     {
-      title: LABELS[FIELDS.currency],
-      dataIndex: FIELDS.currency,
-      key: FIELDS.currency,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.currency], b[FIELDS.currency]),
-      sortOrder: sortedInfo.columnKey === FIELDS.currency && sortedInfo.order,
-      render: (currency) => <CustomHighlighter searchText={searchText} value={currency} />
-    },
-    {
-      title: LABELS[FIELDS.blockedFund],
-      dataIndex: FIELDS.blockedFund,
-      key: FIELDS.blockedFund,
-      sorter: (a, b) => sortPrice(a[FIELDS.blockedFund], b[FIELDS.blockedFund]),
-      sortOrder: sortedInfo.columnKey === FIELDS.blockedFund && sortedInfo.order,
-      render: (blockedFund) => <CustomHighlighter searchText={searchText} value={blockedFund} />
-    },
-    {
       title: LABELS[FIELDS.credit],
       dataIndex: FIELDS.credit,
       key: FIELDS.credit,
@@ -172,36 +151,6 @@ export const getAccountSummarySchema = () => (
       sorter: (a, b) => sortPrice(a[FIELDS.debit], b[FIELDS.debit]),
       sortOrder: sortedInfo.columnKey === FIELDS.debit && sortedInfo.order,
       render: (debit) => <CustomHighlighter searchText={searchText} value={debit} />
-    },
-    {
-      title: LABELS[FIELDS.totalBlockFund],
-      dataIndex: FIELDS.totalBlockFund,
-      key: FIELDS.totalBlockFund,
-      sorter: (a, b) => sortPrice(a[FIELDS.totalBlockFund], b[FIELDS.totalBlockFund]),
-      sortOrder: sortedInfo.columnKey === FIELDS.totalBlockFund && sortedInfo.order,
-      render: (totalBlockFund) => (
-        <CustomHighlighter searchText={searchText} value={totalBlockFund} />
-      )
-    },
-    {
-      title: LABELS[FIELDS.availableBalance],
-      dataIndex: FIELDS.availableBalance,
-      key: FIELDS.availableBalance,
-      sorter: (a, b) => sortPrice(a[FIELDS.availableBalance], b[FIELDS.availableBalance]),
-      sortOrder: sortedInfo.columnKey === FIELDS.availableBalance && sortedInfo.order,
-      render: (availableBalance) => (
-        <CustomHighlighter searchText={searchText} value={availableBalance} />
-      )
-    },
-    {
-      title: LABELS[FIELDS.currentBalance],
-      dataIndex: FIELDS.currentBalance,
-      key: FIELDS.currentBalance,
-      sorter: (a, b) => sortPrice(a[FIELDS.currentBalance], b[FIELDS.currentBalance]),
-      sortOrder: sortedInfo.columnKey === FIELDS.currentBalance && sortedInfo.order,
-      render: (currentBalance) => (
-        <CustomHighlighter searchText={searchText} value={currentBalance} />
-      )
     }
   ];
   return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));

@@ -60,27 +60,13 @@ const parseDataToGridView = (data) => {
   let newData = [...data];
   if (newData && Array.isArray(newData)) {
     newData = newData.map((wallet) => {
-      const {
-        createdDate,
-        blockedFund,
-        credit,
-        debit,
-        totalBlockFund,
-        availableBalance,
-        currentBalance,
-        type,
-        number
-      } = wallet;
+      const { createdDate, credit, debit, type, number } = wallet;
       return {
         ...wallet,
         id: number,
         createdDate: createdDate ? formatDateTime(createdDate) : "",
-        blockedFund: toCurrency(blockedFund),
         credit: toCurrency(credit),
         debit: toCurrency(debit),
-        totalBlockFund: toCurrency(totalBlockFund),
-        availableBalance: toCurrency(availableBalance),
-        currentBalance: toCurrency(currentBalance),
         description: WALLET_DESCRIPTIONS[type],
         type: WALLET_TRANSACTION_TYPE_LABELS[type]
       };
