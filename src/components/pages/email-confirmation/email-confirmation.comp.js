@@ -33,12 +33,12 @@ const EmailConfirmationPage = () => {
   const [isTokenValid, setIsTokenValid] = useState(undefined);
   const [isChecking, setIsChecking] = useState(false);
   const location = useLocation();
-  const { token } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const { userId, token } = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       setIsChecking(true);
-      setIsTokenValid(token ? await AuthService.verifyConfirmEmailToken({ token }) : false);
+      setIsTokenValid(token ? await AuthService.verifyConfirmEmailToken({ userId, token }) : false);
       setIsChecking(false);
     });
   }, [location, token]);
