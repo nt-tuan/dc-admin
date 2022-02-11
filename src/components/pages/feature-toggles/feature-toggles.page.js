@@ -1,11 +1,12 @@
-import { FeatureToggles } from "components/organisms/feature-toggles";
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+
 import { FeatureFlagService } from "services/feature-flag.service";
+import { FeatureToggles } from "components/organisms/feature-toggles";
+import { Helmet } from "react-helmet";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const FeatureTogglesPage = () => {
-  const [featureFlags, setFeatureFlags] = useState([]);
+  const [featureFlags, setFeatureFlags] = useState();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {

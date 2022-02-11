@@ -1,27 +1,28 @@
-import React from "react";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import LoginSetting from "./login";
 //** Components */
 import NotificationPreference from "./notifacation-preference";
-import LoginSetting from "./login";
-import TwoStepAuthentication from "./2StepAuth";
-import PassCode from "./passcode";
-
+import PassCode from "components/auth/passcode";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import { TwoStepAuthentication } from "./two-step-authentication";
+import Typography from "@mui/material/Typography";
 function SettingTab() {
   return (
-    <div className="row">
-      <div className="col-lg-12 col-md-12 col-sm-12">
-        <div className="d-flex align-items-center mt-2 mb-3">
-          <h3 className="text-dark mb-0 mr-2 ">Settings</h3>
-          <hr />
-        </div>
+    <Box>
+      <Typography variant="h3">Settings</Typography>
+      <Divider sx={{ mb: 6, mt: 2 }} />
+      <Stack direction="column" spacing={6}>
         <NotificationPreference />
-        <hr />
+        <Divider />
         <LoginSetting />
-        <hr />
+        <Divider />
         <TwoStepAuthentication />
-        <hr />
+        <Divider />
         <PassCode />
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 }
 

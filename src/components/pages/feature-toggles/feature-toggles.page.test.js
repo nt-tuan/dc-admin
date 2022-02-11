@@ -1,11 +1,18 @@
-import React from "react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 
-import { render, fireEvent, act, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import FeatureTogglesPage from "./feature-toggles.page";
 import { FeatureFlagService } from "services/feature-flag.service";
+import FeatureTogglesPage from "./feature-toggles.page";
+import React from "react";
+import { useSnackbar } from "notistack";
 
 jest.mock("utils/config.util");
+jest.mock("notistack");
+const enqueueSnackbar = jest.fn();
+beforeEach(() => {
+  useSnackbar.mockReturnValue({
+    enqueueSnackbar
+  });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -26,21 +33,22 @@ const mockUpdateFeatureFlag = (actualValue) => {
   FeatureFlagService.updateFeatureFlag = jest.fn(actualValue);
 };
 
-const caseSwitchToggle = async (firstFeatureName, toggleText, toggleStatusMessage) => {
+const caseSwitchToggle = async (firstFeatureName, toggleState, toggleStatusMessage) => {
   const { getByText, getByRole } = render(<FeatureTogglesPage />);
 
   await waitFor(() => {
     expect(getByText(firstFeatureName)).toBeInTheDocument();
   });
 
+  const button = getByRole("checkbox");
+
   await act(async () => {
-    const button = getByRole("switch");
     fireEvent.click(button);
   });
 
   await waitFor(() => {
-    expect(getByText(toggleText)).toBeInTheDocument();
-    expect(getByText(toggleStatusMessage)).toBeInTheDocument();
+    expect(button.checked).toEqual(toggleState);
+    expect(enqueueSnackbar).toBeCalledWith(toggleStatusMessage, expect.anything());
   });
 };
 
@@ -48,7 +56,11 @@ test("No item in the list if server error", async () => {
   const { queryByText } = render(<FeatureTogglesPage />);
 
   await waitFor(() => {
-    expect(queryByText("No Data")).toBeInTheDocument();
+    expect(
+      queryByText(
+        "You can control the specific features in your marketplace by providing appropriate selection."
+      )
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -60,7 +72,7 @@ test("Toggle button change to ON if update success", async () => {
 
   await caseSwitchToggle(
     featureFlag.name,
-    "ON",
+    true,
     `${featureFlag.name} has been successfully enabled in your Marketplace`
   );
 });
@@ -73,7 +85,7 @@ test("Toggle button change to OFF if update success", async () => {
 
   await caseSwitchToggle(
     featureFlag.name,
-    "OFF",
+    false,
     `${featureFlag.name} has been successfully disabled in your Marketplace`
   );
 });
@@ -88,7 +100,7 @@ test("Toggle button not change if update failed", async () => {
 
   await caseSwitchToggle(
     featureFlag.name,
-    "OFF",
+    false,
     `${featureFlag.name} has been failed to enable in your Marketplace`
   );
 });

@@ -3,9 +3,9 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { DTCHighlighter } from "../dtc-highlighter/dtc-highlighter.comp";
-import styles from "./styles.module.scss";
 import { LoadingIndicator } from "../loading-indicator/loading-indicator.comp";
 
+const styles = {};
 export const DTCTable = React.memo(
   ({
     rowSelection = null,

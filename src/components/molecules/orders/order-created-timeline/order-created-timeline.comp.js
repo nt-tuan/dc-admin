@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import { TimePoint } from "components/atoms";
+
 import { Avatar } from "antd";
+import { TimePoint } from "components/atoms";
 import { toCurrency } from "utils/general.util";
 
 export const OrderCreatedTimeline = ({ timezone, orderDetail }) => {

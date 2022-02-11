@@ -7,7 +7,7 @@ import { ResetPasswordForm } from "components/organisms/reset-password/reset-pas
 import { AuthService } from "services/auth.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { notification } from "antd";
-import { Loader } from "components";
+import { Loader } from "components/commons";
 
 const ResetPasswordPage = () => {
   const [isTokenValid, setIsTokenValid] = useState(undefined);
@@ -51,7 +51,7 @@ const ResetPasswordPage = () => {
   };
 
   const renderContent = () => {
-    if (isChecking === undefined) return;
+    if (isChecking === undefined) return null;
     if (isChecking) return <Loader />;
 
     if (isTokenValid) {

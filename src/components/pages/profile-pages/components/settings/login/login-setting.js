@@ -1,19 +1,34 @@
-import React from "react";
-import { APIError } from "commons/types";
-import { Form, Button, message, Input } from "antd";
-import { createFormErrorComp } from "utils";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { AuthService } from "services/auth.service";
-import { MESSAGES, API_ERRORS } from "commons/consts";
-import { isObject } from "lodash";
-import { passwordSchema } from "utils/schema.util";
+import * as Yup from "yup";
 
-LoginSetting.propTypes = {};
+import { API_ERRORS, MESSAGES } from "commons/consts";
+import { Form, Formik } from "formik";
+import { confirmPaswordValidationSchema, passwordValidationSchema } from "utils/schema.util";
+
+import { APIError } from "commons/types";
+import { AuthService } from "services/auth.service";
+import Button from "@mui/material/Button";
+import { PasswordField } from "components/commons/fields/password-field/password-field.comp";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { isObject } from "lodash";
+import { useSnackbar } from "notistack";
+
+const validationSchema = Yup.object({
+  currentPassword: passwordValidationSchema,
+  password: passwordValidationSchema,
+  confirmPassword: confirmPaswordValidationSchema
+});
+const initialValues = {
+  currentPassword: "",
+  password: "",
+  confirmPassword: ""
+};
 
 function LoginSetting() {
-  const [form] = Form.useForm();
-
-  const onFinish = (values) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSubmit = (values, { resetForm, setFieldError }) => {
     asyncErrorHandlerWrapper(async () => {
       try {
         const params = {
@@ -22,26 +37,19 @@ function LoginSetting() {
         };
         const res = await AuthService.changePassword(params);
         if (res) {
-          message.success({
-            content: MESSAGES.CHANGE_PASSWORD_SUCCESS
+          enqueueSnackbar(MESSAGES.CHANGE_PASSWORD_SUCCESS, {
+            variant: "success"
           });
+          resetForm(initialValues);
         }
-        form.resetFields();
       } catch (errors) {
         if (errors instanceof APIError) {
           if (isObject(errors.errors)) {
-            const errorFields = errors.errors.map((error) => {
+            errors.errors.forEach((error) => {
               const errorField = error[0];
               const errorCode = error[1];
-              // message.error({
-              //   content: API_ERRORS[errorCode]
-              // });
-              return {
-                name: errorField,
-                errors: [API_ERRORS[errorCode]]
-              };
+              setFieldError(errorField, API_ERRORS[errorCode]);
             });
-            form.setFields(errorFields);
           }
           return;
         }
@@ -50,57 +58,45 @@ function LoginSetting() {
     });
   };
 
-  const RESET_PW_SCHEMA = {
-    ...passwordSchema(form),
-    currentPassword: {
-      name: "currentPassword",
-      label: "Current Password",
-      placeholder: "Current Password",
-      className: "pb-1 mb-2",
-      options: {
-        rules: [
-          { required: true, message: createFormErrorComp("Please input your Current Password") }
-        ]
-      }
-    }
-  };
-
   return (
     <div>
-      <h5>Login Settings</h5>
-      <Form layout="vertical" onFinish={onFinish} className="mb-4" form={form}>
-        <Form.Item
-          name={RESET_PW_SCHEMA.currentPassword.name}
-          label={RESET_PW_SCHEMA.currentPassword.label}
-          rules={RESET_PW_SCHEMA.currentPassword.options.rules}
-        >
-          <Input.Password placeholder={RESET_PW_SCHEMA.currentPassword.placeholder} />
-        </Form.Item>
-        <Form.Item
-          name={RESET_PW_SCHEMA.password.name}
-          rules={RESET_PW_SCHEMA.password.options.rules}
-          label={RESET_PW_SCHEMA.password.label}
-        >
-          <Input.Password placeholder={RESET_PW_SCHEMA.password.placeholder} />
-        </Form.Item>
-        <Form.Item
-          name={RESET_PW_SCHEMA.confirmPassword.name}
-          label={RESET_PW_SCHEMA.confirmPassword.label}
-          rules={RESET_PW_SCHEMA.confirmPassword.options.rules}
-        >
-          <Input.Password placeholder={RESET_PW_SCHEMA.confirmPassword.placeholder} />
-        </Form.Item>
-        <div className={`pt-4 d-flex justify-content-end`}>
-          <Button
-            type="primary"
-            size="large"
-            className="text-center btn btn-primary font-weight-bold font-size-18 dtc-min-width-100"
-            htmlType="submit"
-          >
-            Update
-          </Button>
-        </div>
-      </Form>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Login Settings
+      </Typography>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form>
+          <Stack spacing={1}>
+            <PasswordField
+              label="Current Password"
+              name="currentPassword"
+              placeholder="Current Password"
+              fullWidth
+            />
+            <PasswordField
+              label="New Password"
+              name="password"
+              placeholder="New Password"
+              fullWidth
+            />
+            <PasswordField
+              label="Confirm New Password"
+              name="confirmPassword"
+              placeholder="Confirm New Password"
+              fullWidth
+            />
+          </Stack>
+          <Stack mt={2} direction="row" justifyContent="flex-end">
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          </Stack>
+        </Form>
+      </Formik>
     </div>
   );
 }

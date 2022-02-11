@@ -1,15 +1,16 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
-import { createFormErrorComp } from "utils/form.util";
+import { Col, Form, Input, Row, Select } from "antd";
 import {
-  RegexConst,
-  REQUIRED_ERR,
   DUPLICATE_ITEM_VALUE,
   MAX_CHARS,
+  REQUIRED_ERR,
+  RegexConst,
   TEMPLATE_NAME_MAX_CHARS
 } from "commons/consts";
-import { Col, Form, Input, Row, Select } from "antd";
-import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+
 import { ProductService } from "services";
+import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
+import { createFormErrorComp } from "utils/form.util";
 import debounce from "lodash/debounce";
 
 const INPUT_TYPE = {
@@ -51,9 +52,7 @@ const VitalInformationForm = ({
   productDetails,
   isEditing
 }) => {
-  const [aheccCode, setAheccCode] = useState([]);
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
-
   const [hsCodeData, setHsCodeData] = useState(hsCode);
 
   useEffect(() => {
@@ -288,8 +287,6 @@ const VitalInformationForm = ({
               form.setFieldsValue({ hsCodeDescription: findCode.hsCodeDescription });
               form.setFieldsValue({ chapterLabel: findCode.chapterLabel });
               form.setFieldsValue({ headingLabel: findCode.headingLabel });
-              form.setFieldsValue({ ahecc: findCode.ahecc });
-              form.setFieldsValue({ aheccFullDescription: findCode.aheccDescription });
               // //Handling for Empty Field from BE
               form.setFieldsValue({
                 quantity: findCode.unitQuantity !== undefined ? findCode.unitQuantity : ""
@@ -303,30 +300,17 @@ const VitalInformationForm = ({
               form.setFieldsValue({ hsCode: findCode.hsCode });
               form.setFieldsValue({ chapterLabel: findCode.chapterLabel });
               form.setFieldsValue({ headingLabel: findCode.headingLabel });
-              form.setFieldsValue({ ahecc: findCode.ahecc });
-              form.setFieldsValue({ aheccFullDescription: findCode.aheccDescription });
               // //Handling for Empty Field from BE
               form.setFieldsValue({
                 quantity: findCode.unitQuantity !== undefined ? findCode.unitQuantity : ""
               });
             }
           };
-        case "ahecc":
-          return (selectedCode) => {
-            const selectedAheccCode = aheccCode.find((code) => code.id === selectedCode);
-            form.setFieldsValue({ aheccFullDescription: selectedAheccCode?.selectedAheccCode });
-            form.setFieldsValue({ quantity: selectedAheccCode?.unitQuantity });
-          };
-        case "aheccFullDescription":
-          return (aheccDes) => {
-            const selectedAheccCode = aheccCode.find((code) => code.aheccDescription === aheccDes);
-            form.setFieldsValue({ ahecc: selectedAheccCode?.id });
-          };
         default:
           return () => {};
       }
     },
-    [onCategoryChange, form, aheccCode, hsCodeData]
+    [onCategoryChange, form, hsCodeData]
   );
 
   const onSearchHSCode = debounce(async (value) => {
@@ -371,71 +355,68 @@ const VitalInformationForm = ({
     }
   }, 800);
 
-  const renderSchema = useCallback(
-    (schema) => {
-      switch (schema.type) {
-        case INPUT_TYPE.SELECT_HSCODE_NUMBER:
-          return (
-            <Select
-              showSearch
-              showArrow={false}
-              filterOption={false}
-              notFoundContent={null}
-              onSearch={onSearchHSCode}
-              mode={schema.mode}
-              onChange={handleFieldChange(schema.name)}
-              onPopupScroll={onPopupScroll}
-              {...schema.props}
-            >
-              {schema?.options?.options?.map((item) => {
-                return (
-                  <Option key={item.id} value={item.id}>
-                    {`${item.hsCode}`}
-                  </Option>
-                );
-              })}
-            </Select>
-          );
-        case INPUT_TYPE.SELECT_HSCODE_CHAR:
-          return (
-            <Select
-              showSearch
-              showArrow={false}
-              filterOption={false}
-              notFoundContent={null}
-              onSearch={onSearchHSCode}
-              mode={schema.mode}
-              onChange={handleFieldChange(schema.name)}
-              onPopupScroll={onPopupScroll}
-              {...schema.props}
-            >
-              {schema?.options?.options?.map((item) => {
-                return (
-                  <Option key={`name-${item.id}`} value={item.hsCodeDescription}>
-                    {`${item.hsCodeDescription}`}
-                  </Option>
-                );
-              })}
-            </Select>
-          );
-        case INPUT_TYPE.SELECT:
-          return (
-            <Select mode={schema.mode} onChange={handleFieldChange(schema.name)} {...schema.props}>
-              {schema?.options?.options?.map((item) => {
-                return (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                );
-              })}
-            </Select>
-          );
-        default:
-          return <Input type={schema.type} {...schema.props} />;
-      }
-    },
-    [handleFieldChange]
-  );
+  const renderSchema = (schema) => {
+    switch (schema.type) {
+      case INPUT_TYPE.SELECT_HSCODE_NUMBER:
+        return (
+          <Select
+            showSearch
+            showArrow={false}
+            filterOption={false}
+            notFoundContent={null}
+            onSearch={onSearchHSCode}
+            mode={schema.mode}
+            onChange={handleFieldChange(schema.name)}
+            onPopupScroll={onPopupScroll}
+            {...schema.props}
+          >
+            {schema?.options?.options?.map((item) => {
+              return (
+                <Option key={item.id} value={item.id}>
+                  {`${item.hsCode}`}
+                </Option>
+              );
+            })}
+          </Select>
+        );
+      case INPUT_TYPE.SELECT_HSCODE_CHAR:
+        return (
+          <Select
+            showSearch
+            showArrow={false}
+            filterOption={false}
+            notFoundContent={null}
+            onSearch={onSearchHSCode}
+            mode={schema.mode}
+            onChange={handleFieldChange(schema.name)}
+            onPopupScroll={onPopupScroll}
+            {...schema.props}
+          >
+            {schema?.options?.options?.map((item) => {
+              return (
+                <Option key={`name-${item.id}`} value={item.hsCodeDescription}>
+                  {`${item.hsCodeDescription}`}
+                </Option>
+              );
+            })}
+          </Select>
+        );
+      case INPUT_TYPE.SELECT:
+        return (
+          <Select mode={schema.mode} onChange={handleFieldChange(schema.name)} {...schema.props}>
+            {schema?.options?.options?.map((item) => {
+              return (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        );
+      default:
+        return <Input type={schema.type} {...schema.props} />;
+    }
+  };
 
   return (
     <>

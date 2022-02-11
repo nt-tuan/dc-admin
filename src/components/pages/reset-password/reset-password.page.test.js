@@ -1,17 +1,18 @@
 import { AuthService } from "services";
 import React from "react";
 import { render, act, waitFor } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
+import { Router } from "react-router-dom";
 import ResetPasswordPage from "./reset-password.page";
+import { createMemoryHistory } from "history";
 
+const history = createMemoryHistory();
 jest.mock("utils/config.util");
 
 const renderResetPasswordPage = () => {
   return render(
-    <BrowserRouter>
+    <Router history={history}>
       <ResetPasswordPage />
-    </BrowserRouter>
+    </Router>
   );
 };
 

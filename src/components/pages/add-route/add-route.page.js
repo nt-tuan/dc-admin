@@ -1,26 +1,28 @@
-import { Col, Divider, Row, Button, message } from "antd";
-import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
-import { DTCSection } from "components/atoms";
+import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
+import { Button, Col, Divider, Row, message } from "antd";
 import {
   DocumentList,
   DocumentRuleTable,
   RouteLocationForm,
   TradeRouteTaxForm
 } from "components/organisms";
+import {
+  FIELDS,
+  TAX_RULES_TYPE_MAIN_SCHEMA,
+  typeTAX
+} from "components/organisms/route/forms/tax-rules/tax.chemas";
+import { Link, useHistory } from "react-router-dom";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { APIError } from "commons/types";
+import { DTCSection } from "components/commons";
+import { Helmet } from "react-helmet";
+import { Lagecy } from "components/lagecy/lagecy.comp";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory, Link } from "react-router-dom";
-import uniqBy from "lodash/uniqBy";
-import { APIError } from "commons/types";
-import { Helmet } from "react-helmet";
-import {
-  typeTAX,
-  FIELDS,
-  TAX_RULES_TYPE_MAIN_SCHEMA
-} from "components/organisms/route/forms/tax-rules/tax.chemas";
 import numeral from "numeral";
+import uniqBy from "lodash/uniqBy";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const isFormValid = async (validateFn) => {
@@ -340,72 +342,81 @@ const AddRoutePage = () => {
 
   return (
     <DTCSection>
-      <Helmet title="Trade Routes Creation" />
-      <div>
-        <h3 className="mb-3">{renderTitle(false)}</h3>
-        <RouteLocationForm
-          defaultFromCountry={fromCountry}
-          defaultToCountry={toCountry}
-          defaultTypeId={productType}
-          defaultCategoryId={productCategory}
-          onTypeChange={handleTypeChange}
-          ref={locationFormRef}
-        />
-        <TradeRouteTaxForm dataSource={dataSourceTax.current} ref={taxRuleForms} />
-      </div>
-      <Divider />
-      <div>
-        <h5>Documents</h5>
-        <p>
-          You can either select from the document list or{" "}
-          <Link
-            style={{ cursor: "pointer" }}
-            to={{
-              pathname: RouteConst.DOCUMENT,
-              search: "?showCreateDocument=true",
-              state: { previousPage: RouteConst.ADD_ROUTE }
-            }}
-            className="text-primary"
-          >
-            create a new document
-          </Link>
-        </p>
-        <p>Select the documents required for this route</p>
-        <Row gutter={[30, 0]}>
-          <Col>
-            <DocumentList
-              title="Default Documents"
-              defaultDocs={defaultDocs}
-              defaultValue={defaultDocumentIds}
-              documents={defaultDocuments}
-              onChange={handleDefaultDocListChange}
-              onTouch={handleDocListTouch}
+      <DTCSection.Content>
+        <Lagecy>
+          <Helmet title="Trade Routes Creation" />
+          <div>
+            <h3 className="mb-3">{renderTitle(false)}</h3>
+            <RouteLocationForm
+              defaultFromCountry={fromCountry}
+              defaultToCountry={toCountry}
+              defaultTypeId={productType}
+              defaultCategoryId={productCategory}
+              onTypeChange={handleTypeChange}
+              ref={locationFormRef}
             />
-          </Col>
-          <Col>
-            <DocumentList
-              title="Customized Documents"
-              defaultDocs={defaultDocs}
-              documents={filteredCustomizedDocs}
-              onChange={handleCustomizedDocListChange}
-            />
-          </Col>
-        </Row>
-      </div>
-      <Divider />
-      <div>
-        <h5>Document trade routes</h5>
-        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
-      </div>
-      <Divider />
-      <div className="d-flex justify-content-center">
-        <Button loading={isLoadingCreate} className="mr-2" type="primary" onClick={handleCreate}>
-          Create Trade Routes
-        </Button>
-        <Link to={RouteConst.TRADE_RULES}>
-          <Button>Cancel</Button>
-        </Link>
-      </div>
+            <TradeRouteTaxForm dataSource={dataSourceTax.current} ref={taxRuleForms} />
+          </div>
+          <Divider />
+          <div>
+            <h5>Documents</h5>
+            <p>
+              You can either select from the document list or{" "}
+              <Link
+                style={{ cursor: "pointer" }}
+                to={{
+                  pathname: RouteConst.DOCUMENT,
+                  search: "?showCreateDocument=true",
+                  state: { previousPage: RouteConst.ADD_ROUTE }
+                }}
+                className="text-primary"
+              >
+                create a new document
+              </Link>
+            </p>
+            <p>Select the documents required for this route</p>
+            <Row gutter={[30, 0]}>
+              <Col>
+                <DocumentList
+                  title="Default Documents"
+                  defaultDocs={defaultDocs}
+                  defaultValue={defaultDocumentIds}
+                  documents={defaultDocuments}
+                  onChange={handleDefaultDocListChange}
+                  onTouch={handleDocListTouch}
+                />
+              </Col>
+              <Col>
+                <DocumentList
+                  title="Customized Documents"
+                  defaultDocs={defaultDocs}
+                  documents={filteredCustomizedDocs}
+                  onChange={handleCustomizedDocListChange}
+                />
+              </Col>
+            </Row>
+          </div>
+          <Divider />
+          <div>
+            <h5>Document trade routes</h5>
+            <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
+          </div>
+          <Divider />
+          <div className="d-flex justify-content-center">
+            <Button
+              loading={isLoadingCreate}
+              className="mr-2"
+              type="primary"
+              onClick={handleCreate}
+            >
+              Create Trade Routes
+            </Button>
+            <Link to={RouteConst.TRADE_RULES}>
+              <Button>Cancel</Button>
+            </Link>
+          </div>
+        </Lagecy>
+      </DTCSection.Content>
     </DTCSection>
   );
 };

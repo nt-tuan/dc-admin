@@ -1,15 +1,16 @@
-import { Loader, MenuDataManager } from "components";
-import { ConnectedRouter } from "connected-react-router";
-import { Layout } from "layouts/main.layout";
-import NotFoundPage from "components/pages/system/404/404.page";
-import React, { Suspense } from "react";
-import { connect } from "react-redux";
-import { Route } from "react-router-dom";
-import Switch from "react-router-transition-switch";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { RouteConst } from "commons/consts";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import React, { Suspense } from "react";
+
+import { ConnectedRouter } from "connected-react-router";
 import { Helmet } from "react-helmet";
+import { Layout } from "layouts/main.layout";
+import { Loader } from "components/commons";
+import NotFoundPage from "components/pages/system/404/404.page";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import { Route } from "react-router-dom";
+import { RouteConst } from "commons/consts";
+import Switch from "react-router-transition-switch";
+import { connect } from "react-redux";
 import { getAssetURL } from "utils/config.util";
 
 const mapStateToProps = ({ settings }) => ({ settings });
@@ -38,7 +39,6 @@ class Router extends React.Component {
           />
           <meta name="msapplication-config" content={getAssetURL("/browserconfig.xml")} />
         </Helmet>
-        <MenuDataManager />
         <Layout>
           <Suspense fallback={<Loader />}>
             <Switch
@@ -124,11 +124,6 @@ const privateRoutes = [
     exact: true
   },
   {
-    path: RouteConst.NEW_USER,
-    Component: loadable(() => import("components/pages/new-user/new-user.page")),
-    exact: true
-  },
-  {
     path: RouteConst.ORDERS,
     Component: loadable(() => import("components/pages/orders/orders.page")),
     exact: true
@@ -159,13 +154,6 @@ const privateRoutes = [
     exact: true
   },
   {
-    path: RouteConst.ORDER_TRACK_AND_TRACE,
-    Component: loadable(() =>
-      import("components/pages/order-track-and-trace/order-track-and-trace.page")
-    ),
-    exact: true
-  },
-  {
     path: RouteConst.PRODUCT_DATABASE,
     Component: loadable(() => import("components/pages/product-database/product-database.page")),
     exact: true
@@ -190,11 +178,6 @@ const privateRoutes = [
     Component: loadable(() => import("components/pages/add-route/add-route.page")),
     exact: true
   },
-  // {
-  //   path: RouteConst.ADD_ROUTE,
-  //   Component: loadable(() => import("components/pages/add-route/add-route.page")),
-  //   exact: true
-  // },
   {
     path: RouteConst.EDIT_TRADE_ROUTE,
     Component: loadable(() => import("components/pages/edit-route/edit-route.page")),
@@ -220,11 +203,6 @@ const privateRoutes = [
   {
     path: RouteConst.USER_DETAILS,
     Component: loadable(() => import("components/pages/user-details/user-details.page")),
-    exact: true
-  },
-  {
-    path: RouteConst.PURCHASE_ORDER,
-    Component: loadable(() => import("components/pages/purchase-order/purchase-order.page")),
     exact: true
   },
   {

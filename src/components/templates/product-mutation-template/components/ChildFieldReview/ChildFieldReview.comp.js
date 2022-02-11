@@ -2,7 +2,7 @@ import { Collapse, Input, Radio, Select } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { memo, useCallback, useMemo, useState } from "react";
 
-import "./ChildFieldReview.comp.scss";
+// import "./ChildFieldReview.comp.scss";
 
 const ChildFieldReview = memo(({ onRemove, data }) => {
   const [isOpenConfirmPopup, setIsOpenConfirmPopup] = useState(false);

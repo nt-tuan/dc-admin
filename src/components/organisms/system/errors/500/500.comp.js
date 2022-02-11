@@ -1,8 +1,8 @@
 import React from "react";
-import style from "../errors-shared-styles.module.scss";
+// import style from "../errors-shared-styles.module.scss";
 import { Button } from "antd";
 import { RouteConst } from "commons/consts";
-
+const style = {};
 class Error500 extends React.Component {
   render() {
     return (

@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Button, Menu, Dropdown } from "antd";
-import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { DTCTable } from "components/atoms";
-import { RouteConst } from "commons/consts";
-import { getAllRecordsFromAPI } from "utils/general.util";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { Box, Button, Chip, Menu, MenuItem } from "@mui/material";
+import { DTCSection, DTCTable } from "components/commons";
+import React, { useEffect, useState } from "react";
+
 import { DeleteUserModal } from "./delete-user-modal.comp";
 import { EditUserModal } from "./edit-user-modal.comp";
-import style from "./style.module.scss";
-import cl from "classnames";
-const sortAlphabetically = (stringA, stringB) => {
-  return stringA.localeCompare(stringB, "en", { sensitivity: "base" });
-};
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { RouteConst } from "commons/consts";
+import { UserService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { getAllRecordsFromAPI } from "utils/general.util";
 
 const USER_STATUSES = {
   ACTIVE: "ACTIVE",
@@ -32,6 +29,9 @@ const USER_STATUS_LABELS = {
 const ActionList = ({ user, setUsers }) => {
   const [deletingUser, setDeletingUser] = useState();
   const [editingUser, setEditingUser] = useState();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenuDropdown = Boolean(anchorEl);
+
   const updateUserStatus = (updatedData) => (users) => {
     return users.map((currentUser) => {
       if (currentUser.id !== user.id) return currentUser;
@@ -76,29 +76,43 @@ const ActionList = ({ user, setUsers }) => {
     setDeletingUser();
   };
 
+  const handleClickMenuIcon = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   const overlayContent = (
-    <Menu>
+    <Menu
+      anchorEl={anchorEl}
+      open={openMenuDropdown}
+      onClose={handleCloseMenu}
+      PaperProps={{
+        style: {
+          maxWidth: 150
+        }
+      }}
+    >
       {user.status === USER_STATUSES.DISABLED && (
-        <Menu.Item key="0" onClick={handleActivateUser}>
-          <a>Activate</a>
-        </Menu.Item>
+        <MenuItem key="0" onClick={handleActivateUser}>
+          <a style={{ color: "black" }}>Activate</a>
+        </MenuItem>
       )}
       {user.status === USER_STATUSES.ACTIVE && (
-        <Menu.Item key="1" onClick={handleDeactiveUser}>
-          <a>Deactivate</a>
-        </Menu.Item>
+        <MenuItem key="1" onClick={handleDeactiveUser}>
+          <a style={{ color: "black" }}>Deactivate</a>
+        </MenuItem>
       )}
       {user.status !== USER_STATUSES.DELETED && (
-        <Menu.Item key="2" onClick={() => handleClickEditUser(user)}>
-          <a>Edit</a>
-        </Menu.Item>
+        <MenuItem key="2" onClick={() => handleClickEditUser(user)}>
+          <a style={{ color: "black" }}>Edit</a>
+        </MenuItem>
       )}
       {user.status !== USER_STATUSES.DELETED && (
-        <>
-          <Menu.Item key="3" onClick={() => showConfirmModal()}>
-            <a style={{ color: "red" }}>Delete</a>
-          </Menu.Item>
-        </>
+        <MenuItem key="3" onClick={() => showConfirmModal()}>
+          <a style={{ color: "red" }}>Delete</a>
+        </MenuItem>
       )}
     </Menu>
   );
@@ -107,27 +121,26 @@ const ActionList = ({ user, setUsers }) => {
     <>
       <DeleteUserModal
         user={user}
-        isOpen={deletingUser}
+        isOpen={deletingUser ? true : false}
         onCancel={closeConfirmModal}
         onSuccess={handleDeleteUser}
       />
       <EditUserModal
-        isOpen={editingUser != null}
+        isOpen={editingUser ? true : false}
         user={editingUser}
         onCancel={handleCancelEditUser}
         onConfirm={handleEditUserSuccess}
       />
-      <Dropdown overlay={overlayContent} placement="bottomLeft" trigger={["click"]}>
-        <Button>
-          <i className="fe fe-more-horizontal" />
-        </Button>
-      </Dropdown>
+      <Button variant="outlined" onClick={handleClickMenuIcon}>
+        <MoreHorizIcon />
+      </Button>
+      {overlayContent}
     </>
   );
 };
 
 const AdminUserManagement = () => {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   useEffect(() => {
     getAllRecordsFromAPI(UserService.getAdminUsers).then((respondedUsers) => {
       const sortedUsers = respondedUsers.sort(
@@ -137,75 +150,83 @@ const AdminUserManagement = () => {
     });
   }, []);
 
-  const getSchema = (sortedInfo, CustomHighlighter, searchText, hiddenColumns) => [
+  const getStatusColor = (status) => {
+    switch (true) {
+      case status === USER_STATUSES.ACTIVE:
+        return "success";
+      case status === USER_STATUSES.INACTIVE:
+        return "warning";
+      case status !== USER_STATUSES.ACTIVE && status !== USER_STATUSES.INACTIVE:
+        return "secondary";
+      default:
+        return "primary";
+    }
+  };
+
+  const columns = [
     {
-      title: "Username",
-      dataIndex: "username",
-      key: "username",
-      sorter: (a, b) => sortAlphabetically(a.username, b.username),
-      sortOrder: sortedInfo.columnKey === "username" && sortedInfo.username,
-      render: (username) => <CustomHighlighter searchText={searchText} value={username} />
+      headerName: "Username",
+      field: "username",
+      width: 180
     },
     {
-      title: "First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-      sorter: (a, b) => sortAlphabetically(a.firstName, b.firstName),
-      sortOrder: sortedInfo.columnKey === "firstName" && sortedInfo.firstName,
-      render: (firstName) => <CustomHighlighter searchText={searchText} value={firstName} />
+      headerName: "First Name",
+      width: 180,
+      field: "firstName"
     },
     {
-      title: "Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
-      sorter: (a, b) => sortAlphabetically(a.lastName, b.lastName),
-      sortOrder: sortedInfo.columnKey === "lastName" && sortedInfo.lastName,
-      render: (lastName) => <CustomHighlighter searchText={searchText} value={lastName} />
+      headerName: "Last Name",
+      width: 180,
+      field: "lastName"
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      sorter: (a, b) => sortAlphabetically(a.email, b.email),
-      sortOrder: sortedInfo.columnKey === "email" && sortedInfo.email,
-      render: (email) => <CustomHighlighter searchText={searchText} value={email} />
+      headerName: "Email",
+      width: 280,
+      field: "email"
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      sorter: (a, b) => sortAlphabetically(a.status, b.status),
-      sortOrder: sortedInfo.columnKey === "status" && sortedInfo.status,
-      render: (status) => (
-        <CustomHighlighter
-          className={cl("text-uppercase text-white py-1 px-2 font-size-12 rounded-lg", {
-            "bg-success": status === USER_STATUSES.ACTIVE,
-            [style["bg-pending"]]: status === USER_STATUSES.INACTIVE,
-            "bg-secondary": status !== USER_STATUSES.ACTIVE && status !== USER_STATUSES.INACTIVE
-          })}
-          searchText={searchText}
-          value={USER_STATUS_LABELS[status]}
-        />
-      )
-    },
-    {
-      title: "Manage",
-      render: (user) => {
-        return <ActionList user={user} setUsers={setUsers} />;
+      headerName: "Status",
+      width: 150,
+      field: "status",
+      renderCell: ({ row }) => {
+        const { status } = row;
+        const statusColor = getStatusColor(status);
+        return (
+          <Chip color={statusColor} label={USER_STATUS_LABELS[status]} sx={{ borderRadius: 0 }} />
+        );
       }
+    },
+    {
+      headerName: "Manage",
+      field: "manage",
+      sortable: false,
+      renderCell: ({ row }) => {
+        const user = row;
+        return <ActionList user={user} setUsers={setUsers} />;
+      },
+      width: 100
     }
   ];
+
   return (
     <React.Fragment>
       <Helmet title="User Management" />
-      <div className="air__utils__shadow bg-white pt-2 pb-2 pr-4 pl-4 dtc-br-10">
-        <div className="d-flex justify-content-end my-3">
+      <DTCSection>
+        <DTCSection.Content>
           <Link to={RouteConst.ADD_ADMIN_USER}>
-            <Button type="primary">Add new user</Button>
+            <Button variant="contained">Add new user</Button>
           </Link>
-        </div>
-        <DTCTable dataSource={users} schema={getSchema} loading={users == null} />
-      </div>
+          <Box mt={2} sx={{ height: "500px" }}>
+            <DTCTable
+              showSettings={false}
+              loading={users == null}
+              columns={columns}
+              columnBuffer={columns.length}
+              dataSource={users}
+            />
+          </Box>
+        </DTCSection.Content>
+      </DTCSection>
     </React.Fragment>
   );
 };

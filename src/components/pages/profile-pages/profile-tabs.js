@@ -1,56 +1,35 @@
+import { BankDetailsTab, InformationTab, SettingTab } from "./components";
+import { DTCSection, DTCTabs, useTabSearchParams } from "components/commons";
+
 import React from "react";
-import PropTypes from "prop-types";
-//** components */
 import { USER_TABS_NAME } from "commons/consts";
-import { InformationTab, BankDetailsTab, SettingTab } from "./components";
 
-import { Tabs } from "antd";
-
-const { TabPane } = Tabs;
-
-const ProfileTabs = (props) => {
-  const { currentTab, handleTabClick } = props;
-
-  // Define default tabs
-  const dataDefaultTabs = [
-    {
-      name: "Profile Information",
-      key: USER_TABS_NAME.profileInfo,
-      component: <InformationTab />
-    },
-    {
-      name: "Bank Details",
-      key: USER_TABS_NAME.bankDetails,
-      component: <BankDetailsTab />
-    },
-    {
-      name: "Settings",
-      key: USER_TABS_NAME.settings,
-      component: <SettingTab />
-    }
-  ];
-
+const dataDefaultTabs = [
+  {
+    label: "Profile Information",
+    key: USER_TABS_NAME.profileInfo,
+    component: <InformationTab />
+  },
+  {
+    label: "Bank Details",
+    key: USER_TABS_NAME.bankDetails,
+    component: <BankDetailsTab />
+  },
+  {
+    label: "Settings",
+    key: USER_TABS_NAME.settings,
+    component: <SettingTab />
+  }
+];
+const ProfileTabs = () => {
+  const [value, onChange] = useTabSearchParams(dataDefaultTabs);
   return (
-    <div className="air__utils__shadow bg-white pt-2 pb-4 pr-4 pl-4 dtc-br-10">
-      <Tabs animated={false} onTabClick={handleTabClick} activeKey={currentTab}>
-        {dataDefaultTabs.map((item) => (
-          <TabPane tab={item.name} key={item.key}>
-            {currentTab === item.key ? item.component : null}
-          </TabPane>
-        ))}
-      </Tabs>
-    </div>
+    <DTCSection>
+      <DTCSection.Content>
+        <DTCTabs value={value} onChange={onChange} tabs={dataDefaultTabs} />
+      </DTCSection.Content>
+    </DTCSection>
   );
-};
-
-ProfileTabs.propTypes = {
-  currentTab: PropTypes.string,
-  handleTabClick: PropTypes.func
-};
-
-ProfileTabs.defaultProps = {
-  title: null, // define title
-  handleTabClick: () => {}
 };
 
 export default ProfileTabs;

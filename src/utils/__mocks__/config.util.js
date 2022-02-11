@@ -5,5 +5,8 @@ module.exports = {
   getAPIEndPoint: () => {
     //
   },
-  getPlugins: () => []
+  getPlugins: () => [],
+  getAssetURL: () => "my-base",
+  getTermsAndConditionVersion: () => "my-version",
+  getDefaultCurrency: () => "my-currency"
 };

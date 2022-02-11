@@ -1,5 +1,5 @@
 import { Button, Divider, message } from "antd";
-import { DTCSection } from "components/atoms";
+import { DTCSection } from "components/commons";
 import { DocumentList, DocumentRuleTable, RouteLocationForm } from "components/organisms";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { RouteService } from "services";

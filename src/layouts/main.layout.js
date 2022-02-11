@@ -1,5 +1,5 @@
 import { RouteConst } from "commons/consts";
-import { Loader } from "components";
+import { Loader } from "components/commons";
 import NProgress from "nprogress";
 import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
 import { selectCurrentUser } from "redux/user/user.duck";
 import { getCompanyName } from "utils/config.util";
-import AuthLayout from "./auth/auth.layout";
+import { AuthLayout } from "./auth/auth-layout.comp";
 import { PublicLayout } from "./public/public.layout";
 
 const Layouts = {

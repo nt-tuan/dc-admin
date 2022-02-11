@@ -1,5 +1,3 @@
-@import "assets/styles/mixins.scss";
-
 .footer {
   text-align: right;
   button + button {
@@ -8,18 +6,21 @@
 }
 .question {
   font-size: 24px;
-  color: $gray-3;
+  color: "#d3d3d3";
   position: absolute;
   top: 3px;
   right: 5px;
 }
 @media only screen and (min-width: 800px) {
   .question {
-    right: 0px;
+    right: 0;
   }
 }
 @media only screen and (min-width: 600px) {
   .question {
     right: -5px;
   }
+}
+.d-none {
+  display: none !important;
 }

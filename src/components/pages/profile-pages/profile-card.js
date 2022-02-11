@@ -1,60 +1,67 @@
 import React, { memo } from "react";
-import { Card, Avatar } from "antd";
-import PropTypes from "prop-types";
-//** Components */
 
-//** Utils */
-import { toCurrency } from "utils";
-import "./styles/userProfileCard.scss";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import { DTCSection } from "components/commons";
+import PersonIcon from "@mui/icons-material/Person";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const ProfileCard = memo((props) => {
-  const { title, avatarSrc, successfulTransactions, largestTransactionValue, company } = props;
+  const { title, avatarSrc, successfulTransactions } = props;
 
   return (
-    <>
-      <Card
-        title={<h4 className="font-size-24 text-uppercase text-light">{title}</h4>}
-        className="air__utils__shadow header-card"
-      >
-        {/* Avatar section */}
-        <div className="text-center">
-          <Avatar size={150} icon={avatarSrc || <i className="fe fe-user" />} />
-        </div>
-
-        {/* Transaction sections */}
-        <div className="d-flex justify-content-around">
-          <span className="text-center">
-            <h4>{successfulTransactions}</h4>
-            <span className="text-dark text-center">
-              <b>Successful Transactions</b>
-            </span>
-          </span>
-          <span className="text-center">
-            <h4>{toCurrency(largestTransactionValue)}</h4>
-            <span className="text-dark">
-              <b>Largest Transaction Value</b>
-            </span>
-          </span>
-        </div>
-      </Card>
-    </>
+    <DTCSection>
+      <Box position="relative">
+        <Stack
+          height={150}
+          sx={{ background: "linear-gradient(45deg,#005691,#f4f7f6)" }}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography fontSize={24} color="white" fontWeight="bold">
+            {title}
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          height={150}
+          justifyContent="space-evenly"
+          alignItems="center"
+          sx={{ textAlign: "center" }}
+        >
+          <Stack spacing={1} alignItems="center" justifyContent="center">
+            <Typography component="span" variant="h4">
+              {successfulTransactions ?? 0}
+            </Typography>
+            <Typography>
+              <b> Successful Transactions</b>
+            </Typography>
+          </Stack>
+          <Stack spacing={1} alignItems="center" justifyContent="center">
+            <Typography component="span" variant="h4">
+              {successfulTransactions ?? 0}
+            </Typography>
+            <Typography>
+              <b> Successful Transactions</b>
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack
+          sx={{ transform: "translate(-50%, -50%)" }}
+          position="absolute"
+          left="50%"
+          top="50%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Avatar sx={{ width: 100, height: 100 }} src={avatarSrc}>
+            <PersonIcon sx={{ width: 80, height: 80 }} />
+          </Avatar>
+        </Stack>
+      </Box>
+    </DTCSection>
   );
 });
-
-ProfileCard.propTypes = {
-  title: PropTypes.string,
-  avatarSrc: PropTypes.string,
-  successfulTransactions: PropTypes.number,
-  largestTransactionValue: PropTypes.number,
-  company: PropTypes.string
-};
-
-ProfileCard.defaultProps = {
-  title: null, // define title
-  avatarSrc: null,
-  successfulTransactions: 0,
-  largestTransactionValue: 0,
-  company: null
-};
 
 export default ProfileCard;

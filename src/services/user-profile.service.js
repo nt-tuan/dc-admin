@@ -1,5 +1,5 @@
-import { backendAPI } from "utils/httpAPI.util";
 import { ApiPathConsts } from "commons/consts";
+import { backendAPI } from "utils/httpAPI.util";
 
 export const updateProfile = async (values) => {
   await backendAPI.put(ApiPathConsts.UPDATE_USER_INFO, values);
@@ -29,7 +29,7 @@ export const createSecurityQuestions = async (data) => {
 };
 
 export const validateSecurityQuestions = async (data) => {
-  const res = await backendAPI.put(ApiPathConsts.SECURITY_ANSWER, data);
+  await backendAPI.put(ApiPathConsts.SECURITY_ANSWER, data);
   return true;
 };
 

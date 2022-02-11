@@ -1,24 +1,23 @@
-import { all, put, takeEvery, call } from "redux-saga/effects";
-import * as USER_ACTIONS from "./user.duck";
-import { notification } from "antd";
-import { APIError } from "commons/types";
-import { AuthService, UserService } from "services";
-import { MessageConst } from "commons/consts";
 import * as NOTIFICATION_DUCKS from "redux/notification/notification.duck";
+import * as USER_ACTIONS from "./user.duck";
+
+import { AuthService, UserService } from "services";
+import { all, call, put, takeEvery } from "redux-saga/effects";
+
+import { APIError } from "commons/types";
 
 const { setStateAction } = USER_ACTIONS;
 
 export function* LOGIN({ payload }) {
-  const { values, onError } = payload;
+  const { values, onError, onSuccess } = payload;
   try {
     yield put(setStateAction({ loading: true }));
     const isOk = yield AuthService.login(values);
     if (isOk) {
       yield put({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT });
-      notification.success({
-        message: MessageConst.LOGIN_SUCCESS_TITLE,
-        description: MessageConst.LOGIN_SUCCESS_MSG
-      });
+      if (onSuccess) {
+        onSuccess();
+      }
     }
   } catch (error) {
     if (error instanceof APIError) {

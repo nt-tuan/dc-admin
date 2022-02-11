@@ -1,15 +1,17 @@
+import * as USER_ACTIONS from "redux/user/user.duck";
+
+import { Button, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import {
   getGoogleAuthenticator,
   validateGoogleAuthenticator
 } from "services/two-factor-auth.service";
-import { useBooleanState } from "hooks/utilHooks";
-import { Modal, Button, message } from "antd";
-import * as USER_ACTIONS from "redux/user/user.duck";
-import { useDispatch } from "react-redux";
-import { LoadingIndicator } from "components/atoms";
+
 import GoogleAuthenticatorVerificationForm from "./GoogleAuthenticatorVerificationForm";
+import { LoadingIndicator } from "components/atoms";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { useBooleanState } from "hooks/utilHooks";
+import { useDispatch } from "react-redux";
 
 function GoogleAuthenticator({ isGAVerified, toogleGoogleAuthenticator }) {
   const [data, setData] = useState({});
@@ -26,7 +28,7 @@ function GoogleAuthenticator({ isGAVerified, toogleGoogleAuthenticator }) {
       setData(result);
       setLoading();
     });
-  }, []);
+  }, [setLoading]);
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);

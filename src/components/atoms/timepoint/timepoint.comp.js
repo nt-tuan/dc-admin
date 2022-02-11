@@ -1,8 +1,9 @@
 import React from "react";
-import styles from "./styles.module.scss";
+// import styles from "./styles.module.scss";
 import { DATETIME_FORMAT } from "commons/consts";
 import dayjs from "dayjs";
 
+const styles = {};
 export const TimePoint = ({ dateTime, children, type }) => {
   const indicatorClass =
     type === "major"

@@ -1,21 +1,25 @@
-import { Checkbox, Button } from "antd";
-import { LoadingIndicator } from "components/atoms";
 import {
   CompanyInfo,
+  CompanyLogo,
   OwnerInfo,
   Reputation,
-  UserProfile,
-  CompanyLogo
-} from "components/organisms/user-details";
-import qs from "qs";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-import { UserService, CompanyService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+  UserProfile
+} from "components/user-details";
+import React, { useCallback, useEffect, useState } from "react";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import { DTCSection } from "components/commons";
+import Divider from "@mui/material/Divider";
 import { Helmet } from "react-helmet";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { RouteConst } from "commons/consts";
-import { getCompanyName } from "utils/config.util";
+import Stack from "@mui/material/Stack";
+import { UserService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import qs from "qs";
+import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const UserDetails = () => {
   const [data, setData] = useState({});
@@ -36,63 +40,32 @@ const UserDetails = () => {
     getUserDetails();
   }, [getUserDetails]);
 
-  // const handleMarketplaceCredit = (id, isEnable) => {
-  //   setLoading(true);
-  //   asyncErrorHandlerWrapper(async () => {
-  //     await UserService.manageMarketplaceCredit(id, isEnable);
-  //     getUserDetails();
-  //   });
-  // };
-
-  const handleProductCreationPermission = (id, isEnable) => {
-    setLoading(true);
-    asyncErrorHandlerWrapper(async () => {
-      await CompanyService.updateProductCreationPermission(id, isEnable);
-      getUserDetails();
-    });
-  };
-
-  const handleApprove = (companyId) => {
-    setLoading(true);
-    asyncErrorHandlerWrapper(async () => {
-      await CompanyService.approveNewCompany({ companyId });
-      getUserDetails();
-    });
-  };
-
   return (
-    <Fragment>
+    <Box>
       <Helmet title="User Detail" />
       {loading ? (
-        <div className="d-flex justify-content-center">
-          <LoadingIndicator />
-        </div>
+        <Stack justifyContent="center" alignItems="center">
+          <CircularProgress />
+        </Stack>
       ) : (
-        <div className="air__utils__shadow bg-white p-4 dtc-br-10">
-          {data.companyInfo.logoUrl && (
-            <>
-              <div>
-                <CompanyLogo companyInfo={data.companyInfo} />
-              </div>
-              <hr />
-            </>
-          )}
-          <div className="mt-3">
+        <DTCSection>
+          <CompanyLogo companyInfo={data.companyInfo?.logoUrl} />
+          <Box mt={3}>
             <UserProfile data={data.userInfo} />
-          </div>
-          <hr />
-          <div className="mt-3">
+          </Box>
+          <Divider />
+          <Box mt={3}>
             <CompanyInfo
               companyInfo={data.companyInfo}
               companyAddress={data.companyAddressInfoList}
             />
-          </div>
-          <hr />
-          <div className="mt-3">
+          </Box>
+          <Divider />
+          <Box mt={3}>
             <OwnerInfo owners={data.ownerDTOS.map((data) => ({ ...data, ...data.address }))} />
-          </div>
-          <hr />
-          <div className="mt-3">
+          </Box>
+          <Divider />
+          <Box mb={3}>
             <Reputation
               data={{
                 reputation: data.companyInfo.reputation,
@@ -102,71 +75,17 @@ const UserDetails = () => {
               companyId={companyId}
               setLoading={setLoading}
               getUserDetails={getUserDetails}
-              // isEditable={data.companyInfo.companyType !== "TRADER"}
               isEditable={true}
             />
-          </div>
-          {/* <div className="w-75 mt-3">
-            <RebatesInfo
-              data={data.rebateResponses}
-              companyName={data.companyInfo.name}
-              companyId={companyId}
-              username={data.userInfo.username}
-              setLoading={setLoading}
-              getUserDetails={getUserDetails}
-              isEditable={data.companyInfo.companyType !== "TRADER"}
-            />
-          </div>
-          {data.companyInfo.companyType !== "TRADER" && (
-            <div className="w-50 mt-3">
-              <h5 className="text-danger">Marketplace Credit</h5>
-              <Checkbox
-                checked={data.companyInfo.enableMarketplaceCredit}
-                onClick={() =>
-                  handleMarketplaceCredit(
-                    data.companyInfo.id,
-                    !data.companyInfo.enableMarketplaceCredit
-                  )
-                }
-              >
-                Enable Marketplace Credit for the user
-              </Checkbox>
-            </div>
-          {/* )} */}
-          {`${getCompanyName()}` === "Extravaganza" ? (
-            <div>
-              <div className="w-50 mt-3">
-                <h5 className="text-danger">Product Creation</h5>
-                <Checkbox
-                  checked={data.companyInfo.enableProductCreation}
-                  onClick={() =>
-                    handleProductCreationPermission(
-                      data.companyInfo.id,
-                      !data.companyInfo.enableProductCreation
-                    )
-                  }
-                >
-                  Enable Product Creation
-                </Checkbox>
-              </div>
-              <div className="w-50 mt-3">
-                <h5 className="text-danger">User Approval</h5>
-                <Checkbox
-                  checked={data.companyInfo.approved}
-                  onClick={() => handleApprove(data.companyInfo.id)}
-                  disabled={data.companyInfo.approved}
-                >
-                  Approve User
-                </Checkbox>
-              </div>
-            </div>
-          ) : null}
-          <div className="mt-2 text-center">
-            <Button onClick={() => history.push(RouteConst.USER_MANAGEMENT)}>Back</Button>
-          </div>
-        </div>
+          </Box>
+          <Box mt={2}>
+            <Button variant="contained" onClick={() => history.push(RouteConst.USER_MANAGEMENT)}>
+              Back
+            </Button>
+          </Box>
+        </DTCSection>
       )}
-    </Fragment>
+    </Box>
   );
 };
 

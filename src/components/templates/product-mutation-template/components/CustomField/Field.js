@@ -3,7 +3,7 @@ import { Modal, Form } from "antd";
 
 import ChildFieldModal from "./ChildFieldModal";
 import FieldLayout from "./FieldLayout";
-import "../../product-mutation-template.comp.scss";
+// import "../../product-mutation-template.comp.scss";
 
 const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue }, ref) => {
   const [showFieldTypeInfoPopup, setShowFieldTypeInfoPopup] = useState(false);

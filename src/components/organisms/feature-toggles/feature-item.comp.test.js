@@ -1,9 +1,16 @@
+import FeatureItem from "./feature-item.comp";
 import React from "react";
 import { render } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import FeatureItem from "./feature-item.comp";
+import { useSnackbar } from "notistack";
 
 jest.mock("utils/config.util");
+jest.mock("notistack");
+
+beforeEach(() => {
+  useSnackbar.mockReturnValue({
+    enqueueSnackbar: jest.fn()
+  });
+});
 
 const renderFeatureItem = () => {
   const featureFlag = {
@@ -12,15 +19,8 @@ const renderFeatureItem = () => {
     description: "Short description",
     enabled: false
   };
-  const notificationApi = {
-    success: () => {
-      //
-    },
-    error: () => {
-      //
-    }
-  };
-  return render(<FeatureItem featureFlag={featureFlag} notificationApi={notificationApi} />);
+  const setNotification = () => undefined;
+  return render(<FeatureItem featureFlag={featureFlag} setNotification={setNotification} />);
 };
 
 describe("feature-item.comp.js", () => {
@@ -29,7 +29,7 @@ describe("feature-item.comp.js", () => {
 
     expect(getByText("External Payment & Services")).toBeInTheDocument();
     expect(getByText("Short description")).toBeInTheDocument();
-    expect(getByRole("switch")).toBeInTheDocument();
+    expect(getByRole("checkbox")).toBeInTheDocument();
     jest.resetAllMocks();
   });
 });

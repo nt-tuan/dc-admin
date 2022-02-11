@@ -1,21 +1,27 @@
-import { walletMapper } from "commons/mappers";
-import { WalletAccountSummary, WalletDashboard } from "components/organisms";
+import Stack from "@mui/material/Stack";
+import { parseDataToExcel } from "./wallet.mapper";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { FinancialService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
-
-const { parseDataToGridView, parseDataToWalletDashBoard } = walletMapper;
+import { WalletDashboard } from "./components/wallet-dashboard.comp";
+import { WalletTransactions } from "./components/wallet-transactions.comp";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
 
 const WalletPage = () => {
   const [walletDashboard, setWalletDashboard] = useState({});
-  const [transactionDetails, setTransactionDetails] = useState([]);
+  const [transactionDetails, setTransactionDetails] = useState();
+  const handleDownload = () => {
+    const dataExcel = parseDataToExcel(transactionDetails);
+    const fileName = "Wallet-account-summary";
+    const fileSheet = "WalletAccountSummary";
+    handleDownloadExcel(dataExcel, fileName, fileSheet);
+  };
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
       const resDashboard = await FinancialService.getWalletDashboard();
-      setWalletDashboard(parseDataToWalletDashBoard(resDashboard));
+      setWalletDashboard(resDashboard);
       const resTransaction = await getAllRecordsFromAPI(
         FinancialService.getWalletTransactionDetails,
         {
@@ -23,15 +29,17 @@ const WalletPage = () => {
           sortOrder: "desc"
         }
       );
-      setTransactionDetails(parseDataToGridView(resTransaction));
+      setTransactionDetails(resTransaction);
     });
   }, []);
 
   return (
     <article>
       <Helmet title="Wallet" />
-      <WalletDashboard cards={walletDashboard} />
-      <WalletAccountSummary transactionDetails={transactionDetails} />
+      <Stack spacing={4}>
+        <WalletDashboard walletDashboard={walletDashboard} />
+        <WalletTransactions transactionDetails={transactionDetails} onDownload={handleDownload} />
+      </Stack>
     </article>
   );
 };

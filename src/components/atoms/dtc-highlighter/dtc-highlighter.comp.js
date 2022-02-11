@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Highlighter from "react-highlight-words";
-import styles from "./style.module.scss";
-
+const styles = {};
 export const DTCHighlighter = React.memo(({ searchText, value, className }) => {
   return (
     <Highlighter

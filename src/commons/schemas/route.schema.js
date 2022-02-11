@@ -1,6 +1,5 @@
 import React from "react";
-import { sortAlphabetically } from "utils/sort.util";
-import { Button, Tag, Tooltip } from "antd";
+import { Button, Tooltip, Chip } from "@mui/material";
 import HoverTax from "components/organisms/route/forms/tax-rules/tax-hover.list.comp";
 const FIELDS = {
   timestamp: "createdDate",
@@ -21,93 +20,75 @@ const LABELS = {
 };
 
 // active tab
-const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false) => (
-  sortedInfo,
-  CustomHighlighter,
-  searchText,
-  hiddenColumns
-) => {
-  let columnsSchema = [
+const routeTableSchema = (onEditClick, onDeleteClick) => {
+  return [
     {
-      title: LABELS[FIELDS.timestamp],
-      dataIndex: FIELDS.timestamp,
-      key: FIELDS.timestamp,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.timestamp], b[FIELDS.timestamp]),
-      sortOrder: sortedInfo.columnKey === FIELDS.timestamp && sortedInfo.order,
-      render: (timestamp) => <CustomHighlighter searchText={searchText} value={timestamp || ""} />
+      headerName: LABELS[FIELDS.timestamp],
+      field: FIELDS.timestamp,
+      width: 150
     },
     {
-      title: LABELS[FIELDS.categoryName],
-      dataIndex: FIELDS.categoryName,
-      key: FIELDS.categoryName,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.categoryName], b[FIELDS.categoryName]),
-      sortOrder: sortedInfo.columnKey === FIELDS.categoryName && sortedInfo.order,
-      render: (categoryName) => (
-        <CustomHighlighter searchText={searchText} value={categoryName || ""} />
-      )
+      headerName: LABELS[FIELDS.categoryName],
+      width: 200,
+      field: FIELDS.categoryName
     },
     {
-      title: LABELS[FIELDS.typeName],
-      dataIndex: FIELDS.typeName,
-      key: FIELDS.typeName,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.typeName], b[FIELDS.typeName]),
-      sortOrder: sortedInfo.columnKey === FIELDS.typeName && sortedInfo.order,
-      render: (typeName) => <CustomHighlighter searchText={searchText} value={typeName || ""} />
+      headerName: LABELS[FIELDS.typeName],
+      width: 200,
+      field: FIELDS.typeName
     },
     {
-      title: LABELS[FIELDS.from],
-      dataIndex: FIELDS.from,
-      key: FIELDS.from,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.from], b[FIELDS.from]),
-      sortOrder: sortedInfo.columnKey === FIELDS.from && sortedInfo.order,
-      render: (from) => <CustomHighlighter searchText={searchText} value={from || ""} />
+      headerName: LABELS[FIELDS.from],
+      width: 200,
+      field: FIELDS.from
     },
     {
-      title: LABELS[FIELDS.to],
-      dataIndex: FIELDS.to,
-      key: FIELDS.to,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.to], b[FIELDS.to]),
-      sortOrder: sortedInfo.columnKey === FIELDS.to && sortedInfo.order,
-      render: (to) => <CustomHighlighter searchText={searchText} value={to || ""} />
+      headerName: LABELS[FIELDS.to],
+      field: FIELDS.to,
+      width: 150
     },
     {
-      title: LABELS[FIELDS.hasTaxes],
-      dataIndex: FIELDS.hasTaxes,
-      key: FIELDS.hasTaxes,
-      sorter: (a, b) => sortAlphabetically(a[FIELDS.hasTaxes], b[FIELDS.hasTaxes]),
-      sortOrder: sortedInfo.columnKey === FIELDS.hasTaxes && sortedInfo.order,
-      render: (hasTaxes, record) => {
+      headerName: LABELS[FIELDS.hasTaxes],
+      field: FIELDS.hasTaxes,
+      width: 150,
+      align: "center",
+      renderCell: ({ row }) => {
+        const { hasTaxes, taxDetailResponseList } = row;
         return (
           <>
             {hasTaxes === "Yes" ? (
-              <Tag color={`green`}>
-                <Tooltip color="#ffffff" title={<HoverTax data={record?.taxDetailResponseList} />}>
-                  {hasTaxes}
-                </Tooltip>
-              </Tag>
+              <Tooltip
+                color="#ffffff"
+                title={<HoverTax data={taxDetailResponseList} />}
+                placement="top"
+              >
+                <Chip color="success" label={hasTaxes} />
+              </Tooltip>
             ) : (
-              <Tag color={`red`}>{hasTaxes}</Tag>
+              <Chip color="error" label={hasTaxes} />
             )}
           </>
         );
       }
     },
     {
-      title: "Manage",
-      key: "manage",
-      render: (record) => (
+      headerName: "Manage",
+      field: "Manage",
+      width: 200,
+      renderCell: (record) => (
         <div className="d-flex justify-content-end mr-2">
           <Button
-            type="primary"
+            variant="contained"
             className="dtc-min-width-50 mr-2"
             onClick={() => onEditClick(record.id)}
           >
             <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
           </Button>
           <Button
-            type="danger"
+            variant="contained"
             className="dtc-min-width-50 mr-2"
             onClick={() => onDeleteClick(record.id)}
+            sx={{ background: "#fb434a !important", "&*hover": { opacity: "0.7" } }}
           >
             <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
           </Button>
@@ -115,11 +96,6 @@ const routeTableSchema = (onEditClick, onDeleteClick, hiddenFromToFields = false
       )
     }
   ];
-
-  if (hiddenFromToFields)
-    columnsSchema = columnsSchema.filter((col) => col.key !== FIELDS.from && col.key !== FIELDS.to);
-
-  return columnsSchema.filter((col) => !hiddenColumns.includes(col.key));
 };
 
 export const ROUTE_SCHEMA = Object.freeze({

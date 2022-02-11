@@ -1,17 +1,24 @@
-import React, { useCallback } from "react";
-import { Button, message, Modal, Menu } from "antd";
-import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "commons/consts";
-import { DTCSection, LoadMoreButton, ProductCard, SearchBar } from "components/atoms";
-import { withListItem } from "HOCs/withListItem";
-import { usePaginatedApiService } from "hooks/useApiService";
-import debounce from "lodash/debounce";
-import { Helmet } from "react-helmet";
-import { useHistory } from "react-router-dom";
-import { ProductService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { useDispatch } from "react-redux";
 import * as STORAGE_DUCK from "redux/storage/storage.duck";
+
+import { Button, Menu, Modal, message } from "antd";
+import { DTCSection, LoadMoreButton } from "components/commons";
+import React, { useCallback } from "react";
+import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "commons/consts";
+
+import Box from "@mui/material/Box";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Helmet } from "react-helmet";
+import { Lagecy } from "components/lagecy/lagecy.comp";
+import { ProductCard } from "./product-card/product-card.comp";
+import { ProductService } from "services";
+import { SearchBar } from "./search-bar/search-bar.comp";
+import Stack from "@mui/material/Stack";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import debounce from "lodash/debounce";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { usePaginatedApiService } from "hooks/useApiService";
+import { withListItem } from "./withListItem";
 
 const { confirm } = Modal;
 
@@ -103,49 +110,59 @@ const ProductDatabase = () => {
 
   return (
     <article>
-      <Helmet title="Product Template Database" />
-      <DTCSection className="d-flex justify-content-between align-items-center">
-        <SearchBar
-          onSubmit={onSearch}
-          onTyping={() => setIsLoading(true)}
-          maxLength={TEMPLATE_NAME_MAX_CHARS}
-        />
-        <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
-          Add Product
-        </Button>
-      </DTCSection>
-      <section>
-        <ListProductCard
-          disableNavigation={true}
-          isLoading={isLoading}
-          renderMenu={({ data, setLoading, setHidden }) => (
-            <Menu
-              onClick={({ key }) => onMenuItemClick({ key, product: data, setLoading, setHidden })}
-            >
-              <Menu.Item title={`Edit ${data.name}`} key="edit-product">
-                Edit
-              </Menu.Item>
-              <Menu.Item title={`Duplicate ${data.name}`} key="duplicate-product">
-                Duplicate
-              </Menu.Item>
-              <Menu.Item title={`Delete ${data.name}`} danger key="delete-product">
-                Delete
-              </Menu.Item>
-            </Menu>
-          )}
-          data={products.map((product) => ({
-            ...product,
-            image: selectImageFromProduct(product)
-          }))}
-        />
-        <div className="text-center mt-3 mb-5">
-          <LoadMoreButton
-            isLoading={isLoadMore}
-            isHide={page >= totalPages - 1}
-            onLoadMoreClick={onLoadMore}
-          />
-        </div>
-      </section>
+      <Lagecy>
+        <Helmet title="Product Template Database" />
+        <DTCSection>
+          <DTCSection.Content>
+            <Stack direction="row" spacing={2}>
+              <Box display="flex" flexGrow={1}>
+                <SearchBar
+                  onSubmit={onSearch}
+                  onTyping={() => setIsLoading(true)}
+                  maxLength={TEMPLATE_NAME_MAX_CHARS}
+                />
+              </Box>
+              <Button type="primary" onClick={() => history.push(RouteConst.ADD_PRODUCT)}>
+                Add Product
+              </Button>
+            </Stack>
+          </DTCSection.Content>
+        </DTCSection>
+        <DTCSection sx={{ mt: 2 }}>
+          <DTCSection.Content>
+            <ListProductCard
+              disableNavigation={true}
+              isLoading={isLoading}
+              renderMenu={({ data, setLoading, setHidden }) => (
+                <Menu
+                  onClick={({ key }) =>
+                    onMenuItemClick({ key, product: data, setLoading, setHidden })
+                  }
+                >
+                  <Menu.Item title={`Edit ${data.name}`} key="edit-product">
+                    Edit
+                  </Menu.Item>
+                  <Menu.Item title={`Duplicate ${data.name}`} key="duplicate-product">
+                    Duplicate
+                  </Menu.Item>
+                  <Menu.Item title={`Delete ${data.name}`} danger key="delete-product">
+                    Delete
+                  </Menu.Item>
+                </Menu>
+              )}
+              data={products.map((product) => ({
+                ...product,
+                image: selectImageFromProduct(product)
+              }))}
+            />
+            <Stack alignItems="center">
+              {page < totalPages - 1 && (
+                <LoadMoreButton isLoading={isLoadMore} onLoadMoreClick={onLoadMore} />
+              )}
+            </Stack>
+          </DTCSection.Content>
+        </DTCSection>
+      </Lagecy>
     </article>
   );
 };

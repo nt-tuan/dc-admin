@@ -1,25 +1,28 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
-import { Loader } from "components";
-import { DTCSection } from "components/atoms";
-import { Button, Form, Steps, message } from "antd";
-import classNames from "classnames";
-import { isScreensize } from "utils/general.util";
-import { equalFields } from "utils/form.util";
-import { useSubmitApiService } from "hooks/useApiService";
-import VariantDetails from "./components/VariantsDetails";
-import OfferDetails from "./components/OfferDetails";
-import PackingDetails from "./components/PackingDetails";
-import CertificationDetails from "./components/CertificationDetails";
-import VitalInformation from "./components/VitalInformation";
-import { PRODUCT_CREATE_TEMPLATE } from "./constants";
 import "./product-mutation-template.comp.scss";
+
+import { Button, Form, Steps, message } from "antd";
+import { DTCSection, Loader } from "components/commons";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import CertificationDetails from "./components/CertificationDetails";
+import { EMPTY_FIELD } from "./constants";
+import { Lagecy } from "components/lagecy/lagecy.comp";
+import OfferDetails from "./components/OfferDetails";
+import { PRODUCT_CREATE_TEMPLATE } from "./constants";
+import PackingDetails from "./components/PackingDetails";
+import { ProductService } from "services";
 import { ProductTemplateImage } from "components/pages/add-product/product-template-image/product-template-image.comp";
 import { ProductTemplateReview } from "components/organisms";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { ProductService } from "services";
-import { EMPTY_FIELD } from "./constants";
 import { RouteConst } from "commons/consts";
+import Stack from "@mui/material/Stack";
+import VariantDetails from "./components/VariantsDetails";
+import VitalInformation from "./components/VitalInformation";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import classNames from "classnames";
+import { equalFields } from "utils/form.util";
+import { isScreensize } from "utils/general.util";
 import { useHistory } from "react-router-dom";
+import { useSubmitApiService } from "hooks/useApiService";
 
 const ALLOW_SKIP = [4, 5];
 
@@ -59,7 +62,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     setTimeout(() => {
       history.push(RouteConst.PRODUCT_DATABASE);
     }, 1000);
-  }, [isEditing]);
+  }, [history, isEditing]);
 
   const [loading, setLoading] = useState(true);
   const [
@@ -337,89 +340,95 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
 
   return (
     <article>
-      {loading && <Loader />}
-      <>
-        <DTCSection className={classNames({ "d-none": loading })}>
-          <Steps
-            className={null}
-            current={currentStep - 1}
-            size="default"
-            direction={isSmallDevice ? "vertical" : "horizontal"}
-            progressDot
-          >
-            {PRODUCT_CREATE_TEMPLATE.map((menu) => (
-              <Step title={menu.title} key={menu.title} />
-            ))}
-          </Steps>
-          <Form.Provider onFormFinish={handleSubmitForm}>
-            {/* create form here form here */}
-            <div className={classNames({ "d-none": currentStep !== 1 })}>
-              <VitalInformation
-                form={vitalForm}
-                formNewFields={formNewFields}
-                categories={categories}
-                onCategoryChange={getTypeByCategory}
-                types={types}
-                hsCode={hsCode}
-                productDetails={productDetails}
-                isEditing={isEditing}
-              />
+      <Lagecy>
+        {loading && <Loader />}
+        <>
+          <DTCSection className={classNames({ "d-none": loading })}>
+            <DTCSection.Content>
+              <Steps
+                className={null}
+                current={currentStep - 1}
+                size="default"
+                direction={isSmallDevice ? "vertical" : "horizontal"}
+                progressDot
+              >
+                {PRODUCT_CREATE_TEMPLATE.map((menu) => (
+                  <Step title={menu.title} key={menu.title} />
+                ))}
+              </Steps>
+              <Form.Provider onFormFinish={handleSubmitForm}>
+                {/* create form here form here */}
+                <div className={classNames({ "d-none": currentStep !== 1 })}>
+                  <VitalInformation
+                    form={vitalForm}
+                    formNewFields={formNewFields}
+                    categories={categories}
+                    onCategoryChange={getTypeByCategory}
+                    types={types}
+                    hsCode={hsCode}
+                    productDetails={productDetails}
+                    isEditing={isEditing}
+                  />
+                </div>
+                <div className={classNames({ "d-none": currentStep !== 2 })}>
+                  <VariantDetails
+                    form={variantDetailsForm}
+                    productDetails={productDetails}
+                    isEditing={isEditing}
+                  />
+                </div>
+                <div className={classNames({ "d-none": currentStep !== 3 })}>
+                  <OfferDetails
+                    form={offerDetailsForm}
+                    productDetails={productDetails}
+                    isEditing={isEditing}
+                  />
+                </div>
+                <div className={classNames({ "d-none": currentStep !== 4 })}>
+                  <PackingDetails
+                    form={packingDetailsForm}
+                    onValuesChange={handleValuesChange}
+                    productDetails={productDetails}
+                    isEditing={isEditing}
+                  />
+                </div>
+                <div className={classNames({ "d-none": currentStep !== 5 })}>
+                  <CertificationDetails
+                    form={certificationForm}
+                    onValuesChange={handleValuesChange}
+                    productDetails={productDetails}
+                    isEditing={isEditing}
+                  />
+                </div>
+                <div className={classNames({ "d-none": currentStep !== 6 })}>
+                  <ProductTemplateImage
+                    ref={(ref) => (templateImageForm.current = ref)}
+                    productImages={productDetails?.images}
+                  />
+                </div>
+                {currentStep === 7 && (
+                  <ProductTemplateReview data={productData} categories={categories} types={types} />
+                )}
+              </Form.Provider>
+            </DTCSection.Content>
+          </DTCSection>
+          <Stack mt={2}>
+            <div className={classNames("footer", { "d-none": loading, "mb-3": canSkip })}>
+              {currentStep !== 1 && (
+                <Button onClick={handlePrevious} disabled={disabledButtons}>
+                  Previous
+                </Button>
+              )}
+              {canSkip && (
+                <Button danger onClick={handleSkip} disabled={disabledButtons}>
+                  Skip Section
+                </Button>
+              )}
+              {!canSkip && NextButton()}
             </div>
-            <div className={classNames({ "d-none": currentStep !== 2 })}>
-              <VariantDetails
-                form={variantDetailsForm}
-                productDetails={productDetails}
-                isEditing={isEditing}
-              />
-            </div>
-            <div className={classNames({ "d-none": currentStep !== 3 })}>
-              <OfferDetails
-                form={offerDetailsForm}
-                productDetails={productDetails}
-                isEditing={isEditing}
-              />
-            </div>
-            <div className={classNames({ "d-none": currentStep !== 4 })}>
-              <PackingDetails
-                form={packingDetailsForm}
-                onValuesChange={handleValuesChange}
-                productDetails={productDetails}
-                isEditing={isEditing}
-              />
-            </div>
-            <div className={classNames({ "d-none": currentStep !== 5 })}>
-              <CertificationDetails
-                form={certificationForm}
-                onValuesChange={handleValuesChange}
-                productDetails={productDetails}
-                isEditing={isEditing}
-              />
-            </div>
-            <div className={classNames({ "d-none": currentStep !== 6 })}>
-              <ProductTemplateImage
-                ref={(ref) => (templateImageForm.current = ref)}
-                productImages={productDetails?.images}
-              />
-            </div>
-            {currentStep === 7 && (
-              <ProductTemplateReview data={productData} categories={categories} types={types} />
-            )}
-          </Form.Provider>
-        </DTCSection>
-        <div className={classNames("footer", { "d-none": loading, "mb-3": canSkip })}>
-          {currentStep !== 1 && (
-            <Button onClick={handlePrevious} disabled={disabledButtons}>
-              Previous
-            </Button>
-          )}
-          {canSkip && (
-            <Button danger onClick={handleSkip} disabled={disabledButtons}>
-              Skip Section
-            </Button>
-          )}
-          {!canSkip && NextButton()}
-        </div>
-      </>
+          </Stack>
+        </>
+      </Lagecy>
     </article>
   );
 };

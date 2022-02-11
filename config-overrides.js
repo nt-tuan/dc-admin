@@ -1,6 +1,4 @@
 // Overriding CreateReactApp settings, ref: https://github.com/arackaf/customize-cra
-const path = require("path");
-const antdTheme = require("./src/theme.js");
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 const {
   override,
@@ -24,10 +22,6 @@ module.exports = override(
     libraryName: "antd",
     libraryDirectory: "es",
     style: true
-  }),
-  addLessLoader({
-    javascriptEnabled: true,
-    modifyVars: antdTheme
   }),
   setGlobalObject("this"),
   addWebpackModuleRule({

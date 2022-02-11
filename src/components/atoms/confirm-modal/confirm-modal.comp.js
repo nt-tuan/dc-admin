@@ -1,28 +1,59 @@
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Modal from "@mui/material/Modal";
 import React from "react";
-import { Modal, Button } from "antd";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
-export const ConfirmModal = ({ showForm, toggleShowForm, innerText, title, onConfirmLock }) => {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: 1,
+  borderRadius: 1,
+  borderColor: "grey.600",
+  shadowBox: (theme) => theme.shadows[1],
+  pt: 2,
+  pb: 3
+};
+export const ConfirmModal = ({ showForm, onClose, innerText, title, onConfirmLock }) => {
   return (
     <Modal
       width={450}
-      title={title}
-      visible={showForm}
-      footer={null}
-      // onOk={toggleShowForm}
-      onCancel={toggleShowForm}
+      open={showForm}
+      onClose={onClose}
+      aria-labelledby="confirm-modal-title"
+      aria-describedby="confirm-modal-description"
     >
-      <div className="row text-center mx-auto">
-        <div className="col-12 col-sm-12 col-md-12 col-lg-12">{innerText}</div>
+      <Box sx={style} direction="column">
+        <Stack px={4} direction="row" alignItems="center" justifyContent="space-between">
+          <Typography id="confirm-modal-title" variant="h4">
+            {title}
+          </Typography>
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </Stack>
 
-        <div className="col-12 mt-4">
-          <Button key="cancel" className="mr-4 mb-2" onClick={toggleShowForm}>
+        <Divider />
+        <Box px={4} mt={4} id="confirm-modal-description">
+          {innerText}
+        </Box>
+        <Stack px={4} mt={2} direction="row" spacing={1} justifyContent="flex-end">
+          <Button color="inherit" variant="contained" key="cancel" onClick={onClose}>
             Cancel
           </Button>
-          <Button key="assign" className="mb-2" type="primary" onClick={onConfirmLock}>
+          <Button variant="contained" key="assign" onClick={onConfirmLock}>
             Confirm
           </Button>
-        </div>
-      </div>
+        </Stack>
+      </Box>
     </Modal>
   );
 };

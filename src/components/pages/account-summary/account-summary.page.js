@@ -1,18 +1,21 @@
-import { Button } from "antd";
-import { financialMapper } from "commons/mappers";
-import { accountSummaryTableSchema } from "commons/schemas";
-import { DTCTable } from "components";
+import { DTCSection, DTCTable } from "components/commons";
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { FinancialService } from "services";
+import { Helmet } from "react-helmet";
 import { SORT_ORDERS } from "commons/consts";
+import Stack from "@mui/material/Stack";
+import { accountSummaryColumns } from "./account-summary.schema";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { financialMapper } from "./account-summary.mapper";
 
 const { parseDataToExcel, parseDataToGridView } = financialMapper;
 
 const AccountSummaryPage = () => {
-  const [accountSummary, setAccountSummary] = useState([]);
+  const [accountSummary, setAccountSummary] = useState();
 
   useEffect(() => {
     asyncErrorHandlerWrapper(async () => {
@@ -32,30 +35,24 @@ const AccountSummaryPage = () => {
   };
 
   return (
-    <div>
+    <DTCSection>
       <Helmet title="Account Summary" />
-      <div className="air__utils__shadow bg-white p-4 dtc-br-10">
-        <div className="d-flex justify-content-between">
-          <div className="mb-2">
-            <Button className="btn btn-round btn-primary mr-2 mt-1">Copy</Button>
-            <Button className="btn btn-round btn-primary mr-2 mt-1">CSV</Button>
-            <Button className="btn btn-round btn-primary mr-2 mt-1">Print</Button>
-          </div>
-          <div className="mb-2">
-            <Button type="primary" className="mt-1" onClick={handleDownload}>
-              <i className="fe fe-download mr-2" /> Download
-            </Button>
-          </div>
-        </div>
-        <DTCTable
-          showSettings={false}
-          loading={false}
-          dataSource={accountSummary}
-          schema={accountSummaryTableSchema()}
-          onChange={(value) => setAccountSummary(value)}
-        />
-      </div>
-    </div>
+      <DTCSection.Content>
+        <Stack mb={2} justifyContent="flex-end" direction="row">
+          <Button variant="contained" onClick={handleDownload}>
+            Download
+          </Button>
+        </Stack>
+        <Box height={500}>
+          <DTCTable
+            showSettings={false}
+            loading={accountSummary == null}
+            dataSource={accountSummary ?? []}
+            columns={accountSummaryColumns}
+          />
+        </Box>
+      </DTCSection.Content>
+    </DTCSection>
   );
 };
 

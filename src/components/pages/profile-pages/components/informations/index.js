@@ -1,6 +1,4 @@
-import InformationTab from "./information-tab";
-import InformationView from "./information-view";
-import FormPhoneVerify from "./form-phone-verify";
-import InformationEdit from "./form-information-edit";
-
-export { InformationTab, InformationView, InformationEdit, FormPhoneVerify };
+import InformationEdit from "./information-edit.comp";
+import InformationTab from "./information-tab.comp";
+import InformationView from "./information-view.comp";
+export { InformationTab, InformationView, InformationEdit };

@@ -8,7 +8,7 @@ import { message } from "antd";
 import { OrderService } from "services";
 
 export const withEnhanceNotification = (NotificationItemComp) => {
-  return React.memo(({ data }) => {
+  return React.memo(({ data, ...rest }) => {
     const history = useHistory();
     const { notificationType, subjectId } = data;
 
@@ -26,7 +26,7 @@ export const withEnhanceNotification = (NotificationItemComp) => {
       });
     };
 
-    return <NotificationItemComp data={data} onClick={handleNavigateToAction} />;
+    return <NotificationItemComp data={data} {...rest} onClick={handleNavigateToAction} />;
   });
 };
 

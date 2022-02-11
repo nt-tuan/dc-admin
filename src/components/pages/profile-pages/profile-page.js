@@ -1,20 +1,18 @@
-import React, { memo, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Helmet } from "react-helmet";
-import { Row, Col } from "antd";
-import { useRouteMatch, useLocation } from "react-router-dom";
-import capitalize from "lodash/capitalize";
+import React, { memo, useEffect, useState } from "react";
+import {
+  selectCompanyName,
+  selectLargestTransactionValue,
+  selectSuccessfulTransactions,
+  selectUsername
+} from "redux/user/user.duck";
+import { useLocation, useRouteMatch } from "react-router-dom";
 
+import Grid from "@mui/material/Grid";
+import { Helmet } from "react-helmet";
 //** Components */
 import ProfileCard from "./profile-card";
 import ProfileTabs from "./profile-tabs";
-
-import {
-  selectSuccessfulTransactions,
-  selectLargestTransactionValue,
-  selectUsername,
-  selectCompanyName
-} from "redux/user/user.duck";
+import { useSelector } from "react-redux";
 
 const ProfilePage = memo(() => {
   const match = useRouteMatch();
@@ -44,20 +42,22 @@ const ProfilePage = memo(() => {
   };
 
   return (
-    <Row gutter={[24, 16]}>
-      <Helmet title={`Profile | ${currentTab && capitalize(currentTab.split("-").join(" "))}`} />
-      <Col xl={8} lg={24} md={24}>
-        <ProfileCard
-          title={username}
-          company={company}
-          successfulTransactions={successfulTransactions}
-          largestTransactionValue={largestTransactionValue}
-        />
-      </Col>
-      <Col xl={16} lg={24} md={24}>
-        <ProfileTabs currentTab={currentTab} handleTabClick={handleTabClick} />
-      </Col>
-    </Row>
+    <>
+      <Helmet title={`Profile | ${currentTab && currentTab.split("-").join(" ")}`} />
+      <Grid container columnSpacing={6} rowSpacing={6}>
+        <Grid item xs={12} lg={12} xl={4}>
+          <ProfileCard
+            title={username}
+            company={company}
+            successfulTransactions={successfulTransactions}
+            largestTransactionValue={largestTransactionValue}
+          />
+        </Grid>
+        <Grid item xs={12} lg={12} xl={8}>
+          <ProfileTabs currentTab={currentTab} handleTabClick={handleTabClick} />
+        </Grid>
+      </Grid>
+    </>
   );
 });
 

@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import FieldLayout from "./FieldLayout";
 import { EMPTY_FIELD } from "../../constants";
-import "../../product-mutation-template.comp.scss";
+// import "../../product-mutation-template.comp.scss";
 
 const ChildFieldModal = ({
   data = [EMPTY_FIELD],

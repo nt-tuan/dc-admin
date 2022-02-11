@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./styles.module.scss";
+// import styles from "./styles.module.scss";
 import { toCurrency } from "utils/general.util";
 
+const styles = {};
 export const CardsWrapper = ({ cards }) => {
   return (
     <div className="row">

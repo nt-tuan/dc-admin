@@ -55,3 +55,5 @@ export const MAX_CHARS = (label, max) => `${capitalize(label)} cannot exceed ${m
 export const DUPLICATE_ITEM_VALUE = (item, attr) =>
   `Already exists a ${item.toLowerCase()} with the same ${attr.toLowerCase()}`;
 export const PASSCODE_INVALID = "The passcode you entered is incorrect. Please try again";
+export const getAccountLockMessage = (duration, type) =>
+  `Your account has been locked for ${duration} because you have reached the maximum limit of invalid ${type} Attempts.`;

@@ -1,4 +1,4 @@
-import { LoginFormFooter } from "components/organisms/login/login-form/login-form-footer.comp";
+import { LoginFormFooter } from "components/pages/login/login-form/login-form-footer.comp";
 import { createLoginFormFooterWithCaptcha } from "./login-footer.comp";
 
 export class LoginGoogleCaptchaPlugin {

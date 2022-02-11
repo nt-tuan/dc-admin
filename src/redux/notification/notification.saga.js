@@ -81,7 +81,7 @@ export function* INIT_PAGINATED_MESSAGE({ payload }) {
   yield delay(500);
   yield put(setStateAction({ paginatedList: [...content] }));
   yield put(setStateAction({ isLoadingMore: false }));
-  afterInit();
+  if (afterInit) afterInit();
 }
 
 export function* LOAD_MESSAGE({ payload }) {

@@ -1,44 +1,47 @@
+import { Box, ListItem, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { List, Switch } from "antd";
-import "./feature-item.comp.scss";
+
 import { FeatureFlagService } from "services/feature-flag.service";
+import { useSnackbar } from "notistack";
 
-function FeatureItem({ featureFlag, notificationApi }) {
+function FeatureItem({ featureFlag }) {
   const [enabled, setEnabled] = useState(featureFlag.enabled);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleToggle = async (isCheck) => {
+  const handleToggle = async (_, isCheck) => {
     const toggleActionSuccess = isCheck ? "enabled" : "disabled";
     const toggleActionFail = isCheck ? "enable" : "disable";
     try {
       await FeatureFlagService.updateFeatureFlag(featureFlag.id, isCheck);
       setEnabled(isCheck);
-      notificationApi.success({
-        message: `${featureFlag.name} has been successfully ${toggleActionSuccess} in your Marketplace`,
-        placement: "topRight"
-      });
+      enqueueSnackbar(
+        `${featureFlag.name} has been successfully ${toggleActionSuccess} in your Marketplace`,
+        {
+          variant: "success"
+        }
+      );
     } catch (_err) {
-      notificationApi.error({
-        message: `${featureFlag.name} has been failed to ${toggleActionFail} in your Marketplace`,
-        placement: "topRight"
-      });
+      enqueueSnackbar(
+        `${featureFlag.name} has been failed to ${toggleActionFail} in your Marketplace`,
+        {
+          variant: "error"
+        }
+      );
     }
   };
 
   return (
-    <List.Item className="pl-4 pr-4 feature-flag d-flex justify-content-between">
-      <div className="feature-flag__content">
-        <div className="feature-flag__content__title">{featureFlag.name}</div>
-        <div className="feature-flag__content__desc text-faded">{featureFlag.description}</div>
-      </div>
-      <div className="feature-flag__toggle">
-        <Switch
-          checkedChildren="ON"
-          unCheckedChildren="OFF"
-          onChange={handleToggle}
-          checked={enabled}
-        />
-      </div>
-    </List.Item>
+    <ListItem>
+      <Box>
+        <Typography variant="h6" mb={1}>
+          {featureFlag.name}
+        </Typography>
+        <Typography variant="body2">{featureFlag.description}</Typography>
+      </Box>
+      <Box>
+        <Switch size="medium" onChange={handleToggle} checked={enabled} />
+      </Box>
+    </ListItem>
   );
 }
 

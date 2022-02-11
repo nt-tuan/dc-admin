@@ -1,5 +1,5 @@
 import { Document, Page, StyleSheet, Text, View, Font, Image } from "@react-pdf/renderer";
-import font from "assets/styles/font-pdf/Roboto-Light.ttf";
+// import font from "assets/styles/font-pdf/Roboto-Light.ttf";
 import React from "react";
 import { toCurrency } from "utils/general.util";
 import { DATE_FORMAT, PHONE_CREDIT_TYPE_LABELS } from "commons/consts";
@@ -10,7 +10,7 @@ dayjs.extend(utc);
 
 Font.register({
   family: "Roboto",
-  src: font,
+  // src: font,
   fontWeight: "thin"
 });
 

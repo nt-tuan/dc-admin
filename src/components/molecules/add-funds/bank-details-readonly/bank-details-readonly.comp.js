@@ -1,16 +1,33 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { KYC3_SCHEMA } from "commons/schemas";
-import { Card } from "antd";
 import { areObjectValuesUndefined } from "utils";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckIcon from "@mui/icons-material/Check";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import countryList from "assets/country.json";
-import "./bank-details-readonly.comp.scss";
+import { Divider, styled } from "@mui/material";
 
 const { BANK_DETAILS, KYC3_LABEL } = KYC3_SCHEMA;
+
+const CopyButton = ({ isCopied, onClick }) => {
+  return (
+    <Button onClick={onClick} startIcon={isCopied ? <CheckIcon /> : <ContentCopyIcon />}>
+      Copy
+    </Button>
+  );
+};
+
+const Row = styled(Box)({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center"
+});
 
 export const BankDetailsReadonly = ({
   handleCopyText,
   bankDetails,
-  showHeader = true,
   showTitle = true,
   schema = BANK_DETAILS,
   label = KYC3_LABEL,
@@ -97,68 +114,76 @@ export const BankDetailsReadonly = ({
   };
 
   return (
-    <React.Fragment>
-      {showHeader ? (
-        <Fragment>
-          <h5 className="font-weight-bold">BANK DETAILS</h5>
-          <hr />
-        </Fragment>
-      ) : null}
-      <div className="row">
-        {bankDetails
-          .filter((account) => areObjectValuesUndefined(account) === false)
-          .map((record, index) => (
-            <div
-              key={record.id || index}
-              className={`col-12 col-lg-${bankDetails.length === 1 ? "12" : "6"} mb-4`}
+    <Grid container>
+      {bankDetails
+        .filter((account) => areObjectValuesUndefined(account) === false)
+        .map((record, index) => (
+          <Grid
+            item
+            key={record.id || index}
+            xs={12}
+            lg={bankDetails.length === 1 ? 12 : 6}
+            sx={{ marginBottom: 2 }}
+          >
+            <Box
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                width: "100%"
+              }}
             >
-              <table className="bank__details">
-                {isCopy && (
-                  <tr className="bank__details__table-header">
-                    <span
-                      onClick={() => handleCopyTitle(bankDetails)}
-                      className={`fe ${isCopyClicked ? "fe-check" : "fe-copy"} dtc-cursor-pointer`}
+              {isCopy && (
+                <Box sx={{ backgroundColor: "grey.200" }}>
+                  <CopyButton
+                    onClick={() => handleCopyTitle(bankDetails)}
+                    isCopied={isCopyClicked}
+                  />
+                  and Paste the details onto your bank's website
+                </Box>
+              )}
+              {showTitle && (
+                <Box component="h5" sx={{ color: "primary.main", padding: 0, marginBottom: 0 }}>
+                  {renderTitle(index)}
+                </Box>
+              )}
+              {Object.values(schema).map((field, schemaKeyIndex) => (
+                <Box key={field}>
+                  {(isCopy || schemaKeyIndex !== 1) && <Divider />}
+                  <Row sx={{ paddingLeft: 1, paddingRight: 1 }}>
+                    <Row
+                      sx={{
+                        color: field === "paymentReference" ? "error.main" : undefined,
+                        width: "100%",
+                        justifyContent: "space-between",
+                        flexGrow: 1
+                      }}
                     >
-                      <span style={{ color: "#00b2ff" }}> Copy </span>
-                    </span>
-                    and Paste the details onto your bank’s website
-                  </tr>
-                )}
-                {showTitle && <h5 className="text-primary p-2 mb-0">{renderTitle(index)}</h5>}
-                {Object.values(schema).map((field) => (
-                  <tr key={`${record.id}-${field}`} className="d-flex justify-content-between">
-                    <div
-                      className="bank__details__row__content"
-                      style={{ width: `${isCopy ? "70%" : "100%"}` }}
-                    >
-                      <b className={label[field] === "Payment Reference" ? "red-color" : null}>
-                        {renderLabelCode(record[field], field, index)}{" "}
-                      </b>
-                      <div className={field === "paymentReference" ? "red-color font-bold" : null}>
+                      <Box sx={{ marginRight: 2 }}>
+                        <strong>{renderLabelCode(record[field], field, schemaKeyIndex)}</strong>
+                      </Box>
+                      <Box
+                        sx={{
+                          fontWeight: field === "paymentReference" ? "bold" : undefined,
+                          paddingRight: 2
+                        }}
+                      >
                         {field === BANK_DETAILS.nationality
                           ? countryList.find((c) => c.alpha2Code === record[field]).name
                           : record[field]}
-                      </div>
-                    </div>
+                      </Box>
+                    </Row>
                     {isCopy && (
-                      <span
-                        className={`fe ${
-                          isCopyClickedList === record[field] || isCopyClicked
-                            ? "fe-check"
-                            : "fe-copy"
-                        } dtc-cursor-pointer `}
-                        style={{ color: "#00b2ff" }}
+                      <CopyButton
                         onClick={() => handleCopyListData(record[field])}
-                      >
-                        <span style={{ color: "#00b2ff", marginLeft: "0.5rem" }}>Copy</span>
-                      </span>
+                        isCopied={isCopyClickedList === record[field] || isCopyClicked}
+                      />
                     )}
-                  </tr>
-                ))}
-              </table>
-            </div>
-          ))}
-      </div>
-    </React.Fragment>
+                  </Row>
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+        ))}
+    </Grid>
   );
 };

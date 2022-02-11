@@ -225,12 +225,6 @@ export class ApiPathConsts {
   static get COMPANY_SEND_VERIFICATION_CODE() {
     return `${this.#COMPANY_PREFIX}/bankdetails/code`;
   }
-  static get COMPANY_SEND_VERIFICATION_CODE() {
-    return `${this.#COMPANY_PREFIX}/bankdetails/code`;
-  }
-  static get COMPANY_SEND_VERIFICATION_CODE() {
-    return `${this.#COMPANY_PREFIX}/bankdetails/code`;
-  }
   static get GET_COMPANY_ME() {
     return `${this.#COMPANY_PREFIX}/me`;
   }

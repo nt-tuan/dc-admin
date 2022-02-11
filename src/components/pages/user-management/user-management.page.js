@@ -1,50 +1,33 @@
-import React, { memo, useState } from "react";
-import { UserManagementAllUserTab } from "./tabs/user-mgt-all-user-tab.comp";
-import { UserManagementBuyerTab } from "./tabs/user-mgt-buyer-tab.comp";
-import { UserManagementSellerTab } from "./tabs/user-mgt-seller-tab.comp";
+import React, { memo } from "react";
+import { UserManagementTable } from "./user-management-table";
 import { Helmet } from "react-helmet";
-import { Button } from "antd";
+import { DTCTabs, useTabSearchParams } from "components/commons";
+import { UserService } from "services";
 
-const TAB_KEYS = {
-  BUYER: "BUYER",
-  SELLER: "SELLER",
-  ALL_USER: "ALL_USER"
-};
-
-const { SELLER, BUYER, ALL_USER } = TAB_KEYS;
+const tabs = [
+  {
+    key: "BUYER",
+    label: "Buyer",
+    component: <UserManagementTable getUserFn={UserService.getAllBuyer} />
+  },
+  {
+    key: "SELLER",
+    label: "Seller",
+    component: <UserManagementTable getUserFn={UserService.getAllSeller} />
+  },
+  {
+    key: "ALL_USER",
+    label: "All User",
+    component: <UserManagementTable getUserFn={UserService.getAllUsers} />
+  }
+];
 
 export const UserManagementPage = () => {
-  const [tab, setTab] = useState(ALL_USER);
-  const renderBuyer = () => <UserManagementBuyerTab />;
-  const renderSeller = () => <UserManagementSellerTab />;
-  const renderAllUser = () => <UserManagementAllUserTab />;
-
-  const renderTabButton = (tabName, key) => {
-    return (
-      <Button
-        shape="round"
-        type={tab === key ? "primary" : "default"}
-        className="mr-2"
-        onClick={() => setTab(key)}
-      >
-        {tabName}
-      </Button>
-    );
-  };
-
+  const [value, handleChange] = useTabSearchParams(tabs);
   return (
     <article>
       <Helmet title="User Management" />
-      <div className="d-flex justify-content-between mb-3 ml-2">
-        <div>
-          {renderTabButton("All User", ALL_USER)}
-          {renderTabButton("Buyer", BUYER)}
-          {renderTabButton("Seller", SELLER)}
-        </div>
-      </div>
-      {tab === ALL_USER && renderAllUser()}
-      {tab === BUYER && renderBuyer()}
-      {tab === SELLER && renderSeller()}
+      <DTCTabs tabs={tabs} value={value} onChange={handleChange} />
     </article>
   );
 };

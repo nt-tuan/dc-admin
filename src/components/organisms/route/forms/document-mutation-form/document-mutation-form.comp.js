@@ -1,96 +1,131 @@
-import React, { forwardRef, useReducer, useState } from "react";
-import { Form, Input, Select, Upload, Button } from "antd";
-import { RouteService } from "services";
-import { UploadFile } from "components/atoms/field/upload-file-input";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  TextField
+} from "@mui/material";
+import React, { useEffect } from "react";
 
-export const DocumentMutationForm = forwardRef((props, ref) => {
-  const [form] = Form.useForm();
+import { DOCUMENT_SCHEMA } from "components/organisms/route/document.schema";
+import { RouteService } from "services";
+import { UploadFile } from "components/commons";
+
+export const DocumentMutationForm = ({
+  selectedDocument,
+  formik,
+  handleCancelDocumentMutation,
+  isEdit
+}) => {
+  useEffect(() => {
+    if (selectedDocument.current) {
+      const targetDoc = selectedDocument.current;
+      formik.setValues({
+        documentName: targetDoc.name,
+        documentType: targetDoc.routeDocumentTypeEnum,
+        sampleFile: targetDoc?.fileName
+          ? {
+              name: targetDoc.fileName,
+              originalName: targetDoc.originalFileName ?? targetDoc.fileName,
+              url: targetDoc.url,
+              uid: targetDoc.fileName
+            }
+          : {
+              name: "",
+              originalName: "",
+              uid: "",
+              url: ""
+            }
+      });
+    }
+  }, [selectedDocument]);
+
+  useEffect(() => {
+    if (!isEdit.current) formik.setValues(DOCUMENT_SCHEMA.initialFormValue);
+  }, [isEdit]);
+
   const uploadFile = async (file) => {
     return await RouteService.uploadDocument(file);
   };
-  const handleChangeDocumentType = (value) => {
-    form.setFieldsValue({
-      sampleFile: null
+
+  const handleChangeDocumentType = (e) => {
+    formik.setFieldValue("sampleFile", {
+      name: "",
+      originalName: "",
+      uid: "",
+      url: ""
     });
+    formik.setFieldValue("documentType", e.target.value);
   };
 
   return (
-    <Form
-      colon={false}
-      form={form}
-      ref={ref}
-      name="basic"
-      labelCol={{ span: 7 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
-      hideRequiredMark
-    >
-      <Form.Item
-        className="mb-4"
-        label="Document Name"
+    <form onSubmit={formik.handleSubmit}>
+      <TextField
+        fullWidth
         name="documentName"
-        rules={[{ required: true, message: "Please input your Document Name!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        className="mb-4"
-        label="Document Type"
+        label="Document Name"
+        value={formik.values.documentName}
+        onChange={formik.handleChange}
+        error={formik.touched.documentName && Boolean(formik.errors.documentName)}
+        helperText={formik.touched.documentName && formik.errors.documentName}
+        sx={{ marginTop: 1 }}
+      />
+      <TextField
+        fullWidth
+        select
         name="documentType"
-        rules={[{ required: true, message: "Please input your Document Type!" }]}
-        shouldUpdate
+        label="Document Type"
+        value={formik.values.documentType}
+        onChange={handleChangeDocumentType}
+        error={formik.touched.documentType && Boolean(formik.errors.documentType)}
+        helperText={formik.touched.documentType && formik.errors.documentType}
+        sx={{ marginTop: 3 }}
       >
-        <Select onChange={handleChangeDocumentType}>
-          {fileTypes.map(({ value, label }) => (
-            <Select.Option key={value} value={value}>
-              {label}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item shouldUpdate>
-        {() => {
-          const fileType = form.getFieldValue("documentType");
-          return (
-            <Form.Item
-              name="sampleFile"
-              wrapperCol={{ span: 24 }}
-              labelCol={{ span: 24 }}
-              label="Please upload a sample file of the document."
-              rules={[
-                {
-                  validator: (rule, value) => {
-                    const documentType = form.getFieldValue("documentType");
-                    if (!value) {
-                      return Promise.resolve();
-                    }
-                    if (value.error) {
-                      return Promise.reject(value.error);
-                    }
-                    return value.name
-                      .toLowerCase()
-                      .endsWith(acceptTypes[documentType].toLowerCase())
-                      ? Promise.resolve()
-                      : Promise.reject("Please upload a file with type as Document Type");
-                  }
-                }
-              ]}
-            >
-              <UploadFile
-                disabled={!acceptTypes[fileType]}
-                accept={acceptTypes[fileType]}
-                title="Upload"
-                maxSize={5000}
-                uploadHandler={uploadFile}
-              />
-            </Form.Item>
-          );
+        {fileTypes.map(({ value, label }) => (
+          <MenuItem key={value} value={value}>
+            {label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <InputLabel sx={{ marginTop: 3 }}>Please upload a sample file of the document.</InputLabel>
+      <FormControl name="sampleFile" fullWidth>
+        <UploadFile
+          disabled={!DOCUMENT_SCHEMA.acceptTypes[formik.values.documentType]}
+          accept={DOCUMENT_SCHEMA.acceptTypes[formik.values.documentType]}
+          title="Upload"
+          maxSize={5000}
+          uploadHandler={uploadFile}
+          formik={formik}
+          value={formik.values.sampleFile}
+        />
+        {formik.touched.sampleFile && (
+          <FormHelperText error>{formik.errors.sampleFile}</FormHelperText>
+        )}
+      </FormControl>
+      <Button
+        onClick={handleCancelDocumentMutation}
+        variant="outlined"
+        sx={{
+          color: "#fb434a",
+          borderColor: "#fb434a !important",
+          marginTop: 3,
+          marginLeft: 1,
+          float: "right",
+          "&:hover": {
+            background: "white",
+            opacity: "0.7"
+          }
         }}
-      </Form.Item>
-    </Form>
+      >
+        Cancel
+      </Button>
+      <Button autoFocus variant="contained" type="submit" sx={{ marginTop: 3, float: "right" }}>
+        Confirm
+      </Button>
+    </form>
   );
-});
+};
 
 const fileTypes = [
   {
@@ -102,13 +137,3 @@ const fileTypes = [
     label: "Excel"
   }
 ];
-
-const acceptTypes = {
-  PDF: ".pdf",
-  XLSX: ".xlsx"
-};
-
-const FILE_TYPES = {
-  PDF: "application/pdf",
-  XLSX: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-};

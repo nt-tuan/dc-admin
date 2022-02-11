@@ -3,7 +3,7 @@ import { Collapse, Card, Row, Col, Select, Input, Form, Switch } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { FIELD_TYPE } from "../../constants";
 import CustomFieldOption from "../CustomFieldOption/CustomFieldOption.comp";
-import "../../product-mutation-template.comp.scss";
+// import "../../product-mutation-template.comp.scss";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
 

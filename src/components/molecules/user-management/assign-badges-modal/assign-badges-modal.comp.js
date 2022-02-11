@@ -1,23 +1,11 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { Button, Checkbox, Modal, Empty, Input, Row, Col, message } from "antd";
-import { ReactComponent as DistributorBadge } from "assets/icons/badges/distributor.svg";
-import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/manufactor.svg";
-import { SearchOutlined } from "@ant-design/icons";
-import UserVerifiedBadges from "assets/icons/badges/user-verified-badge.png";
-import { USER_MANAGEMENT_SCHEMA } from "commons/schemas";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { UserService } from "services";
 import "./assign-badges-modal.comp.scss";
 
-const { BADGE_TYPES, BADGE_LABELS } = USER_MANAGEMENT_SCHEMA;
+import { Button, Checkbox, Col, Empty, Input, Modal, Row, message } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
 
-const IMAGE_SCHEMA = {
-  [BADGE_TYPES.DISTRIBUTOR]: <DistributorBadge />,
-  [BADGE_TYPES.MANUFACTURE]: <ManuFactorBadge />,
-  [BADGE_TYPES.VERIFIED]: (
-    <img className="w-100" src={UserVerifiedBadges} alt="User Verified Badge" />
-  )
-};
+import { SearchOutlined } from "@ant-design/icons";
+import { UserService } from "services";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 const BADGE_SIZE = 100;
 

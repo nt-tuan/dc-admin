@@ -1,6 +1,7 @@
 import { Col, Divider, Row, Button, message } from "antd";
 import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
-import { DTCSection, LoadingIndicator } from "components/atoms";
+import { LoadingIndicator } from "components/atoms";
+import { DTCSection } from "components/commons";
 import {
   DocumentList,
   DocumentRuleTable,

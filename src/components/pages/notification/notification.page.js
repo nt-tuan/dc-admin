@@ -1,13 +1,14 @@
-import { List, Skeleton } from "antd";
-import { LoadMoreButton, NotificationItem } from "components";
+import * as NOTI_DUCK from "redux/notification/notification.duck";
+
+import { Box, Divider } from "@mui/material";
+import { DTCSection, LoadMoreButton } from "components/commons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as NOTI_DUCK from "redux/notification/notification.duck";
-import dayjs from "dayjs";
+
 import { Helmet } from "react-helmet";
+import { NotificationList } from "components/commons/notification-list/notification-list.comp";
 
 const NotificationPage = React.memo(() => {
-  const [isInit, setIsInit] = useState(true);
   const [page, setPage] = useState(0);
   const notifications = useSelector(NOTI_DUCK.selectNotificationPaginatedList);
   const totalPages = useSelector(NOTI_DUCK.selectTotalPage);
@@ -18,7 +19,7 @@ const NotificationPage = React.memo(() => {
   const itemPerPage = 5;
 
   useEffect(() => {
-    dispatch({ type: NOTI_DUCK.INIT_PAGINATED_MESSAGE, payload: { afterInit, itemPerPage } });
+    dispatch({ type: NOTI_DUCK.INIT_PAGINATED_MESSAGE, payload: { itemPerPage } });
     setPage((page) => page + 1);
   }, [dispatch]);
 
@@ -27,42 +28,25 @@ const NotificationPage = React.memo(() => {
     setPage((page) => page + 1);
   };
 
-  const afterInit = () => {
-    setIsInit(false);
-  };
-
-  const renderLoadmoreBtn = () => {
-    return (
-      <div className="text-center mt-4 mb-3">
-        <LoadMoreButton
-          isLoading={isLoadingMore}
-          isHide={page > totalPages - 1}
-          onLoadMoreClick={onloadMore}
-        />
-      </div>
-    );
-  };
-
   return (
-    <article className="air__utils__shadow bg-white dtc-br-10 p-3">
+    <DTCSection>
       <Helmet title="Notifications" />
-      <h4>Notification list</h4>
-      <Skeleton loading={isLoadingNewMessage} active={true} avatar paragraph={{ rows: 1 }} />
-      {isInit ? null : (
-        <List
-          itemLayout="horizontal"
-          dataSource={notifications.sort(function (a, b) {
-            return dayjs(b.createdDate) - dayjs(a.createdDate);
-          })}
-          loadMore={renderLoadmoreBtn()}
-          renderItem={(item) => (
-            <List.Item>
-              <NotificationItem data={item} />
-            </List.Item>
-          )}
+      <DTCSection.Header>Notification list</DTCSection.Header>
+      <DTCSection.Content>
+        <NotificationList
+          listData={notifications}
+          isLoading={isLoadingMore || isLoadingNewMessage}
         />
-      )}
-    </article>
+        <Divider sx={{ my: "8px" }} />
+        <Box sx={{ textAlign: "center" }}>
+          <LoadMoreButton
+            isLoading={isLoadingMore}
+            isHide={page > totalPages - 1}
+            onLoadMoreClick={onloadMore}
+          />
+        </Box>
+      </DTCSection.Content>
+    </DTCSection>
   );
 });
 

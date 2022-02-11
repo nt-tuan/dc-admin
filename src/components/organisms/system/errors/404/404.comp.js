@@ -1,8 +1,8 @@
 import { RouteConst } from "commons/consts";
 import React from "react";
 import { Link } from "react-router-dom";
-import style from "../errors-shared-styles.module.scss";
-
+// import style from "../errors-shared-styles.module.scss";
+const style = {};
 export const Error404 = () => {
   return (
     <div className={style.errors}>

@@ -1,29 +1,42 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Form, Checkbox, Popconfirm, Button, notification } from "antd";
-import { NOTIFICATION_CHANNELS, MESSAGES, RouteConst } from "commons/consts";
-import { selectUsers } from "redux/user/user.duck";
-import { USER_TABS_NAME } from "commons/consts";
-import { updateNotificationChannel } from "services/user-profile.service";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import * as USER_DUCK from "redux/user/user.duck";
+
+import { MESSAGES, NOTIFICATION_CHANNELS } from "commons/consts";
+import { useDispatch, useSelector } from "react-redux";
+
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { PhoneVerifiedRequiredCheckbox } from "./phone-verified-required-checkbox.comp";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { notification } from "antd";
+import { selectUsers } from "redux/user/user.duck";
+import { updateNotificationChannel } from "services/user-profile.service";
 
 function NotificationPreference() {
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { phoneVerified, bySms, byWeb, byEmail, byWhatsapp } = users;
-
-  const onFinish = (values) => {
-    const fieldName = "notificationChannel";
+  const [
+    { phoneVerified, bySms, byWeb, byEmail, byWhatsapp },
+    setNotificationSettings
+  ] = React.useState(users);
+  React.useEffect(() => {
+    setNotificationSettings(users);
+  }, [users]);
+  const handleCheck = (event) => {
+    setNotificationSettings((current) => ({
+      ...current,
+      [event.target.name]: event.target.checked
+    }));
+  };
+  const handleUpdate = () => {
     const parsedValues = {
-      byEmail: values[fieldName].includes(NOTIFICATION_CHANNELS.EMAIL),
-      byWeb: values[fieldName].includes(NOTIFICATION_CHANNELS.WEB),
-      byWhatsapp: phoneVerified
-        ? values[fieldName].includes(NOTIFICATION_CHANNELS.WHATSAPP)
-        : false,
-      bySms: values[fieldName].includes(NOTIFICATION_CHANNELS.SMS)
+      byEmail,
+      byWeb,
+      byWhatsapp: phoneVerified ? byWhatsapp : false,
+      bySms: phoneVerified ? bySms : false
     };
     if (parsedValues) {
       asyncErrorHandlerWrapper(async () => {
@@ -36,102 +49,54 @@ function NotificationPreference() {
     }
   };
 
-  const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 }
-  };
-
-  const onConfirmPhone = () => {
-    history.push({
-      pathname: `${RouteConst.PROFILE}/${USER_TABS_NAME.profileInfo}`,
-      state: { isVerified: true }
-    });
-  };
-
-  //** Render WhatApps checkbox */
-  const renderWhatsAppCheckbox = () => {
-    return phoneVerified ? (
-      <Checkbox name="byWhatsapp" value={NOTIFICATION_CHANNELS.WHATSAPP} className="mr-2">
-        WhatsApp
-      </Checkbox>
-    ) : (
-      <div className="d-flex align-items-center mr-2">
-        <Checkbox name="byWhatsapp" disabled value={NOTIFICATION_CHANNELS.WHATSAPP}>
-          Whatsapp
-        </Checkbox>
-        <Popconfirm
-          title={MESSAGES.VERIFY_PHONE_TO_USE_THIS_FEATURE}
-          onConfirm={onConfirmPhone}
-          okText="Yes"
-          cancelText="No"
-        >
-          <i className="fe fe-info" />
-        </Popconfirm>
-      </div>
-    );
-  };
-
-  //** Render SMS Checkbox */
-  const renderSmsCheckbox = () => {
-    return phoneVerified ? (
-      <Checkbox name="bySms" value={NOTIFICATION_CHANNELS.SMS} className="mr-2">
-        SMS
-      </Checkbox>
-    ) : (
-      <div className="d-flex align-items-center mr-2">
-        <Checkbox disabled name="bySms" value={NOTIFICATION_CHANNELS.SMS}>
-          SMS
-        </Checkbox>
-        <Popconfirm
-          title={MESSAGES.VERIFY_PHONE_TO_USE_THIS_FEATURE}
-          onConfirm={onConfirmPhone}
-          okText="Yes"
-          cancelText="No"
-        >
-          <i className="fe fe-info" />
-        </Popconfirm>
-      </div>
-    );
-  };
   return (
     <div>
-      <h5>Notification Preference</h5>
-      <Form
-        name="validate_other"
-        {...formItemLayout}
-        onFinish={onFinish}
-        initialValues={{
-          ["notificationChannel"]: [
-            byWeb ? NOTIFICATION_CHANNELS.WEB : null,
-            byEmail ? NOTIFICATION_CHANNELS.EMAIL : null,
-            bySms ? NOTIFICATION_CHANNELS.SMS : null,
-            byWhatsapp && phoneVerified ? NOTIFICATION_CHANNELS.WHATSAPP : null
-          ]
-        }}
-      >
-        <Form.Item name="notificationChannel">
-          <Checkbox.Group className="w-100 d-flex flex-sm-row flex-column">
-            {renderWhatsAppCheckbox()}
-            {renderSmsCheckbox()}
-            <Checkbox name="byWeb" value={NOTIFICATION_CHANNELS.WEB} className="m-0">
-              Website
-            </Checkbox>
-            <Checkbox name="byEmail" value={NOTIFICATION_CHANNELS.EMAIL} className="m-0">
-              Email
-            </Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
-        <div className="pt-4 d-flex justify-content-end">
-          <Button
-            type="primary"
-            size="large"
-            className="text-center btn btn-primary font-weight-bold font-size-18 dtc-min-width-100"
-            htmlType="submit"
-          >
-            Update
-          </Button>
-        </div>
-      </Form>
+      <Typography variant="h4" sx={{ mb: 5 }}>
+        Notification Preference
+      </Typography>
+      <Stack direction="row" flexWrap="wrap" spacing={2}>
+        <PhoneVerifiedRequiredCheckbox
+          label="Whatsapp"
+          name="byWhatsapp"
+          value={NOTIFICATION_CHANNELS.WHATSAPP}
+          checked={byWhatsapp}
+          onChange={handleCheck}
+        />
+        <PhoneVerifiedRequiredCheckbox
+          label="SMS"
+          name="bySms"
+          value={NOTIFICATION_CHANNELS.SMS}
+          checked={bySms}
+          onChange={handleCheck}
+        />
+        <FormControlLabel
+          label="Website"
+          control={
+            <Checkbox
+              name="byWeb"
+              value={NOTIFICATION_CHANNELS.WEB}
+              checked={byWeb}
+              onChange={handleCheck}
+            />
+          }
+        />
+        <FormControlLabel
+          label="Email"
+          control={
+            <Checkbox
+              name="byEmail"
+              value={NOTIFICATION_CHANNELS.EMAIL}
+              checked={byEmail}
+              onChange={handleCheck}
+            />
+          }
+        />
+      </Stack>
+      <Stack alignItems="flex-end">
+        <Button onClick={handleUpdate} variant="contained">
+          Update
+        </Button>
+      </Stack>
     </div>
   );
 }

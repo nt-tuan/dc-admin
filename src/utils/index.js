@@ -1,14 +1,9 @@
-import {
-  ORDER_PROCESS,
-  ORDER_STATUS,
-  ORDER_STATUS_LABEL,
-  ORDER_PROCESS_LABEL,
-  MARKETPLACE_NAME
-} from "commons/consts";
+import { getCompanyName, getDefaultCurrency } from "./config.util";
+
+import { MARKETPLACE_NAME } from "commons/consts";
 import XLSX from "xlsx";
 import { message } from "antd";
 import numeral from "numeral";
-import { getCompanyName, getDefaultCurrency } from "./config.util";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -76,20 +71,6 @@ export const convertStringToMinutes = (datetime) => {
   const hourToMinute = res[0] * 60;
   const minute = parseInt(res[1]) + hourToMinute;
   return minute;
-};
-
-const optionsDownload = (elm, scale) => {
-  return {
-    bgcolor: "#ffffff",
-    height: elm.offsetHeight * scale,
-    width: elm.offsetWidth * scale,
-    style: {
-      transform: "scale(" + scale + ")",
-      transformOrigin: "top left",
-      width: elm.offsetWidth + "px",
-      height: elm.offsetHeight + "px"
-    }
-  };
 };
 
 export const disableLinkClick = (disabled, e) => (disabled ? e.preventDefault() : () => {});

@@ -10,7 +10,7 @@ import { TradeRulesTable } from "../trade-rules-table/trade-rules-table.comp";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { RouteService, ProductRuleService } from "services";
 import { usePaginatedApiService } from "hooks/useApiService";
-import { LoadMoreButton } from "components/atoms";
+import { LoadMoreButton } from "components/commons";
 import { TRADE_RULES_SCHEMA } from "commons/schemas";
 
 const { FIELDS } = TRADE_RULES_SCHEMA;
