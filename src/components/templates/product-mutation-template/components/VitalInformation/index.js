@@ -54,6 +54,7 @@ const VitalInformationForm = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState(defaultValue1);
   const [hsCodeData, setHsCodeData] = useState(hsCode);
+  const ref = React.useRef();
 
   useEffect(() => {
     setHsCodeData(hsCode);
@@ -360,6 +361,7 @@ const VitalInformationForm = ({
       case INPUT_TYPE.SELECT_HSCODE_NUMBER:
         return (
           <Select
+            getPopupContainer={() => ref.current}
             showSearch
             showArrow={false}
             filterOption={false}
@@ -383,6 +385,7 @@ const VitalInformationForm = ({
         return (
           <Select
             showSearch
+            getPopupContainer={() => ref.current}
             showArrow={false}
             filterOption={false}
             notFoundContent={null}
@@ -403,7 +406,12 @@ const VitalInformationForm = ({
         );
       case INPUT_TYPE.SELECT:
         return (
-          <Select mode={schema.mode} onChange={handleFieldChange(schema.name)} {...schema.props}>
+          <Select
+            getPopupContainer={() => ref.current}
+            mode={schema.mode}
+            onChange={handleFieldChange(schema.name)}
+            {...schema.props}
+          >
             {schema?.options?.options?.map((item) => {
               return (
                 <Option key={item.id} value={item.id}>
@@ -419,7 +427,7 @@ const VitalInformationForm = ({
   };
 
   return (
-    <>
+    <div ref={ref}>
       <Form hideRequiredMark form={form} name="vitalInformation" {...LAYOUT}>
         <Row>
           {VITAL_INFORMATION_SCHEMA.map((schema, index) => {
@@ -439,7 +447,7 @@ const VitalInformationForm = ({
         </Row>
         <VitalInformationAddFieldsForm form={formNewFields} />
       </Form>
-    </>
+    </div>
   );
 };
 

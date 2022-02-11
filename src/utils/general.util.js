@@ -1,7 +1,8 @@
+import { getCompanyName, getDefaultCurrency } from "./config.util";
+
+import { MARKETPLACE_NAME } from "commons/consts";
 import XLSX from "xlsx";
 import { message } from "antd";
-import { MARKETPLACE_NAME } from "commons/consts";
-import { getCompanyName, getDefaultCurrency } from "./config.util";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -126,8 +127,8 @@ export const getAllRecordsFromAPI = async (
   return allDataRes.content;
 };
 
-export const toCurrency = (value, defaultCurrency = "$") => {
-  const currency = getDefaultCurrency() === "USD" ? defaultCurrency : getDefaultCurrency();
+export const toCurrency = (value) => {
+  const currency = getDefaultCurrency();
   return value !== undefined && !isNaN(value)
     ? currency + " " + Number(value).toLocaleString()
     : value;

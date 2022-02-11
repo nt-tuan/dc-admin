@@ -1,6 +1,12 @@
-import React from "react";
-import { Button, Tooltip, Chip } from "@mui/material";
+import { Chip, Tooltip } from "@mui/material";
+
+import Button from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import HoverTax from "components/organisms/route/forms/tax-rules/tax-hover.list.comp";
+import React from "react";
+import Stack from "@mui/material/Stack";
+
 const FIELDS = {
   timestamp: "createdDate",
   categoryName: "categoryName",
@@ -76,23 +82,14 @@ const routeTableSchema = (onEditClick, onDeleteClick) => {
       field: "Manage",
       width: 200,
       renderCell: (record) => (
-        <div className="d-flex justify-content-end mr-2">
-          <Button
-            variant="contained"
-            className="dtc-min-width-50 mr-2"
-            onClick={() => onEditClick(record.id)}
-          >
-            <i className="fe fe-edit" style={{ verticalAlign: "middle" }}></i>
+        <Stack direction="row" spacing={1}>
+          <Button variant="contained" onClick={() => onEditClick(record.id)}>
+            <EditIcon />
           </Button>
-          <Button
-            variant="contained"
-            className="dtc-min-width-50 mr-2"
-            onClick={() => onDeleteClick(record.id)}
-            sx={{ background: "#fb434a !important", "&*hover": { opacity: "0.7" } }}
-          >
-            <i className="fe fe-trash" style={{ verticalAlign: "middle" }}></i>
+          <Button variant="contained" color="error" onClick={() => onDeleteClick(record.id)}>
+            <DeleteIcon />
           </Button>
-        </div>
+        </Stack>
       )
     }
   ];

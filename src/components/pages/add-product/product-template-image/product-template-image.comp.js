@@ -1,4 +1,7 @@
-import { Row, Upload } from "antd";
+import "./styles.scss";
+import "antd/es/modal/style";
+import "antd/es/slider/style";
+
 import React, {
   forwardRef,
   memo,
@@ -7,11 +10,9 @@ import React, {
   useImperativeHandle,
   useState
 } from "react";
+import { Row, Upload } from "antd";
+
 import { ImageService } from "services";
-import ImgCrop from "antd-img-crop";
-import "./styles.scss";
-import "antd/es/modal/style";
-import "antd/es/slider/style";
 
 export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => {
   const [currentImg, setCurrentImg] = useState(productImages[0] || {});
@@ -100,26 +101,24 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
     <div className="p-5 productTemplateImage">
       <div className="d-flex flex-column align-items-center mb-3">
         <div className={`${uploaded.length ? "w-50" : ""}`}>
-          <ImgCrop rotate>
-            <Upload
-              {...(uploaded.length
-                ? {
-                    fileList: uploaded.map((file) => ({
-                      ...file,
-                      url: file?.url ?? file?.response?.url
-                    }))
-                  }
-                : {})}
-              accept=".jpg, .jpeg, .png, .tiff, .gif"
-              className="upload-product-image"
-              listType="picture-card"
-              customRequest={handleUploadImage}
-              onChange={onChange}
-              beforeUpload={beforeUpload}
-            >
-              {renderUploadButton()}
-            </Upload>
-          </ImgCrop>
+          <Upload
+            {...(uploaded.length
+              ? {
+                  fileList: uploaded.map((file) => ({
+                    ...file,
+                    url: file?.url ?? file?.response?.url
+                  }))
+                }
+              : {})}
+            accept=".jpg, .jpeg, .png, .tiff, .gif"
+            className="upload-product-image"
+            listType="picture-card"
+            customRequest={handleUploadImage}
+            onChange={onChange}
+            beforeUpload={beforeUpload}
+          >
+            {renderUploadButton()}
+          </Upload>
         </div>
         {hasError.overMaxSize &&
           renderErrorMessage("Please upload an image file with size less than 5 mb")}

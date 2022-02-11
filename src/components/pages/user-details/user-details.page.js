@@ -49,40 +49,42 @@ const UserDetails = () => {
         </Stack>
       ) : (
         <DTCSection>
-          <CompanyLogo companyInfo={data.companyInfo?.logoUrl} />
-          <Box mt={3}>
-            <UserProfile data={data.userInfo} />
-          </Box>
-          <Divider />
-          <Box mt={3}>
-            <CompanyInfo
-              companyInfo={data.companyInfo}
-              companyAddress={data.companyAddressInfoList}
-            />
-          </Box>
-          <Divider />
-          <Box mt={3}>
-            <OwnerInfo owners={data.ownerDTOS.map((data) => ({ ...data, ...data.address }))} />
-          </Box>
-          <Divider />
-          <Box mb={3}>
-            <Reputation
-              data={{
-                reputation: data.companyInfo.reputation,
-                reputationList: data.companyInfo.reputationList
-              }}
-              user={data}
-              companyId={companyId}
-              setLoading={setLoading}
-              getUserDetails={getUserDetails}
-              isEditable={true}
-            />
-          </Box>
-          <Box mt={2}>
-            <Button variant="contained" onClick={() => history.push(RouteConst.USER_MANAGEMENT)}>
-              Back
-            </Button>
-          </Box>
+          <DTCSection.Content>
+            <CompanyLogo companyInfo={data.companyInfo?.logoUrl} />
+            <Box mt={3}>
+              <UserProfile data={data.userInfo} />
+            </Box>
+            <Divider />
+            <Box mt={3}>
+              <CompanyInfo
+                companyInfo={data.companyInfo}
+                companyAddress={data.companyAddressInfoList}
+              />
+            </Box>
+            <Divider />
+            <Box mt={3}>
+              <OwnerInfo owners={data.ownerDTOS.map((data) => ({ ...data, ...data.address }))} />
+            </Box>
+            <Divider />
+            <Box mb={3}>
+              <Reputation
+                data={{
+                  reputation: data.companyInfo.reputation,
+                  reputationList: data.companyInfo.reputationList
+                }}
+                user={data}
+                companyId={companyId}
+                setLoading={setLoading}
+                getUserDetails={getUserDetails}
+                isEditable={true}
+              />
+            </Box>
+            <Box mt={2}>
+              <Button variant="contained" onClick={() => history.push(RouteConst.USER_MANAGEMENT)}>
+                Back
+              </Button>
+            </Box>
+          </DTCSection.Content>
         </DTCSection>
       )}
     </Box>

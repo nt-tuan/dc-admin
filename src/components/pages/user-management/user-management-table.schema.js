@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import EditIcon from "@mui/icons-material/Edit";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
@@ -6,7 +7,6 @@ import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import { RouteConst } from "commons/consts";
 import Stack from "@mui/material/Stack";
-import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import { UserBadge } from "components";
 
 const FIELDS = {
@@ -186,7 +186,7 @@ export const getUserTableColumns = (actions) => [
           </IconButton>
           <Link to={`${RouteConst.USER_DETAILS}?username=${username}&companyId=${id}`}>
             <IconButton>
-              <SubdirectoryArrowRightIcon />
+              <EditIcon color="primary" />
             </IconButton>
           </Link>
         </>

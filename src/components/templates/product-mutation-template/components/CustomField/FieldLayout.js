@@ -1,8 +1,9 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { Collapse, Card, Row, Col, Select, Input, Form, Switch } from "antd";
-import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
-import { FIELD_TYPE } from "../../constants";
+import { Card, Col, Collapse, Form, Input, Row, Select, Switch } from "antd";
+import { DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import React, { useCallback, useEffect, useState } from "react";
+
 import CustomFieldOption from "../CustomFieldOption/CustomFieldOption.comp";
+import { FIELD_TYPE } from "../../constants";
 // import "../../product-mutation-template.comp.scss";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
@@ -23,6 +24,7 @@ const FieldLayout = ({
 }) => {
   const [fieldType, setFieldType] = useState(fieldValue?.type || undefined);
   const [fieldName, setFieldName] = useState(fieldValue?.fieldName || undefined);
+  const ref = React.useRef();
 
   useEffect(() => {
     if ((!fieldType && fieldValue?.type) || (fieldValue?.type && fieldType !== fieldValue.type)) {
@@ -67,7 +69,7 @@ const FieldLayout = ({
   }, [canDelete, onRemoveField]);
 
   return (
-    <div key={field.key} className="mb-3 customCollapseField">
+    <div ref={ref} key={field.key} className="mb-3 customCollapseField">
       <Collapse defaultActiveKey={[field.key]}>
         <Panel header={fieldName} key={field.key} extra={genExtra()}>
           <Card className="mb-1">
@@ -101,7 +103,12 @@ const FieldLayout = ({
                     }
                   ]}
                 >
-                  <Select onChange={handleChange} style={{ width: "90%" }} className="mr-1">
+                  <Select
+                    getPopupContainer={() => ref.current}
+                    onChange={handleChange}
+                    style={{ width: "90%" }}
+                    className="mr-1"
+                  >
                     {FIELD_TYPE.map((type) => (
                       <Option value={type.value} key={`type-${type.value}`}>
                         {type.label}

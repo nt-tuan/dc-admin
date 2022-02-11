@@ -1,8 +1,8 @@
-import React from "react";
-import { Avatar } from "antd";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import React from "react";
+import Stack from "@mui/material/Stack";
 
 export const CompanyLogo = ({ logoUrl }) => {
   return (

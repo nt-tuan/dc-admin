@@ -54,11 +54,6 @@ export const WalletTransactions = ({ transactionDetails, onDownload }) => {
         width: 200
       },
       {
-        headerName: LABELS[FIELDS.currency],
-        field: FIELDS.currency,
-        width: 200
-      },
-      {
         headerName: LABELS[FIELDS.credit],
         field: FIELDS.credit,
         valueFormatter: moneyFormatter,

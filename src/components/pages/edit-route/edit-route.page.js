@@ -1,31 +1,32 @@
-import { Col, Divider, Row, Button, message } from "antd";
-import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
-import { LoadingIndicator } from "components/atoms";
-import { DTCSection } from "components/commons";
+import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
+import { Button, Col, Divider, Row, message } from "antd";
 import {
   DocumentList,
   DocumentRuleTable,
   RouteLocationForm,
   TradeRouteTaxForm
 } from "components/organisms";
+import {
+  FIELDS,
+  ID_FIELDS,
+  TAX_RULES_MAIN_SCHEMA,
+  TAX_RULES_TYPE_MAIN_SCHEMA,
+  typeTAX
+} from "components/organisms/route/forms/tax-rules/tax.chemas";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { APIError } from "commons/types";
+import { DTCSection } from "components/commons";
+import { Helmet } from "react-helmet";
+import { Lagecy } from "components/lagecy/lagecy.comp";
+import { LoadingIndicator } from "components/atoms";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { useHistory, Link, useLocation } from "react-router-dom";
-import qs from "qs";
-import { APIError } from "commons/types";
-import uniqBy from "lodash/uniqBy";
 import numeral from "numeral";
-
-import {
-  typeTAX,
-  FIELDS,
-  TAX_RULES_TYPE_MAIN_SCHEMA,
-  TAX_RULES_MAIN_SCHEMA,
-  ID_FIELDS
-} from "components/organisms/route/forms/tax-rules/tax.chemas";
-import { Helmet } from "react-helmet";
+import qs from "qs";
+import uniqBy from "lodash/uniqBy";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -479,7 +480,7 @@ const EditRoutePage = () => {
   }, []);
 
   return (
-    <>
+    <Lagecy>
       <Helmet title="Edit Trade Rules" />
       <DTCSection>
         <div>
@@ -562,7 +563,7 @@ const EditRoutePage = () => {
           </Link>
         </div>
       </DTCSection>
-    </>
+    </Lagecy>
   );
 };
 

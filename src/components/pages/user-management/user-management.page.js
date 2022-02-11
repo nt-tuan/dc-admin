@@ -1,7 +1,8 @@
-import React, { memo } from "react";
-import { UserManagementTable } from "./user-management-table";
-import { Helmet } from "react-helmet";
 import { DTCTabs, useTabSearchParams } from "components/commons";
+import React, { memo } from "react";
+
+import { Helmet } from "react-helmet";
+import { UserManagementTable } from "./user-management-table";
 import { UserService } from "services";
 
 const tabs = [
@@ -18,7 +19,9 @@ const tabs = [
   {
     key: "ALL_USER",
     label: "All User",
-    component: <UserManagementTable getUserFn={UserService.getAllUsers} />
+    component: (
+      <UserManagementTable getUserFn={UserService.getAllUsers} hiddenColumns={["userStatus"]} />
+    )
   }
 ];
 

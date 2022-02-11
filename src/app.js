@@ -41,6 +41,31 @@ const mdTheme = createTheme({
           text-decoration: none;
         }
       `
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          paddingTop: 8,
+          paddingBottom: 8
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          paddingTop: 8,
+          paddingBottom: 8
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          top: "50%",
+          left: 0,
+          transform: "translate(14px, -50%)"
+        }
+      }
     }
   },
   typography: {

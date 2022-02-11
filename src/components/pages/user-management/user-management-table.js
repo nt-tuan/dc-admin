@@ -12,7 +12,12 @@ import { userMapper } from "commons/mappers";
 
 const { parseDataToGridView } = userMapper;
 
-export const UserManagementTable = ({ getUserFn }) => {
+const filterColumns = (columns, hiddenColumns) => {
+  if (hiddenColumns == null) return columns;
+  return columns.filter((column) => !hiddenColumns.includes(column.field));
+};
+
+export const UserManagementTable = ({ getUserFn, hiddenColumns }) => {
   const [data, setData] = useState([]);
   const [currentCompanyId, setCurrentCompanyId] = useState();
   const [showAssignBadgeForm, setShowAssignBadgeForm] = useState(false);
@@ -60,11 +65,14 @@ export const UserManagementTable = ({ getUserFn }) => {
     });
   };
 
-  const columns = getUserTableColumns({
-    onUnlock: handleUnlock,
-    onLock: handleLock,
-    onViewAssignBadges: viewShowAssignBadgeFormWrapper
-  });
+  const columns = filterColumns(
+    getUserTableColumns({
+      onUnlock: handleUnlock,
+      onLock: handleLock,
+      onViewAssignBadges: viewShowAssignBadgeFormWrapper
+    }),
+    hiddenColumns
+  );
 
   const handleClose = () => {
     setShowAssignBadgeForm(false);

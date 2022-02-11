@@ -7,7 +7,7 @@ import countryList from "assets/country.json";
 export const UserProfile = ({ data }) => {
   return (
     <Box>
-      <Typography variant="h4" color="error">
+      <Typography variant="h4" color="error" mb={1}>
         Profile Information
       </Typography>
       <Stack direction="column" mb={4} alignItems="stretch" w={50}>
