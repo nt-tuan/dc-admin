@@ -21,13 +21,14 @@ export const UserManagementTable = ({ getUserFn, hiddenColumns }) => {
   const [data, setData] = useState([]);
   const [currentCompanyId, setCurrentCompanyId] = useState();
   const [showAssignBadgeForm, setShowAssignBadgeForm] = useState(false);
+  const [currentUsername, setCurrentUsername] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const viewShowAssignBadgeFormWrapper = (company) => {
     asyncErrorHandlerWrapper(async () => {
       setShowAssignBadgeForm(true);
-      setCurrentCompanyId(company);
+      setCurrentUsername(company.username);
     });
   };
 
@@ -105,7 +106,7 @@ export const UserManagementTable = ({ getUserFn, hiddenColumns }) => {
 
       {showAssignBadgeForm && (
         <AssignBadgesModal
-          company={currentCompanyId}
+          username={currentUsername}
           open={showAssignBadgeForm}
           onClose={handleClose}
         />

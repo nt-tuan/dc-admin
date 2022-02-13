@@ -44,10 +44,11 @@ const BadgeCheckbox = ({ badge, onChange, selected }) => {
   );
 };
 
-const BadgeSelectForm = ({ onClose, company }) => {
+const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUserDetails }) => {
+  const [company, setCompany] = useState();
   const [isAssigning, setIsAssigning] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [selected, setSelected] = useState(company.badgeDTOList);
+  const [selected, setSelected] = useState([]);
   const [totalBadges, setTotalBadges] = useState();
 
   useEffect(() => {
@@ -56,6 +57,14 @@ const BadgeSelectForm = ({ onClose, company }) => {
       setTotalBadges(badges);
     });
   }, []);
+
+  useEffect(() => {
+    asyncErrorHandlerWrapper(async () => {
+      const userDetails = await getUserDetails(username);
+      setCompany(userDetails.companyInfo);
+      setSelected(userDetails.companyInfo.badgeList);
+    });
+  }, [username]);
 
   const listBadgeFiltered = React.useMemo(() => {
     if (!totalBadges) return [];
@@ -93,7 +102,7 @@ const BadgeSelectForm = ({ onClose, company }) => {
       onClose();
     });
   }, [company, selected, onClose]);
-  if (totalBadges == null)
+  if (totalBadges == null || company == null)
     return (
       <Box width="100%" display="flex" alignItems="center" justifyContent="center">
         <CircularProgress />
@@ -152,13 +161,15 @@ const BadgeSelectForm = ({ onClose, company }) => {
   );
 };
 
-export const AssignBadgesModal = ({ open, onClose, company }) => {
+export const AssignBadgesModal = ({ open, onClose, username, getUserDetails }) => {
   return (
     <DTCModal
       title="Choose and assign badges to your user"
       open={open}
       onClose={onClose}
-      content={<BadgeSelectForm onClose={onClose} company={company} />}
+      content={
+        <BadgeSelectForm onClose={onClose} username={username} getUserDetails={getUserDetails} />
+      }
       size="large"
     />
   );

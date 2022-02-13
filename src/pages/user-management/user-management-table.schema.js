@@ -158,30 +158,30 @@ export const getUserTableColumns = (actions) => [
     width: 150,
     renderCell: (params) => {
       const { id, suspended, username } = params.row;
-      const onUnlock = (id) => {
+      const onUnlock = () => {
         if (actions?.onUnlock == null) return;
         actions.onUnlock(id);
       };
-      const onLock = (id) => {
+      const onLock = () => {
         if (actions?.onLock == null) return;
         actions.onLock(id);
       };
-      const onViewAssignBadges = (id) => {
+      const onViewAssignBadges = () => {
         if (actions?.onViewAssignBadges == null) return;
         actions.onViewAssignBadges(params.row);
       };
       return (
         <>
           {suspended === true ? (
-            <IconButton onClick={() => onUnlock(id)}>
+            <IconButton onClick={() => onUnlock()}>
               <PlayCircleIcon />
             </IconButton>
           ) : (
-            <IconButton color="error" onClick={() => onLock(id)}>
+            <IconButton color="error" onClick={() => onLock()}>
               <PauseCircleIcon />
             </IconButton>
           )}
-          <IconButton onClick={() => onViewAssignBadges(id)}>
+          <IconButton onClick={() => onViewAssignBadges()}>
             <EmojiEventsIcon />
           </IconButton>
           <Link to={`${RouteConst.USER_DETAILS}?username=${username}&companyId=${id}`}>

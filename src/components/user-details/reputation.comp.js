@@ -10,7 +10,7 @@ import { UserBadge } from "components/commons";
 import { roundToHalfDecimal } from "utils/general.util";
 import { useBooleanState } from "hooks/utilHooks";
 
-export const Reputation = ({ data, companyId, getUserDetails, isEditable, user }) => {
+export const Reputation = ({ data, getUserDetails, isEditable, user }) => {
   const [isEdit, toggleIsEdit] = useBooleanState(false);
 
   const handleClose = () => {
@@ -53,7 +53,13 @@ export const Reputation = ({ data, companyId, getUserDetails, isEditable, user }
             ))}
           </Stack>
         </Stack>
-        {isEdit && <AssignBadgesModal open={isEdit} onClose={handleClose} company={companyId} />}
+        {isEdit && (
+          <AssignBadgesModal
+            open={isEdit}
+            onClose={handleClose}
+            getUserDetails={async () => user}
+          />
+        )}
       </Stack>
     </Stack>
   );
