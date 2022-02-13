@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import { GoogleCaptcha } from "../google-captcha.comp";
-import { LoginFormContext } from "components/pages/login/login-form/login-form-provider.comp";
+import { LoginFormContext } from "pages/login/login-form/login-form-provider.comp";
 import React from "react";
 export const createLoginFormFooterWithCaptcha = (recapchaSiteKey) => () => {
   const { isLoading, onSubmit, getSubmitValues } = React.useContext(LoginFormContext);

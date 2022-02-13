@@ -9,6 +9,7 @@ export * from "./header";
 export * from "./dtc-modal/dtc-modal.comp";
 export * from "./dtc-modal/dtc-confirm-modal.comp";
 export * from "./filter-dropdown/filter-dropdown.comp";
-export * from "./alert/alert.comp";
 export * from "./confirm-modal/confirm-modal.comp";
 export * from "./upload-file-input/upload-file-input.comp";
+export * from "./loading-indicator/loading-indicator.comp";
+export * from "./user-badge/user-badge.comp";

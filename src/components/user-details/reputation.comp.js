@@ -1,32 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
-
-import { AssignBadgesModal } from "components/molecules";
+import { AssignBadgesModal } from "./badge-assign-modal.comp";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Rating from "@mui/material/Rating";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { UserBadge } from "components/atoms";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { UserBadge } from "components/commons";
 import { roundToHalfDecimal } from "utils/general.util";
 import { useBooleanState } from "hooks/utilHooks";
 
-export const Reputation = ({ data, companyId, setLoading, getUserDetails, isEditable, user }) => {
+export const Reputation = ({ data, companyId, getUserDetails, isEditable, user }) => {
   const [isEdit, toggleIsEdit] = useBooleanState(false);
-  const [badges, setBadges] = useState([]);
 
-  const getBadges = useCallback(() => {
-    asyncErrorHandlerWrapper(async () => {
-      const badges = await UserService.getAvailableBadges({ companyId });
-      setBadges(badges);
-    });
-  }, [companyId]);
-
-  useEffect(() => {
-    getBadges();
-  }, [getBadges]);
+  const handleClose = () => {
+    toggleIsEdit();
+    getUserDetails();
+  };
 
   const assignedBadges = user?.companyInfo?.badgeList;
 
@@ -63,19 +53,7 @@ export const Reputation = ({ data, companyId, setLoading, getUserDetails, isEdit
             ))}
           </Stack>
         </Stack>
-        {isEdit && (
-          <AssignBadgesModal
-            assignedBadgesId={assignedBadges}
-            badges={badges}
-            showForm={isEdit}
-            toggleShowForm={toggleIsEdit}
-            companyId={companyId}
-            getListUsers={getUserDetails}
-            setLoading={setLoading}
-            username={user.userInfo.username}
-            styleTop={20}
-          />
-        )}
+        {isEdit && <AssignBadgesModal open={isEdit} onClose={handleClose} company={companyId} />}
       </Stack>
     </Stack>
   );

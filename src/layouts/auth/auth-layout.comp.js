@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { useBreakpoints } from "utils/useBreakpoints";
+import { useBreakpoints } from "utils/use-breakpoints";
 
 export const AuthLayout = ({ children }) => {
   const { isSmall } = useBreakpoints();
@@ -32,7 +32,11 @@ export const AuthLayout = ({ children }) => {
         }}
       >
         <Toolbar />
-        <Container maxWidth={false} sx={{ pt: 4, pb: 4, minHeight: "calc(100vh - 120px)" }}>
+        <Container
+          flexGrow={1}
+          maxWidth={false}
+          sx={{ pt: 4, pb: 4, minHeight: "calc(100vh - 120px)" }}
+        >
           <Box>{children}</Box>
         </Container>
         <AppFooter />

@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { selectUsername } from "redux/user/user.duck";
 import { styled } from "@mui/material/styles";
-import { useBreakpoints } from "utils/useBreakpoints";
+import { useBreakpoints } from "utils/use-breakpoints";
 import { useSelector } from "react-redux";
 
 export const drawerWidth = 300;

@@ -12,7 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { UserMenu } from "./user-menu.comp";
 import { drawerWidth } from "./app-side-bar.comp";
 import { styled } from "@mui/material/styles";
-import { useBreakpoints } from "utils/useBreakpoints";
+import { useBreakpoints } from "utils/use-breakpoints";
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open"

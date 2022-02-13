@@ -11,9 +11,6 @@ export class SharedPaths {
   static get FORGOT_PASSWORD_SUCCESS_ROUTE() {
     return "/admin/forgot-password-success";
   }
-  static get RESET_PASSWORD_ROUTE() {
-    return "/admin/reset-password";
-  }
   static get EMAIL_VERIFICATION() {
     return "/admin/email-verification";
   }
@@ -80,12 +77,6 @@ export class SharedPaths {
   static get CREATE_TRADE_ROUTES() {
     return "/admin/create-trade-routes";
   }
-  // static get ADD_ROUTE() {
-  //   return "/admin/add-routes";
-  // }
-  // static get CREATE_TRADE_ROUTE() {
-  //   return "/admin/create-trade-route";
-  // }
   static get EDIT_TRADE_ROUTE() {
     return "/admin/edit-trade-routes";
   }
@@ -127,15 +118,6 @@ export class SharedPaths {
   }
   static get INTRODUCER_EDIT() {
     return "/admin/introducers/introducer-edit";
-  }
-  static get CREATE_TRADE_RULES() {
-    return "/admin/create-trade-rules";
-  }
-  static get TRADE_RULES() {
-    return "/admin/trade-rules";
-  }
-  static get EDIT_TRADE_RULES() {
-    return "/admin/edit-trader-rules";
   }
   static get REQUESTED_PRODUCTS() {
     return "/admin/requested-products";

@@ -18,7 +18,6 @@ import moment from "moment";
 import { useSnackbar } from "notistack";
 import { validatePasscode } from "services/user-profile.service";
 
-//** Random array positions */
 const getPositionList = () => {
   let positionList = [];
   while (positionList.length < 3) {
@@ -30,6 +29,7 @@ const getPositionList = () => {
 };
 
 export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
+  const [requiredPositions, setRequiredPositions] = React.useState(getPositionList());
   const { enqueueSnackbar } = useSnackbar();
   const popError = (message) => enqueueSnackbar(message, { variant: "error" });
   const handleError = (response) => {
@@ -61,7 +61,6 @@ export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
         break;
     }
   };
-  const requiredPositions = React.useMemo(() => getPositionList(), [visible]);
 
   const handle3StepsProcessResponse = (response) => {
     if (response.status === THREE_STEPS_SECURITY_STATUS.SUCCESS) {
@@ -100,11 +99,18 @@ export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
     }
   };
 
+  const handleCancel = () => {
+    setRequiredPositions(getPositionList());
+    if (onCancel) {
+      onCancel();
+    }
+  };
+
   return (
     <DTCModal
       open={Boolean(visible)}
       title="Enter your verification code"
-      onClose={onCancel}
+      onClose={handleCancel}
       content={
         <Stack spacing={1}>
           <Typography>

@@ -3,7 +3,7 @@ import { applyMiddleware, compose, createStore } from "redux";
 
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ErrorBoundary } from "components";
+import { ErrorBoundary } from "components/error-boundary/error-boundary.comp";
 import { Provider } from "react-redux";
 import React from "react";
 import Router from "./router";
@@ -60,11 +60,12 @@ const mdTheme = createTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: {
-          top: "50%",
-          left: 0,
-          transform: "translate(14px, -50%)"
-        }
+        root: ({ ownerState }) =>
+          !ownerState.shrink
+            ? {
+                transform: "translate(14px, 8px)"
+              }
+            : undefined
       }
     }
   },

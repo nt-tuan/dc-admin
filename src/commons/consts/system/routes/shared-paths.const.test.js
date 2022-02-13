@@ -8,10 +8,6 @@ test("should return url of FORGOT_PASSWORD_ROUTE correctly", () => {
   expect(SharedPaths.FORGOT_PASSWORD_ROUTE).toBe("/admin/forgot-password");
 });
 
-test("should return url of RESET_PASSWORD_ROUTE correctly", () => {
-  expect(SharedPaths.RESET_PASSWORD_ROUTE).toBe("/admin/reset-password");
-});
-
 test("should return url of EMAIL_VERIFICATION correctly", () => {
   expect(SharedPaths.EMAIL_VERIFICATION).toBe("/admin/email-verification");
 });

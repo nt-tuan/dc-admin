@@ -128,7 +128,7 @@ export const UploadFile = ({
       uid: "",
       url: ""
     });
-  }, [formik.values.sampleFile]);
+  }, [formik.values.sampleFile, formik]);
 
   const showUploadButton = React.useMemo(() => {
     if (value.url === "") return true;

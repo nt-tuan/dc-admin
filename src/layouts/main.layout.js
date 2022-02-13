@@ -1,14 +1,15 @@
-import { RouteConst } from "commons/consts";
+import React, { Fragment, useEffect } from "react";
+import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
+
+import { AuthLayout } from "./auth/auth-layout.comp";
+import { Helmet } from "react-helmet";
 import { Loader } from "components/commons";
 import NProgress from "nprogress";
-import React, { Fragment, useEffect } from "react";
-import { Helmet } from "react-helmet";
-import { useSelector } from "react-redux";
-import { Redirect, useLocation, useRouteMatch } from "react-router-dom";
-import { selectCurrentUser } from "redux/user/user.duck";
-import { getCompanyName } from "utils/config.util";
-import { AuthLayout } from "./auth/auth-layout.comp";
 import { PublicLayout } from "./public/public.layout";
+import { RouteConst } from "commons/consts";
+import { getCompanyName } from "utils/config.util";
+import { selectCurrentUser } from "redux/user/user.duck";
+import { useSelector } from "react-redux";
 
 const Layouts = {
   public: PublicLayout,
