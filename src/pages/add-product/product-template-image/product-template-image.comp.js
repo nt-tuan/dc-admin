@@ -13,6 +13,7 @@ import React, {
 import { Row, Upload } from "antd";
 
 import { ImageService } from "services";
+import ImgCrop from "antd-img-crop";
 
 export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => {
   const [currentImg, setCurrentImg] = useState(productImages[0] || {});
@@ -101,24 +102,42 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
     <div className="p-5 productTemplateImage">
       <div className="d-flex flex-column align-items-center mb-3">
         <div className={`${uploaded.length ? "w-50" : ""}`}>
-          <Upload
-            {...(uploaded.length
-              ? {
-                  fileList: uploaded.map((file) => ({
-                    ...file,
-                    url: file?.url ?? file?.response?.url
-                  }))
+          <ImgCrop
+            rotate
+            beforeCrop={() => {
+              setTimeout(() => {
+                const modalElements = document.getElementsByClassName("ant-modal-root");
+                if (modalElements.length === 0) return;
+                const lastModal = modalElements[modalElements.length - 1];
+                const wrapElements = lastModal.getElementsByClassName("ant-modal-wrap");
+                if (wrapElements.length > 0) {
+                  wrapElements[0].style.zIndex = 1000000;
                 }
-              : {})}
-            accept=".jpg, .jpeg, .png, .tiff, .gif"
-            className="upload-product-image"
-            listType="picture-card"
-            customRequest={handleUploadImage}
-            onChange={onChange}
-            beforeUpload={beforeUpload}
+                lastModal.parentElement.className = "lagecy";
+                return;
+              }, 300);
+              return true;
+            }}
           >
-            {renderUploadButton()}
-          </Upload>
+            <Upload
+              {...(uploaded.length
+                ? {
+                    fileList: uploaded.map((file) => ({
+                      ...file,
+                      url: file?.url ?? file?.response?.url
+                    }))
+                  }
+                : {})}
+              accept=".jpg, .jpeg, .png, .tiff, .gif"
+              className="upload-product-image"
+              listType="picture-card"
+              customRequest={handleUploadImage}
+              onChange={onChange}
+              beforeUpload={beforeUpload}
+            >
+              {renderUploadButton()}
+            </Upload>
+          </ImgCrop>
         </div>
         {hasError.overMaxSize &&
           renderErrorMessage("Please upload an image file with size less than 5 mb")}
