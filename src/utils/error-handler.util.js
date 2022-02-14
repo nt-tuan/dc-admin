@@ -3,7 +3,6 @@ import { APIError, CustomError } from "commons/types";
 import React from "react";
 import { RouteConst } from "commons/consts";
 import { log } from "./logger.util";
-import { message } from "antd";
 import { removeAuthCredential } from "./auth.util";
 import { useSnackbar } from "notistack";
 
@@ -48,7 +47,7 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
     if (process.env.NODE_ENV !== "production") {
       log(error);
     }
-    message.error("Something went wrong, please press F5 to refresh the page", 0);
+    // message.error("Something went wrong, please press F5 to refresh the page", 0);
   }
 };
 

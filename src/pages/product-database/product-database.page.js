@@ -1,6 +1,6 @@
 import * as STORAGE_DUCK from "redux/storage/storage.duck";
 
-import { Button, Menu, Modal, message } from "antd";
+import { Button, Menu, Modal } from "antd";
 import { DTCSection, LoadMoreButton } from "components/commons";
 import { Lagecy, getLagecyModalContainer } from "components/lagecy/lagecy.comp";
 import React, { useCallback } from "react";
@@ -17,6 +17,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import debounce from "lodash/debounce";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useMessage } from "hooks/use-message";
 import { usePaginatedApiService } from "hooks/useApiService";
 import { withListItem } from "./withListItem";
 
@@ -33,6 +34,7 @@ const ListProductCard = withListItem({
 })(ProductCard);
 
 const ProductDatabase = () => {
+  const message = useMessage();
   const history = useHistory();
   const dispatch = useDispatch();
   const [

@@ -1,5 +1,5 @@
 import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
-import { Button, Col, Divider, Row, message } from "antd";
+import { Button, Col, Divider, Row } from "antd";
 import {
   DocumentList,
   DocumentRuleTable,
@@ -24,6 +24,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import numeral from "numeral";
 import uniqBy from "lodash/uniqBy";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useMessage } from "hooks/use-message";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -48,6 +49,7 @@ const usePrefill = () => {
 };
 
 const AddRoutePage = () => {
+  const message = useMessage();
   const { productType, productCategory, fromCountry, toCountry } = usePrefill();
   const [documents, setDocuments] = useState([]);
   const [defaultRoute, setDefaultRoute] = useState();

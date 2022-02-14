@@ -1,5 +1,5 @@
 import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
-import { Button, Col, Divider, Row, message } from "antd";
+import { Button, Col, Divider, Row } from "antd";
 import { DTCSection, LoadingIndicator } from "components/commons";
 import {
   DocumentList,
@@ -26,6 +26,7 @@ import { getAllRecordsFromAPI } from "utils/general.util";
 import numeral from "numeral";
 import qs from "qs";
 import uniqBy from "lodash/uniqBy";
+import { useMessage } from "hooks/use-message";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -37,6 +38,7 @@ const isFormValid = async (validateFn) => {
 };
 
 const EditRoutePage = () => {
+  const message = useMessage();
   const [routeDetails, setRouteDetails] = useState();
   const [documents, setDocuments] = useState([]);
   const [defaultRoute, setDefaultRoute] = useState();

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Checkbox, Row, Col, message } from "antd";
+import { Checkbox, Col, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+
 import uniq from "lodash/uniq";
+import { useMessage } from "hooks/use-message";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -18,6 +20,7 @@ export const DocumentList = ({
   defaultDocs = defaultDocsProp,
   defaultValue = defaultValueProp
 }) => {
+  const message = useMessage();
   const [checkedList, setCheckedList] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);

@@ -1,14 +1,16 @@
 import { NOTIFICATION_TYPE, RouteConst } from "commons/consts";
+
+import { OrderService } from "services";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { UserService } from "services/user.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import { UserService } from "services/user.service";
-import { message } from "antd";
-import { OrderService } from "services";
+import { useHistory } from "react-router-dom";
+import { useMessage } from "hooks/use-message";
 
 export const withEnhanceNotification = (NotificationItemComp) => {
   return React.memo(({ data, ...rest }) => {
+    const message = useMessage();
     const history = useHistory();
     const { notificationType, subjectId } = data;
 
@@ -21,7 +23,7 @@ export const withEnhanceNotification = (NotificationItemComp) => {
     const handleNavigateToAction = () => {
       let targetRoute = "";
       asyncErrorHandlerWrapper(async () => {
-        targetRoute = await getNavigateRoute(notificationType, subjectId);
+        targetRoute = await getNavigateRoute(notificationType, subjectId, message.error);
         redirectWithNewState(targetRoute);
       });
     };
@@ -30,13 +32,15 @@ export const withEnhanceNotification = (NotificationItemComp) => {
   });
 };
 
-const getRelevantUser = async (companyId) => {
+const getRelevantUser = async (companyId, onError) => {
   let result;
   try {
     const data = await getAllRecordsFromAPI(UserService.getAllUsers);
     result = data.find((user) => user.id === companyId);
   } catch (error) {
-    message.error(error);
+    if (onError) {
+      onError(error);
+    }
   }
   return result;
 };
@@ -46,7 +50,7 @@ const getTradeRoutePath = async (subjectId) => {
   return `${RouteConst.CREATE_TRADE_ROUTES}?productType=${order.productType}&productCategory=${order.productCategory}&from=${order.sellerCountry}&to=${order.buyerCountry}`;
 };
 
-const getNavigateRoute = async (notificationType, subjectId, callback) => {
+const getNavigateRoute = async (notificationType, subjectId, onError) => {
   let targetRoute = "";
 
   switch (notificationType) {
@@ -60,7 +64,7 @@ const getNavigateRoute = async (notificationType, subjectId, callback) => {
     }
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_ADDRESS:
     case NOTIFICATION_TYPE.ADMIN_ROUTE_ADD_NEW_USER: {
-      const res = await getRelevantUser(subjectId);
+      const res = await getRelevantUser(subjectId, onError);
       if (!res) break;
       targetRoute = `${RouteConst.USER_DETAILS}?username=${res.username}&companyId=${res.id}`;
       break;

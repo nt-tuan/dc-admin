@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
 import { UserService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { message } from "antd";
+import { useMessage } from "hooks/use-message";
 
 const BADGE_SIZE = 40;
 const BadgeCheckbox = ({ badge, onChange, selected }) => {
@@ -45,6 +45,7 @@ const BadgeCheckbox = ({ badge, onChange, selected }) => {
 };
 
 const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUserDetails }) => {
+  const message = useMessage();
   const [company, setCompany] = useState();
   const [isAssigning, setIsAssigning] = useState(false);
   const [searchValue, setSearchValue] = useState("");

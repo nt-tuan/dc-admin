@@ -1,14 +1,16 @@
 import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
-import { Button, Divider, message } from "antd";
+import { Button, Divider } from "antd";
 import { DocumentList, DocumentRuleTable, RouteLocationForm } from "components/trade-route";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { DTCSection } from "components/commons";
+import { Lagecy } from "components/lagecy/lagecy.comp";
 import { Link } from "react-router-dom";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useMessage } from "hooks/use-message";
 
 const isFormValid = async (validateFn) => {
   try {
@@ -20,6 +22,7 @@ const isFormValid = async (validateFn) => {
 };
 
 const AddRoutePage = () => {
+  const message = useMessage();
   const [documents, setDocuments] = useState([]);
   const [selectedDocs, setSelectedDocs] = useState([]);
   const [defaultDocs, setDefaultDocs] = useState([]);
@@ -132,50 +135,54 @@ const AddRoutePage = () => {
 
   return (
     <DTCSection>
-      <div>
-        <h3 className="mb-3">{renderTitle(true)}</h3>
-        <RouteLocationForm ref={locationFormRef} hiddenFields={["from", "to"]} />
-      </div>
-      <Divider />
-      <div>
-        <h5>Documents</h5>
-        <p>
-          You can either select from the document list or{" "}
-          <Link
-            style={{ cursor: "pointer" }}
-            to={{
-              pathname: RouteConst.DOCUMENT,
-              search: "?showCreateDocument=true",
-              state: { previousPage: RouteConst.ADD_DEFAULT_ROUTE }
-            }}
-            className="text-primary"
-          >
-            create a new document
-          </Link>
-        </p>
-        <p>Select the documents required for this route</p>
+      <DTCSection.Content>
+        <Lagecy>
+          <div>
+            <h3 className="mb-3">{renderTitle(true)}</h3>
+            <RouteLocationForm ref={locationFormRef} hiddenFields={["from", "to"]} />
+          </div>
+          <Divider />
+          <div>
+            <h5>Documents</h5>
+            <p>
+              You can either select from the document list or{" "}
+              <Link
+                style={{ cursor: "pointer" }}
+                to={{
+                  pathname: RouteConst.DOCUMENT,
+                  search: "?showCreateDocument=true",
+                  state: { previousPage: RouteConst.ADD_DEFAULT_ROUTE }
+                }}
+                className="text-primary"
+              >
+                create a new document
+              </Link>
+            </p>
+            <p>Select the documents required for this route</p>
 
-        <DocumentList
-          title="Documents"
-          defaultDocs={defaultDocs}
-          documents={documents}
-          onChange={handleDocListChange}
-        />
-      </div>
-      <Divider />
-      <div>
-        <h5>Document Rules</h5>
-        <DocumentRuleTable ref={documentRuleFormsRef} data={selectedDocs} />
-      </div>
-      <Divider />
-      <div className="d-flex justify-content-center">
-        <Button className="mr-2" type="primary" onClick={handleCreate}>
-          Create Default Trade Routes
-        </Button>
-        <Link to={RouteConst.ROUTE}>
-          <Button>Cancel</Button>
-        </Link>
-      </div>
+            <DocumentList
+              title="Documents"
+              defaultDocs={defaultDocs}
+              documents={documents}
+              onChange={handleDocListChange}
+            />
+          </div>
+          <Divider />
+          <div>
+            <h5>Document Rules</h5>
+            <DocumentRuleTable ref={documentRuleFormsRef} data={selectedDocs} />
+          </div>
+          <Divider />
+          <div className="d-flex justify-content-center">
+            <Button className="mr-2" type="primary" onClick={handleCreate}>
+              Create Default Trade Routes
+            </Button>
+            <Link to={RouteConst.ROUTE}>
+              <Button>Cancel</Button>
+            </Link>
+          </div>
+        </Lagecy>
+      </DTCSection.Content>
     </DTCSection>
   );
 };

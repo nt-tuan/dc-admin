@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { BankDetailsReadonly } from "components/bank-details/bank-details-readonly.comp";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getBankDetails } from "services/bankDetail.service";
-import { message } from "antd";
+import { useMessage } from "hooks/use-message";
 
 function BankDetailView() {
+  const message = useMessage();
   const [bankDetails, setBankDetails] = useState([]);
   //** Fetch API Bank detail */
   useEffect(() => {
@@ -17,7 +18,7 @@ function BankDetailView() {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(JSON.stringify(text));
-    message.success({ content: "Copied!", duration: 1 });
+    message.success({ content: "Copied!" });
   };
 
   return (

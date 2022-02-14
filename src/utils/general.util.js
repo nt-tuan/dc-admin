@@ -2,7 +2,6 @@ import { getCompanyName, getDefaultCurrency } from "./config.util";
 
 import { MARKETPLACE_NAME } from "commons/consts";
 import XLSX from "xlsx";
-import { message } from "antd";
 
 export const isScreensize = (size) => {
   let _isTrue = false;
@@ -77,7 +76,7 @@ export const handleDownloadExcel = (dataExcel, fileName, fileSheet) => {
       sheet: fileSheet
     });
   } else {
-    message.info("There is no data");
+    // message.info("There is no data");
   }
 };
 

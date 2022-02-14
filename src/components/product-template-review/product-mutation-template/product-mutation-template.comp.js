@@ -1,6 +1,6 @@
 import "./product-mutation-template.comp.scss";
 
-import { Button, Form, Steps, message } from "antd";
+import { Button, Form, Steps } from "antd";
 import { DTCSection, Loader } from "components/commons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -22,6 +22,7 @@ import classNames from "classnames";
 import { equalFields } from "utils/form.util";
 import { isScreensize } from "utils/general.util";
 import { useHistory } from "react-router-dom";
+import { useMessage } from "hooks/use-message";
 import { useSubmitApiService } from "hooks/useApiService";
 
 const ALLOW_SKIP = [4, 5];
@@ -29,6 +30,7 @@ const ALLOW_SKIP = [4, 5];
 const { Step } = Steps;
 
 export const ProductMutationTemplate = ({ productDetails, isEditing = false }) => {
+  const message = useMessage();
   const history = useHistory();
   const [currentStep, setCurrentStep] = useState(1);
   const [productData, setProductData] = useState({});

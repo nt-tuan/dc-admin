@@ -1,6 +1,6 @@
 import * as USER_ACTIONS from "redux/user/user.duck";
 
-import { Button, Modal, message } from "antd";
+import { Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import {
   getGoogleAuthenticator,
@@ -12,8 +12,10 @@ import { LoadingIndicator } from "components/commons";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { useBooleanState } from "hooks/utilHooks";
 import { useDispatch } from "react-redux";
+import { useMessage } from "hooks/use-message";
 
 function GoogleAuthenticator({ isGAVerified, toogleGoogleAuthenticator }) {
+  const message = useMessage();
   const [data, setData] = useState({});
   const [showCopySuccess, setShowCopySuccess] = useBooleanState(false);
   const [step1, setStep1] = useBooleanState(true);
