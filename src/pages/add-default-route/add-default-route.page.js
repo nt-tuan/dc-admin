@@ -7,8 +7,8 @@ import { DTCSection } from "components/commons";
 import { Lagecy } from "components/lagecy/lagecy.comp";
 import { Link } from "react-router-dom";
 import { RouteService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
+import { useAsyncErrorHandler } from "utils/error-handler.util";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useMessage } from "hooks/use-message";
 
@@ -22,6 +22,7 @@ const isFormValid = async (validateFn) => {
 };
 
 const AddRoutePage = () => {
+  const asyncErrorHandlerWrapper = useAsyncErrorHandler();
   const message = useMessage();
   const [documents, setDocuments] = useState([]);
   const [selectedDocs, setSelectedDocs] = useState([]);

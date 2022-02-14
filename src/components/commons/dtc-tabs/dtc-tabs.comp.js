@@ -49,15 +49,15 @@ export const DTCTabs = ({ tabs, value, onChange }) => {
   );
 };
 
-export const useTabSearchParams = (tabs, defaultValue) => {
+export const useTabSearchParams = (tabs, key = "tab", defaultValue = null) => {
   const [filter, setFilter] = useSearchParams();
   const value = React.useMemo(() => {
-    if (tabs.some((tab) => tab.key === filter?.tab)) return filter.tab;
+    if (tabs.some((tab) => tab.key === filter[key])) return filter[key];
     if (defaultValue) return defaultValue;
     return tabs[0]?.key;
   }, [tabs, filter, defaultValue]);
   const handleChange = (newValue) => {
-    setFilter({ tab: newValue });
+    setFilter({ ...filter, [key]: newValue });
   };
   return [value, handleChange];
 };
