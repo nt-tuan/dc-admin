@@ -29,7 +29,6 @@ export const NumberField = ({ name, fieldConfig, ...props }) => {
   const [field, meta] = useField({ name, type: "text", ...fieldConfig });
   const { setFieldValue } = useFormikContext();
   const handleChange = (event) => {
-    console.log(event);
     setFieldValue(name, event.target.value);
   };
 

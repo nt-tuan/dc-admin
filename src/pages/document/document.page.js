@@ -41,7 +41,6 @@ const validationSchema = yup.object({
     })
     .test("is-valid-name", "Please upload a file with type as Document Type", (value, object) => {
       const documentType = object.parent.documentType;
-      console.log(value);
       if (!value || !value.name) return true;
       return value.name
         ?.toLowerCase()

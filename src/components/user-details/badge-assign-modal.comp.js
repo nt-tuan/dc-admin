@@ -65,7 +65,7 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
       setCompany(userDetails.companyInfo);
       setSelected(userDetails.companyInfo.badgeList);
     });
-  }, [username]);
+  }, [username, getUserDetails]);
 
   const listBadgeFiltered = React.useMemo(() => {
     if (!totalBadges) return [];
@@ -82,14 +82,13 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
           message.error("You can not assign more than 3 user-defined badges to a user");
           return;
         }
-        console.log(value);
         const selectedBadge = totalBadges?.find((item) => item.id === value);
         setSelected([selectedBadge, ...selected]);
       } else {
         setSelected(selected.filter((badge) => badge.id !== value));
       }
     },
-    [totalBadges, selected]
+    [totalBadges, selected, message]
   );
 
   const handleAssignBadge = useCallback(() => {

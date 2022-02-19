@@ -55,7 +55,7 @@ export const useTabSearchParams = (tabs, key = "tab", defaultValue = null) => {
     if (tabs.some((tab) => tab.key === filter[key])) return filter[key];
     if (defaultValue) return defaultValue;
     return tabs[0]?.key;
-  }, [tabs, filter, defaultValue]);
+  }, [tabs, key, filter, defaultValue]);
   const handleChange = (newValue) => {
     setFilter({ ...filter, [key]: newValue });
   };

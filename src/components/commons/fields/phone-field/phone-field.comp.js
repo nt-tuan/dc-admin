@@ -67,7 +67,6 @@ const usePhoneField = ({ name, countryFieldName }) => {
   const changeLocalNumber = (event) => {
     const value = event.target.value;
     const newPhone = `${countryCode} ${value}`;
-    console.log(newPhone);
     setFieldValue(name, newPhone);
   };
   return { meta, countryCode, localNumber, changeCountryCode, changeLocalNumber };

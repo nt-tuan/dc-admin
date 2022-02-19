@@ -64,7 +64,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
     setTimeout(() => {
       history.push(RouteConst.PRODUCT_DATABASE);
     }, 1000);
-  }, [history, isEditing]);
+  }, [history, message, isEditing]);
 
   const [loading, setLoading] = useState(true);
   const [

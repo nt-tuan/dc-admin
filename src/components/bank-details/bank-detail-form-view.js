@@ -17,7 +17,6 @@ import currencyList from "assets/currency.json";
 
 export const FormView = ({ name, companyName }) => {
   const getName = (fieldName) => {
-    if (!name) console.log(!name);
     if (!name) return fieldName;
     return `${name}.${fieldName}`;
   };

@@ -79,7 +79,6 @@ export const BankDetailsReadonly = ({
       return LABEL_BY_BANK_TYPE.SWIFT;
     });
   }, [bankDetails]);
-  console.log(swiftCodeLabels);
 
   const renderLabelCode = React.useCallback(
     (value, field, index) => {

@@ -31,7 +31,6 @@ export const PhoneVerifyForm = memo(({ onClose }) => {
         }
         onClose();
       } catch (e) {
-        console.log(e);
         setServerError(WRONG_VERIFICATION_CODE);
       }
     });
