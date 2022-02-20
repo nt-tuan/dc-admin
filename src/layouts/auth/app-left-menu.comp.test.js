@@ -4,7 +4,7 @@ import { AppLeftMenu } from "./app-left-menu.comp";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { MockTheme } from "test/mock-theme.comp";
-import { getMenuData } from "./menu-data";
+import { StateProvider } from "hooks/state-provider";
 
 jest.mock("@mui/material/Drawer");
 jest.mock("utils/config.util");
@@ -42,16 +42,21 @@ const mockedMenuData = [
     icon: "dump-icon"
   }
 ];
+
+const mockInitialValues = { isSettingsMenu: false, menu: mockedMenuData };
+const reducer = jest.fn();
+
 const history = createMemoryHistory();
 const setup = (props) => {
   MuiDrawer.render.mockImplementation(({ children }) => <div>{children}</div>);
-  getMenuData.mockReturnValue(mockedMenuData);
   jest.spyOn(history, "push");
   return render(
     <MockTheme>
-      <Router history={history}>
-        <AppLeftMenu {...props} />
-      </Router>
+      <StateProvider initialState={mockInitialValues} reducer={reducer}>
+        <Router history={history}>
+          <AppLeftMenu {...props} />
+        </Router>
+      </StateProvider>
     </MockTheme>
   );
 };

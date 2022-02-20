@@ -243,4 +243,8 @@ export class ApiPathConsts {
   static get CHECK_RESET_PW_TOKEN() {
     return `${this.#PUBLIC_PREFIX}/tokens/password`;
   }
+
+  static get GET_ORGANIZATION() {
+    return `${this.#ADMIN_PREFIX}/organizations`;
+  }
 }

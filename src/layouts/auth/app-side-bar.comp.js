@@ -13,6 +13,11 @@ import { selectUsername } from "redux/user/user.duck";
 import { styled } from "@mui/material/styles";
 import { useBreakpoints } from "utils/use-breakpoints";
 import { useSelector } from "react-redux";
+import { useStateProvider } from "hooks/state-provider";
+import { TYPE } from "./menu-context";
+import { RouteConst } from "commons/consts";
+import { useLocation } from "react-router-dom";
+import { getMenuData, getMenuSettingsData } from "./menu-data";
 
 export const drawerWidth = 300;
 const MobileDrawer = styled(MuiDrawer)(({ theme }) => ({
@@ -61,6 +66,25 @@ const Item = styled(Box)(({ theme }) => ({
 export const AppSideBar = ({ open, onToggle, onExpand }) => {
   const username = useSelector(selectUsername);
   const { isSmall } = useBreakpoints();
+  const { pathname } = useLocation();
+  const [, dispatch] = useStateProvider();
+  const menuSettingsData = getMenuSettingsData();
+  const menuData = getMenuData();
+
+  const isSettingsItem = React.useMemo(() => {
+    return pathname.startsWith(RouteConst.SETTINGS);
+  }, [pathname]);
+
+  React.useEffect(() => {
+    if (isSettingsItem) {
+      dispatch({ type: TYPE.IS_SETTINGS_MENU, payload: true });
+      dispatch({ type: TYPE.SET_MENU, payload: menuSettingsData });
+      return;
+    }
+    dispatch({ type: TYPE.IS_SETTINGS_MENU, payload: false });
+    dispatch({ type: TYPE.SET_MENU, payload: menuData });
+  }, [pathname]);
+
   const content = (
     <>
       <Toolbar

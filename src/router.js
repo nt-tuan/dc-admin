@@ -212,6 +212,10 @@ const privateRoutes = [
   {
     path: RouteConst.PROFILE_PAGES,
     Component: loadable(() => import("pages/profile-pages/profile-page"))
+  },
+  {
+    path: RouteConst.ORGANIZATION_PROFILE,
+    Component: loadable(() => import("pages/organization-profile/organization-profile.page"))
   }
 ];
 

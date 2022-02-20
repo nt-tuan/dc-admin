@@ -134,4 +134,12 @@ export class SharedPaths {
   static get ADD_ADMIN_USER() {
     return "/admin/users/add-user";
   }
+
+  static get SETTINGS() {
+    return "/admin/settings";
+  }
+
+  static get ORGANIZATION_PROFILE() {
+    return "/admin/settings/organization-profile";
+  }
 }

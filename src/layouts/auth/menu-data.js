@@ -5,6 +5,8 @@ import MapIcon from "@mui/icons-material/Map";
 import CategoryIcon from "@mui/icons-material/Category";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SettingsIcon from "@mui/icons-material/Settings";
+import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
+import BuildIcon from "@mui/icons-material/Build";
 const menuData = [
   {
     title: "Orders",
@@ -95,7 +97,24 @@ const menuData = [
         url: RouteConst.FEATURE_TOGGLES
       }
     ]
+  },
+  {
+    title: "Settings",
+    key: "Settings",
+    icon: <BuildIcon />,
+    url: RouteConst.ORGANIZATION_PROFILE
+  }
+];
+
+const menuSettingsData = [
+  {
+    title: "Organization Profile",
+    key: "Organization Profile",
+    icon: <CorporateFareRoundedIcon />,
+    url: RouteConst.ORGANIZATION_PROFILE
   }
 ];
 
 export const getMenuData = () => menuData;
+
+export const getMenuSettingsData = () => menuSettingsData;

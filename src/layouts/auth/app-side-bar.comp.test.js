@@ -6,6 +6,46 @@ jest.mock("utils/config.util");
 jest.mock("./app-left-menu.comp", () => ({
   AppLeftMenu: () => <div>app-left-menu</div>
 }));
+const mockedMenuData = [
+  {
+    title: "Orders",
+    key: "Orders",
+    icon: "layout-icon",
+    url: "RouteConst.ORDERS"
+  },
+  {
+    title: "User Management",
+    key: "User Management",
+    icon: "people-icon",
+    children: [
+      {
+        title: "Users",
+        key: "Users",
+        url: "RouteConst.USER_MANAGEMENT"
+      },
+      {
+        title: "New User",
+        key: "New Users",
+        url: "RouteConst.NEW_USER"
+      }
+    ]
+  },
+  {
+    title: "Dump",
+    key: "Dump",
+    icon: "dump-icon"
+  }
+];
+const mockInitialValues = { isSettingsMenu: false, menu: mockedMenuData };
+
+jest.mock("hooks/state-provider", () => ({
+  useStateProvider: () => [mockInitialValues, jest.fn()]
+}));
+
+jest.mock("react-router-dom", () => ({
+  useLocation: () => ({ pathname: "/admin/settings/organization-profile" })
+}));
+
 beforeEach(() => {
   useSelector.mockReturnValue("my-user");
 });
