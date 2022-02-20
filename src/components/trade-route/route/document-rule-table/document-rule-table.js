@@ -1,125 +1,64 @@
-import { Form, Select, Table } from "antd";
-import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
 
-const EditableContext = React.createContext();
+const DATA_SOURCE = ["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"];
 
-const EditableRow = ({ rowId, initActors, onMount, ...props }) => {
-  const [selectedActors, setSelectedActors] = useState(initActors);
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    onMount && onMount(form);
-  }, [onMount, form]);
-
-  const handleActorChange = (actor, fieldName) => {
-    const key = Object.keys(selectedActors).find((k) => selectedActors[k] === fieldName);
-    if (actor === undefined) {
-      setSelectedActors({
-        ...selectedActors,
-        [key]: undefined
-      });
-    } else {
-      setSelectedActors({
-        ...selectedActors,
-        [key]: undefined,
-        [actor]: fieldName
-      });
+const RowField = ({ value, ignoreValues = [], isEdit, isRequired, ...props }) => {
+  if (!isEdit) {
+    return value;
+  }
+  const onChange = (e) => {
+    if (typeof props.onChange === "function") {
+      props.onChange(e.target.value);
     }
   };
-
   return (
-    <Form name={rowId} form={form} component={false}>
-      <EditableContext.Provider value={{ form: form, handleActorChange, selectedActors }}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
+    <Select
+      {...props}
+      value={value || null}
+      fullWidth
+      onChange={onChange}
+      placeholder={isRequired ? "*" : ""}
+    >
+      {DATA_SOURCE.filter((d) => !ignoreValues.includes(d)).map(() => (
+        <MenuItem key={value} value={value}>
+          {value}
+        </MenuItem>
+      ))}
+    </Select>
   );
-};
-
-const EditableCell = ({
-  title,
-  editable,
-  children,
-  dataIndex,
-  record,
-  handleSave,
-  onChange,
-  ...restProps
-}) => {
-  // const [editing, setEditing] = useState(true);
-  const inputRef = useRef();
-  const { handleActorChange, selectedActors } = useContext(EditableContext);
-
-  let childNode = children;
-  if (editable) {
-    childNode = (
-      <Form.Item
-        style={{
-          margin: 0
-        }}
-        name={dataIndex}
-        initialValue={record[dataIndex]}
-        rules={
-          ["Viewer 2", "Viewer 3"].includes(title)
-            ? null
-            : [
-                {
-                  required: true,
-                  message: `${title} is required.`
-                }
-              ]
-        }
-      >
-        {dataIndex === "document" ? (
-          <div>{record[dataIndex]}</div>
-        ) : (
-          <Select
-            ref={inputRef}
-            getPopupContainer={getLagecyModalContainer}
-            onChange={(e) => handleActorChange(e, dataIndex)}
-            style={{ width: 200 }}
-            allowClear
-            disabled={record.disabled}
-          >
-            {["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"]
-              .filter((actor) => selectedActors[actor] === undefined)
-              .map((item) => (
-                <Select.Option value={item} key={item}>
-                  {item}
-                </Select.Option>
-              ))}
-          </Select>
-        )}
-      </Form.Item>
-    );
-  }
-
-  return <td {...restProps}>{childNode}</td>;
 };
 
 export const DocumentRuleTable = forwardRef(({ data }, ref) => {
   const [dataSource, setDatasource] = useState(data);
-  useEffect(() => {
-    setDatasource(data);
-  }, [data]);
 
   const columns = [
     {
       title: "Document",
       dataIndex: "document",
-      editable: true
+      editable: false
     },
     {
       title: "Provider",
       dataIndex: "provider",
-      editable: true
+      editable: true,
+      isRequired: true
     },
     {
       title: "Viewer 1",
       dataIndex: "viewer1",
-      editable: true
+      editable: true,
+      isRequired: true
     },
     {
       title: "Viewer 2",
@@ -133,68 +72,73 @@ export const DocumentRuleTable = forwardRef(({ data }, ref) => {
     }
   ];
 
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell
-    }
-  };
-  const _columns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
+  const fieldsEdit = columns.filter((c) => c.editable).map((c) => c.dataIndex);
+  const fieldsRequired = columns.filter((c) => c.isRequired).map((c) => c.dataIndex);
 
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title
-      })
-    };
-  });
+  useEffect(() => {
+    const dataConvert = [];
+    data.forEach((d) => {
+      const ds = dataSource.find((dse) => dse.id === d.id);
 
-  const handleRowMount = useCallback(
-    (record) => (formRef) => {
-      ref && ref.current.set(record.id, formRef);
-    },
-    [ref]
-  );
+      dataConvert.push(ds || d);
+    });
+    console.log("debug dataConvert", dataConvert);
+    ref.current.set("value", dataConvert);
+    setDatasource(dataConvert);
+  }, [data]);
 
   return (
     <div className="air__utils__scrollTable">
-      <Table
-        pagination={{
-          hideOnSinglePage: true,
-          pageSize: 1000
-        }}
-        scroll={{ x: true }}
-        rowKey="id"
-        components={components}
-        onRow={(record) => {
-          let initSelectedActors = {};
-          Object.keys(record).forEach((actor) => {
-            if (
-              ["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"].includes(
-                record[actor]
-              ) === false
-            ) {
-              return;
-            }
-            initSelectedActors[record[actor]] = actor;
-          });
-          return {
-            rowId: record.id,
-            initActors: initSelectedActors,
-            onMount: handleRowMount(record)
-          };
-        }}
-        rowClassName={() => "editable-row"}
-        bordered
-        dataSource={dataSource}
-        columns={_columns}
-      />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {columns.map((c) => (
+                <TableCell align="left" width={200}>
+                  <Typography variant={"h6"}>{c.title}</Typography>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dataSource.map((row, index) => (
+              <TableRow key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                {columns.map((c) => {
+                  const ignoreValues = fieldsEdit
+                    .filter((f) => f !== c.dataIndex)
+                    .map((f) => row[f]);
+
+                  const onChange = (v) => {
+                    const value = {
+                      ...row,
+                      [c.dataIndex]: v
+                    };
+
+                    const dataTemp = [...dataSource];
+                    dataTemp[index] = value;
+                    ref.current.set("value", dataTemp);
+                    setDatasource(dataTemp);
+                  };
+
+                  return (
+                    <TableCell align="left">
+                      <RowField
+                        name={c.dataIndex}
+                        ignoreValues={ignoreValues}
+                        disabled={row.disabled}
+                        isEdit={c.editable}
+                        isRequired={fieldsRequired.includes(c.dataIndex)}
+                        value={row[c.dataIndex]}
+                        onChange={onChange}
+                      />
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 });

@@ -1,11 +1,6 @@
-import { ACTORS, ACTORS_REVERSE, RouteConst } from "commons/consts";
-import { Button, Col, Divider, Row } from "antd";
-import {
-  DocumentList,
-  DocumentRuleTable,
-  RouteLocationForm,
-  TradeRouteTaxForm
-} from "components/trade-route";
+import { ACTORS_REVERSE, ACTORS, RouteConst } from "commons/consts";
+import { DTCSection } from "components/commons";
+import { DocumentList, DocumentRuleTable, RouteLocationForm } from "components/trade-route";
 import {
   FIELDS,
   TAX_RULES_TYPE_MAIN_SCHEMA,
@@ -15,15 +10,17 @@ import { Link, useHistory } from "react-router-dom";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { APIError } from "commons/types";
-import { DTCSection } from "components/commons";
 import { Helmet } from "react-helmet";
-import { Lagecy } from "components/lagecy/lagecy.comp";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
-import numeral from "numeral";
 import uniqBy from "lodash/uniqBy";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import Divider from "@mui/material/Divider";
+import { Grid, Button } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useSnackbar } from "notistack";
+import { TradeRouteTaxFormV2 } from "components/trade-route/route/forms/tax-rules/tax-rules.form";
 import { useMessage } from "hooks/use-message";
 
 const isFormValid = async (validateFn) => {
@@ -61,6 +58,7 @@ const AddRoutePage = () => {
   const documentRuleForms = useRef(new Map());
   const taxRuleForms = useRef();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isLoadingCreate, setIsloadingCreate] = useState(false);
 
@@ -231,19 +229,33 @@ const AddRoutePage = () => {
     [documents, defaultDocs]
   );
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     setIsloadingCreate(true);
     asyncErrorHandlerWrapper(async () => {
-      const valid = await isFormValid(async () => {
-        const docFormRefs = Array.from(documentRuleForms.current.values());
+      const validators = [
+        locationFormRef.current.validateForm(),
+        locationFormRef.current.submitForm(),
+
+        taxRuleForms.current.validateForm(),
+        taxRuleForms.current.submitForm()
+      ];
+      await isFormValid(async () => {
         await Promise.all([
-          locationFormRef.current.validateFields(),
-          taxRuleForms.current.validateFields(),
-          ...docFormRefs.map((form) => form.validateFields())
+          // locationFormRef.current.validateForm(),
+          // taxRuleForms.current.validateFields(),
+          // ...docFormRefs.map((form) => form.validateFields())
         ]);
+        await Promise.all(validators);
       });
+
+      const valid =
+        Object.keys({
+          ...locationFormRef.current.errors,
+          ...taxRuleForms.current.errors
+        }).length === 0;
+
       if (valid) {
-        const { category, type, from, to } = locationFormRef.current.getFieldsValue();
+        const { category, type, from, to } = locationFormRef.current.getFieldMeta().value;
         let composedValues = {
           fromCountry: from,
           toCountry: to,
@@ -253,81 +265,37 @@ const AddRoutePage = () => {
           routeDocumentTypeRequests: [],
           routeTaxPostRequestList: []
         };
-        documentRuleForms.current.forEach((formRef, docId) => {
-          const values = formRef.getFieldsValue();
-          if (Object.keys(values).length > 0) {
-            composedValues.routeDocumentTypeRequests.push({
-              id: docId,
-              routeDocumentRuleDto: {
-                provider: ACTORS[values.provider],
-                viewer1: ACTORS[values.viewer1],
-                viewer2: ACTORS[values.viewer2],
-                viewer3: ACTORS[values.viewer3]
-              }
-            });
-          }
+
+        documentRuleForms.current.get("value").forEach((values) => {
+          composedValues.routeDocumentTypeRequests.push({
+            id: values.id,
+            routeDocumentRuleDto: {
+              provider: ACTORS[values.provider],
+              viewer1: ACTORS[values.viewer1],
+              viewer2: ACTORS[values.viewer2],
+              viewer3: ACTORS[values.viewer3]
+            }
+          });
         });
 
-        const valueTax = taxRuleForms.current.getFieldsValue();
+        const taxRuleValues = taxRuleForms.current.getFieldMeta().value;
 
-        const data = [];
-        const dataMain = [];
-        let nameObj;
-        let valueObj;
-        Object.keys(valueTax).map((item) => {
-          const nameParse = item.split("-");
-          if (!nameParse && !nameParse.length) return false;
-          const applyTypeField = nameParse[0];
-          const nameField = nameParse[1];
-          const index = nameParse[2];
-          nameObj = nameField;
-          valueObj = valueTax[item];
-          if (nameObj === FIELDS.lumpSum || nameObj === FIELDS.percent) {
-            valueObj = numeral(valueObj).value();
-          }
-          if (nameField === FIELDS.lumpSum && valueObj === 0) {
-            nameObj = FIELDS.percent;
-          }
-          if (nameField === FIELDS.percent && valueObj === 0) {
-            nameObj = FIELDS.lumpSum;
-          }
-          if (valueTax[item] && applyTypeField === "taxMain") {
-            dataMain[index] = {
-              ...dataMain[index],
-              [nameField]: valueObj
-            };
-          }
-
-          if (valueTax[item] && applyTypeField === "taxOther") {
-            if (nameField === FIELDS.applyTypeOther) {
-              nameObj = FIELDS.applyType;
-            }
-            if (nameField === FIELDS.isLumSum && valueTax[item] === 0) {
-              nameObj = FIELDS.lumpSum;
-            } else if (nameField === FIELDS.isLumSum && valueTax[item] === 1) {
-              nameObj = FIELDS.percent;
-            }
-
-            data[index] = {
-              ...data[index],
-              [FIELDS.applyType]: typeTAX.OTHERS,
-              [nameObj]: valueObj
-            };
-          }
-        });
-        composedValues.routeTaxPostRequestList = [...dataMain, ...data];
+        if (taxRuleValues[FIELDS.applyType] === typeTAX.MAIN) {
+          composedValues.routeTaxPostRequestList[0] = taxRuleValues;
+        }
 
         try {
           await RouteService.create(composedValues);
-          message.success("Created Successfully");
+          enqueueSnackbar("Created Successfully", { variant: "success" });
           history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
           setIsloadingCreate(false);
           if (error instanceof APIError) {
             const err = error.errors;
-            message.warning(err[0][1]);
-          } else if (error.message == 400) {
+            enqueueSnackbar(err[0][1], { variant: "error" });
+          } else if (error.message === 400) {
             message.warning(error.errMsg);
+            enqueueSnackbar(error.errMsg, { variant: "warning" });
           } else {
             throw error;
           }
@@ -343,82 +311,92 @@ const AddRoutePage = () => {
   };
 
   return (
-    <DTCSection>
-      <DTCSection.Content>
-        <Lagecy>
-          <Helmet title="Trade Routes Creation" />
-          <div>
-            <h3 className="mb-3">{renderTitle(false)}</h3>
-            <RouteLocationForm
-              defaultFromCountry={fromCountry}
-              defaultToCountry={toCountry}
-              defaultTypeId={productType}
-              defaultCategoryId={productCategory}
-              onTypeChange={handleTypeChange}
-              ref={locationFormRef}
+    <DTCSection style={{ padding: 20 }}>
+      <Helmet title="Trade Routes Creation" />
+      <div>
+        <h3 className="mb-3">{renderTitle(false)}</h3>
+        <RouteLocationForm
+          defaultFromCountry={fromCountry}
+          defaultToCountry={toCountry}
+          defaultTypeId={productType}
+          defaultCategoryId={productCategory}
+          onTypeChange={handleTypeChange}
+          ref={locationFormRef}
+        />
+        <TradeRouteTaxFormV2 dataSource={dataSourceTax.current} ref={taxRuleForms} />
+      </div>
+      <Divider style={{ marginTop: 20 }} />
+      <div>
+        <h5>Documents</h5>
+        <p>
+          You can either select from the document list or{" "}
+          <Link
+            style={{ cursor: "pointer" }}
+            to={{
+              pathname: RouteConst.DOCUMENT,
+              search: "?showCreateDocument=true",
+              state: { previousPage: RouteConst.ADD_ROUTE }
+            }}
+            className="text-primary"
+          >
+            create a new document
+          </Link>
+        </p>
+        <p>Select the documents required for this route</p>
+        <Grid container spacing={2}>
+          <Grid item>
+            <DocumentList
+              title="Default Documents"
+              defaultDocs={defaultDocs}
+              defaultValue={defaultDocumentIds}
+              documents={defaultDocuments}
+              onChange={handleDefaultDocListChange}
+              onTouch={handleDocListTouch}
             />
-            <TradeRouteTaxForm dataSource={dataSourceTax.current} ref={taxRuleForms} />
-          </div>
-          <Divider />
-          <div>
-            <h5>Documents</h5>
-            <p>
-              You can either select from the document list or{" "}
-              <Link
-                style={{ cursor: "pointer" }}
-                to={{
-                  pathname: RouteConst.DOCUMENT,
-                  search: "?showCreateDocument=true",
-                  state: { previousPage: RouteConst.ADD_ROUTE }
-                }}
-                className="text-primary"
-              >
-                create a new document
-              </Link>
-            </p>
-            <p>Select the documents required for this route</p>
-            <Row gutter={[30, 0]}>
-              <Col>
-                <DocumentList
-                  title="Default Documents"
-                  defaultDocs={defaultDocs}
-                  defaultValue={defaultDocumentIds}
-                  documents={defaultDocuments}
-                  onChange={handleDefaultDocListChange}
-                  onTouch={handleDocListTouch}
-                />
-              </Col>
-              <Col>
-                <DocumentList
-                  title="Customized Documents"
-                  defaultDocs={defaultDocs}
-                  documents={filteredCustomizedDocs}
-                  onChange={handleCustomizedDocListChange}
-                />
-              </Col>
-            </Row>
-          </div>
-          <Divider />
-          <div>
-            <h5>Document trade routes</h5>
-            <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
-          </div>
-          <Divider />
-          <div className="d-flex justify-content-center">
-            <Button
-              loading={isLoadingCreate}
-              className="mr-2"
-              type="primary"
-              onClick={handleCreate}
-            >
-              Create Trade Routes
+          </Grid>
+          <Grid item>
+            <DocumentList
+              title="Customized Documents"
+              defaultDocs={defaultDocs}
+              documents={filteredCustomizedDocs}
+              onChange={handleCustomizedDocListChange}
+            />
+          </Grid>
+        </Grid>
+      </div>
+      <Divider style={{ marginTop: 20 }} />
+      <div>
+        <h5>Document trade routes</h5>
+        <DocumentRuleTable ref={documentRuleForms} data={docTableData} />
+      </div>
+      <Divider style={{ marginTop: 20, marginBottom: 20 }} />
+      <Grid
+        style={{ marginBottom: 20 }}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        container
+        spacing={2}
+      >
+        <Grid item>
+          <LoadingButton
+            loadingPosition="start"
+            variant="contained"
+            loading={isLoadingCreate}
+            className="mr-2"
+            onClick={handleCreate}
+          >
+            Create Trade Routes
+          </LoadingButton>
+        </Grid>
+        <Grid item>
+          <Link to={RouteConst.TRADE_RULES}>
+            <Button disabled={isLoadingCreate} variant="outlined">
+              Cancel
             </Button>
-            <Link to={RouteConst.TRADE_RULES}>
-              <Button>Cancel</Button>
-            </Link>
-          </div>
-        </Lagecy>
-      </DTCSection.Content>
+          </Link>
+        </Grid>
+      </Grid>
     </DTCSection>
   );
 };

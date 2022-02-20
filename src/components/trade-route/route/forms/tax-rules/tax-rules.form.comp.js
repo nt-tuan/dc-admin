@@ -1,5 +1,6 @@
 import React, { memo, forwardRef, useState, useCallback, useEffect } from "react";
 import { Form } from "antd";
+import { useFormik } from "formik";
 import { createFormErrorComp } from "utils/form.util";
 import {
   TAX_RULES_MAIN_SCHEMA,
@@ -17,16 +18,24 @@ export const TradeRouteTaxForm = memo(
     const [form] = Form.useForm();
     const [dataForm, setDataForm] = useState({ ...dataSource });
 
+    const formikProps = useFormik({
+      initialValues: {}
+      // validationSchema: {},
+      // onSubmit: () => {}
+    });
+
     const handleSetValueForm = useCallback(
       (dataSource) => {
-        Object.entries(dataSource).map(([key, valueData]) => {
+        console.log("debug", dataSource);
+
+        Object.entries(dataSource).map(async ([key, valueData]) => {
           valueData.map((val, idx) => {
             let filteredFields = val?.data;
             if (val?.dataFilter) {
               filteredFields = val?.data?.filter((field) => !val?.dataFilter.includes(field?.name));
             }
             filteredFields &&
-              filteredFields.map(({ initValue, name }) => {
+              filteredFields.map(async ({ initValue, name }) => {
                 const nameForm = `${key}-${name}-${idx}`;
 
                 if (
@@ -36,6 +45,7 @@ export const TradeRouteTaxForm = memo(
                   initValue = numeral(initValue).format("0,0.00");
                 }
                 form.setFieldsValue({ [nameForm]: initValue });
+                await formikProps.setFieldValue(nameForm, initValue);
               });
           });
         });
@@ -46,6 +56,7 @@ export const TradeRouteTaxForm = memo(
     useEffect(() => {
       handleSetValueForm(dataSource);
       setDataForm({ ...dataSource });
+      console.log("debug", dataSource);
     }, [dataSource, form, handleSetValueForm]);
 
     const handleUpdateIntValue = (data, value, field) => {
@@ -68,6 +79,7 @@ export const TradeRouteTaxForm = memo(
         const applyTypeField = nameParse[0];
         const nameField = nameParse[1];
         const indexField = nameParse[2];
+        console.log("debug", nameField);
 
         switch (nameField) {
           case FIELDS.lumpSum:
@@ -200,11 +212,11 @@ export const TradeRouteTaxForm = memo(
                     form.setFieldsValue({ [fieldName]: valueFi });
                     return {
                       ...item,
-                      disabled: value === 0 ? false : true,
+                      disabled: value !== 0,
                       initValue: valueFi,
                       rules: [
                         {
-                          required: value === 0 ? true : false,
+                          required: value === 0,
                           message: createFormErrorComp("Please enter the lump-sum amount")
                         },
                         RULES_LUMSUM_FORMAT
@@ -256,6 +268,7 @@ export const TradeRouteTaxForm = memo(
               handleFieldChange={handleFieldChange}
               dataForm={dataForm}
               form={form}
+              // formikProps={formikProps}
             />
           </div>
         </Form>

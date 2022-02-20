@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 import { DTCSection } from "components/commons";
-import { Lagecy } from "components/lagecy/lagecy.comp";
 import { Link } from "react-router-dom";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
@@ -192,48 +191,46 @@ const EditRoutePage = () => {
   return (
     <DTCSection>
       <DTCSection.Content>
-        <Lagecy>
-          <div>
-            <h3 className="mb-3">{renderTitle(true)}</h3>
-            <RouteLocationForm
-              ref={locationFormRef}
-              hiddenFields={["from", "to"]}
-              onTouch={setIsLocationFormTouched}
-              defaultCategoryId={categoryIdFromDetails}
-              defaultTypeId={typeIdFromDetails}
-              isEdit={true}
-            />
-          </div>
-          <Divider />
-          <div>
-            <h5>Documents</h5>
-            <p>You can either select from the document list of or create a new document</p>
-            <p>Select the documents required for this route</p>
+        <div>
+          <h3 className="mb-3">{renderTitle(true)}</h3>
+          <RouteLocationForm
+            ref={locationFormRef}
+            hiddenFields={["from", "to"]}
+            onTouch={setIsLocationFormTouched}
+            defaultCategoryId={categoryIdFromDetails}
+            defaultTypeId={typeIdFromDetails}
+            isEdit={true}
+          />
+        </div>
+        <Divider />
+        <div>
+          <h5>Documents</h5>
+          <p>You can either select from the document list of or create a new document</p>
+          <p>Select the documents required for this route</p>
 
-            <DocumentList
-              title="Documents"
-              defaultDocs={defaultDocs}
-              documents={documents}
-              defaultValue={docIdsFromDetails}
-              onChange={handleDocListChange}
-              onTouch={handleDocListTouch}
-            />
-          </div>
-          <Divider />
-          <div>
-            <h5>Document Rules</h5>
-            <DocumentRuleTable ref={documentRuleFormsRef} data={selectedDocs} />
-          </div>
-          <Divider />
-          <div className="d-flex justify-content-center">
-            <Button className="mr-2" type="primary" onClick={handleEdit}>
-              Save
-            </Button>
-            <Link to={RouteConst.TRADE_ROUTES}>
-              <Button>Cancel</Button>
-            </Link>
-          </div>
-        </Lagecy>
+          <DocumentList
+            title="Documents"
+            defaultDocs={defaultDocs}
+            documents={documents}
+            defaultValue={docIdsFromDetails}
+            onChange={handleDocListChange}
+            onTouch={handleDocListTouch}
+          />
+        </div>
+        <Divider />
+        <div>
+          <h5>Document Rules</h5>
+          <DocumentRuleTable ref={documentRuleFormsRef} data={selectedDocs} />
+        </div>
+        <Divider />
+        <div className="d-flex justify-content-center">
+          <Button className="mr-2" type="primary" onClick={handleEdit}>
+            Save
+          </Button>
+          <Link to={RouteConst.TRADE_ROUTES}>
+            <Button>Cancel</Button>
+          </Link>
+        </div>
       </DTCSection.Content>
     </DTCSection>
   );

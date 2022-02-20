@@ -19,7 +19,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { APIError } from "commons/types";
 import { Helmet } from "react-helmet";
-import { Lagecy } from "components/lagecy/lagecy.comp";
 import { RouteService } from "services";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { getAllRecordsFromAPI } from "utils/general.util";
@@ -481,7 +480,7 @@ const EditRoutePage = () => {
   }, []);
 
   return (
-    <Lagecy>
+    <article>
       <Helmet title="Edit Trade Rules" />
       <DTCSection>
         <DTCSection.Content>
@@ -566,7 +565,7 @@ const EditRoutePage = () => {
           </div>
         </DTCSection.Content>
       </DTCSection>
-    </Lagecy>
+    </article>
   );
 };
 

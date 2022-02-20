@@ -1,10 +1,9 @@
-import { Checkbox, Col, Row, Typography } from "antd";
+import { Checkbox, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 
 import uniq from "lodash/uniq";
 import { useMessage } from "hooks/use-message";
-
-const CheckboxGroup = Checkbox.Group;
+import { FormControlLabel, FormGroup } from "@mui/material";
 
 const defaultValueProp = [];
 const defaultDocsProp = [];
@@ -53,17 +52,21 @@ export const DocumentList = ({
       .map((d) => d.id);
 
     setCheckedList(isChecked ? documents.map((d) => d.id) : defaultDocIs);
-    setIndeterminate(isChecked ? false : true);
+    setIndeterminate(!isChecked);
     setCheckAll(isChecked);
     onTouch && onTouch(isChecked ? documents.map((d) => d.id) : []);
     onChange && onChange(isChecked ? documents.map((d) => d.id) : defaultDocIs);
   };
 
   const handleCheckboxClick = (e, id) => {
-    if (!e.target.checked) {
+    const isChecked = e.target.checked;
+
+    if (!isChecked) {
       message.error("Deleted successfully");
     }
     onTouch && onTouch([id]);
+    const checkedListAfter = isChecked ? [...checkedList, id] : checkedList.filter((c) => c !== id);
+    handleChange(checkedListAfter);
   };
 
   return (
@@ -82,34 +85,55 @@ export const DocumentList = ({
       >
         <div>
           <div className="mb-2">
-            <Typography.Text strong>{title}</Typography.Text>
+            <Typography strong>{title}</Typography>
           </div>
-          <Checkbox
-            indeterminate={indeterminate}
-            onChange={handleCheckAllChange}
-            checked={checkAll}
-            disabled={documents.length === 0 || disableCheckAll}
-          >
-            <b>Select all</b>
-          </Checkbox>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  indeterminate={indeterminate}
+                  onChange={handleCheckAllChange}
+                  checked={checkAll}
+                  disabled={documents.length === 0 || disableCheckAll}
+                />
+              }
+              label="Select all"
+            />
+          </FormGroup>
         </div>
         <hr />
-        <CheckboxGroup onChange={handleChange} value={checkedList} defaultValue={checkedList}>
-          <Row>
-            {documents.map((opt) => (
-              <Col span={24} key={opt.id}>
+        <FormGroup>
+          {documents.map((opt) => (
+            <FormControlLabel
+              control={
                 <Checkbox
                   onChange={(e) => handleCheckboxClick(e, opt.id)}
                   value={opt.id}
-                  className="w-100 align-items-center"
                   disabled={defaultDocs.some((d) => d.id === opt.id)}
-                >
-                  <span>{opt.name}</span>
-                </Checkbox>
-              </Col>
-            ))}
-          </Row>
-        </CheckboxGroup>
+                  defaultChecked={defaultDocs.some((d) => d.id === opt.id)}
+                  checked={checkedList.includes(opt.id)}
+                />
+              }
+              label={opt.name}
+            />
+          ))}
+        </FormGroup>
+        {/*<CheckboxGroup onChange={handleChange} value={checkedList} defaultValue={checkedList}>*/}
+        {/*  <Row>*/}
+        {/*    {documents.map((opt) => (*/}
+        {/*      <Col span={24} key={opt.id}>*/}
+        {/*        <Checkbox*/}
+        {/*          onChange={(e) => handleCheckboxClick(e, opt.id)}*/}
+        {/*          value={opt.id}*/}
+        {/*          className="w-100 align-items-center"*/}
+        {/*          disabled={defaultDocs.some((d) => d.id === opt.id)}*/}
+        {/*        >*/}
+        {/*          <span>{opt.name}</span>*/}
+        {/*        </Checkbox>*/}
+        {/*      </Col>*/}
+        {/*    ))}*/}
+        {/*  </Row>*/}
+        {/*</CheckboxGroup>*/}
         {loadMoreButton}
       </div>
     </div>

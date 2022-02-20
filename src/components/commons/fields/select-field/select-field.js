@@ -6,10 +6,16 @@ import React from "react";
 import Select from "@mui/material/Select";
 import { useField } from "formik";
 
-export const SelectField = ({ name, dataSource, label, ...props }) => {
+export const SelectField = ({ name, dataSource, label, onChangeValue, ...props }) => {
   const [field, meta] = useField({ name, type: "search" });
   const labelId = `select-field-${name}-label`;
   const showError = Boolean(meta.touched && meta.error);
+  const handleChange = (...params) => {
+    field.onChange(...params);
+    if (onChangeValue) {
+      onChangeValue(...params);
+    }
+  };
   return (
     <FormControl {...props}>
       <InputLabel htmlFor={labelId}>{label}</InputLabel>
@@ -18,7 +24,7 @@ export const SelectField = ({ name, dataSource, label, ...props }) => {
         labelId={labelId}
         value={field.value}
         label={label}
-        onChange={field.onChange}
+        onChange={handleChange}
         error={showError}
       >
         {dataSource.map(({ value, label }) => (

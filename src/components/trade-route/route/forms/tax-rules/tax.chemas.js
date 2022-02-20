@@ -1,5 +1,4 @@
 import { MAX_CHARS } from "commons/consts";
-import { createFormErrorComp } from "utils/form.util";
 import numeral from "numeral";
 
 export const typeTAX = {
@@ -48,12 +47,12 @@ export const RULES_PERCENT_FORMAT = {
   validator: (rule, value, callback) => {
     const inputAmount = numeral(value).value();
     if (inputAmount != null && inputAmount <= 0) {
-      return callback(createFormErrorComp("The tax percentage must be greater than 0"));
+      return callback("The tax percentage must be greater than 0");
     }
     if (inputAmount != null && inputAmount > 0 && inputAmount < 100) {
       return callback();
     }
-    return callback(createFormErrorComp("The tax percentage max 2 numbers"));
+    return callback("The tax percentage max 2 numbers");
   }
 };
 
@@ -61,10 +60,10 @@ export const RULES_LUMSUM_FORMAT = {
   validator: (rule, value, callback) => {
     const inputAmount = numeral(value).value();
     if (isNaN(inputAmount)) {
-      return callback(createFormErrorComp("The lump-sum amount is the number"));
+      return callback("The lump-sum amount is the number");
     }
     if (inputAmount < 0) {
-      return callback(createFormErrorComp("The lump-sum amount must be greater than 0"));
+      return callback("The lump-sum amount must be greater than 0");
     }
     callback();
   }
@@ -97,7 +96,7 @@ export const TAX_RULES_MAIN_SCHEMA = [
     placeholder: "Type of Tax",
     data: [...taxRulesValue],
     initValue: null,
-    rules: [{ required: true, message: createFormErrorComp("Please choose the type of tax") }]
+    rules: [{ required: true, message: "Please choose the type of tax" }]
   },
   {
     label: LABELS[FIELDS.name],
@@ -108,7 +107,7 @@ export const TAX_RULES_MAIN_SCHEMA = [
     rules: [
       {
         max: 20,
-        message: createFormErrorComp(MAX_CHARS(LABELS[FIELDS.name], 20))
+        message: MAX_CHARS(LABELS[FIELDS.name], 20)
       }
     ]
   },
@@ -121,7 +120,7 @@ export const TAX_RULES_MAIN_SCHEMA = [
     rules: [
       {
         required: true,
-        message: createFormErrorComp("Please enter the tax name")
+        message: "Please enter the tax name"
       },
       RULES_PERCENT_FORMAT
     ]

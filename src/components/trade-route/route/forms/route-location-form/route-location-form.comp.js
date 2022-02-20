@@ -1,11 +1,14 @@
+import { Formik, Form } from "formik";
+import countryJson from "assets/country.json";
+import React, { useEffect, useState, useRef, forwardRef } from "react";
 import { CompanyService, RouteService } from "services";
-import { Form, Select } from "antd";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import countryJson from "assets/country.json";
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { SelectField } from "components/commons/fields";
 
+import * as yup from "yup";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 export const RouteLocationForm = forwardRef(
   (
     {
@@ -25,7 +28,6 @@ export const RouteLocationForm = forwardRef(
     const [countriesTo, setCountriesTo] = useState([]);
     const [categories, setCategories] = useState([]);
     const [types, setTypes] = useState([]);
-    const [form] = Form.useForm();
     const countries = useRef([]);
 
     useEffect(() => {
@@ -33,15 +35,10 @@ export const RouteLocationForm = forwardRef(
         if (defaultCategoryId != null) {
           const typeResponse = await RouteService.getTypes(defaultCategoryId);
           setTypes(typeResponse);
-          isEdit &&
-            form.setFieldsValue({
-              category: defaultCategoryId,
-              type: defaultTypeId
-            });
         }
         onAfterInit && onAfterInit(false);
       });
-    }, [form, defaultCategoryId, defaultTypeId, onAfterInit, isEdit]);
+    }, [defaultCategoryId, defaultTypeId, onAfterInit, isEdit]);
 
     useEffect(() => {
       asyncErrorHandlerWrapper(async () => {
@@ -54,139 +51,103 @@ export const RouteLocationForm = forwardRef(
       });
     }, []);
 
-    const handleCategoryChange = (id) => {
+    const handleCategoryChange = (event) => {
+      const id = event.target.value;
       asyncErrorHandlerWrapper(async () => {
         const typeRes = await RouteService.getTypes(id);
         setTypes(typeRes);
 
         if (typeRes[0]) {
-          form.setFieldsValue({
-            type: typeRes[0].id
-          });
           onTypeChange && onTypeChange({ categoryId: id, typeId: typeRes[0].id });
-        } else {
-          form.setFieldsValue({
-            type: undefined
-          });
         }
         onTouch && onTouch(true);
       });
     };
 
-    const handleTypeChange = (typeId) => {
-      const categoryId = form.getFieldValue("category");
+    const handleTypeChange = (event) => {
+      const typeId = event.target.value;
+      const categoryId = ref.current.values.category;
       onTypeChange && onTypeChange({ categoryId, typeId });
       onTouch && onTouch(true);
     };
 
-    return (
-      <Form
-        form={form}
-        name="basic"
-        colon={false}
-        layout="vertical"
-        initialValues={{
-          remember: true,
-          from: defaultFromCountry,
-          to: defaultToCountry,
-          category: defaultCategoryId,
-          type: defaultTypeId
-        }}
-        ref={ref}
-      >
-        <div className="row px-2 w-100">
-          {hiddenFields.includes("from") || (
-            <Form.Item
-              label="From"
-              name="from"
-              className="col-12 col-lg-6 mx-0 mt-2"
-              rules={[{ required: true, message: "Please input From Country" }]}
-            >
-              <Select
-                getPopupContainer={getLagecyModalContainer}
-                disabled={isEdit}
-                style={{ width: "100%" }}
-              >
-                {countriesFrom.map((c) => (
-                  <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
-                    {c.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
-          {hiddenFields.includes("to") || (
-            <Form.Item
-              label="To"
-              name="to"
-              className="col-12 col-lg-6 mx-0 mt-2"
-              rules={[{ required: true, message: "Please input To Country" }]}
-            >
-              <Select
-                getPopupContainer={getLagecyModalContainer}
-                disabled={isEdit}
-                style={{ width: "100%" }}
-              >
-                {countriesTo.map((c) => (
-                  <Select.Option value={c.alpha2Code} key={c.alpha2Code}>
-                    {c.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
-        </div>
-        <div className="row px-2 w-100">
-          <Form.Item
-            label="Product Category"
-            name="category"
-            className="col-12 col-lg-6 mx-0 mt-2"
-            rules={[
-              {
-                required: true,
-                message: "Category is required"
-              }
-            ]}
-          >
-            <Select
-              getPopupContainer={getLagecyModalContainer}
-              disabled={isEdit}
-              style={{ width: "100%" }}
-              onChange={handleCategoryChange}
-            >
-              {categories.map((c) => (
-                <Select.Option value={c.id} key={c.id}>
-                  {c.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Product Type"
-            name="type"
-            className="col-12 col-lg-6 mx-0 mt-2"
-            rules={[
-              {
-                required: true,
-                message: "Product type is required"
-              }
-            ]}
-          >
-            <Select
-              getPopupContainer={getLagecyModalContainer}
-              disabled={isEdit}
-              style={{ width: "100%" }}
-              onChange={handleTypeChange}
-            >
-              {types.map((t) => (
-                <Select.Option value={t.id} key={t.id}>
-                  {t.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-      </Form>
-    );
+    const validationSchema = yup.object({
+      from: yup.string("Enter From").nullable().required("From is required"),
+      to: yup.string("Enter To").nullable().required("To is required"),
+      category: yup.string("Enter Category").nullable().required("Category is required"),
+      type: yup.string("Enter Product Type").nullable().required("Product Type is required")
+    });
+
+    const material = () => {
+      return (
+        <Formik
+          initialValues={{
+            remember: true,
+            from: defaultFromCountry,
+            to: defaultToCountry,
+            category: defaultCategoryId,
+            type: defaultTypeId
+          }}
+          validationSchema={validationSchema}
+          innerRef={ref}
+          onSubmit={() => console.log("submmited")}
+        >
+          <Form>
+            <Box>
+              <Grid container columnSpacing={1} rowSpacing={2}>
+                <Grid item xs={12} md={6} lg={6}>
+                  <SelectField
+                    fullWidth
+                    disabled={isEdit}
+                    name={"from"}
+                    label={"From"}
+                    placeholder="From"
+                    dataSource={countriesFrom.map((c) => ({ label: c.name, value: c.alpha2Code }))}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                  <SelectField
+                    fullWidth
+                    disabled={isEdit}
+                    name={"to"}
+                    label={"To"}
+                    placeholder="To"
+                    dataSource={countriesTo.map((c) => ({ label: c.name, value: c.alpha2Code }))}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                  <SelectField
+                    fullWidth
+                    disabled={isEdit}
+                    name={"category"}
+                    onChangeValue={handleCategoryChange}
+                    label={"Product Category"}
+                    placeholder="Product Category"
+                    dataSource={categories.map((c) => ({ label: c.name, value: c.id }))}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                  <SelectField
+                    fullWidth
+                    disabled={isEdit}
+                    name={"type"}
+                    onChangeValue={handleTypeChange}
+                    label={"Product Type"}
+                    placeholder="Product Type"
+                    dataSource={types.map((c) => ({ label: c.name, value: c.id }))}
+                    required
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </Form>
+        </Formik>
+      );
+    };
+
+    return material();
   }
 );
