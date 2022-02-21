@@ -4,6 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { getOrganizationName, updateOrganizationName } from "services/organization.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { styled } from "@mui/system";
+import { getErrorMaxCharactersMessage } from "commons/consts";
 
 const FieldInput = styled(TextField)(() => ({
   ".MuiInputLabel-asterisk": {
@@ -13,12 +14,15 @@ const FieldInput = styled(TextField)(() => ({
 
 const fieldName = "organization";
 const labelText = "Organization Name";
+const helperTextDefault = "(30 max characters)";
+const validateMsg = getErrorMaxCharactersMessage("Organization name", 30);
 
 const OrganizationProfilePage = () => {
   const [organizationName, setOrganizationName] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [helperText, setHelperText] = useState(helperTextDefault);
 
   useEffect(() => {
     getOrganization();
@@ -37,15 +41,20 @@ const OrganizationProfilePage = () => {
   };
 
   const isError = useMemo(() => {
-    return organizationName.trim().length === 0 || organizationName.trim().length >= 30;
+    return organizationName.trim().length >= 30;
+  }, [organizationName]);
+
+  const isFieldEmpty = useMemo(() => {
+    return organizationName.trim().length === 0;
   }, [organizationName]);
 
   const handleSave = async () => {
-    if (loading) {
+    if (loading || isFieldEmpty) {
       return;
     }
     if (isError) {
       setError(true);
+      setHelperText(validateMsg);
       return;
     }
     try {
@@ -61,8 +70,13 @@ const OrganizationProfilePage = () => {
 
   const handleChange = (e) => {
     const { value } = e.target;
-    setOrganizationName(value);
-    setError(false);
+    setOrganizationName(() => {
+      if (error) {
+        setError(false);
+        setHelperText(helperTextDefault);
+      }
+      return value;
+    });
   };
 
   const showAlertSuccess = () => {
@@ -85,24 +99,7 @@ const OrganizationProfilePage = () => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleCloseAlert} severity="success">
-          <Box
-            width={400}
-            maxWidth={600}
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            Your Organization profile has been saved
-            <Box
-              component="span"
-              fontWeight={600}
-              fontSize={13}
-              style={{ cursor: "pointer" }}
-              onClick={handleCloseAlert}
-            >
-              Close
-            </Box>
-          </Box>
+          <Box fontSize={14}>Your Organization profile has been saved</Box>
         </Alert>
       </Snackbar>
 
@@ -117,7 +114,7 @@ const OrganizationProfilePage = () => {
               required
               name={fieldName}
               placeholder={labelText}
-              helperText="(30 max characters)"
+              helperText={helperText}
               fullWidth
               onChange={handleChange}
               value={organizationName}
@@ -128,7 +125,13 @@ const OrganizationProfilePage = () => {
         </Grid>
         <Grid item md={4}>
           <Box display="flex" justifyContent="flex-end">
-            <LoadingButton loading={loading} onClick={handleSave} type="submit" variant="contained">
+            <LoadingButton
+              loading={loading}
+              disabled={isFieldEmpty}
+              onClick={handleSave}
+              type="submit"
+              variant="contained"
+            >
               Save
             </LoadingButton>
           </Box>
