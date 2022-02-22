@@ -58,4 +58,4 @@ export const PASSCODE_INVALID = "The passcode you entered is incorrect. Please t
 export const getAccountLockMessage = (duration, type) =>
   `Your account has been locked for ${duration} because you have reached the maximum limit of invalid ${type} Attempts.`;
 export const getErrorMaxCharactersMessage = (fieldName, numberChar) =>
-  `${fieldName} must be under ${numberChar} characters`;
+  `${fieldName} must be under ${numberChar} characters.`;

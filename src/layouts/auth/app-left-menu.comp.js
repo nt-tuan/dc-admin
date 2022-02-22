@@ -1,7 +1,7 @@
 import * as React from "react";
 import List from "@mui/material/List";
 import { useStateProvider } from "hooks/state-provider";
-import SettingsMenu from "./settings-menu";
+import SettingsMenu from "./settings-menu.comp";
 import MenuItem from "./app-menu-item.comp";
 
 export const AppLeftMenu = React.memo(({ collapsed, onExpand }) => {
