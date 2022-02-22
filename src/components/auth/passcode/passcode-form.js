@@ -8,10 +8,10 @@ import PassCodeItemForm from "./passcode-item-form";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 function PassCodeForm({ handleSubmitPassCode }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
 
   //** Handle Submit Form */
   const handleSubmit = ({ passCode, confirmPassCode }) => {
@@ -19,7 +19,7 @@ function PassCodeForm({ handleSubmitPassCode }) {
       handleSubmitPassCode(passCode);
       return;
     }
-    enqueueSnackbar(PASSCODE_INVALID, { variant: "error" });
+    message.error(PASSCODE_INVALID);
   };
 
   return (

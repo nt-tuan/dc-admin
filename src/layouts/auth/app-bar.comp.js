@@ -1,22 +1,23 @@
-import { Link, Link as RLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getAssetURL, getCompanyName } from "utils/config.util";
 
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import MuiAppBar from "@mui/material/AppBar";
 import { NotificationDropdown } from "./notification-dropdown.comp";
 import React from "react";
 import { RouteConst } from "commons/consts";
 import Toolbar from "@mui/material/Toolbar";
 import { UserMenu } from "./user-menu.comp";
-import { drawerWidth } from "./app-side-bar.comp";
+import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { useBreakpoints } from "utils/use-breakpoints";
+import WalletIcon from "@/components/icons/wallet.comp";
+import Button from "./button.comp";
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open"
 })(({ theme, open }) => ({
+  backgroundColor: theme.palette.grey[100],
   boxShadow: theme.shadows[0],
   borderBottom: "1px solid",
   borderBottomColor: theme.palette.divider,
@@ -25,11 +26,8 @@ const StyledAppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
   }),
-  marginLeft: theme.spacing(7),
-  width: `calc(100% - ${theme.spacing(7)})`,
+  height: 50,
   ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -39,30 +37,36 @@ const StyledAppBar = styled(MuiAppBar, {
 
 export const AppBar = ({ open }) => {
   const { isSmall } = useBreakpoints();
-
   return (
     <StyledAppBar position="absolute" open={open} color="inherit">
       <Toolbar
+        variant="dense"
+        disableGutters
         sx={{
-          pr: "24px" // keep right padding when drawer closed
+          paddingLeft: 2,
+          paddingRight: 1,
+          justifyContent: "space-between",
+          alignItems: "center"
         }}
       >
-        <Box sx={{ flexGrow: 1 }}>
-          <Link to={getAssetURL()}>
+        <Link to={getAssetURL()}>
+          <Box display="flex" alignItems="center" justifyContent="center" height={40}>
             <img
-              style={{ maxHeight: 40 }}
+              style={{ height: "100%", objectFit: "contain" }}
               src={getAssetURL(`/images/${isSmall ? "logo-notext.png" : "logo.png"}`)}
               alt={`${getCompanyName()}`}
             />
+          </Box>
+        </Link>
+        <Stack direction="row" alignItems="center">
+          <NotificationDropdown />
+          <Link to={RouteConst.WALLET}>
+            <Button color="inherit" variant="text">
+              <WalletIcon sx={{ color: "common.black" }} />
+            </Button>
           </Link>
-        </Box>
-        <NotificationDropdown />
-        <RLink to={RouteConst.WALLET}>
-          <IconButton color="primary">
-            <AccountBalanceWalletIcon />
-          </IconButton>
-        </RLink>
-        <UserMenu />
+          <UserMenu />
+        </Stack>
       </Toolbar>
     </StyledAppBar>
   );

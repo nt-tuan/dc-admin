@@ -12,18 +12,18 @@ import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectUsers } from "redux/user/user.duck";
 import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 export const PhoneVerifierModal = ({ visible, onCancel, onVerified }) => {
   const users = useSelector(selectUsers);
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
 
   //** Handle Finish  */
   const onFinish = (values, { setFieldError }) => {
     asyncErrorHandlerWrapper(async () => {
       const res = await validateOTP({ code: values.otp });
       if (res && res.status === THREE_STEPS_SECURITY_STATUS.SUCCESS) {
-        enqueueSnackbar("Verify successful", { variant: "success" });
+        message.success("Verify successful");
         onVerified();
       } else {
         if (res.status === THREE_STEPS_SECURITY_STATUS.OTP_LOCKED) {
@@ -43,9 +43,9 @@ export const PhoneVerifierModal = ({ visible, onCancel, onVerified }) => {
   const sendOPT = React.useCallback(() => {
     asyncErrorHandlerWrapper(async () => {
       await createOTP();
-      enqueueSnackbar(`New OTP code was send to ${users.phone}`, { variant: "info" });
+      message.info(`New OTP code was send to ${users.phone}`);
     });
-  }, [users.phone, enqueueSnackbar]);
+  }, [users.phone, message]);
 
   useEffect(() => {
     if (visible) {

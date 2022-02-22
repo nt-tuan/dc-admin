@@ -36,11 +36,14 @@ export const WalletTransactions = ({ transactionDetails, onDownload }) => {
       {
         headerName: LABELS[FIELDS.productDetails],
         field: FIELDS.productDetails,
-        renderCell: (params) => (
-          <Tooltip title={params.value} placement="top-start">
-            <span>{params.value}</span>
-          </Tooltip>
-        ),
+        renderCell: (params) =>
+          params.value ? (
+            <Tooltip title={params.value} placement="top-start">
+              <span>{params.value}</span>
+            </Tooltip>
+          ) : (
+            ""
+          ),
         width: 200
       },
       {

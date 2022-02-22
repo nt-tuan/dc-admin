@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import { TextField } from "components/commons/fields";
 import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 export function TwoStepsVerifycation({
   isShowModal2Verify,
@@ -16,7 +16,7 @@ export function TwoStepsVerifycation({
   email,
   handleUpdateBankDetail
 }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const [isShowFormCode, setIsShowFormCode] = useState(false);
 
   const handleSendConfirmEmail = () => {
@@ -32,7 +32,7 @@ export function TwoStepsVerifycation({
         await CompanyService.verifyBankConfirmCode(values.code);
         handleUpdateBankDetail();
       } catch {
-        enqueueSnackbar("Invalid Code", { variant: "error" });
+        message.error("Invalid Code");
       }
     });
   };

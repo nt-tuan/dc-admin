@@ -16,7 +16,7 @@ import qs from "qs";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const parseDocument = (doc) => ({
   ...doc,
@@ -52,7 +52,7 @@ const OrderActiveTab = () => {
   const [mutationTitle, setMutationTitle] = useState("");
   const [documents, setDocuments] = useState([]);
   const [defaultDocuments, setDefaultDocuments] = useState([]);
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
 
   const [confirmModal, setConfirmModal] = useState({
     show: false,
@@ -114,7 +114,7 @@ const OrderActiveTab = () => {
             innerText: "",
             onConfirmDelete: () => undefined
           });
-          enqueueSnackbar("Deleted Successfully!", { variant: "success" });
+          message.success("Deleted Successfully!");
         });
       }
     });
@@ -123,8 +123,7 @@ const OrderActiveTab = () => {
   const handleCreadDocumentFailed = (error) => {
     if (error instanceof APIError) {
       const err = error.errors;
-      enqueueSnackbar(err[0][1], { variant: "warning" });
-
+      message.warning(err[0][1]);
       return;
     }
     if (error?.errMsg === "Document name existed") {
@@ -147,7 +146,7 @@ const OrderActiveTab = () => {
           history.push(routeState.previousPage);
           return;
         }
-        enqueueSnackbar("Created Successfully!", { variant: "success" });
+        message.success("Created Successfully!");
         handleGetAllDocs();
       } catch (error) {
         handleCreadDocumentFailed(error);
@@ -161,13 +160,13 @@ const OrderActiveTab = () => {
       try {
         await RouteService.editDocument(selectedDocument.current.id, composedData);
         setShowDocumentMutationModal(false);
-        enqueueSnackbar("Edit Successfully!", { variant: "success" });
+        message.success("Edit Successfully!");
         handleGetAllDocs();
         formik.resetForm();
       } catch (error) {
         if (error instanceof APIError) {
           const err = error.errors;
-          enqueueSnackbar(err[0][1], { variant: "warning" });
+          message.warning(err[0][1]);
         } else {
           throw error;
         }

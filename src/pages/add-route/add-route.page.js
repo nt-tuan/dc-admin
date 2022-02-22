@@ -19,7 +19,6 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import Divider from "@mui/material/Divider";
 import { Grid, Button } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useSnackbar } from "notistack";
 import { TradeRouteTaxFormV2 } from "components/trade-route/route/forms/tax-rules/tax-rules.form";
 import { useMessage } from "hooks/use-message";
 
@@ -58,7 +57,6 @@ const AddRoutePage = () => {
   const documentRuleForms = useRef(new Map());
   const taxRuleForms = useRef();
   const history = useHistory();
-  const { enqueueSnackbar } = useSnackbar();
 
   const [isLoadingCreate, setIsloadingCreate] = useState(false);
 
@@ -286,16 +284,15 @@ const AddRoutePage = () => {
 
         try {
           await RouteService.create(composedValues);
-          enqueueSnackbar("Created Successfully", { variant: "success" });
+          message.success("Created Successfully");
           history.push(RouteConst.TRADE_ROUTES);
         } catch (error) {
           setIsloadingCreate(false);
           if (error instanceof APIError) {
             const err = error.errors;
-            enqueueSnackbar(err[0][1], { variant: "error" });
+            message.error(err[0][1]);
           } else if (error.message === 400) {
             message.warning(error.errMsg);
-            enqueueSnackbar(error.errMsg, { variant: "warning" });
           } else {
             throw error;
           }

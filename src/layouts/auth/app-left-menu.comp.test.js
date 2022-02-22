@@ -4,7 +4,6 @@ import { AppLeftMenu } from "./app-left-menu.comp";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { MockTheme } from "test/mock-theme.comp";
-import { StateProvider } from "hooks/state-provider";
 
 jest.mock("@mui/material/Drawer");
 jest.mock("utils/config.util");
@@ -16,13 +15,13 @@ const mockedMenuData = [
   {
     title: "Orders",
     key: "Orders",
-    icon: "layout-icon",
+    icon: () => "layout-icon",
     url: "RouteConst.ORDERS"
   },
   {
     title: "User Management",
     key: "User Management",
-    icon: "people-icon",
+    icon: () => "people-icon",
     children: [
       {
         title: "Users",
@@ -39,12 +38,9 @@ const mockedMenuData = [
   {
     title: "Dump",
     key: "Dump",
-    icon: "dump-icon"
+    icon: () => "dump-icon"
   }
 ];
-
-const mockInitialValues = { isSettingsMenu: false, menu: mockedMenuData };
-const reducer = jest.fn();
 
 const history = createMemoryHistory();
 const setup = (props) => {
@@ -52,11 +48,9 @@ const setup = (props) => {
   jest.spyOn(history, "push");
   return render(
     <MockTheme>
-      <StateProvider initialState={mockInitialValues} reducer={reducer}>
-        <Router history={history}>
-          <AppLeftMenu {...props} />
-        </Router>
-      </StateProvider>
+      <Router history={history}>
+        <AppLeftMenu {...props} menuData={mockedMenuData} />
+      </Router>
     </MockTheme>
   );
 };

@@ -13,7 +13,7 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectUsers } from "redux/user/user.duck";
 import { submitBankDetails } from "services/bankDetail.service";
 import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const emptyBankDetails = {
   accountName: "",
@@ -38,7 +38,7 @@ const emptyBankDetails = {
 };
 
 export function BankDetailForm({ companyName, onUpdated, bankDetails }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const users = useSelector(selectUsers);
   const { email } = users;
   const [hasSecondary, setHasSecondary] = useState(bankDetails && bankDetails?.length > 1);
@@ -51,9 +51,9 @@ export function BankDetailForm({ companyName, onUpdated, bankDetails }) {
       try {
         await submitBankDetails(submittedData);
         onUpdated && onUpdated();
-        enqueueSnackbar("Update Successful", { variant: "success" });
+        message.success("Update Successful");
       } catch (error) {
-        enqueueSnackbar("Error", { variant: "error" });
+        message.error("Error");
       }
     });
   };

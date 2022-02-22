@@ -3,14 +3,18 @@ import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { FeatureFlagService } from "services/feature-flag.service";
 import FeatureTogglesPage from "./feature-toggles.page";
 import React from "react";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 jest.mock("utils/config.util");
-jest.mock("notistack");
-const enqueueSnackbar = jest.fn();
+jest.mock("@/hooks/use-message");
+jest.mock("services/feature-flag.service");
+
+const messageError = jest.fn();
+const messageSuccess = jest.fn();
 beforeEach(() => {
-  useSnackbar.mockReturnValue({
-    enqueueSnackbar
+  useMessage.mockReturnValue({
+    error: messageError,
+    success: messageSuccess
   });
 });
 
@@ -48,7 +52,7 @@ const caseSwitchToggle = async (firstFeatureName, toggleState, toggleStatusMessa
 
   await waitFor(() => {
     expect(button.checked).toEqual(toggleState);
-    expect(enqueueSnackbar).toBeCalledWith(toggleStatusMessage, expect.anything());
+    if (toggleStatusMessage) expect(messageSuccess).toBeCalledWith(toggleStatusMessage);
   });
 };
 
@@ -98,9 +102,8 @@ test("Toggle button not change if update failed", async () => {
     });
   });
 
-  await caseSwitchToggle(
-    featureFlag.name,
-    false,
+  await caseSwitchToggle(featureFlag.name, false);
+  expect(messageError).toBeCalledWith(
     `${featureFlag.name} has been failed to enable in your Marketplace`
   );
 });

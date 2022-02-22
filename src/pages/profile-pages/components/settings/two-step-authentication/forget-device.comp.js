@@ -7,16 +7,14 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { forgetBrowser } from "services";
 import { selectBrowserFingerprint } from "redux/settings/settings.duck";
 import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 export const ForgotDevice = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const BrowserFingerprint = useSelector(selectBrowserFingerprint);
   const handleForgetThisComputer = () => {
     asyncErrorHandlerWrapper(async () => {
       await forgetBrowser({ browserId: BrowserFingerprint });
-      enqueueSnackbar("Successful", {
-        variant: "success"
-      });
+      message.success("Successful");
     });
   };
   return (

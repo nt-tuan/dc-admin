@@ -13,7 +13,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { isObject } from "lodash";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const validationSchema = Yup.object({
   currentPassword: passwordValidationSchema,
@@ -27,7 +27,7 @@ const initialValues = {
 };
 
 function LoginSetting() {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const handleSubmit = (values, { resetForm, setFieldError }) => {
     asyncErrorHandlerWrapper(async () => {
       try {
@@ -37,9 +37,7 @@ function LoginSetting() {
         };
         const res = await AuthService.changePassword(params);
         if (res) {
-          enqueueSnackbar(MESSAGES.CHANGE_PASSWORD_SUCCESS, {
-            variant: "success"
-          });
+          message.success(MESSAGES.CHANGE_PASSWORD_SUCCESS);
           resetForm(initialValues);
         }
       } catch (errors) {

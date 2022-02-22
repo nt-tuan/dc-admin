@@ -1,29 +1,30 @@
 import { RouteConst } from "commons/consts";
-import LayersIcon from "@mui/icons-material/Layers";
-import PeopleIcon from "@mui/icons-material/People";
-import MapIcon from "@mui/icons-material/Map";
-import CategoryIcon from "@mui/icons-material/Category";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import SettingsIcon from "@mui/icons-material/Settings";
-import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
+import OrderIcon from "@/components/icons/order.comp";
+import TradersIcon from "@/components/icons/traders.comp";
+import TradeRouteIcon from "@/components/icons/trade-route.comp";
+import ProductIcon from "@/components/icons/product.comp";
+import FinancialsIcon from "@/components/icons/financials.comp";
+import SettingsIcon from "@/components/icons/settings.comp";
 import BuildIcon from "@mui/icons-material/Build";
+import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
+
 const menuData = [
   {
     title: "Orders",
     key: "Orders",
-    icon: <LayersIcon />,
+    icon: OrderIcon,
     url: RouteConst.ORDERS
   },
   {
     title: "Traders",
     key: "Traders",
-    icon: <PeopleIcon />,
+    icon: TradersIcon,
     url: RouteConst.USER_MANAGEMENT
   },
   {
     title: "Trade Routes",
     key: "RoutesMain",
-    icon: <MapIcon />,
+    icon: TradeRouteIcon,
     children: [
       {
         title: "Trade Routes",
@@ -45,7 +46,7 @@ const menuData = [
   {
     title: "Product Template",
     key: "Product",
-    icon: <CategoryIcon />,
+    icon: ProductIcon,
     children: [
       {
         title: "Product Template Database",
@@ -62,7 +63,7 @@ const menuData = [
   {
     title: "Financials",
     key: "Financials",
-    icon: <TrendingUpIcon />,
+    icon: FinancialsIcon,
     children: [
       {
         title: "Wallet",
@@ -89,7 +90,7 @@ const menuData = [
   {
     title: "Configuration",
     key: "Configuration",
-    icon: <SettingsIcon />,
+    icon: SettingsIcon,
     children: [
       {
         title: "Feature Toggles",
@@ -101,7 +102,7 @@ const menuData = [
   {
     title: "Settings",
     key: "Settings",
-    icon: <BuildIcon />,
+    icon: BuildIcon,
     url: RouteConst.ORGANIZATION_PROFILE
   }
 ];

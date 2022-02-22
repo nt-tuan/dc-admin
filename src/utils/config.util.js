@@ -47,6 +47,6 @@ export const getHotjarSV = () => {
 export const getAssetURL = (path) => {
   return (window._env_?.ASSET_URL ?? "/admin") + (path ?? "");
 };
-export const getTermsAndConditionVersion = () => {
-  return window._env_?.APPLICATION_VERSION ?? "";
+export const getAppVersion = () => {
+  return window._env_?.APPLICATION_VERSION ?? "v0.0.0";
 };

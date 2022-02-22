@@ -1,33 +1,23 @@
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { AppLeftMenu } from "./app-left-menu.comp";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import CollapseIcon from "@/components/icons/collapse.comp";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import { selectUsername } from "redux/user/user.duck";
 import { styled } from "@mui/material/styles";
 import { useBreakpoints } from "utils/use-breakpoints";
-import { useSelector } from "react-redux";
-import { useStateProvider } from "hooks/state-provider";
-import { TYPE } from "./menu-context";
-import { RouteConst } from "commons/consts";
-import { useLocation } from "react-router-dom";
-import { getMenuData, getMenuSettingsData } from "./menu-data";
+import { AppFooter } from "./app-footer.comp";
 
-export const drawerWidth = 300;
+export const drawerWidth = 240;
 const MobileDrawer = styled(MuiDrawer)(({ theme }) => ({
   visibility: "visible",
   "& .MuiDrawer-paper": {
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.grey[100],
     boxSizing: "border-box"
   }
 }));
@@ -35,10 +25,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   ({ theme, open }) => ({
     "& .MuiDrawer-paper": {
       position: "relative",
+      marginTop: 50,
+      height: "calc(100% - 50px)",
       whiteSpace: "nowrap",
       width: drawerWidth,
-      color: theme.palette.common.white,
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.grey[100],
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
@@ -56,69 +47,31 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   })
 );
 
-const Item = styled(Box)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary
-}));
-
-export const AppSideBar = ({ open, onToggle, onExpand }) => {
-  const username = useSelector(selectUsername);
+export const AppSideBar = ({ open, onToggle, onExpand, menuData, header }) => {
   const { isSmall } = useBreakpoints();
-  const { pathname } = useLocation();
-  const [, dispatch] = useStateProvider();
-  const menuSettingsData = getMenuSettingsData();
-  const menuData = getMenuData();
-
-  const isSettingsItem = React.useMemo(() => {
-    return pathname.startsWith(RouteConst.SETTINGS);
-  }, [pathname]);
-
-  React.useEffect(() => {
-    if (isSettingsItem) {
-      dispatch({ type: TYPE.IS_SETTINGS_MENU, payload: true });
-      dispatch({ type: TYPE.SET_MENU, payload: menuSettingsData });
-      return;
-    }
-    dispatch({ type: TYPE.IS_SETTINGS_MENU, payload: false });
-    dispatch({ type: TYPE.SET_MENU, payload: menuData });
-  }, [pathname]);
-
   const content = (
-    <>
-      <Toolbar
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: open ? "flex-end" : "center",
-          px: [1]
-        }}
-      >
-        <IconButton sx={{ color: "#fff" }} onClick={onToggle}>
-          {open ? <KeyboardDoubleArrowLeftIcon /> : <MenuIcon />}
-        </IconButton>
-      </Toolbar>
-      <Stack direction="row" sx={{ marginLeft: open ? "8px" : "0", alignItems: "center" }}>
-        <Item>
-          <Avatar variant="rounded" sx={{ backgroundColor: "grey.300" }}>
-            <AdminPanelSettingsIcon sx={{ color: "primary.main" }} />
-          </Avatar>
-        </Item>
-        {open && (
-          <Item
-            sx={{
-              fontSize: "h6.fontSize",
-              fontWeight: "bolder",
-              color: "common.white"
-            }}
-          >
-            {username}
-          </Item>
-        )}
+    <Stack height="100%" justifyContent="space-between">
+      <Stack alignItems="stretch">
+        {header}
+        <AppLeftMenu collapsed={!open} onExpand={onExpand} menuData={menuData} />
       </Stack>
-      <AppLeftMenu collapsed={!open} onExpand={onExpand} />
-    </>
+      <Stack spacing={1}>
+        <AppFooter collapse={!open} />
+        <Toolbar
+          sx={{
+            backgroundColor: "grey.300",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: open ? "flex-end" : "center",
+            px: [1]
+          }}
+        >
+          <IconButton sx={{ width: "100%" }} onClick={onToggle}>
+            {open ? <CollapseIcon /> : <MenuIcon />}
+          </IconButton>
+        </Toolbar>
+      </Stack>
+    </Stack>
   );
   if (isSmall && open)
     return (

@@ -13,10 +13,11 @@ import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectUsers } from "redux/user/user.duck";
 import { updateNotificationChannel } from "services/user-profile.service";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 function NotificationPreference() {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
+
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
   const [
@@ -42,7 +43,7 @@ function NotificationPreference() {
     if (parsedValues) {
       asyncErrorHandlerWrapper(async () => {
         await updateNotificationChannel(parsedValues);
-        enqueueSnackbar(MESSAGES.UPDATE_SUCCESSFUL, { variant: "success" });
+        message.success(MESSAGES.UPDATE_SUCCESSFUL);
         dispatch({ type: USER_DUCK.LOAD_CURRENT_ACCOUNT });
       });
     }

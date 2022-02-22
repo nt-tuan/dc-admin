@@ -15,8 +15,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import moment from "moment";
-import { useSnackbar } from "notistack";
 import { validatePasscode } from "services/user-profile.service";
+import { useMessage } from "@/hooks/use-message";
 
 const getPositionList = () => {
   let positionList = [];
@@ -30,8 +30,8 @@ const getPositionList = () => {
 
 export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
   const [requiredPositions, setRequiredPositions] = React.useState(getPositionList());
-  const { enqueueSnackbar } = useSnackbar();
-  const popError = (message) => enqueueSnackbar(message, { variant: "error" });
+  const message = useMessage();
+  const popError = (content) => message.error(content);
   const handleError = (response) => {
     switch (response.status) {
       case THREE_STEPS_SECURITY_STATUS.INVALID:
@@ -64,9 +64,7 @@ export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
 
   const handle3StepsProcessResponse = (response) => {
     if (response.status === THREE_STEPS_SECURITY_STATUS.SUCCESS) {
-      enqueueSnackbar("Verify successful", {
-        variant: "success"
-      });
+      message.success("Verify successful");
       onVerified();
       return;
     }
@@ -88,9 +86,7 @@ export function PasscodeVerifierModal({ visible, onCancel, onVerified }) {
           handle3StepsProcessResponse(response);
         } catch (error) {
           if (error.message === "400") {
-            enqueueSnackbar(PASSCODE_INVALID, {
-              variant: "error"
-            });
+            message.error(PASSCODE_INVALID);
             return;
           }
           throw error;

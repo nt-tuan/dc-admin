@@ -16,12 +16,12 @@ import PassCodeForm from "./passcode-form";
 import { PassCodeQuestionForm } from "./passcode-form-question";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectUsers } from "redux/user/user.duck";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 PassCode.propTypes = {};
 
 function PassCode() {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const users = useSelector(selectUsers);
   const dispatch = useDispatch();
   const { existedPasscode: existedPassCode } = users;
@@ -44,9 +44,7 @@ function PassCode() {
         setAnswers(data);
       } catch (error) {
         if (error.message === "400") {
-          enqueueSnackbar(PASSCODE_INVALID, {
-            variant: "error"
-          });
+          message.error(PASSCODE_INVALID);
         } else {
           throw error;
         }
@@ -76,7 +74,7 @@ function PassCode() {
         dispatch({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT });
       } catch (error) {
         if (error.message === "400") {
-          enqueueSnackbar(PASSCODE_INVALID, { variant: "error" });
+          message.error(PASSCODE_INVALID);
           return;
         }
         throw error;

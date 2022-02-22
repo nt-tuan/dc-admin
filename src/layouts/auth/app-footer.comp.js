@@ -1,16 +1,25 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { getTermsAndConditionVersion } from "utils/config.util";
+import { getAppVersion } from "utils/config.util";
+import { useBreakpoints } from "@/utils/use-breakpoints";
 
-export const AppFooter = () => {
+export const AppFooter = ({ collapse }) => {
+  const { isSmall } = useBreakpoints();
   return (
     <Typography
       variant="body2"
-      color="text.secondary"
       align="center"
-      sx={{ py: 2, backgroundColor: "common.white" }}
+      color="grey.500"
+      px={1}
+      title={`Version: ${getAppVersion()}`}
+      sx={{
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
+      }}
     >
-      Version: {getTermsAndConditionVersion()}
+      {isSmall || collapse ? "" : "Version: "}
+      {getAppVersion()}
     </Typography>
   );
 };

@@ -1,7 +1,5 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Button from "./button.comp";
 import { Box, Divider, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import * as USER_DUCK from "redux/user/user.duck";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +8,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useHistory } from "react-router-dom";
+import AccountIcon from "@/components/icons/account.comp";
+import ArrowDown from "@/components/icons/arrow-down.comp";
 const menuItems = [
   {
     title: "My Profile",
@@ -50,10 +50,10 @@ export const UserMenu = () => {
   };
   return (
     <>
-      <IconButton onClick={handleOpen} id="basic-menu" color="default">
-        <AccountCircleIcon />
-        <KeyboardArrowDownIcon />
-      </IconButton>
+      <Button color="inherit" onClick={handleOpen} id="basic-menu">
+        <AccountIcon />
+        <ArrowDown color="common.black" />
+      </Button>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

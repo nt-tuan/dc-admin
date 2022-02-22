@@ -10,10 +10,10 @@ import InformationEdit from "./information-edit.comp";
 import InformationView from "./information-view.comp";
 import { MESSAGES } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const InformationTab = memo(() => {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const dispatch = useDispatch();
 
   const user = useSelector(USER_ACTIONS.selectCurrentUser);
@@ -39,9 +39,7 @@ const InformationTab = memo(() => {
     try {
       await updateProfile(data);
       setIsView(true);
-      enqueueSnackbar(MESSAGES.UPDATE_SUCCESSFUL, {
-        variant: "success"
-      });
+      message.success(MESSAGES.UPDATE_SUCCESSFUL);
       dispatch({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT, payload: false });
     } catch (error) {}
   };

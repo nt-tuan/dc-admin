@@ -7,6 +7,6 @@ module.exports = {
   },
   getPlugins: () => [],
   getAssetURL: () => "my-base",
-  getTermsAndConditionVersion: () => "my-version",
+  getAppVersion: () => "my-version",
   getDefaultCurrency: () => "my-currency"
 };

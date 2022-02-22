@@ -13,3 +13,4 @@ export * from "./confirm-modal/confirm-modal.comp";
 export * from "./upload-file-input/upload-file-input.comp";
 export * from "./loading-indicator/loading-indicator.comp";
 export * from "./user-badge/user-badge.comp";
+export * from "./outlined-icon/outlined-icon.comp";

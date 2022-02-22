@@ -1,12 +1,11 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { applyMiddleware, compose, createStore } from "redux";
 
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ErrorBoundary } from "components/error-boundary/error-boundary.comp";
 import { Provider } from "react-redux";
 import React from "react";
-import Router from "./router";
+import Router from "./app-router";
 import { SnackbarProvider } from "notistack";
 import { createBrowserHistory } from "history";
 import createSagaMiddleware from "redux-saga";
@@ -14,6 +13,7 @@ import { handleSagaError } from "utils/saga.util";
 import reducers from "./redux/reducers";
 import { routerMiddleware } from "connected-react-router";
 import sagas from "./redux/sagas";
+import { adminTheme } from "@/theme/admin-theme";
 
 // middlewared
 export const history = createBrowserHistory();
@@ -33,87 +33,21 @@ export const store = createStore(
   composeEnhancers(applyMiddleware(...middlewares))
 );
 sagaMiddleware.run(sagas);
-const mdTheme = createTheme({
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-        a {
-          text-decoration: none;
-        }
-      `
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        input: {
-          paddingTop: 8,
-          paddingBottom: 8
-        }
-      }
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        input: {
-          paddingTop: 8,
-          paddingBottom: 8
-        }
-      }
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: ({ ownerState }) =>
-          !ownerState.shrink
-            ? {
-                transform: "translate(14px, 8px)"
-              }
-            : undefined
-      }
-    }
-  },
-  typography: {
-    h3: {
-      color: "inherit",
-      fontSize: 26,
-      fontWeight: 700
-    },
-    h4: {
-      fontSize: 18,
-      lineHeight: 1,
-      fontWeight: 700,
-      color: "inherit"
-    },
-    h5: {
-      fontSize: 16,
-      fontWeight: 700,
-      color: "inherit"
-    },
-    h6: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: "inherit"
-    }
-  }
-});
 export const App = () => {
   const notistackRef = React.useRef();
-  const onClickDismiss = (key) => () => {
-    notistackRef.current.closeSnackbar(key);
-  };
   return (
     <ErrorBoundary>
-      <ThemeProvider theme={mdTheme}>
+      <ThemeProvider theme={adminTheme}>
         <CssBaseline />
         <Provider store={store}>
           <SnackbarProvider
             ref={notistackRef}
             anchorOrigin={{
               vertical: "top",
-              horizontal: "right"
+              horizontal: "center"
             }}
-            action={(key) => (
-              <Button color="inherit" onClick={onClickDismiss(key)}>
-                Dismiss
-              </Button>
-            )}
+            content={(key, message) => <div key={key}>{message}</div>}
+            maxSnack={5}
           >
             <Router history={history} />
           </SnackbarProvider>

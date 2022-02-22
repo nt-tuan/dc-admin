@@ -21,7 +21,7 @@ import { selectBrowserFingerprint } from "redux/settings/settings.duck";
 import { update2FASettings } from "services";
 import { useBooleanState } from "hooks/utilHooks";
 import { useHistory } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const getTwoFAType = (method, setting) => {
   if (setting === TWO_FACTOR_AUTH_TYPES.PER_30_DAYS) {
@@ -38,7 +38,8 @@ const getTwoFAType = (method, setting) => {
 };
 
 function Method2FA({ setting }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
+
   const dispatch = useDispatch();
   const user2FASettings = useSelector(USER_DUCK.select2FASettings);
   const [selectedMethod, setSelectedMethod] = React.useState(user2FASettings.tfaMethod);
@@ -59,7 +60,7 @@ function Method2FA({ setting }) {
     asyncErrorHandlerWrapper(async () => {
       await update2FASettings({ tfaType: tfaType, browserId: BrowserFingerprint });
       dispatch({ type: USER_DUCK.LOAD_CURRENT_ACCOUNT });
-      enqueueSnackbar("Update Successful", { variant: "success" });
+      message.success("Update Successful");
     });
   };
 

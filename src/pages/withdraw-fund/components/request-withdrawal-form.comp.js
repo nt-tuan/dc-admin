@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import numeral from "numeral";
 import { toCurrency } from "utils/general.util";
 import { useAsyncErrorHandler } from "utils/error-handler.util";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const validationShema = yup.object({
   amount: yup
@@ -25,7 +25,7 @@ const validationShema = yup.object({
 
 export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit, onCheckValidate }) => {
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const [confirmCallback, setConfirmCallback] = useState();
 
   const handleSubmit = (values, helpers) => {
@@ -59,9 +59,7 @@ export const RequestWithdrawalForm = ({ data, isDisabled, onSubmit, onCheckValid
       await FinancialService.postRequestWithdrawal(payload);
       resetForm();
       setConfirmCallback();
-      enqueueSnackbar("Withdraw Successfully!", {
-        variant: "success"
-      });
+      message.success("Withdraw Successfully!");
       onSubmit && onSubmit();
     });
   };

@@ -1,16 +1,15 @@
 import { AppBar } from "./app-bar.comp";
-import { AppFooter } from "./app-footer.comp";
-import { AppSideBar } from "./app-side-bar.comp";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
-import Toolbar from "@mui/material/Toolbar";
 import { useBreakpoints } from "utils/use-breakpoints";
-import { StateProvider } from "hooks/state-provider";
-import { initialValues, reducer } from "./menu-context";
+import Stack from "@mui/material/Stack";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/redux/user/user.duck";
+import { Loader } from "@/components/commons";
+import { RouteConst } from "@/commons/consts";
+import { Redirect } from "react-router-dom";
 
 export const AuthLayout = ({ children }) => {
+  const user = useSelector(selectCurrentUser);
   const { isSmall } = useBreakpoints();
   const [open, setOpen] = React.useState(false);
   React.useEffect(() => {
@@ -19,32 +18,12 @@ export const AuthLayout = ({ children }) => {
   const handleToggle = () => {
     setOpen(!open);
   };
-
+  if (user.loading) return <Loader />;
+  if (!user.authorized) return <Redirect to={RouteConst.LOGIN_ROUTE} />;
   return (
-    <StateProvider initialState={initialValues} reducer={reducer}>
-      <Box sx={{ display: "flex", minHeight: "100%" }} alignItems="stretch">
-        <CssBaseline />
-        <AppBar open={open} onToggle={handleToggle} />
-        <AppSideBar open={open} onToggle={handleToggle} onExpand={() => setOpen(true)} />
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) => theme.palette.grey[100],
-            flexGrow: 1,
-            overflow: "auto"
-          }}
-        >
-          <Toolbar />
-          <Container
-            flexGrow={1}
-            maxWidth={false}
-            sx={{ pt: 4, pb: 4, minHeight: "calc(100vh - 120px)" }}
-          >
-            <Box>{children}</Box>
-          </Container>
-          <AppFooter />
-        </Box>
-      </Box>
-    </StateProvider>
+    <Stack sx={{ height: "100%", color: "common.black" }}>
+      <AppBar open={open} onToggle={handleToggle} />
+      {children}
+    </Stack>
   );
 };

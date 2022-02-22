@@ -140,7 +140,8 @@
     ],
     "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
-      "antd/es/.*/style": "<rootDir>/__mocks__/styleMock.js"
+      "antd/es/.*/style": "<rootDir>/__mocks__/styleMock.js",
+      "^@/(.*)$": "<rootDir>/src/$1"
     },
     "verbose": true
   },

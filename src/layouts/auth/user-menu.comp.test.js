@@ -46,6 +46,6 @@ test("UserMenu can be closed/open", () => {
   fireEvent.click(getByText("close-menu"));
   expect(getByText("menu-close")).toBeInTheDocument();
 
-  fireEvent.click(getByTestId("AccountCircleIcon"));
+  fireEvent.click(getByTestId("AccountIcon"));
   expect(getByText("menu-open")).toBeInTheDocument();
 });

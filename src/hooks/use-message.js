@@ -1,26 +1,44 @@
 import React from "react";
 import { useSnackbar } from "notistack";
 
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+
+export const MessageContent = ({ content, onClose, variant }) => {
+  return (
+    <Alert onClose={onClose} severity={variant}>
+      <Box
+        width={400}
+        maxWidth={600}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        {content}
+      </Box>
+    </Alert>
+  );
+};
+
 export const useMessage = () => {
-  const { enqueueSnackbar } = useSnackbar();
-  const error = React.useCallback(
-    (message) => {
-      enqueueSnackbar(message, { variant: "error" });
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const popMessage = React.useCallback(
+    (variant) => (content, options) => {
+      const key = enqueueSnackbar(
+        <MessageContent variant={variant} onClose={() => closeSnackbar(key)} content={content} />,
+        { ...options, variant }
+      );
     },
-    [enqueueSnackbar]
-  );
-  const success = React.useCallback(
-    (message) => {
-      enqueueSnackbar(message, { variant: "success" });
-    },
-    [enqueueSnackbar]
-  );
-  const warning = React.useCallback(
-    (message) => {
-      enqueueSnackbar(message, { variant: "success" });
-    },
-    [enqueueSnackbar]
+    [closeSnackbar, enqueueSnackbar]
   );
 
-  return { error, success, warning };
+  return React.useMemo(() => {
+    return {
+      error: popMessage("error"),
+      info: popMessage("info"),
+      success: popMessage("success"),
+      warning: popMessage("warning")
+    };
+  }, [popMessage]);
 };

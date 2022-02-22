@@ -10,12 +10,12 @@ import Stack from "@mui/material/Stack";
 import { WRONG_VERIFICATION_CODE } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { useDispatch } from "react-redux";
-import { useSnackbar } from "notistack";
 import { verifyPhoneCode } from "services/user-profile.service";
+import { useMessage } from "@/hooks/use-message";
 
 export const PhoneVerifyForm = memo(({ onClose }) => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const [serverError, setServerError] = React.useState();
   const [code, setCode] = React.useState("");
 
@@ -27,7 +27,7 @@ export const PhoneVerifyForm = memo(({ onClose }) => {
         const res = await verifyPhoneCode(code.trim());
         dispatch({ type: LOAD_CURRENT_ACCOUNT, payload: false });
         if (res) {
-          enqueueSnackbar("Verify successful", { variant: "success" });
+          message.success("Verify successful");
         }
         onClose();
       } catch (e) {

@@ -6,10 +6,10 @@ import { BankDetailForm } from "./bank-detail-form";
 import BankDetailView from "./bank-detail-view";
 import { ThreeStepVerify } from "components/auth/three-step-verify";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 const BankDetailsTab = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
 
   const [companyName, setCompanyName] = React.useState();
   const [isShowView, setIsShowView] = useState(true);
@@ -25,10 +25,10 @@ const BankDetailsTab = () => {
         const res = await getBankDetails();
         setBankDetails(res);
       } catch (error) {
-        enqueueSnackbar("Get Bank Detail Error", { variant: "error" });
+        message.error("Get Bank Detail Error");
       }
     });
-  }, [enqueueSnackbar]);
+  }, [message]);
 
   //** Handle Edit toggle */
   const toggleEdit = () => {

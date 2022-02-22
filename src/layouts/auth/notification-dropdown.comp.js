@@ -9,14 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Badge from "@mui/material/Badge";
 import { Box } from "@mui/system";
-import IconButton from "@mui/material/IconButton";
+import Button from "./button.comp";
 import { NotificationList } from "components/commons/notification-list/notification-list.comp";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import React from "react";
 import { RouteConst } from "commons/consts";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { setNotificationsRead } from "services";
 import { useHistory } from "react-router-dom";
+import NotificationIcon from "@/components/icons/notification.comp";
 
 export const NotificationDropdown = () => {
   const history = useHistory();
@@ -42,11 +42,11 @@ export const NotificationDropdown = () => {
   };
   return (
     <>
-      <IconButton onClick={handleClick} aria-describedby={id} color="default">
+      <Button color="inherit" onClick={handleClick} aria-describedby={id}>
         <Badge variant="dot" color="error" invisible={!hasNewMessage}>
-          <NotificationsIcon />
+          <NotificationIcon />
         </Badge>
-      </IconButton>
+      </Button>
       <Popover
         id={id}
         open={open}

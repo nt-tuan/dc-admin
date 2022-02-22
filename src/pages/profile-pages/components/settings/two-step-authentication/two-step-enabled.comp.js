@@ -8,11 +8,11 @@ import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectBrowserFingerprint } from "redux/settings/settings.duck";
 import { update2FASettings } from "services";
 import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 export const TwoStepEnabled = ({ is2FA, onEnabled, onDisabled }) => {
   const BrowserFingerprint = useSelector(selectBrowserFingerprint);
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
   const handle2FACheckboxChange = (e) => {
     const checked = e.target.checked;
     if (checked === false) {
@@ -21,7 +21,7 @@ export const TwoStepEnabled = ({ is2FA, onEnabled, onDisabled }) => {
           tfaType: TWO_FACTOR_AUTH_TYPES.DISABLED,
           browserId: BrowserFingerprint
         });
-        enqueueSnackbar("Successful", { variant: "success" });
+        message.success("Successful");
         onDisabled();
       });
       return;

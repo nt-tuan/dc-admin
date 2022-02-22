@@ -4,7 +4,7 @@ import React from "react";
 import { RouteConst } from "commons/consts";
 import { log } from "./logger.util";
 import { removeAuthCredential } from "./auth.util";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 export const axiosErrorHandler = (err) => {
   if (err.response) {
@@ -52,7 +52,8 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
 };
 
 export const useAsyncErrorHandler = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
+
   const asyncErrorHandlerWrapper = React.useCallback(
     async (asyncFunc) => {
       try {
@@ -69,13 +70,12 @@ export const useAsyncErrorHandler = () => {
         if (process.env.NODE_ENV !== "production") {
           log(error);
         }
-        enqueueSnackbar("Something went wrong, please press F5 to refresh the page", {
-          variant: "error",
+        message.error("Something went wrong, please press F5 to refresh the page", {
           persist: true
         });
       }
     },
-    [enqueueSnackbar]
+    [message]
   );
   return asyncErrorHandlerWrapper;
 };

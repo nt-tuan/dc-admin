@@ -14,10 +14,12 @@ export function* LOGIN({ payload }) {
     yield put(setStateAction({ loading: true }));
     const isOk = yield AuthService.login(values);
     if (isOk) {
-      yield put({ type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT });
-      if (onSuccess) {
-        onSuccess();
-      }
+      yield put({
+        type: USER_ACTIONS.LOAD_CURRENT_ACCOUNT,
+        payload: {
+          onSuccess
+        }
+      });
     }
   } catch (error) {
     if (error instanceof APIError) {
@@ -53,8 +55,10 @@ export function* LOGOUT({ payload }) {
   }
 }
 
-export function* LOAD_CURRENT_ACCOUNT() {
+export function* LOAD_CURRENT_ACCOUNT(data) {
+  const { payload } = data || { payload: {} };
   try {
+    const { onSuccess } = payload;
     yield put(setStateAction({ loading: true }));
     const user = yield UserService.getCurrentAccount();
     if (user) {
@@ -74,6 +78,9 @@ export function* LOAD_CURRENT_ACCOUNT() {
           authorized: false
         }
       });
+    }
+    if (onSuccess) {
+      onSuccess();
     }
   } catch (error) {
     throw error;

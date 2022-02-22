@@ -2,11 +2,11 @@ import { Box, ListItem, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 import { FeatureFlagService } from "services/feature-flag.service";
-import { useSnackbar } from "notistack";
+import { useMessage } from "@/hooks/use-message";
 
 function FeatureItem({ featureFlag }) {
   const [enabled, setEnabled] = useState(featureFlag.enabled);
-  const { enqueueSnackbar } = useSnackbar();
+  const message = useMessage();
 
   const handleToggle = async (_, isCheck) => {
     const toggleActionSuccess = isCheck ? "enabled" : "disabled";
@@ -14,18 +14,12 @@ function FeatureItem({ featureFlag }) {
     try {
       await FeatureFlagService.updateFeatureFlag(featureFlag.id, isCheck);
       setEnabled(isCheck);
-      enqueueSnackbar(
-        `${featureFlag.name} has been successfully ${toggleActionSuccess} in your Marketplace`,
-        {
-          variant: "success"
-        }
+      message.success(
+        `${featureFlag.name} has been successfully ${toggleActionSuccess} in your Marketplace`
       );
     } catch (_err) {
-      enqueueSnackbar(
-        `${featureFlag.name} has been failed to ${toggleActionFail} in your Marketplace`,
-        {
-          variant: "error"
-        }
+      message.error(
+        `${featureFlag.name} has been failed to ${toggleActionFail} in your Marketplace`
       );
     }
   };
