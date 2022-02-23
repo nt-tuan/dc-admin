@@ -49,15 +49,13 @@ export const AppBar = ({ open }) => {
           alignItems: "center"
         }}
       >
-        <Link to={getAssetURL()}>
-          <Box display="flex" alignItems="center" justifyContent="center" height={40}>
-            <img
-              style={{ height: "100%", objectFit: "contain" }}
-              src={getAssetURL(`/images/${isSmall ? "logo-notext.png" : "logo.png"}`)}
-              alt={`${getCompanyName()}`}
-            />
-          </Box>
-        </Link>
+        <Box display="flex" alignItems="center" justifyContent="center" height={40}>
+          <img
+            style={{ height: "100%", objectFit: "contain" }}
+            src={getAssetURL(`/images/${isSmall ? "logo-notext.png" : "logo.png"}`)}
+            alt={`${getCompanyName()}`}
+          />
+        </Box>
         <Stack direction="row" alignItems="center">
           <NotificationDropdown />
           <Link to={RouteConst.WALLET}>

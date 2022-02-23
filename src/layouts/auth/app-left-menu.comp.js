@@ -84,7 +84,7 @@ const MenuItem = ({ data, collapsed, onExpand }) => {
         )}
         {canCollapse &&
           !collapsed &&
-          (open ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />)}
+          (open ? <ExpandLess fontSize="18px" /> : <ExpandMore fontSize="18px" />)}
       </ListItemButton>
       {canCollapse && !collapsed && (
         <Collapse in={open} timeout="auto" unmountOnExit>

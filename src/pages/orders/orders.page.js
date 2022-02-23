@@ -31,7 +31,7 @@ const OrdersPage = () => {
 
   return (
     <article>
-      <Helmet title="Withdraw Fund" />
+      <Helmet title="Orders" />
       <DTCTabs tabs={tabs} value={value} onChange={handleChange} />
     </article>
   );
