@@ -8,9 +8,9 @@ export const AppFooter = ({ collapse }) => {
   return (
     <Typography
       variant="body2"
-      align="center"
+      align="left"
       color="grey.500"
-      px={1}
+      px={2}
       title={`Version: ${getAppVersion()}`}
       sx={{
         whiteSpace: "nowrap",

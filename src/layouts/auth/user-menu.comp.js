@@ -1,20 +1,32 @@
 import React from "react";
 import Button from "./button.comp";
-import { Box, Divider, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import {
+  Box,
+  Divider,
+  ListItemIcon as MuiListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  styled
+} from "@mui/material";
 import * as USER_DUCK from "redux/user/user.duck";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteConst, USER_TABS_NAME } from "commons/consts";
-import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useHistory } from "react-router-dom";
 import AccountIcon from "@/components/icons/account.comp";
 import ArrowDown from "@/components/icons/arrow-down.comp";
+
+const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
+  color: theme.palette.text.primary
+}));
 const menuItems = [
   {
     title: "My Profile",
     url: `/admin/profile/${USER_TABS_NAME.profileInfo}`,
-    icon: <PersonIcon />
+    icon: <AccountIcon />
   },
   {
     title: "User Management",
@@ -28,7 +40,7 @@ const MenuItemLink = ({ url, ...rest }) => {
   const handleClick = () => {
     history.push(url);
   };
-  return <MenuItem onClick={handleClick} {...rest} />;
+  return <MenuItem onClick={handleClick} sx={{ my: 1 }} {...rest} />;
 };
 
 export const UserMenu = () => {
@@ -59,31 +71,48 @@ export const UserMenu = () => {
         anchorEl={anchorEl}
         open={Boolean(open)}
         onClose={handleClose}
+        sx={{ py: 0, borderRadius: 2 }}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            width: 200,
+            marginTop: "15px",
+            marginBottom: "-15px",
+            overflow: "visible"
+          }
+        }}
         MenuListProps={{
-          "aria-labelledby": "basic-button"
+          "aria-labelledby": "basic-button",
+          sx: {
+            py: 0
+          }
         }}
       >
-        <Box sx={{ padding: "6px 16px" }}>
-          <div>
-            <strong>{username}</strong>
-          </div>
-          <div>User</div>
+        <Stack mt={1}>
+          <Box my={1} px={2}>
+            {username}
+          </Box>
+          <Divider sx={{ my: 1 }} />
+          {menuItems.map((item) => {
+            return (
+              <MenuItemLink key={item.title} url={item.url}>
+                {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+                {item.title && <ListItemText>{item.title}</ListItemText>}
+              </MenuItemLink>
+            );
+          })}
+          <MenuItemLink onClick={logout}>
+            <ListItemIcon sx={{ color: "common.black" }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>Log Out</ListItemText>
+          </MenuItemLink>
+        </Stack>
+        <Box position="absolute" top="-22px" right="24px">
+          <svg width="22" height="12" viewBox="0 0 22 12" fill="none">
+            <path d="M11 0L21.3923 11.25H0.607696L11 0Z" fill="white" />
+          </svg>
         </Box>
-        <Divider sx={{ margin: "8px 4px" }} />
-        {menuItems.map((item) => {
-          return (
-            <MenuItemLink key={item.title} url={item.url}>
-              {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-              {item.title && <ListItemText>{item.title}</ListItemText>}
-            </MenuItemLink>
-          );
-        })}
-        <MenuItem onClick={logout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText>Log Out</ListItemText>
-        </MenuItem>
       </Menu>
     </>
   );

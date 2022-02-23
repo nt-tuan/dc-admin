@@ -1,11 +1,11 @@
 import { AppLeftMenu } from "./app-left-menu.comp";
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import CollapseIcon from "@/components/icons/collapse.comp";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { useBreakpoints } from "utils/use-breakpoints";
 import { AppFooter } from "./app-footer.comp";
@@ -57,19 +57,21 @@ export const AppSideBar = ({ open, onToggle, onExpand, menuData, header }) => {
       </Stack>
       <Stack spacing={1}>
         <AppFooter collapse={!open} />
-        <Toolbar
+        <Box
           sx={{
-            backgroundColor: "grey.300",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: open ? "flex-end" : "center",
-            px: [1]
+            backgroundColor: "grey.300"
           }}
         >
-          <IconButton sx={{ width: "100%" }} onClick={onToggle}>
-            {open ? <CollapseIcon /> : <MenuIcon />}
-          </IconButton>
-        </Toolbar>
+          <Button
+            color="inherit"
+            sx={{ width: "100%", height: 40, minWidth: 0 }}
+            onClick={onToggle}
+          >
+            <Stack height="100%" alignItems="center" justifyContent="center">
+              {open ? <CollapseIcon /> : <MenuIcon fontSize="small" />}
+            </Stack>
+          </Button>
+        </Box>
       </Stack>
     </Stack>
   );

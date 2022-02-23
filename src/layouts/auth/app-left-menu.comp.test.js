@@ -56,7 +56,7 @@ const setup = (props) => {
 };
 test("AppLeftMenu should work", () => {
   const { getByText, getByTestId } = setup();
-  fireEvent.click(getByTestId("ExpandMoreIcon"));
+  fireEvent.click(getByTestId("ExpandMoreOutlinedIcon"));
   expect(getByText("New User")).toBeInTheDocument();
   fireEvent.click(getByText("New User"));
   expect(history.push).toBeCalledWith("RouteConst.NEW_USER");

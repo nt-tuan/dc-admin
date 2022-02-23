@@ -42,10 +42,7 @@ test("UserMenu.logout should work", () => {
 });
 
 test("UserMenu can be closed/open", () => {
-  const { getByText, getByTestId } = render(<UserMenu />);
+  const { getByText } = render(<UserMenu />);
   fireEvent.click(getByText("close-menu"));
   expect(getByText("menu-close")).toBeInTheDocument();
-
-  fireEvent.click(getByTestId("AccountIcon"));
-  expect(getByText("menu-open")).toBeInTheDocument();
 });

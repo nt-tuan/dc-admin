@@ -3,8 +3,6 @@ import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@/components/icons/keyboard-up.comp";
-import ExpandMore from "@/components/icons/keyboard-down.comp";
 import MuiList from "@mui/material/List";
 import MuiListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
@@ -12,6 +10,9 @@ import MuiListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { matchPath } from "react-router";
 import { styled } from "@mui/system";
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
+import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
+
 const List = styled(MuiList)({
   paddingTop: 0,
   paddingBottom: 0
@@ -84,7 +85,11 @@ const MenuItem = ({ data, collapsed, onExpand }) => {
         )}
         {canCollapse &&
           !collapsed &&
-          (open ? <ExpandLess fontSize="18px" /> : <ExpandMore fontSize="18px" />)}
+          (open ? (
+            <ExpandLessOutlinedIcon fontSize="18px" />
+          ) : (
+            <ExpandMoreOutlinedIcon fontSize="18px" />
+          ))}
       </ListItemButton>
       {canCollapse && !collapsed && (
         <Collapse in={open} timeout="auto" unmountOnExit>
