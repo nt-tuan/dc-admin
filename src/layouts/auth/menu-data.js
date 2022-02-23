@@ -111,7 +111,7 @@ const menuSettingsData = [
   {
     title: "Organization Profile",
     key: "Organization Profile",
-    icon: <CorporateFareRoundedIcon />,
+    icon: CorporateFareRoundedIcon,
     url: RouteConst.ORGANIZATION_PROFILE
   }
 ];

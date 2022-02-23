@@ -16,7 +16,7 @@ const SettingSideBar = (props) => {
     <AppSideBar
       {...props}
       header={
-        <Stack spacing={1} alignItems={open ? "flex-start" : "center"}>
+        <Stack spacing={1} alignItems={open ? "flex-start" : "center"} mb={2}>
           <Box alignSelf="stretch">
             <Link to={RouteConst.HOME_ROUTE}>
               <Button sx={{ width: "100%" }}>
