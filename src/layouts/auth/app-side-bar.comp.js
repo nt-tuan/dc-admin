@@ -51,7 +51,7 @@ export const AppSideBar = ({ open, onToggle, onExpand, menuData, header }) => {
   const { isSmall } = useBreakpoints();
   const content = (
     <Stack height="100%" justifyContent="space-between">
-      <Stack alignItems="stretch">
+      <Stack alignItems="stretch" pt="20px">
         {header}
         <AppLeftMenu collapsed={!open} onExpand={onExpand} menuData={menuData} />
       </Stack>
