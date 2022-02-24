@@ -9,7 +9,6 @@ import TradeRouteIcon from "@/components/icons/trade-route.comp";
 import ProductIcon from "@/components/icons/product.comp";
 import FinancialsIcon from "@/components/icons/financials.comp";
 
-
 const menuData = [
   {
     title: "Orders",
@@ -120,15 +119,15 @@ const menuSettingsData = [
     title: "Preferences",
     key: "Preferences",
     icon: MultipleStopIcon,
-    url: RouteConst.PREFERENCES_GENERAL_PAGES
+    url: RouteConst.PREFERENCES_BRANDING_PAGES // RouteConst.PREFERENCES_GENERAL_PAGES
   }
 ];
 const menuPreferencesData = [
-  {
-    title: "General",
-    key: RouteConst.PREFERENCES_GENERAL_PAGES,
-    url: RouteConst.PREFERENCES_GENERAL_PAGES
-  },
+  // {
+  //   title: "General",
+  //   key: RouteConst.PREFERENCES_GENERAL_PAGES,
+  //   url: RouteConst.PREFERENCES_GENERAL_PAGES
+  // },
   {
     title: "Branding",
     key: RouteConst.PREFERENCES_BRANDING_PAGES,

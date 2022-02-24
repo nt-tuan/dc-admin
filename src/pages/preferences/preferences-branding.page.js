@@ -45,7 +45,7 @@ function FormHeader({ loading, formik }) {
   const name = "marketplaceName";
 
   return (
-    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+    <Box display={"flex"} justifyContent={"space-between"}>
       <Box>
         <Typography variant="h3" fontWeight={"bold"} style={{ marginBottom: 20 }}>
           Branding

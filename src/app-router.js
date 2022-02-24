@@ -119,10 +119,10 @@ const routeData = [
             key: "preference-layout",
             Component: PreferencesLayout,
             children: [
-              {
-                path: RouteConst.PREFERENCES_GENERAL_PAGES,
-                Component: PreferencesGeneralPage
-              },
+              // {
+              //   path: RouteConst.PREFERENCES_GENERAL_PAGES,
+              //   Component: PreferencesGeneralPage
+              // },
               {
                 path: RouteConst.PREFERENCES_BRANDING_PAGES,
                 Component: PreferencesBrandingPage
