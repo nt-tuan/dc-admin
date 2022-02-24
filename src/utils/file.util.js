@@ -50,12 +50,8 @@ export function rotateSize(width, height, rotation) {
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
  */
-export default async function getCroppedImg(
-  imageSrc,
-  pixelCrop,
-  rotation = 0,
-  flip = { horizontal: false, vertical: false }
-) {
+export async function getCroppedImg(imageSrc, pixelCrop, rotation = 0, fileName = null) {
+  const flip = { horizontal: false, vertical: false };
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -93,32 +89,21 @@ export default async function getCroppedImg(
   // paste generated rotate image at the top left corner
   ctx.putImageData(data, 0, 0);
 
+  const imageType = "image/png";
+
   // As Base64 string
-  return canvas.toDataURL("image/png");
-
-  // As a blob
-  // return new Promise((resolve, reject) => {
-  //   canvas.toBlob((file) => {
-  //     resolve(URL.createObjectURL(file))
-  //   }, 'image/jpeg')
-  // })
-}
-
-export function base64ToFile(dataURI) {
-  // convert base64/URLEncoded data component to raw binary data held in a string
-  let byteString;
-  if (dataURI.split(",")[0].indexOf("base64") >= 0)
-    byteString = Buffer.from(dataURI.split(",")[1], "base64").toString();
-  else byteString = unescape(dataURI.split(",")[1]);
-
-  // separate out the mime component
-  let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-
-  // write the bytes of the string to a typed array
-  let ia = new Uint8Array(byteString.length);
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
+  if (!fileName) {
+    return canvas.toDataURL(imageType);
   }
 
-  return new Blob([ia], { type: mimeString });
+  // As a blob
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      let file = new File([blob], fileName, { type: imageType });
+      resolve({
+        file,
+        base64: canvas.toDataURL(imageType)
+      });
+    }, imageType);
+  });
 }

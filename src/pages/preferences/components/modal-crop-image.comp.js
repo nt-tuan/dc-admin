@@ -4,7 +4,7 @@ import { DTCModal } from "@/components/commons";
 import Cropper from "react-easy-crop";
 import { Slider } from "@mui/material";
 import Button from "@mui/material/Button";
-import getCroppedImg, { base64ToFile, getImageDimension } from "../../../utils/file.util";
+import { getCroppedImg, getImageDimension } from "@/utils/file.util";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { updateAssetResource } from "@/services/preference.service";
@@ -72,7 +72,12 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess 
 
   const handleOnSave = async () => {
     try {
-      const croppedImage = await getCroppedImg(imageUrl, croppedAreaPixels, rotation);
+      const croppedImage = await getCroppedImg(
+        imageUrl,
+        croppedAreaPixels,
+        rotation,
+        `${type}.png`
+      );
       await onSave(croppedImage);
     } catch (e) {
       console.error(e);
@@ -80,19 +85,21 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess 
   };
 
   const onSave = async (croppedImage) => {
+    if (!(croppedImage && croppedImage.file && croppedImage.base64)) {
+      return;
+    }
     setLoading(true);
     asyncErrorHandlerWrapper(async () => {
       try {
         const formData = new FormData();
 
-        const file = base64ToFile(croppedImage);
-
-        formData.append("file", file);
+        formData.append("file", croppedImage.file);
 
         await updateAssetResource(type, formData);
 
         message.success(`Upload success`);
-        onSuccess(croppedImage);
+        onSuccess(croppedImage.base64);
+
         onReset();
       } catch (error) {
         message.error(`Upload error`);
