@@ -41,11 +41,11 @@ const OrganizationProfilePage = () => {
   };
 
   const isError = useMemo(() => {
-    return organizationName.trim().length >= 30;
+    return organizationName?.trim().length >= 30;
   }, [organizationName]);
 
   const isFieldEmpty = useMemo(() => {
-    return organizationName.trim().length === 0;
+    return organizationName?.trim().length === 0;
   }, [organizationName]);
 
   const handleSave = async () => {
