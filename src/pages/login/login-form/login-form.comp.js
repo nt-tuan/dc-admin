@@ -24,17 +24,11 @@ const TermAndPolicy = () => {
     <Box mt={2} mb={3} className="mt-2 mb-3">
       <div>
         By Signing up, you agree to {getCompanyName()}’s{" "}
-        <MuiLink
-          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}
-          color="inherit"
-        >
+        <MuiLink href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/terms-and-conditions"}>
           <strong>Terms & Conditions</strong>
         </MuiLink>{" "}
         and the{" "}
-        <MuiLink
-          href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/privacy-policy"}
-          color="inherit"
-        >
+        <MuiLink href={process.env.REACT_APP_CCC_ENDPOINT + "/policies/privacy-policy"}>
           <strong>Privacy Policy</strong>
         </MuiLink>
       </div>
@@ -45,12 +39,17 @@ const TermAndPolicy = () => {
 const FormHeader = () => {
   return (
     <>
-      <Typography sx={{ fontSize: "21px", lineHeight: "25px", fontWeight: "bold" }}>
-        SIGN IN
+      <Typography
+        sx={{
+          fontSize: "24px",
+          lineHeight: "32px",
+          fontWeight: "normal",
+          textAlign: "center",
+          marginBottom: "24px"
+        }}
+      >
+        Admin Login
       </Typography>
-      <Box mt={1} mb={2} fontSize="18px">
-        Please login to your account.
-      </Box>
     </>
   );
 };
@@ -58,7 +57,7 @@ const FormContent = () => {
   const { isLoading } = React.useContext(LoginFormContext);
   return (
     <Box mb={4}>
-      <Stack spacing={2}>
+      <Stack spacing={1}>
         <TextField
           id="username-field"
           disabled={isLoading}
@@ -67,6 +66,9 @@ const FormContent = () => {
           label="Username"
           placeholder="Username"
         />
+        <Stack direction="row" justifyContent={"end"}>
+          <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
+        </Stack>
         <PasswordField
           id="password-field"
           label="Password"
@@ -75,12 +77,9 @@ const FormContent = () => {
           disabled={isLoading}
           fullWidth
         />
-        <Stack direction="row" justifyContent="space-between">
-          <FormGroup>
-            <CheckboxField name="rememberMe" label="Remember Me" />
-          </FormGroup>
-          <Link to={RouteConst.FORGOT_PASSWORD_ROUTE}>Forgot Username/Password</Link>
-        </Stack>
+        <FormGroup>
+          <CheckboxField name="rememberMe" label="Remember Me" />
+        </FormGroup>
       </Stack>
       <TermAndPolicy />
     </Box>
@@ -97,15 +96,16 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
     <Formik
       initialValues={{
         username: "",
-        password: ""
+        password: "",
+        rememberMe: false
       }}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
       <Form>
         <LoginFormProvider isLoading={isLoading}>
-          <Box>
-            <Box p={3} maxWidth={700} maxHeight={500}>
+          <Box display="flex" justifyContent="center">
+            <Box p={3} maxWidth={500} maxHeight={500}>
               <FormHeader />
               <FormContent />
               <ELoginFormFooter />

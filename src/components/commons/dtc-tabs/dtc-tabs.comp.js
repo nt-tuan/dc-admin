@@ -25,7 +25,7 @@ function TabPanel(props) {
     </div>
   );
 }
-export const DTCTabs = ({ tabs, value, onChange }) => {
+export const DTCTabs = ({ tabs, value, onChange, ...props }) => {
   const handleChange = (_, newValue) => {
     if (onChange) {
       onChange(newValue);
@@ -34,7 +34,7 @@ export const DTCTabs = ({ tabs, value, onChange }) => {
   return (
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs {...props} value={value} onChange={handleChange} aria-label="basic tabs example">
           {tabs.map((tab) => (
             <Tab key={tab.key} value={tab.key} label={tab.label} {...a11yProps(tab.key)} />
           ))}

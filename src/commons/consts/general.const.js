@@ -154,6 +154,10 @@ export const USER_TABS_NAME = Object.freeze({
   introducer: "introducer-info",
   businessDetails: "business-details"
 });
+export const PREFERENCE_TABS_NAME = Object.freeze({
+  general: "general",
+  branding: "branding"
+});
 
 export const MESSAGES = Object.freeze({
   LOGIN_SUCCESS_MSG: `You have successfully logged in to ${getCompanyName()}!`,

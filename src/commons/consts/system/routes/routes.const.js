@@ -43,6 +43,7 @@ export class RouteConst extends SharedPaths {
       this.CREATE_TRADE_ROUTES,
       this.ADMIN_USER_MANAGEMENT,
       this.ADD_ADMIN_USER,
+      this.PREFERENCES_PAGES,
       this.SETTINGS,
       this.ORGANIZATION_PROFILE
     ];

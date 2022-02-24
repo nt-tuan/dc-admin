@@ -16,6 +16,7 @@ export class ApiPathConsts {
   static #SETTING_PREFIX = "/me/notifications/settings";
   static #TWO_FACTOR_AUTH_PREFIX = "/two-factor-auth";
   static #BUSSINESS_DETAIL = "/company-product-rules";
+  static MARKETPLACE = "/admin/marketplace";
 
   static get GET_ADMIN_USER() {
     return `${this.#USER_MANAGEMENT_PREFIX}`;
@@ -23,6 +24,18 @@ export class ApiPathConsts {
 
   static get GET_CURRENT_USER() {
     return `${this.USER_PREFIX}`;
+  }
+  static get POST_MARKETPLACE_BRANDING_ASSET() {
+    return `${this.MARKETPLACE}/branding/assets`;
+  }
+  static get GET_MARKETPLACE_BRANDING_ASSET() {
+    return `/public/marketplace/branding/assets`;
+  }
+  static get GET_ORGANIZATION() {
+    return `${this.#ADMIN_PREFIX}/organizations`;
+  }
+  static get UPDATE_ORGANIZATION() {
+    return `${this.#ADMIN_PREFIX}/organizations`;
   }
   static get UPDATE_USER_INFO() {
     return `${this.#USER_PREFIX}`;

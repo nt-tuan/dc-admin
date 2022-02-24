@@ -7,8 +7,8 @@ export const LoginFormFooter = () => {
 
   return (
     <Box display="flex" justifyContent="flex-end">
-      <Box>
-        <LoadingButton loading={isLoading} variant="contained" type="submit">
+      <Box width={"100%"}>
+        <LoadingButton fullWidth={true} loading={isLoading} variant="contained" type="submit">
           Log In
         </LoadingButton>
       </Box>

@@ -1,12 +1,14 @@
 import { RouteConst } from "commons/consts";
+import SettingsIcon from "@mui/icons-material/Settings";
+import BuildIcon from "@mui/icons-material/Build";
+import MultipleStopIcon from "@mui/icons-material/MultipleStop";
+import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
 import OrderIcon from "@/components/icons/order.comp";
 import TradersIcon from "@/components/icons/traders.comp";
 import TradeRouteIcon from "@/components/icons/trade-route.comp";
 import ProductIcon from "@/components/icons/product.comp";
 import FinancialsIcon from "@/components/icons/financials.comp";
-import SettingsIcon from "@/components/icons/settings.comp";
-import BuildIcon from "@mui/icons-material/Build";
-import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
+
 
 const menuData = [
   {
@@ -113,9 +115,29 @@ const menuSettingsData = [
     key: "Organization Profile",
     icon: CorporateFareRoundedIcon,
     url: RouteConst.ORGANIZATION_PROFILE
+  },
+  {
+    title: "Preferences",
+    key: "Preferences",
+    icon: MultipleStopIcon,
+    url: RouteConst.PREFERENCES_GENERAL_PAGES
+  }
+];
+const menuPreferencesData = [
+  {
+    title: "General",
+    key: RouteConst.PREFERENCES_GENERAL_PAGES,
+    url: RouteConst.PREFERENCES_GENERAL_PAGES
+  },
+  {
+    title: "Branding",
+    key: RouteConst.PREFERENCES_BRANDING_PAGES,
+    url: RouteConst.PREFERENCES_BRANDING_PAGES
   }
 ];
 
 export const getMenuData = () => menuData;
 
 export const getMenuSettingsData = () => menuSettingsData;
+
+export const getMenuPreferencesData = () => menuPreferencesData;

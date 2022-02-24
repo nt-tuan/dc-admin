@@ -5,6 +5,9 @@ module.exports = {
   getAPIEndPoint: () => {
     //
   },
+  getMarketplaceEndPoint: () => {
+    //
+  },
   getPlugins: () => [],
   getAssetURL: () => "my-base",
   getAppVersion: () => "my-version",

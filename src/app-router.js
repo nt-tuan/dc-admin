@@ -10,6 +10,9 @@ import { PublicLayout } from "./layouts/public/public.layout";
 import { AuthLayout } from "./layouts/auth/auth-layout.comp";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
 import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
+import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
+import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
+import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
@@ -111,6 +114,20 @@ const routeData = [
             Component: loadable(() =>
               import("pages/organization-profile/organization-profile.page")
             )
+          },
+          {
+            key: "preference-layout",
+            Component: PreferencesLayout,
+            children: [
+              {
+                path: RouteConst.PREFERENCES_GENERAL_PAGES,
+                Component: PreferencesGeneralPage
+              },
+              {
+                path: RouteConst.PREFERENCES_BRANDING_PAGES,
+                Component: PreferencesBrandingPage
+              }
+            ]
           }
         ]
       },

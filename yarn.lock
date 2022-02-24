@@ -12658,6 +12658,14 @@ react-easy-crop@^3.5.2:
     normalize-wheel "^1.0.1"
     tslib "2.0.1"
 
+react-easy-crop@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-easy-crop/-/react-easy-crop-4.0.2.tgz#fd9263d792108fa5c4bef11a6d7a5582e47b4bbe"
+  integrity sha512-VQ5UipYdaL7yR3KWWKr7E4WuC6NOaXzs5Zxyh9eniC6nWRPnjvsKA0EesxxRMaE8EHWtZub69fKEfuDSvXeP1A==
+  dependencies:
+    normalize-wheel "^1.0.1"
+    tslib "2.0.1"
+
 react-error-overlay@^6.0.9:
   version "6.0.10"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.10.tgz#0fe26db4fa85d9dbb8624729580e90e7159a59a6"
