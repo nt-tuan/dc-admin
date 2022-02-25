@@ -1,13 +1,14 @@
 import { RouteConst } from "commons/consts";
-import SettingsIcon from "@mui/icons-material/Settings";
-import BuildIcon from "@mui/icons-material/Build";
-import MultipleStopIcon from "@mui/icons-material/MultipleStop";
+import ConfigurationIcon from "@mui/icons-material/Settings";
+// import MultipleStopIcon from "@mui/icons-material/MultipleStop";
 import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
 import OrderIcon from "@/components/icons/order.comp";
 import TradersIcon from "@/components/icons/traders.comp";
 import TradeRouteIcon from "@/components/icons/trade-route.comp";
 import ProductIcon from "@/components/icons/product.comp";
 import FinancialsIcon from "@/components/icons/financials.comp";
+import PreferencesIcon from "@/components/icons/preferences.comp";
+import SettingIcon from "@/components/icons/setting.comp";
 
 const menuData = [
   {
@@ -91,7 +92,7 @@ const menuData = [
   {
     title: "Configuration",
     key: "Configuration",
-    icon: SettingsIcon,
+    icon: ConfigurationIcon,
     children: [
       {
         title: "Feature Toggles",
@@ -103,7 +104,7 @@ const menuData = [
   {
     title: "Settings",
     key: "Settings",
-    icon: BuildIcon,
+    icon: SettingIcon,
     url: RouteConst.ORGANIZATION_PROFILE
   }
 ];
@@ -118,7 +119,7 @@ const menuSettingsData = [
   {
     title: "Preferences",
     key: "Preferences",
-    icon: MultipleStopIcon,
+    icon: PreferencesIcon,
     url: RouteConst.PREFERENCES_BRANDING_PAGES // RouteConst.PREFERENCES_GENERAL_PAGES
   }
 ];
