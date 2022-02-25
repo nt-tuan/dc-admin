@@ -9,6 +9,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { updateAssetResource } from "@/services/preference.service";
 import { useMessage } from "@/hooks/use-message";
+import { SETTINGS_MESSAGE } from "@/commons/consts";
 
 function PlusButton({ onClick }) {
   return (
@@ -36,7 +37,7 @@ function SubButton({ onClick }) {
   );
 }
 
-function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess }) {
+function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess, messageField }) {
   const message = useMessage();
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -97,12 +98,12 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess 
 
         await updateAssetResource(type, formData);
 
-        message.success(`Upload success`);
+        message.success(SETTINGS_MESSAGE.updateSuccess(messageField));
         onSuccess(croppedImage.base64);
 
         onReset();
       } catch (error) {
-        message.error(`Upload error`);
+        message.error(SETTINGS_MESSAGE.updateFail(messageField));
         setLoading(false);
       }
     });

@@ -9,6 +9,7 @@ import { getOrganization, updateOrganization } from "@/services/preference.servi
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useMessage } from "@/hooks/use-message";
 import MuiTextField from "@mui/material/TextField";
+import { SETTINGS_MESSAGE } from "@/commons/consts";
 
 const ImageUploadList = [
   {
@@ -16,6 +17,7 @@ const ImageUploadList = [
     required: true,
     type: "LOGO",
     shortName: "logo",
+    messageField: "Logo",
     description:
       "The main logo is required as it appears on all pages of your marketplace and email notifications. ",
     note: "(Recommended logo dimensions is 280x100 px in PNG, transparent background)"
@@ -25,6 +27,7 @@ const ImageUploadList = [
     required: true,
     type: "MARKETPLACE_LANDING_PAGE_IMAGE",
     shortName: "image",
+    messageField: "Landing Page Image",
     description:
       "First impressions count, choose a landing page image that reflects your Marketplace. You may choose to upload any image created by your design team.",
     note: "(Recommended dimensions is 720x900 px)"
@@ -34,8 +37,9 @@ const ImageUploadList = [
     required: true,
     type: "FAVICON",
     shortName: "favicon",
+    messageField: "Favicon",
     description:
-      "The favicon is the icon image that will appear in the address bar of web browsers. Favicons are always square in shape",
+      "The favicon is the icon image that will appear in the address bar of web browsers. Favicons are always square in shape.",
     note:
       "Recommended dimension 16 x 16px. Accepted formats: .ico, .png, .jpeg,). Your picture should be in a square ratio for optimal results."
   }
@@ -123,9 +127,9 @@ function PreferencesBrandingPage() {
       setLoading(true);
       try {
         await updateOrganization(body);
-        message.success("Update success");
+        message.success(SETTINGS_MESSAGE.updateSuccess("branding"));
       } catch (e) {
-        message.error("Update failed");
+        message.error(SETTINGS_MESSAGE.updateFail("branding"));
       } finally {
         setLoading(false);
       }

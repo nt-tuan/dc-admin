@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { getOrganizationName, updateOrganizationName } from "services/organization.service";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { styled } from "@mui/system";
-import { getErrorMaxCharactersMessage } from "commons/consts";
+import { getErrorMaxCharactersMessage, SETTINGS_MESSAGE } from "commons/consts";
 
 const FieldInput = styled(TextField)(() => ({
   ".MuiInputLabel-asterisk": {
@@ -99,7 +99,7 @@ const OrganizationProfilePage = () => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleCloseAlert} severity="success">
-          <Box fontSize={14}>Your Organization profile has been saved</Box>
+          <Box fontSize={14}>{SETTINGS_MESSAGE.updateSuccess("Organization profile")}</Box>
         </Alert>
       </Snackbar>
 

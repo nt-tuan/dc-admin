@@ -39,7 +39,7 @@ test("should click save button successfully", async () => {
   });
 
   const alertSuccessIcon = screen.getByTestId("SuccessOutlinedIcon");
-  const alertSuccessText = screen.getByText("Your Organization profile has been saved");
+  const alertSuccessText = screen.getByText("Your Organization profile is updated.");
 
   expect(alertSuccessIcon).toBeInTheDocument();
   expect(alertSuccessText).toBeInTheDocument();

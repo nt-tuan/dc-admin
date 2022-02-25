@@ -6,12 +6,17 @@ import { fileToBase64 } from "@/utils/file.util";
 import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { getAssetResource } from "@/services/preference.service";
 import Divider from "@mui/material/Divider";
+import { useMessage } from "@/hooks/use-message";
+import { SETTINGS_MESSAGE } from "@/commons/consts";
+
 function UploadImage(props) {
-  const { label, required, description, note, shortName, imageUrl, type } = props;
+  const { label, required, description, note, shortName, imageUrl, type, messageField } = props;
   const [image, setImage] = useState(imageUrl);
+  const message = useMessage();
 
   const onRemove = () => {
     setImage(null);
+    message.success(SETTINGS_MESSAGE.remove(messageField));
   };
   const onSuccess = (img) => {
     setImage(img);
@@ -32,7 +37,7 @@ function UploadImage(props) {
 
   return (
     <Box>
-      <Divider style={{ margin: "32px -121px 32px -28px" }} />
+      <Divider style={{ margin: "32px -48px 32px -28px" }} />
       <Box>
         <Typography variant="h5" fontWeight={"bold"}>
           {label}
@@ -41,7 +46,7 @@ function UploadImage(props) {
         <Box display={"inline-flex"} marginTop={"10px"}>
           <UploadImageBox {...props} imageUrl={image} onSuccess={onSuccess} />
 
-          <Box display={"grid"} marginLeft={"20px"}>
+          <Box display={"grid"} marginLeft={"20px"} paddingRight={8}>
             <Typography variant={"subtitle1"}>{description}</Typography>
             <Typography variant={"caption"} color={"rgba(0,0,0,0.6)"}>
               {note}
@@ -63,7 +68,7 @@ function UploadImage(props) {
   );
 }
 
-function UploadImageBox({ shortName, imageUrl, type, onSuccess }) {
+function UploadImageBox({ shortName, imageUrl, type, onSuccess, messageField }) {
   const inputFileRef = useRef();
   const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState(imageUrl);
@@ -136,6 +141,7 @@ function UploadImageBox({ shortName, imageUrl, type, onSuccess }) {
         onCancel={onCloseModal}
         onSave={(img) => setImagePreview(img)}
         onSuccess={onSuccess}
+        messageField={messageField}
       />
     </div>
   );

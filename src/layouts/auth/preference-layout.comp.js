@@ -23,6 +23,7 @@ const PreferenceSideBar = () => {
   return (
     <Box
       sx={{
+        ml: -6,
         borderRight: "1px solid #ddd"
       }}
     >
@@ -68,14 +69,14 @@ export const PreferencesLayout = ({ children }) => {
       sx={{
         mt: -6,
         mb: -4,
-        ml: -6,
-        mr: -4,
         display: "flex",
         minHeight: "100vh"
       }}
     >
       <PreferenceSideBar />
-      <Box p={3.5}>{children}</Box>
+      <Box pt={3.5} pb={3.5} pl={3.5}>
+        {children}
+      </Box>
     </Container>
   );
 };

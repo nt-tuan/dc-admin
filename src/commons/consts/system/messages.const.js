@@ -8,3 +8,9 @@ export class MessageConst {
     return "Logged In";
   }
 }
+
+export const SETTINGS_MESSAGE = {
+  remove: (fieldName) => `Your ${fieldName} is removed.`,
+  updateSuccess: (fieldName) => `Your ${fieldName} is updated.`,
+  updateFail: (fieldName) => `Your ${fieldName} is failed.`
+};
