@@ -6,5 +6,5 @@ export const getOrganizationName = async () => {
 };
 
 export const updateOrganizationName = async (payload) => {
-  return backendAPI.put(ApiPathConsts.GET_ORGANIZATION, payload);
+  return backendAPI.put(ApiPathConsts.UPDATE_ORGANIZATION, payload);
 };

@@ -8,7 +8,7 @@ export const getOrganization = async () => {
   return backendAPI.get(ApiPathConsts.GET_ORGANIZATION);
 };
 export const updateOrganization = async (body) => {
-  return backendAPI.put(ApiPathConsts.GET_ORGANIZATION, body);
+  return backendAPI.put(ApiPathConsts.UPDATE_ORGANIZATION, body);
 };
 
 export const getAssetResource = async (type) => {

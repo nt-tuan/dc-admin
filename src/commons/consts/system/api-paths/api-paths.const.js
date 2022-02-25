@@ -32,7 +32,7 @@ export class ApiPathConsts {
     return `/public/marketplace/branding/assets`;
   }
   static get GET_ORGANIZATION() {
-    return `${this.#ADMIN_PREFIX}/organizations`;
+    return `${this.#PUBLIC_PREFIX}/organizations`;
   }
   static get UPDATE_ORGANIZATION() {
     return `${this.#ADMIN_PREFIX}/organizations`;
@@ -255,9 +255,5 @@ export class ApiPathConsts {
   }
   static get CHECK_RESET_PW_TOKEN() {
     return `${this.#PUBLIC_PREFIX}/tokens/password`;
-  }
-
-  static get GET_ORGANIZATION() {
-    return `${this.#ADMIN_PREFIX}/organizations`;
   }
 }
