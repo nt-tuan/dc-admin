@@ -4,22 +4,38 @@ import Typography from "@mui/material/Typography";
 import ModalCropImage from "./modal-crop-image.comp";
 import { fileToBase64 } from "@/utils/file.util";
 import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
-import { getAssetResource } from "@/services/preference.service";
+import { deleteAssetResource, getAssetResource } from "@/services/preference.service";
 import Divider from "@mui/material/Divider";
 import { useMessage } from "@/hooks/use-message";
 import { SETTINGS_MESSAGE } from "@/commons/consts";
+import { useDispatch } from "react-redux";
+import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
 
 function UploadImage(props) {
   const { label, required, description, note, shortName, imageUrl, type, messageField } = props;
   const [image, setImage] = useState(imageUrl);
   const message = useMessage();
+  const dispatch = useDispatch();
 
-  const onRemove = () => {
-    setImage(null);
-    message.success(SETTINGS_MESSAGE.remove(messageField));
+  const onRemove = async () => {
+    asyncErrorHandlerWrapper(async () => {
+      try {
+        await deleteAssetResource(type);
+        setImage(null);
+        message.success(SETTINGS_MESSAGE.remove(messageField));
+        onReLoadAsset();
+      } catch (e) {
+        message.success(SETTINGS_MESSAGE.updateFail(messageField));
+      }
+    });
   };
   const onSuccess = (img) => {
     setImage(img);
+    onReLoadAsset();
+  };
+
+  const onReLoadAsset = () => {
+    dispatch({ type: CONFIGS_DUCK.LOAD_ASSET, payload: { type } });
   };
 
   useEffect(() => {

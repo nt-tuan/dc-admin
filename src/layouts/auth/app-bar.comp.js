@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getAssetURL, getCompanyName } from "utils/config.util";
+import { getCompanyName } from "utils/config.util";
 
 import Stack from "@mui/material/Stack";
 import MuiAppBar from "@mui/material/AppBar";
@@ -10,9 +10,10 @@ import Toolbar from "@mui/material/Toolbar";
 import { UserMenu } from "./user-menu.comp";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import { useBreakpoints } from "utils/use-breakpoints";
 import WalletIcon from "@/components/icons/wallet.comp";
 import Button from "./button.comp";
+import { useSelector } from "react-redux";
+import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open"
@@ -36,7 +37,8 @@ const StyledAppBar = styled(MuiAppBar, {
 }));
 
 export const AppBar = ({ open }) => {
-  const { isSmall } = useBreakpoints();
+  const brandingAssets = useSelector(selectBrandingAssetsData);
+
   return (
     <StyledAppBar position="absolute" open={open} color="inherit">
       <Toolbar
@@ -52,7 +54,7 @@ export const AppBar = ({ open }) => {
         <Box display="flex" alignItems="center" justifyContent="center" height={40}>
           <img
             style={{ height: "100%", objectFit: "contain" }}
-            src={getAssetURL(`/images/${isSmall ? "logo-notext.png" : "logo.png"}`)}
+            src={brandingAssets.logo}
             alt={`${getCompanyName()}`}
           />
         </Box>

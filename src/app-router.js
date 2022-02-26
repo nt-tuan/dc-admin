@@ -6,8 +6,10 @@ import { ConnectedRouter } from "connected-react-router";
 import { Helmet } from "react-helmet";
 import { Loader } from "components/commons";
 import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
-import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
+import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
+import { useSelector } from "react-redux";
+import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 import { PublicLayout } from "./layouts/public/public.layout";
 import { RouteConst } from "commons/consts";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
@@ -23,6 +25,7 @@ const getChildrenPaths = (route) => {
 };
 
 const AppRouter = ({ history }) => {
+  const brandingAssets = useSelector(selectBrandingAssetsData);
   const renderRoutes = (routes) => {
     return (
       <Suspense fallback={<Loader />}>
@@ -48,7 +51,7 @@ const AppRouter = ({ history }) => {
     <ConnectedRouter history={history}>
       <Helmet>
         <link rel="shortcut icon" href={getAssetURL("/favicon.png")} />
-        <link rel="icon" type="image/x-icon" href={getAssetURL("/favicon/favicon.ico")} />
+        <link rel="icon" type="image/x-icon" href={brandingAssets.favicon} />
         <link
           rel="apple-touch-icon"
           sizes="180x180"

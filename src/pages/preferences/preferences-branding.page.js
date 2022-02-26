@@ -10,7 +10,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useMessage } from "@/hooks/use-message";
 import MuiTextField from "@mui/material/TextField";
 import { SETTINGS_MESSAGE } from "@/commons/consts";
-
+import { useDispatch } from "react-redux";
+import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
 const ImageUploadList = [
   {
     label: "Marketplace Logo",
@@ -91,6 +92,7 @@ function PreferencesBrandingPage() {
   const [organization, setOrganization] = useState();
   const [loading, setLoading] = useState(false);
   const message = useMessage();
+  const dispatch = useDispatch();
 
   const initialValues = {
     marketplaceName: ""
@@ -128,6 +130,7 @@ function PreferencesBrandingPage() {
       try {
         await updateOrganization(body);
         message.success(SETTINGS_MESSAGE.updateSuccess("branding"));
+        dispatch({ type: CONFIGS_DUCK.LOAD_MARKETPLACE_NAME });
       } catch (e) {
         message.error(SETTINGS_MESSAGE.updateFail("branding"));
       } finally {

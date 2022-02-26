@@ -4,6 +4,9 @@ import { backendAPI } from "utils/httpAPI.util";
 export const updateAssetResource = async (type, formData) => {
   await backendAPI.post(ApiPathConsts.POST_MARKETPLACE_BRANDING_ASSET, formData, { type });
 };
+export const deleteAssetResource = async (type) => {
+  await backendAPI.delete(ApiPathConsts.POST_MARKETPLACE_BRANDING_ASSET, { type });
+};
 export const getOrganization = async () => {
   return backendAPI.get(ApiPathConsts.GET_ORGANIZATION);
 };

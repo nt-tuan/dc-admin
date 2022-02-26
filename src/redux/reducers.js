@@ -5,6 +5,7 @@ import notification from "./notification/notification.duck";
 import settings from "./settings/settings.duck";
 import storage from "./storage/storage.duck";
 import user from "./user/user.duck";
+import configs from "./configs/configs.duck";
 
 const reducer = (history) =>
   combineReducers({
@@ -13,6 +14,7 @@ const reducer = (history) =>
     settings,
     storage,
     notification,
-    kyc3
+    kyc3,
+    configs
   });
 export default reducer;

@@ -36,6 +36,10 @@ export const getDefaultCurrency = () => {
   return window._env_.REACT_APP_DEFAULT_CURRENCY_TYPE ?? "USD";
 };
 export const getCompanyName = () => {
+  const value = localStorage.getItem("REACT_APP_COMPANY_NAME");
+  if (value) {
+    return value;
+  }
   return window._env_.REACT_APP_COMPANY_NAME;
 };
 export const getHotjarID = () => {
