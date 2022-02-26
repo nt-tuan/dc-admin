@@ -1,5 +1,5 @@
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
 
 export const Loader = ({ spinning = true }) => {
@@ -7,7 +7,7 @@ export const Loader = ({ spinning = true }) => {
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: "absolute",
         left: 0,
         right: 0,
         top: 0,

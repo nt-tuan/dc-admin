@@ -107,6 +107,10 @@ const AddFundsPage = () => {
   }, []);
 
   const handleCopy = (text) => {
+    if (typeof text === "string") {
+      navigator.clipboard.writeText(text);
+      return;
+    }
     navigator.clipboard.writeText(JSON.stringify(text));
   };
 

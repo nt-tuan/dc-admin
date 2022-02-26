@@ -1,5 +1,6 @@
+import { log, popError } from "./logger.util";
+
 import { RouteConst } from "commons/consts";
-import { log } from "./logger.util";
 import { removeAuthCredential } from "./auth.util";
 
 export const handleSagaError = (error) => {
@@ -14,5 +15,5 @@ export const handleSagaError = (error) => {
   if (process.env.NODE_ENV !== "production") {
     log(error);
   }
-  log.error("Something went wrong, please press F5 to refresh the page", 0);
+  popError();
 };

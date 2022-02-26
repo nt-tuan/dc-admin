@@ -1,6 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
+
 import { AppBar } from "./app-bar.comp";
 import { AppFooter } from "./app-footer.comp";
 import { AppSideBar } from "./app-side-bar.comp";
@@ -14,7 +13,6 @@ jest.mock("./app-side-bar.comp");
 jest.mock("react-redux");
 test("AuthLayout should work", () => {
   useSelector.mockReturnValue({ authorized: true });
-  const history = createMemoryHistory();
   AppBar.mockImplementation(({ open, onToggle }) => (
     <span onClick={onToggle}>app-bar-{open ? "open" : "close"}</span>
   ));
@@ -22,11 +20,7 @@ test("AuthLayout should work", () => {
     <span onClick={onToggle}>side-bar-{open ? "open" : "close"}</span>
   ));
   AppFooter.mockReturnValue("footer");
-  const { getByText } = render(
-    <Router history={history}>
-      <AuthLayout>children-here</AuthLayout>
-    </Router>
-  );
+  const { getByText } = render(<AuthLayout>children-here</AuthLayout>);
   expect(getByText("children-here")).toBeInTheDocument();
   fireEvent.click(getByText("app-bar-open"));
   expect(getByText("app-bar-close")).toBeInTheDocument();

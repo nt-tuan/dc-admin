@@ -1,8 +1,10 @@
+import { Form, Modal } from "antd";
 import React, { forwardRef, useCallback, useState } from "react";
-import { Modal, Form } from "antd";
 
 import ChildFieldModal from "./ChildFieldModal";
 import FieldLayout from "./FieldLayout";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
+
 // import "../../product-mutation-template.comp.scss";
 
 const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue }, ref) => {
@@ -85,6 +87,7 @@ const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue 
         visible={showFieldTypeInfoPopup}
         onCancel={onCloseFieldTypeInfo}
         footer={null}
+        getContainer={getLagecyModalContainer}
       >
         <p className="mt-4">
           Switch a field type by selecting an option from the dropdown menu. When you switch field
@@ -92,7 +95,12 @@ const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue 
           (if any) may be lost.
         </p>
       </Modal>
-      <Modal visible={showRemoveConfirmPopup} onCancel={onCancelRemove} onOk={onRemove}>
+      <Modal
+        getContainer={getLagecyModalContainer}
+        visible={showRemoveConfirmPopup}
+        onCancel={onCancelRemove}
+        onOk={onRemove}
+      >
         <p className="mt-4 mb-0">If you proceed, all entered data will be lost.</p>
         <p>Do you wish to delete this field?</p>
       </Modal>

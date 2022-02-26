@@ -1,9 +1,9 @@
-import { render } from "@testing-library/react";
-import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
 import { AppBar } from "./app-bar.comp";
 import { NotificationDropdown } from "./notification-dropdown.comp";
+import { Router } from "react-router-dom";
 import { UserMenu } from "./user-menu.comp";
+import { createMemoryHistory } from "history";
+import { render } from "@testing-library/react";
 
 jest.mock("utils/config.util");
 jest.mock("react-redux");

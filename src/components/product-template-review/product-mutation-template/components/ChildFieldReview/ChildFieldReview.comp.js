@@ -85,6 +85,7 @@ const ChildFieldReview = memo(({ onRemove, data }) => {
         visible={isOpenConfirmPopup}
         onCancel={() => setIsOpenConfirmPopup(false)}
         onOk={handleRemove}
+        getContainer={getLagecyModalContainer}
         title="Remove all child fields"
       >
         <p className="mb-0">If you proceed, all entered field data will be lost.</p>

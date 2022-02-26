@@ -1,11 +1,11 @@
 import * as USER_DUCK from "redux/user/user.duck";
 
 import { API_ERRORS, MessageConst, RouteConst } from "commons/consts";
+import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LoginForm } from "./login-form/login-form.comp";
 import React from "react";
-import { useHistory, Redirect } from "react-router-dom";
 import { useMessage } from "@/hooks/use-message";
 
 const LoginPage = () => {
@@ -27,7 +27,6 @@ const LoginPage = () => {
     };
     dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
   };
-  console.log("render", user);
   if (!loading && isAuthorized) return <Redirect to={RouteConst.HOME_ROUTE} />;
   return <LoginForm onSubmit={handleSubmit} isLoading={loading} />;
 };

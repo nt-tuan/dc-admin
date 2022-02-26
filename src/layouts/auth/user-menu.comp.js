@@ -1,23 +1,25 @@
-import React from "react";
-import Button from "./button.comp";
-import Stack from "@mui/material/Stack";
+import * as USER_DUCK from "redux/user/user.duck";
+
 import {
   Box,
   Divider,
-  ListItemIcon as MuiListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
+  ListItemIcon as MuiListItemIcon,
   styled
 } from "@mui/material";
-import * as USER_DUCK from "redux/user/user.duck";
-import { useDispatch, useSelector } from "react-redux";
 import { RouteConst, USER_TABS_NAME } from "commons/consts";
-import GroupIcon from "@mui/icons-material/Group";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import AccountIcon from "@/components/icons/account.comp";
 import ArrowDown from "@/components/icons/arrow-down.comp";
+import Button from "./button.comp";
+import GroupIcon from "@mui/icons-material/Group";
+import LogoutIcon from "@mui/icons-material/Logout";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import { useHistory } from "react-router-dom";
 
 const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
   color: theme.palette.text.primary
@@ -35,10 +37,11 @@ const menuItems = [
   }
 ];
 
-const MenuItemLink = ({ url, ...rest }) => {
+const MenuItemLink = ({ url, onClick, ...rest }) => {
   const history = useHistory();
   const handleClick = () => {
-    history.push(url);
+    if (url) history.push(url);
+    if (onClick) onClick();
   };
   return <MenuItem onClick={handleClick} sx={{ my: 1 }} {...rest} />;
 };
@@ -95,7 +98,7 @@ export const UserMenu = () => {
           <Divider sx={{ my: 1 }} />
           {menuItems.map((item) => {
             return (
-              <MenuItemLink key={item.title} url={item.url}>
+              <MenuItemLink key={item.title} url={item.url} onClick={handleClose}>
                 {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
                 {item.title && <ListItemText>{item.title}</ListItemText>}
               </MenuItemLink>

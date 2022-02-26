@@ -1,9 +1,11 @@
+import { Button, Form, Modal } from "antd";
 import React, { useEffect } from "react";
-import { Modal, Form, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 
-import FieldLayout from "./FieldLayout";
 import { EMPTY_FIELD } from "../../constants";
+import FieldLayout from "./FieldLayout";
+import { PlusOutlined } from "@ant-design/icons";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
+
 // import "../../product-mutation-template.comp.scss";
 
 const ChildFieldModal = ({
@@ -69,6 +71,7 @@ const ChildFieldModal = ({
       okText="Save"
       width={800}
       onOk={handleOK}
+      getContainer={getLagecyModalContainer}
     >
       <Form form={form} initialValues={{ childField: data }}>
         <Form.List name="childField">

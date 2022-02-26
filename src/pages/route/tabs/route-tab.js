@@ -36,12 +36,12 @@ const tabs = [
     label: "Active",
     key: "ACTIVE",
     component: <RouteTable getData={getActiveRoutesFn("ACTIVE")} />
-  },
-  {
-    label: "Pending",
-    key: "PENDING",
-    component: <RouteTable getData={getActiveRoutesFn("PENDING")} />
   }
+  // {
+  //   label: "Pending",
+  //   key: "PENDING",
+  //   component: <RouteTable getData={getActiveRoutesFn("PENDING")} />
+  // }
 ];
 
 export const RouteTab = () => {

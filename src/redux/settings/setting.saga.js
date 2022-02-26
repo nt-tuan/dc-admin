@@ -1,11 +1,12 @@
 import * as SETTING_DUCK from "./settings.duck";
 
 import { all, put, takeEvery } from "redux-saga/effects";
-import { history, store as reduxStore } from "app";
 
 import Fingerprint2 from "fingerprintjs2";
+import { history } from "@/history/history";
 import { isScreensize } from "utils/general.util";
 import qs from "qs";
+import { store as reduxStore } from "@/redux/store";
 import store from "store";
 
 export function* CHANGE_SETTING({ payload: { setting, value } }) {

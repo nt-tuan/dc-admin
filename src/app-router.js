@@ -1,18 +1,17 @@
 import React, { Suspense } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 
+import { AuthLayout } from "./layouts/auth/auth-layout.comp";
+import { ConnectedRouter } from "connected-react-router";
 import { Helmet } from "react-helmet";
 import { Loader } from "components/commons";
-
-import { Route, Switch, Router as BrowserRouter, Redirect } from "react-router-dom";
-import { RouteConst } from "commons/consts";
-import { getAssetURL } from "utils/config.util";
-import { PublicLayout } from "./layouts/public/public.layout";
-import { AuthLayout } from "./layouts/auth/auth-layout.comp";
-import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
 import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
-import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
-import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
 import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
+import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
+import { PublicLayout } from "./layouts/public/public.layout";
+import { RouteConst } from "commons/consts";
+import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
+import { getAssetURL } from "utils/config.util";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
@@ -46,7 +45,7 @@ const AppRouter = ({ history }) => {
   };
 
   return (
-    <BrowserRouter history={history}>
+    <ConnectedRouter history={history}>
       <Helmet>
         <link rel="shortcut icon" href={getAssetURL("/favicon.png")} />
         <link rel="icon" type="image/x-icon" href={getAssetURL("/favicon/favicon.ico")} />
@@ -63,7 +62,7 @@ const AppRouter = ({ history }) => {
         <meta name="msapplication-config" content={getAssetURL("/browserconfig.xml")} />
       </Helmet>
       {renderRoutes(routeData)}
-    </BrowserRouter>
+    </ConnectedRouter>
   );
 };
 export default AppRouter;

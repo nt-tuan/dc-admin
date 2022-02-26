@@ -1,6 +1,5 @@
 import { DTCTabs, useTabSearchParams } from "components/commons";
 
-import { DefaultRouteTab } from "./tabs/default-route-tab";
 import { Helmet } from "react-helmet";
 import React from "react";
 import { RouteTab } from "./tabs/route-tab";
@@ -10,19 +9,19 @@ const TAB_KEYS = {
   ROUTE: "ROUTE"
 };
 
-const { DEFAULT_ROUTE, ROUTE } = TAB_KEYS;
+const { ROUTE } = TAB_KEYS;
 
 const tabs = [
   {
     label: "Trade Routes",
     key: ROUTE,
     component: <RouteTab />
-  },
-  {
-    label: "Default Trade Routes",
-    key: DEFAULT_ROUTE,
-    component: <DefaultRouteTab />
   }
+  // {
+  //   label: "Default Trade Routes",
+  //   key: DEFAULT_ROUTE,
+  //   component: <DefaultRouteTab />
+  // }
 ];
 
 const RoutePage = () => {

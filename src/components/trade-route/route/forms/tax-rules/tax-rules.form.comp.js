@@ -1,17 +1,18 @@
-import React, { memo, forwardRef, useState, useCallback, useEffect } from "react";
-import { Form } from "antd";
-import { useFormik } from "formik";
-import { createFormErrorComp } from "utils/form.util";
 import {
-  TAX_RULES_MAIN_SCHEMA,
   FIELDS,
-  TAX_RULES_TYPE_MAIN_SCHEMA,
-  typeTAX,
+  RULES_LUMSUM_FORMAT,
   RULES_PERCENT_FORMAT,
-  RULES_LUMSUM_FORMAT
+  TAX_RULES_MAIN_SCHEMA,
+  TAX_RULES_TYPE_MAIN_SCHEMA,
+  typeTAX
 } from "./tax.chemas";
+import React, { forwardRef, memo, useCallback, useEffect, useState } from "react";
+
+import { Form } from "antd";
 import TaxFormItem from "./tax-form-item.comp";
+import { createFormErrorComp } from "utils/form.util";
 import numeral from "numeral";
+import { useFormik } from "formik";
 
 export const TradeRouteTaxForm = memo(
   forwardRef(({ dataSource }, ref) => {
@@ -26,8 +27,6 @@ export const TradeRouteTaxForm = memo(
 
     const handleSetValueForm = useCallback(
       (dataSource) => {
-        console.log("debug", dataSource);
-
         Object.entries(dataSource).map(async ([key, valueData]) => {
           valueData.map((val, idx) => {
             let filteredFields = val?.data;
@@ -56,7 +55,6 @@ export const TradeRouteTaxForm = memo(
     useEffect(() => {
       handleSetValueForm(dataSource);
       setDataForm({ ...dataSource });
-      console.log("debug", dataSource);
     }, [dataSource, form, handleSetValueForm]);
 
     const handleUpdateIntValue = (data, value, field) => {
@@ -79,8 +77,6 @@ export const TradeRouteTaxForm = memo(
         const applyTypeField = nameParse[0];
         const nameField = nameParse[1];
         const indexField = nameParse[2];
-        console.log("debug", nameField);
-
         switch (nameField) {
           case FIELDS.lumpSum:
             return (e) => {

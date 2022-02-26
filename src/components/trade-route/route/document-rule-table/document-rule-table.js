@@ -1,15 +1,15 @@
 import React, { forwardRef, useEffect, useState } from "react";
 
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
 
 const DATA_SOURCE = ["Seller", "Buyer", "Logistic Service Provider", "Inspection Provider"];
 
@@ -30,9 +30,9 @@ const RowField = ({ value, ignoreValues = [], isEdit, isRequired, ...props }) =>
       onChange={onChange}
       placeholder={isRequired ? "*" : ""}
     >
-      {DATA_SOURCE.filter((d) => !ignoreValues.includes(d)).map(() => (
-        <MenuItem key={value} value={value}>
-          {value}
+      {DATA_SOURCE.filter((d) => !ignoreValues.includes(d)).map((menuValue) => (
+        <MenuItem key={menuValue} value={menuValue}>
+          {menuValue}
         </MenuItem>
       ))}
     </Select>
@@ -82,7 +82,6 @@ export const DocumentRuleTable = forwardRef(({ data }, ref) => {
 
       dataConvert.push(ds || d);
     });
-    console.log("debug dataConvert", dataConvert);
     ref.current.set("value", dataConvert);
     setDatasource(dataConvert);
   }, [data]);

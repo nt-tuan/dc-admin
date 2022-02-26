@@ -1,9 +1,11 @@
+import { Checkbox, Form, Input, Modal, Radio } from "antd";
+import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import React, { useCallback, useState } from "react";
-import { Checkbox, Input, Radio, Form, Modal } from "antd";
-import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
+
+import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
 import { REQUIRED_ERR } from "commons/consts";
 import { createFormErrorComp } from "utils/form.util";
-import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 const CustomFieldOption = (props) => {
   const { type, openChildField, canAddChildFields, fieldName, form, fieldIndex } = props;
@@ -112,6 +114,7 @@ const CustomFieldOption = (props) => {
                       );
                     })}
                     <Modal
+                      getContainer={getLagecyModalContainer}
                       centered
                       visible={showDeleteConfirmPopup}
                       onCancel={() => setShowDeleteConfirmPopup(false)}

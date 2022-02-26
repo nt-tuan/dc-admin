@@ -1,8 +1,9 @@
 import { APIError, CustomError } from "commons/types";
+import { log, popError } from "./logger.util";
 
 import React from "react";
 import { RouteConst } from "commons/consts";
-import { log } from "./logger.util";
+import { globalSnackbarRef } from "@/components/snackbar-provider/snackbar-provider.comp";
 import { removeAuthCredential } from "./auth.util";
 import { useMessage } from "@/hooks/use-message";
 
@@ -32,6 +33,9 @@ export const axiosErrorHandler = (err) => {
   throw new Error("Unexpected");
 };
 
+/**
+ * @deprecated should be replaced by useAsyncErrorHandler to avoid global mutation
+ */
 export const asyncErrorHandlerWrapper = async (asyncFunc) => {
   try {
     return await asyncFunc();
@@ -47,7 +51,10 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
     if (process.env.NODE_ENV !== "production") {
       log(error);
     }
-    // message.error("Something went wrong, please press F5 to refresh the page", 0);
+
+    if (globalSnackbarRef.current?.enqueueSnackbar) {
+      popError();
+    }
   }
 };
 

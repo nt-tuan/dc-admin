@@ -1,11 +1,12 @@
-import React from "react";
-import { selectNotificationLoadingState } from "redux/notification/notification.duck";
-import { NotificationList } from "components/commons/notification-list/notification-list.comp";
 import { fireEvent, render, waitFor } from "@testing-library/react";
+
 import { NotificationDropdown } from "./notification-dropdown.comp";
+import { NotificationList } from "components/commons/notification-list/notification-list.comp";
 import { Popover } from "@mui/material";
-import { createMemoryHistory } from "history";
+import React from "react";
 import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
+import { selectNotificationLoadingState } from "redux/notification/notification.duck";
 import { setNotificationsRead } from "services";
 
 jest.mock("utils/config.util");

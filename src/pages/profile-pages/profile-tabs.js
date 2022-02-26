@@ -1,9 +1,9 @@
-import { DTCSection, DTCTabs, useTabSearchParams } from "components/commons";
+import { DTCSection, DTCTabs, useTabPathParams } from "components/commons";
 import { InformationTab, SettingTab } from "./components";
+import { RouteConst, USER_TABS_NAME } from "commons/consts";
 
 import { BankDetailsTab } from "components/bank-details";
 import React from "react";
-import { USER_TABS_NAME } from "commons/consts";
 
 const dataDefaultTabs = [
   {
@@ -23,7 +23,7 @@ const dataDefaultTabs = [
   }
 ];
 const ProfileTabs = () => {
-  const [value, onChange] = useTabSearchParams(dataDefaultTabs);
+  const [value, onChange] = useTabPathParams(dataDefaultTabs, RouteConst.PROFILE_PAGES, "tabName");
   return (
     <DTCSection>
       <DTCSection.Content>

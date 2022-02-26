@@ -1,7 +1,9 @@
 import { RequestWithdrawalForm } from "./request-withdrawal-form.comp";
 import { render } from "@testing-library/react";
 import { useMessage } from "@/hooks/use-message";
+
 jest.mock("@/hooks/use-message");
+jest.mock("@/services");
 beforeEach(() => {
   useMessage.mockReturnValue({
     success: jest.fn()
