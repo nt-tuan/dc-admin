@@ -1,5 +1,5 @@
 import { DTCSection, DTCTable } from "components/commons";
-import { WALLET_SCHEMA, getWalletDescriptions } from "../wallet.schema";
+import { WALLET_SCHEMA, getWalletDescriptions, getWalletTransactionType } from "../wallet.schema";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,6 +16,7 @@ const moneyFormatter = (params) => toCurrency(params.value);
 export const WalletTransactions = ({ transactionDetails, onDownload }) => {
   const columns = React.useMemo(() => {
     const descriptionSet = getWalletDescriptions();
+    const typeSet = getWalletTransactionType();
     return [
       {
         headerName: LABELS[FIELDS.createdDate],
@@ -26,6 +27,11 @@ export const WalletTransactions = ({ transactionDetails, onDownload }) => {
       {
         headerName: LABELS[FIELDS.type],
         field: FIELDS.type,
+        renderCell: (params) => {
+          const type = params.row?.type;
+          if (type in typeSet) return typeSet[type];
+          return "";
+        },
         width: 200
       },
       {
