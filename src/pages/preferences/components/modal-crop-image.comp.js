@@ -67,7 +67,17 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess,
     if (imageUrl) {
       const { width, height } = await getImageDimension(imageUrl);
 
-      setAspect(width > height ? width / height : height / width);
+      setAspect(() => {
+        if (width / height >= 2) {
+          return width / height;
+        }
+        if (type === "LOGO" || type === "FAVICON") {
+          // aspect width/height is 3 / 3
+          return 1;
+        }
+        // aspect width/height is 3 / 4
+        return 0.75;
+      });
     }
   }, [imageUrl]);
 

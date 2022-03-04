@@ -144,7 +144,11 @@ function UploadImageBox({ shortName, imageUrl, type, onSuccess, messageField }) 
           type="file"
         />
         {imagePreview ? (
-          <img style={{ height: "100%" }} src={imagePreview} alt={shortName} />
+          <img
+            style={{ height: "100%", width: "100%", objectFit: "contain" }}
+            src={imagePreview}
+            alt={shortName}
+          />
         ) : (
           <span> Upload {shortName}</span>
         )}
