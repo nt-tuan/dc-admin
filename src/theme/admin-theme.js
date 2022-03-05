@@ -67,26 +67,8 @@ export const adminTheme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"'
     ].join(","),
-    h3: {
-      color: "inherit",
-      fontSize: 26,
-      fontWeight: 700
-    },
-    h4: {
-      fontSize: 18,
-      lineHeight: 1,
-      fontWeight: 700,
-      color: "inherit"
-    },
     h5: {
-      fontSize: 16,
-      fontWeight: 700,
-      color: "inherit"
-    },
-    h6: {
-      fontSize: 12,
-      fontWeight: 700,
-      color: "inherit"
+      fontWeight: 700
     }
   }
 });

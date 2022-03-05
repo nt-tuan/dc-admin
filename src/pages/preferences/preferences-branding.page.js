@@ -1,17 +1,20 @@
-import Box from "@mui/material/Box";
-import React, { useEffect, useState } from "react";
+import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
 import * as yup from "yup";
-import Typography from "@mui/material/Typography";
-import { useFormik } from "formik";
-import UploadImage from "./components/upload-image.comp";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+
+import React, { useEffect, useState } from "react";
 import { getOrganization, updateOrganization } from "@/services/preference.service";
+
+import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useMessage } from "@/hooks/use-message";
 import MuiTextField from "@mui/material/TextField";
 import { SETTINGS_MESSAGE } from "@/commons/consts";
+import Typography from "@mui/material/Typography";
+import UploadImage from "./components/upload-image.comp";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { useDispatch } from "react-redux";
-import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
+import { useFormik } from "formik";
+import { useMessage } from "@/hooks/use-message";
+
 const ImageUploadList = [
   {
     label: "Marketplace Logo",
@@ -52,7 +55,7 @@ function FormHeader({ loading, formik }) {
   return (
     <Box display={"flex"} justifyContent={"space-between"}>
       <Box>
-        <Typography variant="h3" fontWeight={"bold"} style={{ marginBottom: 20 }}>
+        <Typography variant="h5" fontWeight={"bold"} style={{ marginBottom: 20 }}>
           Branding
         </Typography>
         <MuiTextField

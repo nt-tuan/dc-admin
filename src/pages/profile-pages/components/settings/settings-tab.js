@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 function SettingTab() {
   return (
     <Box>
-      <Typography variant="h3">Settings</Typography>
+      <Typography variant="h5">Settings</Typography>
       <Divider sx={{ mb: 6, mt: 2 }} />
       <Stack direction="column" spacing={6}>
         <NotificationPreference />

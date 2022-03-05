@@ -15,7 +15,7 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
 
   return (
     <Box pr={{ xs: 3, md: 5 }} p={3}>
-      <Typography mb={2} variant="h3">
+      <Typography mb={2} variant="h5">
         Forgot your password?
       </Typography>
       <Typography mb={4}>

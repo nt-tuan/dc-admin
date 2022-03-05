@@ -14,7 +14,7 @@ function TwoFAFrequency({ setting, setSetting }) {
     <Box w="100%">
       <Grid container columnSpacing={4}>
         <Grid item xs={12} sm={12} md={6}>
-          <Typography variant="h4" sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ mb: 2 }}>
             Enable Two-Factor Authentication (2FA)
           </Typography>
           <Typography>

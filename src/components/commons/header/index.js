@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-export const Header = ({ children, subtitle, action, variant = "h3" }) => {
+export const Header = ({ children, subtitle, action, variant = "h5" }) => {
   return (
     <Box mb={2}>
       <Stack direction="row" alignItems="center" spacing={1}>

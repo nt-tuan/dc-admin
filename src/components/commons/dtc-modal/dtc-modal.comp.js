@@ -32,7 +32,7 @@ export const DTCModal = ({ open, onClose, title, content, size = "default" }) =>
     <Modal width={450} open={open} onClose={onClose}>
       <Box sx={style} width={contentSizes[size]}>
         <Stack px={4} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography id="confirm-modal-title" variant="h4">
+          <Typography id="confirm-modal-title" variant="h5">
             {title}
           </Typography>
           <IconButton onClick={onClose}>

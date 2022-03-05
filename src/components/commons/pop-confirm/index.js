@@ -41,7 +41,7 @@ export const Popconfirm = ({ id, children, title, onConfirm, onCancel, okText, c
       >
         <Box px={4} py={2}>
           <Stack direction="column" spacing={2}>
-            <Typography variant="h4">{title}</Typography>
+            <Typography variant="h5">{title}</Typography>
             <Stack direction="row" spacing={1}>
               <Button variant="contained" onClick={handleConfirm}>
                 {okText || "Ok"}

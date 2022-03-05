@@ -1,14 +1,14 @@
-import React from "react";
-import { getMenuSettingsData } from "./menu-data";
-import { ContentLayout } from "./content-layout.comp";
 import { AppSideBar } from "./app-side-bar.comp";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { RouteConst } from "@/commons/consts";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { ContentLayout } from "./content-layout.comp";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { Link } from "react-router-dom";
+import React from "react";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { getMenuSettingsData } from "./menu-data";
 
 const SettingSideBar = (props) => {
   const { open } = props;
@@ -29,7 +29,7 @@ const SettingSideBar = (props) => {
           </Box>
 
           {open && (
-            <Typography px={2} variant="h3">
+            <Typography px={2} variant="h5">
               Settings
             </Typography>
           )}

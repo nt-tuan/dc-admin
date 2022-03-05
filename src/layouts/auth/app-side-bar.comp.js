@@ -1,14 +1,14 @@
+import { AppFooter } from "./app-footer.comp";
 import { AppLeftMenu } from "./app-left-menu.comp";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CollapseIcon from "@/components/icons/collapse.comp";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { useBreakpoints } from "utils/use-breakpoints";
-import { AppFooter } from "./app-footer.comp";
 
 export const drawerWidth = 240;
 const MobileDrawer = styled(MuiDrawer)(({ theme }) => ({
@@ -25,8 +25,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   ({ theme, open }) => ({
     "& .MuiDrawer-paper": {
       position: "relative",
-      marginTop: 50,
-      height: "calc(100% - 50px)",
+      height: "100%",
       whiteSpace: "nowrap",
       width: drawerWidth,
       backgroundColor: theme.palette.grey[100],

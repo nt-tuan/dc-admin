@@ -7,8 +7,8 @@ import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectBrowserFingerprint } from "redux/settings/settings.duck";
 import { update2FASettings } from "services";
-import { useSelector } from "react-redux";
 import { useMessage } from "@/hooks/use-message";
+import { useSelector } from "react-redux";
 
 export const TwoStepEnabled = ({ is2FA, onEnabled, onDisabled }) => {
   const BrowserFingerprint = useSelector(selectBrowserFingerprint);
@@ -30,7 +30,7 @@ export const TwoStepEnabled = ({ is2FA, onEnabled, onDisabled }) => {
   };
   return (
     <Box>
-      <Typography sx={{ mb: 2 }} variant="h4">
+      <Typography sx={{ mb: 2 }} variant="h5">
         Two-Step Authentication
       </Typography>
       <FormControlLabel

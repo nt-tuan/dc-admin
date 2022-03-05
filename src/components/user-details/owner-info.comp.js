@@ -8,7 +8,7 @@ import countryList from "assets/country.json";
 export const OwnerInfo = ({ owners }) => {
   return (
     <Box>
-      <Typography variant="h4" color="error" mb={1}>
+      <Typography variant="h5" color="error" mb={1}>
         Owner Information
       </Typography>
       {owners.map((owner) => {

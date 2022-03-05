@@ -51,7 +51,7 @@ function NotificationPreference() {
 
   return (
     <div>
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      <Typography variant="h5" sx={{ mb: 5 }}>
         Notification Preference
       </Typography>
       <Stack direction="row" flexWrap="wrap" spacing={2}>

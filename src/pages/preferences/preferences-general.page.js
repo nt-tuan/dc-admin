@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 function PreferencesGeneralPage() {
   return (
     <Box>
-      <Typography variant="h3">General</Typography>
+      <Typography variant="h5">General</Typography>
     </Box>
   );
 }

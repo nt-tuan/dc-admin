@@ -95,7 +95,7 @@ function PassCode() {
   return (
     <Box>
       <Header
-        variant="h4"
+        variant="h5"
         action={
           <ToggleEditButton variant="contained" isEdit={isShowQuestion} onClick={handleEdit} />
         }

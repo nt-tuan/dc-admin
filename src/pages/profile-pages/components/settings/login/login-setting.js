@@ -58,7 +58,7 @@ function LoginSetting() {
 
   return (
     <div>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <Typography variant="h5" sx={{ mb: 2 }}>
         Login Settings
       </Typography>
 

@@ -12,8 +12,8 @@ import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectUsers } from "redux/user/user.duck";
 import { submitBankDetails } from "services/bankDetail.service";
-import { useSelector } from "react-redux";
 import { useMessage } from "@/hooks/use-message";
+import { useSelector } from "react-redux";
 
 const emptyBankDetails = {
   accountName: "",
@@ -88,7 +88,7 @@ export function BankDetailForm({ companyName, onUpdated, bankDetails }) {
           {hasSecondary && (
             <>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mt={4}>
-                <Typography variant="h4">Secondary Bank Account</Typography>
+                <Typography variant="h5">Secondary Bank Account</Typography>
                 <RenderField>
                   {({ setFieldValue }) => {
                     const removeSecondaryBank = () => {

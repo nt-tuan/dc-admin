@@ -120,7 +120,7 @@ export const BankDetailsReadonly = ({
               )}
               {showTitle && (
                 <Box py={2} pl={1} sx={{ color: "primary.main" }}>
-                  <Typography variant="h4">{renderTitle(index)}</Typography>
+                  <Typography variant="h5">{renderTitle(index)}</Typography>
                 </Box>
               )}
               {Object.values(schema).map((field, schemaKeyIndex) => (

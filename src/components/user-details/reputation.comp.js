@@ -23,7 +23,7 @@ export const Reputation = ({ data, getUserDetails, isEditable, user }) => {
   return (
     <Stack spacing={2}>
       <Stack spacing={1} direction="row" alignItems="center">
-        <Typography color="error" variant="h4">
+        <Typography color="error" variant="h5">
           Reputation
         </Typography>
         {isEditable && (

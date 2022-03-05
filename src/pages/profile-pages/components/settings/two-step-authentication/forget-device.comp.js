@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { forgetBrowser } from "services";
 import { selectBrowserFingerprint } from "redux/settings/settings.duck";
-import { useSelector } from "react-redux";
 import { useMessage } from "@/hooks/use-message";
+import { useSelector } from "react-redux";
 export const ForgotDevice = () => {
   const message = useMessage();
   const BrowserFingerprint = useSelector(selectBrowserFingerprint);
@@ -21,7 +21,7 @@ export const ForgotDevice = () => {
     <Box w="100%">
       <Grid container columnSpacing={4}>
         <Grid item xs={12} sm={12} md={6}>
-          <Typography variant="h4" sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ mb: 2 }}>
             Remembered Computer
           </Typography>
           <div>

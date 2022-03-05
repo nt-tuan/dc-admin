@@ -12,7 +12,7 @@ import countryList from "assets/country.json";
 export const CompanyInfo = ({ companyInfo, companyAddress }) => {
   return (
     <Box>
-      <Typography mb={1} variant="h4" color="error">
+      <Typography mb={1} variant="h5" color="error">
         Company Information
       </Typography>
       <Box mb={4}>
@@ -48,7 +48,7 @@ const CompanyInfoReadonly = ({ companyInfo }) => {
 const CompanyAddressReadonly = ({ companyAddress }) => {
   return (
     <Box>
-      <Typography mb={1} variant="h4" color="error">
+      <Typography mb={1} variant="h5" color="error">
         Company Address
       </Typography>
 

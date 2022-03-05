@@ -9,7 +9,7 @@ const Error404Page = () => (
   <>
     <Helmet title="Page 404" />
     <Box pl={2}>
-      <Typography variant="h3">Page not found</Typography>
+      <Typography variant="h5">Page not found</Typography>
       <Typography variant="subtitle1">
         This page is deprecated, deleted, or does not exist at all
       </Typography>

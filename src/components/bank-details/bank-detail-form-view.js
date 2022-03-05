@@ -183,7 +183,7 @@ export const FormView = ({ name, companyName }) => {
           />
         </Grid>
       </Grid>
-      <Typography py={2} color="primary" variant="h4">
+      <Typography py={2} color="primary" variant="h5">
         Beneficiary Address
       </Typography>
       <Grid container columnSpacing={1} rowSpacing={2}>

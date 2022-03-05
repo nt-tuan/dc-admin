@@ -31,7 +31,7 @@ const ProfileCard = memo((props) => {
           sx={{ textAlign: "center" }}
         >
           <Stack spacing={1} alignItems="center" justifyContent="center">
-            <Typography component="span" variant="h4">
+            <Typography component="span" variant="h5">
               {successfulTransactions ?? 0}
             </Typography>
             <Typography>
@@ -39,7 +39,7 @@ const ProfileCard = memo((props) => {
             </Typography>
           </Stack>
           <Stack spacing={1} alignItems="center" justifyContent="center">
-            <Typography component="span" variant="h4">
+            <Typography component="span" variant="h5">
               {successfulTransactions ?? 0}
             </Typography>
             <Typography>

@@ -21,7 +21,7 @@ DTCSection.Header = ({ children, actions }) => {
       action={<Box>{actions}</Box>}
       title={
         <Typography
-          variant="h3"
+          variant="h5"
           sx={{
             color: (theme) => theme.palette.primary.main
           }}

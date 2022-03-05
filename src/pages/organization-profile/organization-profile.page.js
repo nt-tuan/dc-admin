@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useState, useMemo } from "react";
-import { Alert, Box, Grid, Snackbar, Typography, TextField } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { Alert, Box, Grid, Snackbar, TextField, Typography } from "@mui/material";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { SETTINGS_MESSAGE, getErrorMaxCharactersMessage } from "commons/consts";
 import { getOrganizationName, updateOrganizationName } from "services/organization.service";
+
+import LoadingButton from "@mui/lab/LoadingButton";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { styled } from "@mui/system";
-import { getErrorMaxCharactersMessage, SETTINGS_MESSAGE } from "commons/consts";
 
 const FieldInput = styled(TextField)(() => ({
   ".MuiInputLabel-asterisk": {
@@ -103,9 +104,9 @@ const OrganizationProfilePage = () => {
         </Alert>
       </Snackbar>
 
-      <Grid container direction="row" justifyContent="space-between" spacing={3}>
+      <Grid container direction="row" justifyContent="space-between" spacing={3} px={3} pt={3}>
         <Grid item xs={12} md={6} lg={5}>
-          <Typography variant="h3" fontWeight={700}>
+          <Typography variant="h5" fontWeight={700}>
             Organization Profile
           </Typography>
           <Box paddingTop={3}>

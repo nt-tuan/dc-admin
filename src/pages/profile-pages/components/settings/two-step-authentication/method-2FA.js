@@ -74,7 +74,7 @@ function Method2FA({ setting }) {
     <Box w="100%">
       <Grid container columnSpacing={4}>
         <Grid item xs={12} sm={12} md={6}>
-          <Typography variant="h4" sx={{ mb: 2 }}>
+          <Typography variant="h5" sx={{ mb: 2 }}>
             Two-Factor Authentication (2FA) Methods
           </Typography>
           <Typography>

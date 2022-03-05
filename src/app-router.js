@@ -6,14 +6,14 @@ import { ConnectedRouter } from "connected-react-router";
 import { Helmet } from "react-helmet";
 import { Loader } from "components/commons";
 import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
-import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
 import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
-import { useSelector } from "react-redux";
-import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
+import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
 import { PublicLayout } from "./layouts/public/public.layout";
 import { RouteConst } from "commons/consts";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
 import { getAssetURL } from "utils/config.util";
+import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
+import { useSelector } from "react-redux";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
