@@ -9,5 +9,6 @@ export const CountryField = (props) => {
       label: item.name
     }));
   }, []);
+
   return <AutocompleteField {...props} dataSource={dataSource} />;
 };

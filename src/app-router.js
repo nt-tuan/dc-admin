@@ -12,7 +12,9 @@ import { PublicLayout } from "./layouts/public/public.layout";
 import { RouteConst } from "commons/consts";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
 import { getAssetURL } from "utils/config.util";
+import { loadable } from "./utils/loadable.util";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
+import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
 import { useSelector } from "react-redux";
 
 const getChildrenPaths = (route) => {
@@ -69,15 +71,6 @@ const AppRouter = ({ history }) => {
   );
 };
 export default AppRouter;
-
-const loadable = (loader) =>
-  React.lazy(() =>
-    new Promise((resolve) =>
-      setTimeout(() => {
-        resolve();
-      }, 500)
-    ).then(loader)
-  );
 
 const publicRoutes = [
   {
@@ -193,36 +186,6 @@ const routeData = [
             exact: false
           },
           {
-            path: RouteConst.TRADE_ROUTES,
-            Component: loadable(() => import("pages/route/route.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.CREATE_TRADE_ROUTES,
-            Component: loadable(() => import("pages/add-route/add-route.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.EDIT_TRADE_ROUTE,
-            Component: loadable(() => import("pages/edit-route/edit-route.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ADD_DEFAULT_ROUTE,
-            Component: loadable(() => import("pages/add-default-route/add-default-route.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.EDIT_DEFAULT_ROUTE,
-            Component: loadable(() => import("pages/edit-default-route/edit-default-route.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.DOCUMENT,
-            Component: loadable(() => import("pages/document/document.page")),
-            exact: true
-          },
-          {
             path: RouteConst.USER_DETAILS,
             Component: loadable(() => import("pages/user-details/user-details.page")),
             exact: true
@@ -247,7 +210,8 @@ const routeData = [
           {
             path: RouteConst.PROFILE_PAGES,
             Component: loadable(() => import("pages/profile-pages/profile-page"))
-          }
+          },
+          ...tradeRouteRoutes
         ]
       }
     ]

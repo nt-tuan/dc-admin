@@ -57,7 +57,36 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
     }
   }
 };
-
+export const useErrorHandler = () => {
+  const message = useMessage();
+  const onError = React.useCallback(
+    (error) => {
+      if (error instanceof Error) {
+        if (error.message === "401") {
+          removeAuthCredential().then(() => {
+            window.location.href = RouteConst.LOGIN_ROUTE;
+          });
+          return;
+        }
+      }
+      if (process.env.NODE_ENV !== "production") {
+        log(error);
+      }
+      if (error != null) {
+        const { errMsg } = error;
+        if (typeof errMsg === "string") {
+          message.error(errMsg);
+          return;
+        }
+      }
+      message.error("Something went wrong, please press F5 to refresh the page", {
+        persist: true
+      });
+    },
+    [message]
+  );
+  return { onError };
+};
 export const useAsyncErrorHandler = () => {
   const message = useMessage();
 

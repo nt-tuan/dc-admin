@@ -1,8 +1,6 @@
 {
   "extends": ["react-app"],
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -29,7 +27,8 @@
     "no-console": 0,
     "react/no-multi-comp": 0,
     "no-unused-vars": 1,
-    "no-restricted-globals": 0
+    "no-restricted-globals": 0,
+    "no-dupe-keys": "error"
   },
   "parserOptions": {
     "ecmaFeatures": {

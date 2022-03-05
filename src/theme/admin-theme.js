@@ -43,6 +43,16 @@ export const adminTheme = createTheme({
               }
             : undefined
       }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            paddingTop: 0,
+            paddingBottom: 0
+          }
+        }
+      }
     }
   },
   palette: {

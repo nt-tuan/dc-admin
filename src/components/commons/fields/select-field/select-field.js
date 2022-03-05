@@ -6,9 +6,9 @@ import React from "react";
 import Select from "@mui/material/Select";
 import { useField } from "formik";
 
-export const SelectField = ({ name, dataSource, label, onChangeValue, ...props }) => {
+export const SelectField = ({ name, dataSource, label, onChangeValue, required, ...props }) => {
   const [field, meta] = useField({ name, type: "search" });
-  const labelId = `select-field-${name}-label`;
+  const labelId = `select-field-${name}-label`.replace(".", "__");
   const showError = Boolean(meta.touched && meta.error);
   const handleChange = (...params) => {
     field.onChange(...params);
@@ -16,25 +16,27 @@ export const SelectField = ({ name, dataSource, label, onChangeValue, ...props }
       onChangeValue(...params);
     }
   };
+
   return (
-    <FormControl {...props}>
-      <InputLabel htmlFor={labelId}>{label}</InputLabel>
+    <FormControl error={showError} {...props}>
+      <InputLabel required={required} htmlFor={labelId}>
+        {label}
+      </InputLabel>
       <Select
         name={name}
         labelId={labelId}
         value={field.value}
         label={label}
         onChange={handleChange}
-        error={showError}
       >
-        {dataSource.map(({ value, label }) => (
-          <MenuItem key={value} value={value}>
-            {label}
+        {dataSource.map(({ value, label: menuLabel, disabled }) => (
+          <MenuItem disabled={disabled} key={value} value={value}>
+            {menuLabel}
           </MenuItem>
         ))}
       </Select>
       {showError && (
-        <FormHelperText error={meta.error} id={`select-field-${name}-helper-text`}>
+        <FormHelperText id={`select-field-${name}-helper-text`} required={required}>
           {meta.error}
         </FormHelperText>
       )}

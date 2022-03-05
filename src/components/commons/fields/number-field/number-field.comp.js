@@ -25,20 +25,21 @@ export const NumberFormat = React.forwardRef((props, ref) => {
   );
 });
 
-export const NumberField = ({ name, fieldConfig, ...props }) => {
+export const NumberField = ({ name, fieldConfig, required, ...props }) => {
   const [field, meta] = useField({ name, type: "text", ...fieldConfig });
   const { setFieldValue } = useFormikContext();
   const handleChange = (event) => {
     setFieldValue(name, event.target.value);
   };
-
+  const showError = Boolean(meta.touched && meta.error);
   return (
     <MuiTextField
       value={field.value}
       name={field.name}
       onChange={handleChange}
-      error={meta.touched && meta.error}
+      error={showError}
       helperText={meta.touched && meta.error}
+      InputLabelProps={{ required, error: showError }}
       InputProps={{ ...props?.InputProps, inputComponent: NumberFormat }}
       {...props}
     />

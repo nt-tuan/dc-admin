@@ -1,7 +1,7 @@
 import MuiTextField from "@mui/material/TextField";
 import { useField } from "formik";
 
-export const TextField = ({ name, fieldConfig, ...props }) => {
+export const TextField = ({ name, fieldConfig, required, ...props }) => {
   const [field, meta] = useField({ name, type: "text", ...fieldConfig });
 
   return (
@@ -11,6 +11,7 @@ export const TextField = ({ name, fieldConfig, ...props }) => {
       onChange={field.onChange}
       error={meta.touched && meta.error}
       helperText={meta.touched && meta.error}
+      required={required}
       {...props}
     />
   );

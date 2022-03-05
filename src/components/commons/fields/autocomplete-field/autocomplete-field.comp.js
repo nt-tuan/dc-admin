@@ -1,12 +1,23 @@
 import { useField, useFormikContext } from "formik";
 
 import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-export const AutocompleteField = ({ name, dataSource, label, placeholder, ...props }) => {
+export const AutocompleteField = ({
+  name,
+  dataSource,
+  label,
+  placeholder,
+  required,
+  loading,
+  disabled,
+  filterOptions,
+  ...props
+}) => {
   const [field, meta] = useField({ name, type: "search" });
   const { setFieldValue } = useFormikContext();
   const showError = Boolean(meta.touched && meta.error);
@@ -25,17 +36,37 @@ export const AutocompleteField = ({ name, dataSource, label, placeholder, ...pro
   };
 
   return (
-    <FormControl error={Boolean(showError)} {...props}>
+    <FormControl error={showError} {...props}>
       <Autocomplete
+        loading={loading}
+        disabled={disabled}
         value={field.value}
         options={options}
         onChange={handleChange}
         placeholder={placeholder}
+        filterOptions={filterOptions}
         getOptionLabel={(item) => (dataMap[item] ? dataMap[item].label : "")}
-        renderInput={(params) => <TextField {...params} required={props.required} label={label} />}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            disabled={disabled}
+            InputLabelProps={{ ...params?.InputLabelProps, error: showError, disabled, required }}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              )
+            }}
+            error={showError}
+            label={label}
+          />
+        )}
       />
       {showError && (
-        <FormHelperText error={meta.error} id={`select-field-${name}-helper-text`}>
+        <FormHelperText error={showError} id={`select-field-${name}-helper-text`}>
           {meta.error}
         </FormHelperText>
       )}
