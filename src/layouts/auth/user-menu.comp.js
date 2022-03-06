@@ -9,7 +9,6 @@ import {
   ListItemIcon as MuiListItemIcon,
   styled
 } from "@mui/material";
-import { RouteConst, USER_TABS_NAME } from "commons/consts";
 import { useDispatch, useSelector } from "react-redux";
 
 import AccountIcon from "@/components/icons/account.comp";
@@ -18,6 +17,8 @@ import Button from "./button.comp";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import React from "react";
+import { RouteConst } from "commons/consts";
+import { RoutePathEnum } from "@/components/user-profile/constants/route-paths.const";
 import Stack from "@mui/material/Stack";
 import { useHistory } from "react-router-dom";
 
@@ -27,7 +28,7 @@ const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
 const menuItems = [
   {
     title: "My Profile",
-    url: `/admin/profile/${USER_TABS_NAME.profileInfo}`,
+    url: RoutePathEnum.PERSIONAL_INFORMATION,
     icon: <AccountIcon />
   },
   {

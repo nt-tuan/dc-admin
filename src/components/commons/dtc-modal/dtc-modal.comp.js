@@ -1,10 +1,8 @@
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import React from "react";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 const style = {
@@ -18,33 +16,34 @@ const style = {
   borderRadius: 1,
   borderColor: "grey.600",
   shadowBox: (theme) => theme.shadows[1],
-  pt: 2,
-  pb: 3
+  py: 3
 };
 
 const contentSizes = {
   large: "80%",
   default: 600,
-  small: 500
+  small: 416,
+  tiny: 324
 };
-export const DTCModal = ({ open, onClose, title, content, size = "default" }) => {
+export const DTCModal = ({ open, onClose, title, content, width = 450, size = "default" }) => {
   return (
-    <Modal width={450} open={open} onClose={onClose}>
+    <Modal width={width} open={open} onClose={onClose}>
       <Box sx={style} width={contentSizes[size]}>
-        <Stack px={4} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography id="confirm-modal-title" variant="h5">
+        {title && (
+          <Typography px={3} component="div" id="confirm-modal-title" variant="h5">
             {title}
           </Typography>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </Stack>
-        <Divider sx={{ mt: 2 }} />
+        )}
         {content && (
-          <Box px={4} mt={4} id="confirm-modal-description">
+          <Box px={3} mt={2} id="confirm-modal-description">
             {content}
           </Box>
         )}
+        <Box position="absolute" top={1} right={1}>
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
       </Box>
     </Modal>
   );

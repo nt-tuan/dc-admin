@@ -2,10 +2,12 @@ import React, { Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import { AuthLayout } from "./layouts/auth/auth-layout.comp";
+import Box from "@mui/material/Box";
 import { ConnectedRouter } from "connected-react-router";
 import { Helmet } from "react-helmet";
 import { Loader } from "components/commons";
 import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
+import { MainContainer } from "./layouts/auth/main-container.comp";
 import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
 import { PublicLayout } from "./layouts/public/public.layout";
@@ -16,6 +18,7 @@ import { loadable } from "./utils/loadable.util";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
 import { useSelector } from "react-redux";
+import { userProfileRoutes } from "./components/user-profile/user-profile.routes";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
@@ -30,7 +33,13 @@ const AppRouter = ({ history }) => {
   const brandingAssets = useSelector(selectBrandingAssetsData);
   const renderRoutes = (routes) => {
     return (
-      <Suspense fallback={<Loader />}>
+      <Suspense
+        fallback={
+          <Box height={200}>
+            <Loader />
+          </Box>
+        }
+      >
         <Switch>
           {routes.map((route) => {
             if (route.children == null || route.children.length === 0) {
@@ -131,87 +140,94 @@ const routeData = [
         Component: MainAuthLayout,
         children: [
           {
-            path: RouteConst.HOME_ROUTE,
-            Component: () => <Redirect to={RouteConst.ORDERS} />,
-            exact: true
+            key: "main-auth-container",
+            Component: MainContainer,
+            children: [
+              {
+                path: RouteConst.HOME_ROUTE,
+                Component: () => <Redirect to={RouteConst.ORDERS} />,
+                exact: true
+              },
+              {
+                path: RouteConst.USER_MANAGEMENT,
+                Component: loadable(() => import("pages/user-management/user-management.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.ORDERS,
+                Component: loadable(() => import("pages/orders/orders.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.ACCOUNT_SUMMARY,
+                Component: loadable(() => import("pages/account-summary/account-summary.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.WITHDRAW_FUND,
+                Component: loadable(() => import("pages/withdraw-fund/withdraw-fund.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.WALLET,
+                Component: loadable(() => import("pages/wallet/wallet.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.FEATURE_TOGGLES,
+                Component: loadable(() => import("pages/feature-toggles/feature-toggles.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.ADD_FUNDS,
+                Component: loadable(() => import("pages/add-funds/add-funds.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.PRODUCT_DATABASE,
+                Component: loadable(() => import("pages/product-database/product-database.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.ADD_PRODUCT,
+                Component: loadable(() => import("pages/add-product/add-product.page")),
+                exact: false
+              },
+              {
+                path: RouteConst.EDIT_PRODUCT,
+                Component: loadable(() => import("pages/edit-product/edit-product.page")),
+                exact: false
+              },
+              {
+                path: RouteConst.USER_DETAILS,
+                Component: loadable(() => import("pages/user-details/user-details.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.NOTIFICATION,
+                Component: loadable(() => import("pages/notification/notification.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.ADMIN_USER_MANAGEMENT,
+                Component: loadable(() =>
+                  import("pages/admin-user-management/admin-user-management.page")
+                ),
+                exact: true
+              },
+              {
+                path: RouteConst.ADD_ADMIN_USER,
+                Component: loadable(() => import("pages/add-admin-user/add-admin-user.page")),
+                exact: true
+              },
+              {
+                path: RouteConst.PROFILE_PAGES,
+                Component: loadable(() => import("pages/profile-pages/profile-page"))
+              }
+            ]
           },
-          {
-            path: RouteConst.USER_MANAGEMENT,
-            Component: loadable(() => import("pages/user-management/user-management.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ORDERS,
-            Component: loadable(() => import("pages/orders/orders.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ACCOUNT_SUMMARY,
-            Component: loadable(() => import("pages/account-summary/account-summary.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.WITHDRAW_FUND,
-            Component: loadable(() => import("pages/withdraw-fund/withdraw-fund.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.WALLET,
-            Component: loadable(() => import("pages/wallet/wallet.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.FEATURE_TOGGLES,
-            Component: loadable(() => import("pages/feature-toggles/feature-toggles.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ADD_FUNDS,
-            Component: loadable(() => import("pages/add-funds/add-funds.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.PRODUCT_DATABASE,
-            Component: loadable(() => import("pages/product-database/product-database.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ADD_PRODUCT,
-            Component: loadable(() => import("pages/add-product/add-product.page")),
-            exact: false
-          },
-          {
-            path: RouteConst.EDIT_PRODUCT,
-            Component: loadable(() => import("pages/edit-product/edit-product.page")),
-            exact: false
-          },
-          {
-            path: RouteConst.USER_DETAILS,
-            Component: loadable(() => import("pages/user-details/user-details.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.NOTIFICATION,
-            Component: loadable(() => import("pages/notification/notification.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.ADMIN_USER_MANAGEMENT,
-            Component: loadable(() =>
-              import("pages/admin-user-management/admin-user-management.page")
-            ),
-            exact: true
-          },
-          {
-            path: RouteConst.ADD_ADMIN_USER,
-            Component: loadable(() => import("pages/add-admin-user/add-admin-user.page")),
-            exact: true
-          },
-          {
-            path: RouteConst.PROFILE_PAGES,
-            Component: loadable(() => import("pages/profile-pages/profile-page"))
-          },
-          ...tradeRouteRoutes
+          ...tradeRouteRoutes,
+          ...userProfileRoutes
         ]
       }
     ]

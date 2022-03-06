@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 import { API_ERRORS, MESSAGES } from "commons/consts";
 import { Form, Formik } from "formik";
-import { confirmPaswordValidationSchema, passwordValidationSchema } from "./password.schema";
+import { confirmPaswordValidationSchema, passwordValidationSchema } from "./schema";
 
 import { APIError } from "commons/types";
 import { AuthService } from "services/auth.service";

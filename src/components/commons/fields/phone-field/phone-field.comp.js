@@ -72,17 +72,27 @@ const usePhoneField = ({ name, countryFieldName }) => {
   return { meta, countryCode, localNumber, changeCountryCode, changeLocalNumber };
 };
 
-export const PhoneField = ({ label, name, placeholder, countryFieldName, ...props }) => {
+export const PhoneField = ({
+  label,
+  name,
+  placeholder,
+  countryFieldName,
+  fullWidth,
+  prefixeDisableClearable,
+  prefixWidth = 120,
+  ...props
+}) => {
   const { meta, countryCode, localNumber, changeCountryCode, changeLocalNumber } = usePhoneField({
     name,
     countryFieldName
   });
   const labelId = `phone-field-${name}-label`;
   return (
-    <FormControl>
+    <FormControl fullWidth={fullWidth}>
       <Stack direction="row" spacing={1}>
         <Autocomplete
-          sx={{ width: 150 }}
+          disableClearable={prefixeDisableClearable}
+          sx={{ width: prefixWidth }}
           options={phonePrefixes}
           value={countryCode}
           onChange={(_, value) => changeCountryCode(value)}

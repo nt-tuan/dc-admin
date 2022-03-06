@@ -4,7 +4,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import { useBreakpoints } from "@/utils/use-breakpoints";
 
-export const ContentLayout = ({ children, SideBar = AppSideBar, menuData }) => {
+export const ContentLayout = ({ children, SideBar = AppSideBar, menuData, ...props }) => {
   const { isSmall } = useBreakpoints();
   const [open, setOpen] = React.useState(!isSmall);
   const handleToggle = () => setOpen((current) => !current);
@@ -14,7 +14,7 @@ export const ContentLayout = ({ children, SideBar = AppSideBar, menuData }) => {
     }
   }, [isSmall]);
   return (
-    <Stack direction="row" flexGrow={1} overflow="hidden" pt="50px" alignItems="stretch">
+    <Stack direction="row" flexGrow={1} overflow="hidden" alignItems="stretch" {...props}>
       <SideBar
         open={open}
         onToggle={handleToggle}

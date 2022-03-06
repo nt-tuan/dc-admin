@@ -55,7 +55,7 @@ function UploadImage(props) {
 
   return (
     <Box>
-      <Divider style={{ margin: "32px -48px 32px -28px" }} />
+      <Divider sx={{ mx: -3, my: 4 }} />
       <Box>
         <Typography variant="h5" fontWeight={"bold"}>
           {label}

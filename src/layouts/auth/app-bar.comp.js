@@ -1,19 +1,18 @@
+import Box from "@mui/material/Box";
+import Button from "./button.comp";
 import { Link } from "react-router-dom";
-import { getCompanyName } from "utils/config.util";
-
-import Stack from "@mui/material/Stack";
 import MuiAppBar from "@mui/material/AppBar";
 import { NotificationDropdown } from "./notification-dropdown.comp";
 import React from "react";
 import { RouteConst } from "commons/consts";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import { UserMenu } from "./user-menu.comp";
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
 import WalletIcon from "@/components/icons/wallet.comp";
-import Button from "./button.comp";
-import { useSelector } from "react-redux";
+import { getCompanyName } from "utils/config.util";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
+import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open"
@@ -40,7 +39,7 @@ export const AppBar = ({ open }) => {
   const brandingAssets = useSelector(selectBrandingAssetsData);
 
   return (
-    <StyledAppBar position="absolute" open={open} color="inherit">
+    <StyledAppBar position="relative" open={open} color="inherit">
       <Toolbar
         variant="dense"
         disableGutters

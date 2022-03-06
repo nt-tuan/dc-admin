@@ -1,5 +1,6 @@
 import { DTCSection, Loader } from "components/commons";
 
+import Box from "@mui/material/Box";
 import React from "react";
 import { RouteConst } from "commons/consts";
 import { TradeRouteForm } from "@/components/trade-route/components/trade-route-form";
@@ -30,7 +31,11 @@ const AddRoutePage = () => {
             initialValues={initialValues}
           />
         )}
-        {!isFetched && <Loader />}
+        {!isFetched && (
+          <Box height={200}>
+            <Loader />
+          </Box>
+        )}
       </DTCSection.Content>
     </DTCSection>
   );

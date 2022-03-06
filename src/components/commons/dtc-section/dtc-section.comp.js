@@ -5,10 +5,10 @@ import CardHeader from "@mui/material/CardHeader";
 import React from "react";
 import Typography from "@mui/material/Typography";
 
-export const DTCSection = ({ children, hidden, ...rest }) => {
+export const DTCSection = ({ children, hidden, sx, ...rest }) => {
   if (hidden) return null;
   return (
-    <Card {...rest}>
+    <Card {...rest} sx={{ ...sx, minHeight: 200 }}>
       {children}
       <div />
     </Card>
@@ -33,5 +33,5 @@ DTCSection.Header = ({ children, actions }) => {
   );
 };
 DTCSection.Content = ({ children }) => {
-  return <CardContent>{children}</CardContent>;
+  return <CardContent sx={{ minHeight: 200 }}>{children}</CardContent>;
 };

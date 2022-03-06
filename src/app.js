@@ -19,7 +19,7 @@ export const App = () => {
           <QueryClientProvider>
             <CssBaseline />
             <Provider store={store}>
-              <Router history={history} />x
+              <Router history={history} />
             </Provider>
           </QueryClientProvider>
         </SnackbarProvider>

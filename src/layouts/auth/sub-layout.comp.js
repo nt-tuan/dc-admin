@@ -16,11 +16,11 @@ const ListItemButton = styled(MuiListItemButton)(({ theme }) => ({
     backgroundColor: theme.palette.grey[100]
   }
 }));
-export const SubSidebar = ({ menuData }) => {
+export const SubSidebar = ({ menuData, header }) => {
   return (
-    <Box borderRight={1} borderColor="grey.300" width="238px">
+    <Box height="100%" borderRight={1} borderColor="grey.300">
       <Typography variant="h5" fontWeight="bold" px={3} pt={3} pb={2}>
-        Preferences
+        {header}
       </Typography>
       <List>
         {menuData.map((menu) => (
@@ -54,13 +54,16 @@ const MenuItem = ({ menu }) => {
   );
 };
 
-export const SubLayout = ({ children, menuData }) => {
+export const SubLayout = ({ children, menuData, header }) => {
   return (
     <Stack height="100%" direction="row" alignItems="stretch">
-      <SubSidebar menuData={menuData} />
-      <Box p={3} flexGrow={1}>
-        {children}
+      <Box width={238} flexShrink={0}>
+        <SubSidebar menuData={menuData} header={header} />
       </Box>
+      <Box height="100%" flexGrow={1} sx={{ overflowY: "auto" }}>
+        <Box p={3}>{children}</Box>
+      </Box>
+      <Box></Box>
     </Stack>
   );
 };
