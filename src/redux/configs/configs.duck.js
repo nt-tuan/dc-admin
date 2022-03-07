@@ -1,4 +1,7 @@
 import { getAssetURL } from "@/utils/config.util";
+import logoPlaceholder from "@/assets/images/logo-placeholder.png";
+import faviconPlaceholder from "@/assets/images/favicon-placeholder.png";
+import landingPlaceholder from "@/assets/images/landing-placeholder.png";
 
 export const SET_STATE = "@@DTC/CONFIG/SET_STATE_CONFIG";
 export const LOAD_ASSET = "@@DTC/CONFIG/LOAD_ASSET";
@@ -7,9 +10,9 @@ export const LOAD_MARKETPLACE_NAME = "@@DTC/CONFIG/LOAD_MARKETPLACE_NAME";
 
 export const initialState = {
   brandingAsset: {
-    logo: getAssetURL("/images/logo-placeholder.png"),
-    landing: getAssetURL("/images/distichain.png"),
-    favicon: getAssetURL("/favicon/favicon.ico")
+    logo: logoPlaceholder,
+    landing: landingPlaceholder,
+    favicon: faviconPlaceholder
   }
 };
 
