@@ -4,10 +4,10 @@ import { PhoneField, RenderField, TextField } from "@/components/commons/fields"
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { PhoneOTPModal } from "../phone-otp-modal";
+import { PhoneOTPModal } from "../../../auth/components/phone-otp-modal";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import { usePhoneVerify } from "../../controllers/use-phone-verify";
+import { useNewPhoneVerifier } from "./use-new-phone-verifier";
 import { validationSchema } from "./validation.schema";
 
 const Item = ({ children, extra }) => {
@@ -32,7 +32,7 @@ export const PersonalInformationForm = React.forwardRef(({ data, onSubmit }, ref
     startVerifyingPhone,
     verifyPhone,
     cancelVerifyingPhone
-  } = usePhoneVerify();
+  } = useNewPhoneVerifier({ phone: data.phone });
 
   return (
     <>

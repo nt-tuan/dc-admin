@@ -3,9 +3,9 @@ export const FrequencyTypesEnum = {
   EVERY_LOGIN: "EVERY_LOGIN"
 };
 export const MethodEnum = {
-  EMAIL: "EMAIL",
   SMS: "SMS",
-  GA: "GA"
+  GA: "GA",
+  EMAIL: "EMAIL"
 };
 export const MethodLabelEnum = {
   SMS: "SMS",

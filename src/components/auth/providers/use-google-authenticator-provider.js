@@ -1,13 +1,12 @@
-import {
-  getGoogleAuthenticator,
-  validateGoogleAuthenticator
-} from "../services/user-profile.service";
+import { getGoogleAuthenticator, validateGoogleAuthenticator } from "../services/auth.service";
 import { useMutation, useQuery } from "react-query";
 
-import { MethodEnum } from "../constants/tfa.enum";
+import { MethodEnum } from "../services/tfa.enum";
 import { newTwoFactorProvider } from "./two-factor-provider";
+import { useCallbackEvents } from "./use-callbacks";
 
-export const useGoogleAuthenticatorProvider = ({ onReady, onSuccess, onError, component }) => {
+export const useGoogleAuthenticatorProvider = ({ component }) => {
+  const [{ onReady, onSuccess, onError }, register] = useCallbackEvents();
   const { isLoading, refetch } = useQuery(["google-authenticator"], getGoogleAuthenticator, {
     enabled: false,
     onSuccess: (values) => {
@@ -22,10 +21,11 @@ export const useGoogleAuthenticatorProvider = ({ onReady, onSuccess, onError, co
   return newTwoFactorProvider({
     method: MethodEnum.GA,
     setupButtonLabel: "Setup Google Authenticator",
-    isPrepareing: isLoading,
+    isPreparing: isLoading,
     setup: refetch,
     mutate,
     isSubmitting,
-    component
+    component,
+    register
   });
 };

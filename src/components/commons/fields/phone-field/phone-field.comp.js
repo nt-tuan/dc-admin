@@ -101,7 +101,6 @@ export const PhoneField = ({
         <FormControl {...props} sx={{ flexGrow: 1 }}>
           <InputLabel htmlFor={labelId}>{label}</InputLabel>
           <OutlinedInput
-            labelId={labelId}
             value={localNumber}
             label={label}
             placeholder={placeholder}

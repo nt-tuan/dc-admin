@@ -5,15 +5,6 @@ export const updateProfile = async (values) => {
   await backendAPI.put(ApiPathConsts.UPDATE_USER_INFO, values);
 };
 
-export const requestPhoneCode = async () => {
-  await backendAPI.get(ApiPathConsts.PHONE_VERIFICATION);
-};
-
-export const verifyPhoneCode = async (code) => {
-  await backendAPI.post(ApiPathConsts.PHONE_VERIFICATION, null, { code });
-  return true;
-};
-
 export const updateNotificationChannel = async (values) => {
   await backendAPI.put(ApiPathConsts.NOTIFICATION_SETTING, values);
 };
@@ -54,17 +45,13 @@ export const createOTP = async () => {
 };
 
 export const getUserProfile = () => backendAPI.get("/me");
+
 export const updateUserProfile = (values) => backendAPI.put("/me", values);
+
 export const changePassword = (data) => {
   return backendAPI.post(ApiPathConsts.CHANGE_PASSWORD, data);
 };
-export const getGoogleAuthenticator = () => {
-  return backendAPI.get(`${ApiPathConsts.GET_GOOGLE_AUTHENTICATOR_QRCODE}`);
-};
 
-export const validateGoogleAuthenticator = (code) => {
-  return backendAPI.put(`${ApiPathConsts.GET_GOOGLE_AUTHENTICATOR_QRCODE}`, code);
-};
 export const update2FASettings = (settings) => {
   return backendAPI.put(`${ApiPathConsts.UPDATE_USER_INFO}/tfa`, settings);
 };

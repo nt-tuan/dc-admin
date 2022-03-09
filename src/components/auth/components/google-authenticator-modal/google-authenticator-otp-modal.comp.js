@@ -56,7 +56,7 @@ export const GoogleAuthenticatorOTPModal = ({
       onClose={onClose}
       size="tiny"
       title={
-        <Typography variant="inherit" textAlign="center">
+        <Typography fontSize="16px" lineHeight="24px" variant="inherit" textAlign="center">
           Setup Google Authentication
         </Typography>
       }

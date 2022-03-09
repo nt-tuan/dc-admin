@@ -56,6 +56,9 @@ export const adminTheme = createTheme({
     }
   },
   palette: {
+    success: {
+      main: "#4CAF50"
+    },
     primary: {
       main: "#2196F3"
     },

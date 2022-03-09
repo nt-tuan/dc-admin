@@ -30,7 +30,14 @@ export const DTCModal = ({ open, onClose, title, content, width = 450, size = "d
     <Modal width={width} open={open} onClose={onClose}>
       <Box sx={style} width={contentSizes[size]}>
         {title && (
-          <Typography px={3} component="div" id="confirm-modal-title" variant="h5">
+          <Typography
+            px={3}
+            component="div"
+            id="confirm-modal-title"
+            fontSize="16px"
+            lineHeight="24px"
+            fontWeight="bold"
+          >
             {title}
           </Typography>
         )}

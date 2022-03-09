@@ -3,7 +3,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import MuiListItemButton from "@mui/material/ListItemButton";
 import React from "react";
 import Stack from "@mui/material/Stack";
@@ -49,7 +48,7 @@ const MenuItem = ({ menu }) => {
 
   return (
     <ListItemButton onClick={handleOnClickMenu} selected={selected}>
-      <ListItemText primary={menu.title} />
+      <Typography variant="body2">{menu.title}</Typography>
     </ListItemButton>
   );
 };

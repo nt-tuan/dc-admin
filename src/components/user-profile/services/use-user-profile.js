@@ -2,8 +2,8 @@ import { getUserProfile, updateUserProfile } from "./user-profile.service";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useUserProfile = (options) => {
-  const { data, isLoading } = useQuery(["me"], getUserProfile, options);
-  return { data, isLoading };
+  const { data, isLoading, isFetching } = useQuery(["me"], getUserProfile, options);
+  return { data, isLoading, isFetching };
 };
 
 export const useInvalidateUserProfiles = () => {

@@ -1,4 +1,4 @@
-import { requestPhoneCode } from "./user-profile.service";
+import { requestPhoneCode } from "./auth.service";
 import { useQuery } from "react-query";
 
 export const useSendPhoneCode = ({ onSuccess }) => {

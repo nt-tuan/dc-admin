@@ -25,7 +25,7 @@ const NotificationsPage = () => {
 
   return (
     <PageContainer title="Notifications" isLoading={isLoading}>
-      <Box>
+      <Box mb={4}>
         <Typography variant="body2">Set your preferred way to receive notifications.</Typography>
       </Box>
       {data && (
@@ -33,17 +33,17 @@ const NotificationsPage = () => {
           <FormControlLabel
             disabled={isUpdating || isFetching}
             control={<Checkbox name="byWhatsapp" checked={byWhatsapp} onChange={update} />}
-            label="Whatsapp"
+            label={<Typography variant="body2">Whatsapp</Typography>}
           />
           <FormControlLabel
             disabled={isUpdating || isFetching}
             control={<Checkbox name="bySms" checked={bySms} onChange={update} />}
-            label="SMS"
+            label={<Typography variant="body2">SMS</Typography>}
           />
           <FormControlLabel
             disabled={isUpdating || isFetching}
             control={<Checkbox name="byEmail" checked={byEmail} onChange={update} />}
-            label="Email"
+            label={<Typography variant="body2">Email</Typography>}
           />
         </FormGroup>
       )}

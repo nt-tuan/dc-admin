@@ -2,9 +2,14 @@ import { GoogleAuthenticationInstructionModal } from "./google-authenticator-ins
 import { GoogleAuthenticatorOTPModal } from "./google-authenticator-otp-modal.comp";
 import React from "react";
 
-export const GoogleAuthenticatorModal = ({ onClose, qrCodeUrl, secretKey, onVerify }) => {
+export const GoogleAuthenticatorModal = ({
+  onClose,
+  qrCodeUrl,
+  secretKey,
+  onVerify,
+  isSubmitting
+}) => {
   const [step, setStep] = React.useState(0);
-  console.log(step);
   return (
     <>
       <GoogleAuthenticationInstructionModal
@@ -14,7 +19,12 @@ export const GoogleAuthenticatorModal = ({ onClose, qrCodeUrl, secretKey, onVeri
         onNext={() => setStep(1)}
         onClose={onClose}
       />
-      <GoogleAuthenticatorOTPModal open={step === 1} onClose={onClose} onVerify={onVerify} />
+      <GoogleAuthenticatorOTPModal
+        open={step === 1}
+        onClose={onClose}
+        onVerify={onVerify}
+        isSubmitting={isSubmitting}
+      />
     </>
   );
 };

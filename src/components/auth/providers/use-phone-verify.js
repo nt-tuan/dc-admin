@@ -4,12 +4,12 @@ import React from "react";
 import { WRONG_VERIFICATION_CODE } from "@/commons/consts";
 import { useMessage } from "@/hooks/use-message";
 import { useSendPhoneCode } from "../services/use-send-phone-code";
-import { verifyPhoneCode } from "../services/user-profile.service";
+import { verifyPhoneCode } from "../services/auth.service";
 
 export const usePhoneVerify = () => {
   const message = useMessage();
   const [isVerifyingPhone, setIsVerifyingPhone] = React.useState(false);
-  const { isLoading, refetch: refetchPhoneCode } = useSendPhoneCode({
+  const { isLoading, refetchPhoneCode } = useSendPhoneCode({
     onSuccess: () => {
       setIsVerifyingPhone(true);
     }

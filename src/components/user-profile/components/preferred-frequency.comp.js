@@ -6,13 +6,12 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 
 export const PreferredFrequency = ({ selectedFrequency, setSelectedFrequency }) => {
-  console.log(selectedFrequency);
   const handleSettingChange = (e) => {
     setSelectedFrequency(e.target.value);
   };
   return (
     <Box>
-      <Typography mb={1} variant="h6">
+      <Typography mb={2} variant="h6">
         Preferred Frequency
       </Typography>
       <RadioGroup value={selectedFrequency} onChange={handleSettingChange} sx={{ gap: 2 }}>
@@ -20,12 +19,21 @@ export const PreferredFrequency = ({ selectedFrequency, setSelectedFrequency }) 
           value="PER_30_DAYS"
           sx={{ alignItems: "flex-start" }}
           control={<Radio />}
-          label="Once per computer. Trust this computer and only ask for verification code every 30 days"
+          label={
+            <Typography variant="body2">
+              Once per computer. Trust this computer and only ask for verification code every 30
+              days
+            </Typography>
+          }
         />
         <FormControlLabel
           value="EVERY_LOGIN"
           control={<Radio />}
-          label="Every log-in. We'll always ask for a verification code"
+          label={
+            <Typography variant="body2">
+              Every log-in. We'll always ask for a verification code
+            </Typography>
+          }
         />
       </RadioGroup>
     </Box>

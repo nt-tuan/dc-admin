@@ -28,8 +28,7 @@ export const useTwoFactorAuthentication = (data) => {
   const [selectedMethod, setSelectedMethod] = React.useState(method);
   const [selectedFrequency, setSelectedFrequency] = React.useState(frequency);
   const { mutate, isLoading: isSubmitting } = useMutation(update2FASettings, {
-    onSuccess: (values) => {
-      console.log(values);
+    onSuccess: () => {
       invalidateProfiles();
       message.success("Update Two-Factor Authentication successfully");
     }
