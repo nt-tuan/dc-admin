@@ -17,3 +17,11 @@ export const updateOrganization = async (body) => {
 export const getAssetResource = async (type) => {
   return backendAPI.get(ApiPathConsts.GET_MARKETPLACE_BRANDING_ASSET, { type });
 };
+
+export const getMarketplaceFeatures = async () => {
+  return backendAPI.get(ApiPathConsts.MARKETPLACE_FEATURES);
+};
+
+export const updateMarketplaceFeatures = async (payload) => {
+  return backendAPI.put(ApiPathConsts.MARKETPLACE_FEATURES, { payload });
+};

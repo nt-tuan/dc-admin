@@ -256,4 +256,8 @@ export class ApiPathConsts {
   static get CHECK_RESET_PW_TOKEN() {
     return `${this.#PUBLIC_PREFIX}/tokens/password`;
   }
+
+  static get MARKETPLACE_FEATURES() {
+    return `${this.#PUBLIC_PREFIX}/marketplace/settings`;
+  }
 }

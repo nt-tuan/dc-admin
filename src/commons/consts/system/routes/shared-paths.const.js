@@ -145,9 +145,9 @@ export class SharedPaths {
   static get PREFERENCES_PAGES() {
     return "/admin/settings/preferences";
   }
-  // static get PREFERENCES_GENERAL_PAGES() {
-  //   return "/admin/preferences/general";
-  // }
+  static get PREFERENCES_GENERAL_PAGES() {
+    return "/admin/preferences/general";
+  }
   static get PREFERENCES_BRANDING_PAGES() {
     return "/admin/preferences/branding";
   }

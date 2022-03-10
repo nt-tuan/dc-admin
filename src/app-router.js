@@ -10,6 +10,7 @@ import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
 import { MainContainer } from "./layouts/auth/main-container.comp";
 import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
+import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
 import { PublicLayout } from "./layouts/public/public.layout";
 import { RouteConst } from "commons/consts";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
@@ -123,10 +124,10 @@ const routeData = [
             key: "preference-layout",
             Component: PreferencesLayout,
             children: [
-              // {
-              //   path: RouteConst.PREFERENCES_GENERAL_PAGES,
-              //   Component: PreferencesGeneralPage
-              // },
+              {
+                path: RouteConst.PREFERENCES_GENERAL_PAGES,
+                Component: PreferencesGeneralPage
+              },
               {
                 path: RouteConst.PREFERENCES_BRANDING_PAGES,
                 Component: PreferencesBrandingPage

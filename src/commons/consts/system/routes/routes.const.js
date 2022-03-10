@@ -44,6 +44,7 @@ export class RouteConst extends SharedPaths {
       this.ADMIN_USER_MANAGEMENT,
       this.ADD_ADMIN_USER,
       this.PREFERENCES_PAGES,
+      this.PREFERENCES_GENERAL_PAGES,
       this.SETTINGS,
       this.ORGANIZATION_PROFILE
     ];
