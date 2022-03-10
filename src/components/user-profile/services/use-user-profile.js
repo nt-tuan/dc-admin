@@ -1,5 +1,7 @@
-import { getUserProfile, updateUserProfile } from "./user-profile.service";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+
+import { parseFormValues } from "../components/personal-information-form/mapper";
+import { getUserProfile, updateUserProfile } from "./user-profile.service";
 
 export const useUserProfile = (options) => {
   const { data, isLoading, isFetching } = useQuery(["me"], getUserProfile, options);
@@ -13,11 +15,14 @@ export const useInvalidateUserProfiles = () => {
 
 export const useUpdateProfile = ({ onSuccess }) => {
   const invalidate = useInvalidateUserProfiles();
-  const { mutate, isLoading } = useMutation(updateUserProfile, {
-    onSuccess: () => {
-      invalidate();
-      if (onSuccess) onSuccess();
+  const { mutate, isLoading } = useMutation(
+    (values) => updateUserProfile(parseFormValues(values)),
+    {
+      onSuccess: () => {
+        invalidate();
+        if (onSuccess) onSuccess();
+      }
     }
-  });
+  );
   return { mutate, isLoading };
 };

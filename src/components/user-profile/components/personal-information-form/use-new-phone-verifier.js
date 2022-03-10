@@ -1,10 +1,10 @@
-import React from "react";
 import { WRONG_VERIFICATION_CODE } from "@/commons/consts";
-import { useMessage } from "@/hooks/use-message";
 import { usePhoneCodeProvider } from "@/components/auth/providers/use-phone-code-provider";
+import { useMessage } from "@/hooks/use-message";
+import React from "react";
 import { useQueryClient } from "react-query";
 
-export const useNewPhoneVerifier = ({ phone }) => {
+export const useNewPhoneVerifier = ({ phone, onSuccess }) => {
   const { register, ...phoneProvider } = usePhoneCodeProvider({ phone });
   const queryClient = useQueryClient();
   const message = useMessage();
@@ -20,11 +20,12 @@ export const useNewPhoneVerifier = ({ phone }) => {
       if (data) {
         setIsVerifyingPhone(false);
         queryClient.invalidateQueries(["me"]);
+        if (onSuccess) onSuccess();
       } else {
         message.error(WRONG_VERIFICATION_CODE);
       }
     });
-  }, [queryClient, message, register]);
+  }, [queryClient, onSuccess, message, register]);
   const cancelVerifyingPhone = () => {
     setIsVerifyingPhone(false);
   };

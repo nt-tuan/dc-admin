@@ -1,12 +1,21 @@
-import React from "react";
-import { useSnackbar } from "notistack";
-
+import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { useSnackbar } from "notistack";
+import React from "react";
 
 export const MessageContent = ({ content, onClose, variant }) => {
   return (
-    <Alert onClose={onClose} severity={variant}>
+    <Alert
+      onClose={onClose}
+      severity={variant}
+      action={
+        <Button color="inherit" size="small" endIcon={<CloseIcon />}>
+          Close
+        </Button>
+      }
+    >
       <Box
         width={400}
         maxWidth={600}

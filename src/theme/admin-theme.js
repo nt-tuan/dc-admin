@@ -18,6 +18,14 @@ export const adminTheme = createTheme({
         }
       }
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: 700,
+          textTransform: "none"
+        }
+      }
+    },
     MuiInputBase: {
       styleOverrides: {
         input: {

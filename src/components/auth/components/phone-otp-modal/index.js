@@ -1,12 +1,11 @@
 import { DTCModal, Loader } from "@/components/commons";
-
-import Button from "@mui/lab/LoadingButton";
 import { OtpInput } from "@/components/commons/otp-input";
-import React from "react";
+import Button from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import React from "react";
 
-const Content = ({ phone, onVerify, isSubmitting }) => {
+const Content = ({ phone, onVerify, isSubmitting, onClose }) => {
   const [code, setCode] = React.useState("");
   const lastDigits = phone?.substring(phone.length - 4);
   const canSubmit = code.length === 6;
@@ -25,19 +24,25 @@ const Content = ({ phone, onVerify, isSubmitting }) => {
   return (
     <Stack spacing={2} alignItems="center">
       <Typography variant="body2" textAlign="center">
-        Please enter your OTP sent to your verified mobile number *******{`{${lastDigits}}`}
+        Please enter your OTP sent to your verified mobile number *******{lastDigits}
       </Typography>
       <OtpInput onFinish={handleFinish} onChange={setCode} numInputs={6} />
-      <Button
-        ref={ref}
-        onKeyDown={handleKeyDown}
-        disabled={!canSubmit}
-        variant="contained"
-        onClick={verify}
-        loading={isSubmitting}
-      >
-        Submit
-      </Button>
+      <Stack direction="row" spacing={2}>
+        <Button variant="outlined" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          ref={ref}
+          onKeyDown={handleKeyDown}
+          disabled={!canSubmit}
+          variant="contained"
+          onClick={verify}
+          loading={isSubmitting}
+          tabIndex={0}
+        >
+          Submit
+        </Button>
+      </Stack>
     </Stack>
   );
 };
@@ -56,7 +61,12 @@ export const PhoneOTPModal = ({ open, onClose, phone, onVerify, isSubmitting, is
         isLoading ? (
           <Loader />
         ) : (
-          <Content phone={phone} onVerify={onVerify} isSubmitting={isSubmitting} />
+          <Content
+            phone={phone}
+            onVerify={onVerify}
+            isSubmitting={isSubmitting}
+            onClose={onClose}
+          />
         )
       }
     />

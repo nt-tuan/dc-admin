@@ -2,8 +2,8 @@ import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import React from "react";
 import Typography from "@mui/material/Typography";
+import React from "react";
 
 export const PreferredFrequency = ({ selectedFrequency, setSelectedFrequency }) => {
   const handleSettingChange = (e) => {
@@ -17,7 +17,6 @@ export const PreferredFrequency = ({ selectedFrequency, setSelectedFrequency }) 
       <RadioGroup value={selectedFrequency} onChange={handleSettingChange} sx={{ gap: 2 }}>
         <FormControlLabel
           value="PER_30_DAYS"
-          sx={{ alignItems: "flex-start" }}
           control={<Radio />}
           label={
             <Typography variant="body2">

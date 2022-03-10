@@ -1,14 +1,14 @@
+import { Loader } from "@/components/commons";
+import Button from "@mui/lab/LoadingButton";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/lab/LoadingButton";
-import { Loader } from "@/components/commons";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import React from "react";
+
 import { PageContainer } from "../components/page-container.comp";
 import { PersonalInformationForm } from "../components/personal-information-form";
 import { PersonalInformationView } from "../components/personal-information-view";
-import React from "react";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { parseFormValues } from "../components/personal-information-form/mapper";
 import { usePersonalInformation } from "../controllers/use-personal-information";
 
 const UserIcon = () => {
@@ -29,7 +29,7 @@ const UserIcon = () => {
 const PersonalInformationPage = () => {
   const { isEdit, data, isLoading, isSubmitting, toEdit, updateProfile } = usePersonalInformation();
   const handleSubmit = () => {
-    updateProfile(parseFormValues(ref.current.values));
+    updateProfile(ref.current.values);
   };
   const triggerSubmit = () => {
     ref.current.submitForm();

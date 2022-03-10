@@ -1,14 +1,16 @@
-import { MethodEnum } from "../services/tfa.enum";
-import Typography from "@mui/material/Typography";
 import { WRONG_VERIFICATION_CODE } from "@/commons/consts";
+import Typography from "@mui/material/Typography";
+import { useMutation } from "react-query";
+
+import { verifyPhoneCode } from "../services/auth.service";
+import { MethodEnum } from "../services/tfa.enum";
+import { useSendPhoneCode } from "../services/use-send-phone-code";
 import { newTwoFactorProvider } from "./two-factor-provider";
 import { useCallbackEvents } from "./use-callbacks";
-import { useMutation } from "react-query";
-import { useSendPhoneCode } from "../services/use-send-phone-code";
-import { verifyPhoneCode } from "../services/auth.service";
 
 export const usePhoneCodeProvider = ({ component, phone }) => {
   const [{ onReady, onSuccess, onError }, register] = useCallbackEvents();
+
   const { isLoading, refetchPhoneCode } = useSendPhoneCode({
     onSuccess: () => {
       onReady({ phone, open: true });

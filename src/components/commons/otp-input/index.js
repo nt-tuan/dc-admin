@@ -1,7 +1,11 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
-import React from "react";
 import Stack from "@mui/material/Stack";
+import React from "react";
 
+const removeInvalidChars = (value) => {
+  if (value == null) return value;
+  return value.replace(/[^0-9a-zA-Z]/, "");
+};
 const defaultOtpInput = new Array(6).fill("");
 export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
   const [digits, setDigits] = React.useState(defaultOtpInput);
@@ -9,29 +13,38 @@ export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
   React.useEffect(() => {
     onChange(digits.join(""));
   }, [digits, onChange]);
-  const onInputChange = (event, i) => {
-    const { value } = event.target;
+  const updateInput = (newValue, i) => {
+    const value = removeInvalidChars(newValue);
     if (value && value.length > 0) {
-      setDigits((values) => {
-        const nextValues = [...values];
-        nextValues[i] = value[value.length - 1];
-        return nextValues;
+      setDigits((current) => {
+        const nextDigits = [...current];
+        let chars = [...value];
+        for (let charIndex = 0; charIndex < chars.length && charIndex + i < 6; charIndex++) {
+          const char = chars[charIndex];
+          nextDigits[i + charIndex] = char;
+        }
+        return nextDigits;
       });
-
-      if (i < numberDigits - 1 && ref.current[i + 1]) {
-        ref.current[i + 1].focus();
+      const nextPosition = i + value.length;
+      ref.current[i].blur();
+      if (nextPosition < numberDigits && ref.current[nextPosition]) {
+        ref.current[nextPosition].focus();
         return;
       }
-      ref.current[i].blur();
       onFinish();
     }
   };
+  const onInputChange = (event, i) => {
+    updateInput(event.target.value, i);
+  };
+  const focus = (event) => event.target.select();
   const renderInputs = () => {
     const elements = [];
     for (let i = 0; i < numberDigits; i++) {
       elements.push(
         <OutlinedInput
           inputRef={(element) => (ref.current[i] = element)}
+          onFocus={focus}
           onChange={(event) => onInputChange(event, i)}
           key={i}
           value={digits[i]}

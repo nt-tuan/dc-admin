@@ -26,7 +26,7 @@ export const SERVER_UNKNOWN_ERR =
 export const CUR_PW_SAME_AS_NEW_PW_ERR = "Current Password and New password can't be the same";
 export const LOGIN_WRONG_OVER_3_TIMES_ERR = `Your account has been deactivated, please contact your administrator to reactivate your account.`;
 export const CUR_PW_IS_NOT_VALID = "The password you entered is incorrect, please try again";
-export const WRONG_VERIFICATION_CODE = "Wrong verification code";
+export const WRONG_VERIFICATION_CODE = "Incorrect OTP. Please try again.";
 /* user management */
 export const COULD_NOT_CREATE_USER =
   "An error occurred while trying to create the new user. Please try again.";

@@ -1,13 +1,12 @@
+import Button from "@mui/lab/LoadingButton";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import { PasswordField } from "components/commons/fields/password-field/password-field.comp";
+import { Form, Formik } from "formik";
+import React from "react";
 import * as Yup from "yup";
 
-import { Form, Formik } from "formik";
 import { confirmPaswordValidationSchema, passwordValidationSchema } from "./schema";
-
-import Box from "@mui/material/Box";
-import Button from "@mui/lab/LoadingButton";
-import { PasswordField } from "components/commons/fields/password-field/password-field.comp";
-import React from "react";
-import Stack from "@mui/material/Stack";
 
 const validationSchema = Yup.object({
   currentPassword: passwordValidationSchema,
