@@ -1,7 +1,5 @@
 import { AutocompleteField, RenderField } from "@/components/commons/fields";
-
 import Paper from "@mui/material/Paper";
-import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useFormikContext } from "formik";
+import React from "react";
 
 const viewerDataSource = [
   {
@@ -23,13 +22,9 @@ const viewerDataSource = [
   {
     value: "LOGISTIC_SERVICE_PROVIDER",
     label: "Logistic Service Provider"
-  },
-  {
-    value: "INSPECTION_SERVICE_PROVIDER",
-    label: "Inspection Provider"
   }
 ];
-const RowField = ({ name, disabled, getRowValues }) => {
+const RowField = ({ name, disabled, getRowValues, dataSource }) => {
   const { values } = useFormikContext();
   const documentRowData = getRowValues(values) ?? {};
   const selectedDocuments = documentRowData?.routeDocumentRuleDto ?? {};

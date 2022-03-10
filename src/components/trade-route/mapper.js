@@ -26,7 +26,8 @@ export const parseTradeRouteForm = (values) => {
     routeTaxPostRequestList.push({
       applyType: "MAIN",
       type: mainTax.type,
-      percent: mainTax.percent
+      percent: mainTax.percent,
+      name: mainTax.name
     });
   }
   const { fromCountry, toCountry, categoryId, typeId, isDefault } = values;
@@ -48,6 +49,7 @@ const getMainTax = (taxDetailResponseList) => {
     taxApplied: mainTaxItem.applyType,
     type: mainTaxItem.type,
     percent: mainTaxItem.percent,
+    name: mainTaxItem.name,
     id: mainTaxItem.id
   };
 };

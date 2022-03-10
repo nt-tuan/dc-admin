@@ -1,17 +1,18 @@
-import { Form, Formik } from "formik";
-
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { DocumentRuleField } from "../document-rule-field.comp";
 import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
-import { ProductTypeSelectField } from "../product-type-select-field.comp";
-import React from "react";
-import { RouteConst } from "commons/consts";
-import { RouteField } from "../route-field.comp";
 import Stack from "@mui/material/Stack";
-import { TaxField } from "../tax-field.comp";
 import Typography from "@mui/material/Typography";
+import { RouteConst } from "commons/consts";
+import { Form, Formik } from "formik";
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { DocumentRuleField } from "../document-rule-field.comp";
+import { ProductTypeSelectField } from "../product-type-select-field.comp";
+import { RouteField } from "../route-field.comp";
+import { TaxField } from "../tax-field.comp";
 import { validationSchema } from "./validation.schema";
 
 export const TradeRouteForm = ({
@@ -31,7 +32,9 @@ export const TradeRouteForm = ({
           <RouteField />
           <ProductTypeSelectField />
         </Stack>
-        <TaxField />
+        <Box mb={3}>
+          <TaxField />
+        </Box>
         <Typography>
           You can either select from the document list or{" "}
           <Link

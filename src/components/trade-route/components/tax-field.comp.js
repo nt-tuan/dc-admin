@@ -1,12 +1,11 @@
+import { NumberField, RenderField, SelectField, TextField } from "@/components/commons/fields";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { NumberField, SelectField } from "@/components/commons/fields";
-
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useFormikContext } from "formik";
+import React from "react";
 
 export const TaxField = () => {
   const { setFieldValue, values } = useFormikContext();
@@ -37,7 +36,22 @@ export const TaxField = () => {
             placeholder="Tax % applied to product"
             required
           />
-          <NumberField required name="mainTax.percent" placeholder="Tax Percentage" />
+          <NumberField
+            required
+            name="mainTax.percent"
+            label="Tax Percentage"
+            placeholder="Tax Percentage"
+          />
+          <RenderField>
+            {({ getFieldValue }) => {
+              const mainTax = getFieldValue("mainTax");
+              const maxTaxType = mainTax?.type;
+              if (maxTaxType !== "OTHER") return <></>;
+              return (
+                <TextField required name="mainTax.name" label="Tax Name" placeholder="Tax Name" />
+              );
+            }}
+          </RenderField>
         </Stack>
       )}
     </Stack>
