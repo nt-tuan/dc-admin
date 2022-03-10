@@ -1,5 +1,4 @@
 import { RouteConst } from "commons/consts";
-import ConfigurationIcon from "@mui/icons-material/Settings";
 // import MultipleStopIcon from "@mui/icons-material/MultipleStop";
 import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
 import OrderIcon from "@/components/icons/order.comp";
@@ -86,18 +85,6 @@ const menuData = [
         title: "Add Fund",
         key: "Add Fund",
         url: RouteConst.ADD_FUNDS
-      }
-    ]
-  },
-  {
-    title: "Configuration",
-    key: "Configuration",
-    icon: ConfigurationIcon,
-    children: [
-      {
-        title: "Feature Toggles",
-        key: "Feature Toggles",
-        url: RouteConst.FEATURE_TOGGLES
       }
     ]
   },
