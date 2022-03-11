@@ -14,7 +14,7 @@ export class ApiPathConsts {
   static #TRADE_RULE_PREFIX = "/product-rules";
   static #BADGE = "/badges";
   static #SETTING_PREFIX = "/me/notifications/settings";
-  static #TWO_FACTOR_AUTH_PREFIX = "/two-factor-auth";
+  static #TWO_FACTOR_AUTH_PREFIX = "/tfa";
   static #BUSSINESS_DETAIL = "/company-product-rules";
   static MARKETPLACE = "/admin/marketplace";
 
@@ -230,7 +230,7 @@ export class ApiPathConsts {
     return `${this.#USER_PREFIX}/password`;
   }
   static get FORGET_BROWSER() {
-    return `${this.#TWO_FACTOR_AUTH_PREFIX}/forget-browser`;
+    return `${this.#TWO_FACTOR_AUTH_PREFIX}/browser/forgetting`;
   }
   static get BUSSINESS_DETAIL() {
     return `${this.#BUSSINESS_DETAIL}`;
@@ -242,7 +242,7 @@ export class ApiPathConsts {
     return `${this.#COMPANY_PREFIX}/me`;
   }
   static get GET_GOOGLE_AUTHENTICATOR_QRCODE() {
-    return `${this.#TWO_FACTOR_AUTH_PREFIX}/google-authenticator`;
+    return `${this.#TWO_FACTOR_AUTH_PREFIX}/ga`;
   }
   static get GET_EMAIL_VERIFICATION() {
     return `${this.#PUBLIC_PREFIX}/tokens/registration`;
