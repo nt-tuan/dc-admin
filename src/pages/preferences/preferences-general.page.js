@@ -58,7 +58,6 @@ const PreferencesGeneralPage = () => {
       externalPaymentServices: featuresToggleData.paymentServices,
       registrationSkipEmailVerification: featuresToggleData.registration,
       whoCanCreateProduct,
-      isTrackViaHotJar,
       hotJarId
     };
     try {
