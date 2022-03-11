@@ -3,7 +3,7 @@ import { Typography, Box, RadioGroup, Radio, FormControl } from "@mui/material";
 import { whoCreateProductConst } from "../constant/general-data";
 import FieldInput from "./general-field-input.comp";
 
-const CreateProductForm = ({ handleChange }) => {
+const CreateProductForm = ({ handleChange, value }) => {
   return (
     <>
       <Box paddingBottom={3}>
@@ -13,6 +13,7 @@ const CreateProductForm = ({ handleChange }) => {
         <FormControl>
           <RadioGroup
             onChange={handleChange}
+            value={value}
             defaultValue={whoCreateProductConst.marketplace.value}
           >
             <FieldInput

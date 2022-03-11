@@ -5,7 +5,7 @@ import { getMarketplaceFeatures, updateMarketplaceFeatures } from "@/services/pr
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import Header from "./components/general-header.comp";
 import FeaturesToggleForm from "./components/general-feature-toggle.comp";
-import CreateProductForm from "./components/general-create-product.comp";
+// import CreateProductForm from "./components/general-create-product.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
 
 const Divider = styled(MuiDivider)({
@@ -30,10 +30,10 @@ const PreferencesGeneralPage = () => {
     setFeaturesToggleData((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handleChangeWhoCreateProduct = (event) => {
-    const { value } = event.target;
-    setWhoCanCreateProduct(value);
-  };
+  // const handleChangeWhoCreateProduct = (event) => {
+  //   const { value } = event.target;
+  //   setWhoCanCreateProduct(value);
+  // };
 
   const handleTrackUserActivity = (event) => {
     const { checked } = event.target;
@@ -98,11 +98,11 @@ const PreferencesGeneralPage = () => {
         />
       </Box>
 
-      <Divider />
+      {/* <Divider /> */}
 
-      <Box marginTop={3}>
-        <CreateProductForm handleChange={handleChangeWhoCreateProduct} />
-      </Box>
+      {/* <Box marginTop={3}>
+        <CreateProductForm handleChange={handleChangeWhoCreateProduct} value={whoCanCreateProduct} />
+      </Box> */}
 
       <Divider />
 

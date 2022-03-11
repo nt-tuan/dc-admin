@@ -23,5 +23,5 @@ export const getMarketplaceFeatures = async () => {
 };
 
 export const updateMarketplaceFeatures = async (payload) => {
-  return backendAPI.put(ApiPathConsts.MARKETPLACE_FEATURES, { payload });
+  return backendAPI.put(ApiPathConsts.ADMIN_MARKETPLACE_FEATURES, { payload });
 };

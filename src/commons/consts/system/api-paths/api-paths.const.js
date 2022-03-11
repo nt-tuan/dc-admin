@@ -260,4 +260,8 @@ export class ApiPathConsts {
   static get MARKETPLACE_FEATURES() {
     return `${this.#PUBLIC_PREFIX}/marketplace/settings`;
   }
+
+  static get ADMIN_MARKETPLACE_FEATURES() {
+    return `${this.#ADMIN_PREFIX}/marketplace/settings`;
+  }
 }
