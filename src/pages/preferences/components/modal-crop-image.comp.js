@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Box from "@mui/material/Box";
+import { SETTINGS_MESSAGE } from "@/commons/consts";
 import { DTCModal } from "@/components/commons";
-import Cropper from "react-easy-crop";
-import { Slider } from "@mui/material";
-import Button from "@mui/material/Button";
+import { useMessage } from "@/hooks/use-message";
+import { updateAssetResource } from "@/services/preference.service";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { getCroppedImg, getImageDimension } from "@/utils/file.util";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
-import { updateAssetResource } from "@/services/preference.service";
-import { useMessage } from "@/hooks/use-message";
-import { SETTINGS_MESSAGE } from "@/commons/consts";
+import { Slider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import React, { useCallback, useEffect, useState } from "react";
+import Cropper from "react-easy-crop";
 
 function PlusButton({ onClick }) {
   return (
@@ -63,6 +63,8 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess,
     setZoom(zoomChange);
   };
 
+  // TODO: @HauDo please resolve this
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     if (imageUrl) {
       const { width, height } = await getImageDimension(imageUrl);
@@ -79,6 +81,8 @@ function ModalCropImage({ imageUrl, visible, type, onClose, onCancel, onSuccess,
         return 0.75;
       });
     }
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
   const handleOnSave = async () => {

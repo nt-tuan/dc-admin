@@ -6,11 +6,11 @@ import {
   MenuItem,
   TextField
 } from "@mui/material";
+import { UploadFile } from "components/commons";
 import React, { useEffect } from "react";
 
-import { DOCUMENT_SCHEMA } from "./document.schema";
 import { RouteService } from "../../services/route.service";
-import { UploadFile } from "components/commons";
+import { DOCUMENT_SCHEMA } from "./document.schema";
 
 export const DocumentMutationForm = ({
   selectedDocument,
@@ -39,10 +39,14 @@ export const DocumentMutationForm = ({
             }
       });
     }
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDocument]);
 
   useEffect(() => {
     if (!isEdit.current) formik.setValues(DOCUMENT_SCHEMA.initialFormValue);
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit]);
 
   const uploadFile = (file) => {

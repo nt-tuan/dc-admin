@@ -1,15 +1,15 @@
-import { Form, Formik } from "formik";
-
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { DocumentRuleField } from "../document-rule-field.comp";
 import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
-import { ProductTypeSelectField } from "../product-type-select-field.comp";
-import React from "react";
-import { RouteConst } from "commons/consts";
 import Typography from "@mui/material/Typography";
+import { RouteConst } from "commons/consts";
+import { Form, Formik } from "formik";
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { DefaultDocumentRuleField } from "../document-rule-field.comp";
+import { ProductTypeSelectField } from "../product-type-select-field.comp";
 import { validationSchema } from "./validation.schema";
 
 export const DefaultRouteForm = ({
@@ -44,7 +44,10 @@ export const DefaultRouteForm = ({
         </Typography>
         <Typography mb={2}>Select the documents required for this route</Typography>
 
-        <DocumentRuleField documentTypes={documentTypes} defaultDocuments={defaultDocuments} />
+        <DefaultDocumentRuleField
+          documentTypes={documentTypes}
+          defaultDocuments={defaultDocuments}
+        />
         <Divider sx={{ mb: 4 }} />
         <Grid direction="row" justifyContent="center" alignItems="center" container spacing={2}>
           <Grid item>

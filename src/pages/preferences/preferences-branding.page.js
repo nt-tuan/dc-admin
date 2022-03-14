@@ -1,19 +1,18 @@
+import { SETTINGS_MESSAGE } from "@/commons/consts";
+import { useMessage } from "@/hooks/use-message";
 import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
+import { getOrganization, updateOrganization } from "@/services/preference.service";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Box from "@mui/material/Box";
+import MuiTextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
-import React, { useEffect, useState } from "react";
-import { getOrganization, updateOrganization } from "@/services/preference.service";
-
-import Box from "@mui/material/Box";
-import LoadingButton from "@mui/lab/LoadingButton";
-import MuiTextField from "@mui/material/TextField";
-import { SETTINGS_MESSAGE } from "@/commons/consts";
-import Typography from "@mui/material/Typography";
 import UploadImage from "./components/upload-image.comp";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
-import { useDispatch } from "react-redux";
-import { useFormik } from "formik";
-import { useMessage } from "@/hooks/use-message";
 
 const ImageUploadList = [
   {
@@ -121,6 +120,8 @@ function PreferencesBrandingPage() {
         await formik.setFieldValue("marketplaceName", res.marketplaceName || "");
       }
     });
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onSubmit() {

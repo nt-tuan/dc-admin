@@ -26,9 +26,10 @@
     "import/no-unresolved": 0,
     "no-console": 0,
     "react/no-multi-comp": 0,
-    "no-unused-vars": 1,
+    "no-unused-vars": "error",
     "no-restricted-globals": 0,
-    "no-dupe-keys": "error"
+    "no-dupe-keys": "error",
+    "react-hooks/exhaustive-deps": "error"
   },
   "parserOptions": {
     "ecmaFeatures": {

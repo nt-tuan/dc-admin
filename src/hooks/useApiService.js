@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import debounce from "lodash/debounce";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 
 export const usePaginatedApiService = (
   serviceFn,
@@ -42,6 +41,7 @@ export const usePaginatedApiService = (
     [JSON.stringify(defaultOptions)]
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = useCallback(
     debounce((params, setLoadingState) => {
       if (guardFn && guardFn() === false) {

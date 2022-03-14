@@ -1,16 +1,20 @@
-import React, { memo } from "react";
-
-import Box from "@mui/material/Box";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import React, { memo } from "react";
 
 const Item = ({ label, value }) => {
   return (
     <Stack py={2} direction="row" alignItems="flex-start" borderBottom={1} borderColor="grey.300">
-      <Box width={300} fontWeight="bold">
-        {label}
+      <Box width={300}>
+        <Typography variant="body2" fontWeight="bold">
+          {label}
+        </Typography>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>{value}</Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography variant="body2">{value}</Typography>
+      </Box>
     </Stack>
   );
 };

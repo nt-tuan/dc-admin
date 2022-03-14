@@ -18,6 +18,13 @@ export const adminTheme = createTheme({
         }
       }
     },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: "20px"
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {

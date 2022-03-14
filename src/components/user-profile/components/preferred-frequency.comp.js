@@ -14,7 +14,7 @@ export const PreferredFrequency = ({ selectedFrequency, setSelectedFrequency }) 
       <Typography mb={2} variant="h6">
         Preferred Frequency
       </Typography>
-      <RadioGroup value={selectedFrequency} onChange={handleSettingChange} sx={{ gap: 2 }}>
+      <RadioGroup value={selectedFrequency} onChange={handleSettingChange}>
         <FormControlLabel
           value="PER_30_DAYS"
           control={<Radio />}

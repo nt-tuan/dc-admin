@@ -1,10 +1,12 @@
-import React from "react";
-import { Box, Divider as MuiDivider } from "@mui/material";
-import { styled } from "@mui/system";
 import { getMarketplaceFeatures, updateMarketplaceFeatures } from "@/services/preference.service";
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
-import Header from "./components/general-header.comp";
+import Box from "@mui/material/Box";
+import MuiDivider from "@mui/material/Divider";
+import { styled } from "@mui/material/styles";
+import React from "react";
+
 import FeaturesToggleForm from "./components/general-feature-toggle.comp";
+import Header from "./components/general-header.comp";
 // import CreateProductForm from "./components/general-create-product.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
 
@@ -82,7 +84,7 @@ const PreferencesGeneralPage = () => {
       setWhoCanCreateProduct(data?.whoCanCreateProduct);
       setHotJarId(data?.hotJarId);
     });
-  }, []);
+  }, [asyncErrorHandlerWrapper]);
 
   return (
     <>

@@ -25,3 +25,17 @@ export const parseDocument = (documents, documentTypes) => {
       }
     }));
 };
+
+export const parseDocumentInDefaultRoutes = ({ id, name, routeDocumentRuleDto }) => {
+  const { provider, viewer1, viewer2, viewer3 } = routeDocumentRuleDto || {};
+  return {
+    id,
+    name,
+    routeDocumentRuleDto: {
+      provider,
+      viewer1,
+      viewer2,
+      viewer3
+    }
+  };
+};

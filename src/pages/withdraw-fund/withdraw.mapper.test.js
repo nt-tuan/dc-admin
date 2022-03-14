@@ -1,9 +1,10 @@
-import { withdrawPendingMapper } from "./withdraw.mapper";
 import { DatetimeUtils } from "utils/date-time.util";
+
+import { withdrawPendingMapper } from "./withdraw.mapper";
 
 jest.mock("utils/date-time.util");
 
-const { parseDataToExcel, parseDataToGridView } = withdrawPendingMapper;
+const { parseDataToExcel } = withdrawPendingMapper;
 
 test("parseDataToExcel should return empty", () => {
   DatetimeUtils.formatDateTime.mockImplementation((data) => data);

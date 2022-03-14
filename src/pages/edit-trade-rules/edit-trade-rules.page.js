@@ -1,11 +1,10 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
-
 import { DTCSection } from "components/commons";
+import { TradeRules } from "components/trade-route";
+import qs from "qs";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { ProductRuleService } from "services";
-import { TradeRules } from "components/trade-route";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import qs from "qs";
 
 const EditTradeRulesPage = memo(() => {
   const { id } = qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -17,6 +16,8 @@ const EditTradeRulesPage = memo(() => {
         setData(result);
       }
     });
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

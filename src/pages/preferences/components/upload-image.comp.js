@@ -1,17 +1,16 @@
-import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
-
-import React, { useEffect, useRef, useState } from "react";
-import { deleteAssetResource, getAssetResource } from "@/services/preference.service";
-
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import ModalCropImage from "./modal-crop-image.comp";
 import { SETTINGS_MESSAGE } from "@/commons/consts";
-import Typography from "@mui/material/Typography";
+import { useMessage } from "@/hooks/use-message";
+import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
+import { deleteAssetResource, getAssetResource } from "@/services/preference.service";
 import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { fileToBase64 } from "@/utils/file.util";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useMessage } from "@/hooks/use-message";
+
+import ModalCropImage from "./modal-crop-image.comp";
 
 function UploadImage(props) {
   const { label, required, description, note, shortName, imageUrl, type, messageField } = props;
@@ -51,6 +50,8 @@ function UploadImage(props) {
         console.error(e);
       }
     });
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

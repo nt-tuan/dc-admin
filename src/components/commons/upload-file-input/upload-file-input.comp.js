@@ -6,11 +6,10 @@ import {
   PictureAsPdfOutlined,
   TableViewOutlined
 } from "@mui/icons-material";
-import React, { Fragment, useCallback, useRef, useState } from "react";
-
-import { Button } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { Button } from "@mui/material";
 import PropTypes from "prop-types";
+import React, { Fragment, useCallback, useRef, useState } from "react";
 
 export const ERRORS = {
   FILE_LIMIT_EXCEED: "File size shouldn’t exceed 5MB",
@@ -128,6 +127,8 @@ export const UploadFile = ({
       uid: "",
       url: ""
     });
+    // TODO: @HauDo please resolve this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.sampleFile, formik]);
 
   const showUploadButton = React.useMemo(() => {

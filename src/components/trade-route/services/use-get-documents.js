@@ -1,6 +1,7 @@
-import { RouteService } from "./route.service";
-import { getAllRecordsFromAPI } from "utils/general.util";
 import { useQuery } from "react-query";
+import { getAllRecordsFromAPI } from "utils/general.util";
+
+import { RouteService } from "./route.service";
 
 const getDocuments = async () => {
   const documentTypes = await getAllRecordsFromAPI(RouteService.getDocuments);
@@ -9,5 +10,6 @@ const getDocuments = async () => {
 };
 export const useGetDocuments = () => {
   const { data, isFetched } = useQuery(["documents", "default-documents"], getDocuments);
-  return { data, isFetched };
+  const { documentTypes, defaultDocuments } = data || {};
+  return { data, isFetched, documentTypes, defaultDocuments };
 };

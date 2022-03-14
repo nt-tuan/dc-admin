@@ -1,25 +1,25 @@
-import React, { Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-
-import { AuthLayout } from "./layouts/auth/auth-layout.comp";
-import Box from "@mui/material/Box";
-import { ConnectedRouter } from "connected-react-router";
-import { Helmet } from "react-helmet";
-import { Loader } from "components/commons";
-import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
-import { MainContainer } from "./layouts/auth/main-container.comp";
-import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
+import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
 import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
-import { PublicLayout } from "./layouts/public/public.layout";
-import { RouteConst } from "commons/consts";
-import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
-import { getAssetURL } from "utils/config.util";
-import { loadable } from "./utils/loadable.util";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
-import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
+import Box from "@mui/material/Box";
+import { RouteConst } from "commons/consts";
+import { Loader } from "components/commons";
+import { ConnectedRouter } from "connected-react-router";
+import React, { Suspense } from "react";
+import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { getAssetURL } from "utils/config.util";
+
+import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
 import { userProfileRoutes } from "./components/user-profile/user-profile.routes";
+import { AuthLayout } from "./layouts/auth/auth-layout.comp";
+import { MainContainer } from "./layouts/auth/main-container.comp";
+import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
+import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
+import { PublicLayout } from "./layouts/public/public.layout";
+import { loadable } from "./utils/loadable.util";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
@@ -224,10 +224,10 @@ const routeData = [
               {
                 path: RouteConst.PROFILE_PAGES,
                 Component: loadable(() => import("pages/profile-pages/profile-page"))
-              }
+              },
+              ...tradeRouteRoutes
             ]
           },
-          ...tradeRouteRoutes,
           ...userProfileRoutes
         ]
       }

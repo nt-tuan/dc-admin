@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
-import { fireEvent, render, screen } from "@testing-library/react";
-
-import { BrowserRouter } from "react-router-dom";
-import { ForgotPasswordForm } from "./forgot-pw-form.comp";
+import { render } from "@testing-library/react";
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
+
+import { ForgotPasswordForm } from "./forgot-pw-form.comp";
 
 jest.mock("utils/config.util");
 

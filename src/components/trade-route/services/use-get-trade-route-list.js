@@ -1,10 +1,10 @@
+import { DatetimeUtils } from "@/utils/date-time.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
+import countryJson from "assets/country.json";
+import React from "react";
 import { useQuery, useQueryClient } from "react-query";
 
-import { DatetimeUtils } from "@/utils/date-time.util";
-import React from "react";
 import { RouteService } from "./route.service";
-import countryJson from "assets/country.json";
-import { getAllRecordsFromAPI } from "@/utils/general.util";
 
 const getRoutes = (params) => async () => {
   const result = await getAllRecordsFromAPI(RouteService.getAll, {

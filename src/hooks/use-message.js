@@ -11,7 +11,7 @@ export const MessageContent = ({ content, onClose, variant }) => {
       onClose={onClose}
       severity={variant}
       action={
-        <Button color="inherit" size="small" endIcon={<CloseIcon />}>
+        <Button onClick={onClose} color="inherit" size="small" endIcon={<CloseIcon />}>
           Close
         </Button>
       }
