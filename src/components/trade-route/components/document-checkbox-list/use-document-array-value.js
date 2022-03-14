@@ -59,7 +59,6 @@ export const useDocumentArrayValue = () => {
           }
           return document;
         });
-      console.log(willSelectedDocuments, newDocuments);
       setDocuments([...currentDocuments, ...willSelectedDocuments]);
     },
     [getCurrentDocuments, documentTypes, setDocuments]

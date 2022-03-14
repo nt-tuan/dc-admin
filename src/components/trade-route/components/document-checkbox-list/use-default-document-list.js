@@ -27,7 +27,6 @@ export const useDefaultDocumentList = () => {
   const documentTypeIds = React.useMemo(() => documentTypes.map(getId), [documentTypes]);
   React.useEffect(() => {
     if (documentTypeIds && documentTypeIds.length > 0) {
-      console.log(documentTypes);
       addDocumentArray(documentTypeIds, documentTypes);
     }
   }, [addDocumentArray, documentTypes, documentTypeIds]);
