@@ -19,8 +19,8 @@ export const validationSchema = yup.object({
     .array(
       yup.object({
         routeDocumentRuleDto: yup.object({
-          provider: yup.string().required(REQUIRED_ERR("Provider")),
-          viewer1: yup.string().required(REQUIRED_ERR("Viewer 1"))
+          provider: yup.string().required(REQUIRED_ERR("Provider")).nullable(),
+          viewer1: yup.string().required(REQUIRED_ERR("Viewer 1")).nullable()
         })
       })
     )

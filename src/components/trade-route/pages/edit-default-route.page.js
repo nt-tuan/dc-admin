@@ -14,7 +14,7 @@ const EditDefaultRoutePage = () => {
     initialValues,
     isFetched,
     isSubmitting
-  } = useEditTradeRoute(id, false);
+  } = useEditTradeRoute(id, true);
 
   return (
     <DTCSection>
@@ -26,6 +26,7 @@ const EditDefaultRoutePage = () => {
             defaultDocuments={defaultDocuments}
             initialValues={initialValues}
             isSubmitting={isSubmitting}
+            submitButtonText="Save Default Trade Routes"
           />
         )}
         {!isFetched && <Loader />}

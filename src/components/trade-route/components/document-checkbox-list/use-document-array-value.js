@@ -6,6 +6,36 @@ import { useGetDocuments } from "../../services/use-get-documents";
 import { newDocumentRule } from "./mapper";
 
 const getId = (document) => document.id;
+const removeItems = (array, itemIds, readonlyItems) => {
+  if (itemIds == null) return;
+  const defaultDocumentIds = readonlyItems.map(getId) ?? [];
+  const nextDocuments = array.filter(
+    (document) => defaultDocumentIds.includes(document.id) || !itemIds.includes(document.id)
+  );
+  return nextDocuments;
+};
+const addItems = (documentTypes, array, itemIds, newItems) => {
+  if (itemIds == null) return false;
+  const willSelectedItems = documentTypes
+    .filter(
+      (documentType) =>
+        itemIds.includes(documentType.id) &&
+        !array.some((current) => current.id === documentType.id)
+    )
+    .map(newDocumentRule)
+    .map((document) => {
+      if (newItems == null) return document;
+      for (const newDocument of newItems) {
+        if (newDocument.id === document.id) {
+          return {
+            ...newDocument
+          };
+        }
+      }
+      return document;
+    });
+  return [...array, ...willSelectedItems];
+};
 export const useDocumentArrayValue = () => {
   const { documentTypes, defaultDocuments } = useGetDocuments();
   const { values, setFieldValue } = useFormikContext();
@@ -39,39 +69,24 @@ export const useDocumentArrayValue = () => {
   );
   const addDocumentArray = React.useCallback(
     (documentIds, newDocuments) => {
-      if (documentIds == null) return false;
       const currentDocuments = getCurrentDocuments();
-      const willSelectedDocuments = documentTypes
-        .filter(
-          (documentType) =>
-            documentIds.includes(documentType.id) &&
-            !currentDocuments.some((current) => current.id === documentType.id)
-        )
-        .map(newDocumentRule)
-        .map((document) => {
-          if (newDocuments == null) return document;
-          for (const newDocument of newDocuments) {
-            if (newDocument.id === document.id) {
-              return {
-                ...newDocument
-              };
-            }
-          }
-          return document;
-        });
-      setDocuments([...currentDocuments, ...willSelectedDocuments]);
+      setDocuments(addItems(documentTypes, currentDocuments, documentIds, newDocuments));
     },
     [getCurrentDocuments, documentTypes, setDocuments]
   );
+  const removeThenAddArray = React.useCallback(
+    (deletedIds, addedIds, newDocuments) => {
+      const currentDocuments = getCurrentDocuments();
+      let nextDocuments = removeItems(currentDocuments, deletedIds, defaultDocuments);
+      nextDocuments = addItems(documentTypes, nextDocuments, addedIds, newDocuments);
+      setDocuments(nextDocuments);
+    },
+    [getCurrentDocuments, defaultDocuments, documentTypes, setDocuments]
+  );
   const removeDocumentArray = React.useCallback(
     (documentIds) => {
-      if (documentIds == null) return;
       const currentDocuments = getCurrentDocuments();
-      const defaultDocumentIds = defaultDocuments.map(getId) ?? [];
-      const nextDocuments = currentDocuments.filter(
-        (document) => defaultDocumentIds.includes(document.id) || !documentIds.includes(document.id)
-      );
-      setDocuments(nextDocuments);
+      setDocuments(removeItems(currentDocuments, documentIds, defaultDocuments));
     },
     [getCurrentDocuments, defaultDocuments, setDocuments]
   );
@@ -102,6 +117,7 @@ export const useDocumentArrayValue = () => {
     addDocument,
     addDocumentArray,
     removeDocumentArray,
+    removeThenAddArray,
     getIsCheckedAll,
     getIsIndeterminate
   };

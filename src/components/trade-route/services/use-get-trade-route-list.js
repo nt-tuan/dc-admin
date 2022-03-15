@@ -1,8 +1,11 @@
+import { RouteConst } from "@/commons/consts";
+import { useMessage } from "@/hooks/use-message";
 import { DatetimeUtils } from "@/utils/date-time.util";
 import { getAllRecordsFromAPI } from "@/utils/general.util";
 import countryJson from "assets/country.json";
 import React from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useHistory } from "react-router-dom";
 
 import { RouteService } from "./route.service";
 
@@ -29,4 +32,23 @@ export const useGetTradeRouteList = (params) => {
     queryClient
   ]);
   return { data, isLoading, invalidate };
+};
+
+export const useMutateTradeRoute = (id, isDefault) => {
+  const message = useMessage();
+  const history = useHistory();
+  const client = useQueryClient();
+  const onSuccess = () => {
+    message.success("Edit Successfully");
+    client.invalidateQueries(["trade-routes"]);
+    if (isDefault) {
+      history.push(`${RouteConst.TRADE_ROUTES}?tab=DEFAULT_ROUTE`);
+      return;
+    }
+    history.push(RouteConst.TRADE_ROUTES);
+  };
+  const { mutate, isLoading } = useMutation((values) => RouteService.edit(id, values), {
+    onSuccess
+  });
+  return { mutate, isLoading };
 };

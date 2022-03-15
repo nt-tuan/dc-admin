@@ -48,7 +48,7 @@ const RowField = ({ name, disabled, getRowValues, dataSource }) => {
 const HeaderCell = ({ children }) => {
   return (
     <TableCell align="left" width={200}>
-      <Typography variant={"h6"}>{children}</Typography>
+      <Typography fontWeight="bold">{children}</Typography>
     </TableCell>
   );
 };
@@ -70,7 +70,6 @@ export const DocumentRuleTable = ({ name }) => {
             <HeaderCell>Provider</HeaderCell>
             <HeaderCell>Viewer 1</HeaderCell>
             <HeaderCell>Viewer 2</HeaderCell>
-            <HeaderCell>Viewer 3</HeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -88,9 +87,6 @@ export const DocumentRuleTable = ({ name }) => {
                   </TableCell>
                   <TableCell align="left">
                     <RowField {...getRowFieldName(index, "viewer2")} disabled={row.disabled} />
-                  </TableCell>
-                  <TableCell align="left">
-                    <RowField {...getRowFieldName(index, "viewer3")} disabled={row.disabled} />
                   </TableCell>
                 </TableRow>
               ));

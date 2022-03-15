@@ -17,7 +17,8 @@ export const DefaultRouteForm = ({
   isSubmitting,
   onSubmit,
   defaultDocuments,
-  documentTypes
+  documentTypes,
+  submitButtonText
 }) => {
   return (
     <Formik onSubmit={onSubmit} initialValues={initialValues} validationSchema={validationSchema}>
@@ -52,7 +53,7 @@ export const DefaultRouteForm = ({
         <Grid direction="row" justifyContent="center" alignItems="center" container spacing={2}>
           <Grid item>
             <Button disabled={isSubmitting} type="submit" variant="contained" className="mr-2">
-              Create Default Trade Routes
+              {submitButtonText}
             </Button>
           </Grid>
           <Grid item>

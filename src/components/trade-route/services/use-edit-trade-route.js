@@ -4,27 +4,15 @@ import {
 } from "@/components/trade-route/mapper";
 
 import React from "react";
-import { RouteConst } from "@/commons/consts";
-import { RouteService } from "./route.service";
 import { useGetDocuments } from "@/components/trade-route/services/use-get-documents";
 import { useGetTradeRoute } from "@/components/trade-route/services/use-get-trade-route";
-import { useHistory } from "react-router-dom";
-import { useMessage } from "@/hooks/use-message";
-import { useMutation } from "react-query";
+import { useMutateTradeRoute } from "./use-get-trade-route-list";
 
 export const useEditTradeRoute = (id, isDefault) => {
   const { data: routeData, isFetched: isTradeRouteFetched } = useGetTradeRoute(id);
   const { data: documentData, isFetched: isDocumentsFetched } = useGetDocuments();
-  const message = useMessage();
-  const history = useHistory();
-  const onSuccess = () => {
-    message.success("Edit Successfully");
-    history.push(RouteConst.TRADE_ROUTES);
-  };
-  const { mutate, isLoading: isSubmitting } = useMutation(
-    (values) => RouteService.edit(id, values),
-    { onSuccess }
-  );
+
+  const { mutate, isLoading: isSubmitting } = useMutateTradeRoute(id, isDefault);
   const handleSubmit = (values) => {
     mutate(parseTradeRouteForm(values, defaultDocuments));
   };

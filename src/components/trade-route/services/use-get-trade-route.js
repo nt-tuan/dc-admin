@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { RouteService } from "./route.service";
 
 export const useGetTradeRoute = (id) => {
-  return useQuery(["trade-route", id], () => RouteService.get(id));
+  return useQuery(["trade-routes", id], () => RouteService.get(id));
 };
 
 const getDefault = ({ categoryId, typeId }) => {

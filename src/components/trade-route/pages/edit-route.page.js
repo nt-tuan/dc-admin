@@ -25,6 +25,7 @@ const EditRoutePage = () => {
             defaultDocuments={defaultDocuments}
             initialValues={initialValues}
             isSubmitting={isSubmitting}
+            submitButtonText="Save Trade Routes"
           />
         )}
         {!isFetched && <Loader />}

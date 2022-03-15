@@ -74,7 +74,7 @@ export const useErrorHandler = () => {
       }
       if (error != null) {
         const { errMsg } = error;
-        if (typeof errMsg === "string") {
+        if (typeof errMsg === "string" && error.message === "400") {
           message.error(errMsg);
           return;
         }

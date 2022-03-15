@@ -1,3 +1,4 @@
+import { useGetter } from "@/hooks/use-getter";
 import { useFormikContext } from "formik";
 import React from "react";
 
@@ -13,23 +14,29 @@ export const useDefaultDocumentList = () => {
     getIsCheckedAll,
     getIsIndeterminate,
     removeDocument,
+    removeThenAddArray,
     addDocument,
     removeDocumentArray,
     addDocumentArray
   } = useDocumentArrayValue();
   const { values } = useFormikContext();
+  const [previousDocumentTypeIds, setPreviousDocumentTypeIds] = React.useState();
+  const getPreviousDocumentTypeIds = useGetter(previousDocumentTypeIds);
   const { typeId, categoryId } = values;
   const { data, isLoading } = useGetDefaultRouteByProduct({ typeId, categoryId });
   const documentTypes = React.useMemo(
     () => data?.routeDocumentTypeResponses?.map(parseDocumentInDefaultRoutes) ?? [],
     [data]
   );
+
   const documentTypeIds = React.useMemo(() => documentTypes.map(getId), [documentTypes]);
   React.useEffect(() => {
-    if (documentTypeIds && documentTypeIds.length > 0) {
-      addDocumentArray(documentTypeIds, documentTypes);
+    const deletedIds = getPreviousDocumentTypeIds();
+    if (documentTypeIds) {
+      removeThenAddArray(deletedIds ?? [], documentTypeIds, documentTypes);
+      setPreviousDocumentTypeIds(documentTypeIds);
     }
-  }, [addDocumentArray, documentTypes, documentTypeIds]);
+  }, [removeThenAddArray, documentTypes, documentTypeIds, getPreviousDocumentTypeIds]);
   const isCheckedAll = getIsCheckedAll(documentTypeIds);
   const isIndeterminate = getIsIndeterminate(documentTypeIds);
   const onCheckAll = () => {

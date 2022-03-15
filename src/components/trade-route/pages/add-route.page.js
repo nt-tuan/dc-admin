@@ -29,6 +29,7 @@ const AddRoutePage = () => {
             documentTypes={documentTypes}
             defaultDocuments={defaultDocuments}
             initialValues={initialValues}
+            submitButtonText="Create Trade Routes"
           />
         )}
         {!isFetched && (

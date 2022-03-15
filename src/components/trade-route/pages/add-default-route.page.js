@@ -30,6 +30,7 @@ const AddDefaultRoutePage = () => {
             defaultDocuments={defaultDocuments}
             initialValues={initialValues}
             isSubmitting={isSubmitting}
+            submitButtonText="Create Default Trade Routes"
           />
         )}
         {!isFetched && <Loader />}
