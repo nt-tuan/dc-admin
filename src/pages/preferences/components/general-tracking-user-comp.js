@@ -15,7 +15,7 @@ const TrackingUserActivityForm = ({
         marginLeft={-1.5}
         icon={<Checkbox onChange={handleTrackUserActivity} checked={isTrackViaHotJar} />}
         label={
-          <Box>
+          <>
             Would you like to track user activity through Heatmaps and Recordings via
             <Box component="span" paddingLeft={0.5}>
               <Link href={hotJarLink} target="_blank" style={{ textDecoration: "none" }}>
@@ -23,7 +23,7 @@ const TrackingUserActivityForm = ({
               </Link>
             </Box>
             ?
-          </Box>
+          </>
         }
       />
 

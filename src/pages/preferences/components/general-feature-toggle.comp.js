@@ -7,7 +7,7 @@ const FeaturesToggleForm = ({ data, handleChange }) => {
   return (
     <>
       <Box marginBottom={3}>
-        <Typography>
+        <Typography variant="body2">
           Configure your marketplace by selecting what features and modules help run your operation
           smoothly
         </Typography>

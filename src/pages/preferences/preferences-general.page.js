@@ -10,13 +10,15 @@ import Header from "./components/general-header.comp";
 // import CreateProductForm from "./components/general-create-product.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
 import { RegexConst } from "@/commons/consts";
-import { whoCreateProductConst } from "./constant/general-data";
+import { updateFeatureToggleSuccess, whoCreateProductConst } from "./constant/general-data";
+import { useMessage } from "hooks/use-message";
 
 const Divider = styled(MuiDivider)({
   margin: "32px -24px 32px -25px"
 });
 
 const PreferencesGeneralPage = () => {
+  const message = useMessage();
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();
   const [featuresToggleData, setFeaturesToggleData] = React.useState({
     paymentServices: false,
@@ -42,12 +44,6 @@ const PreferencesGeneralPage = () => {
   const handleTrackUserActivity = (event) => {
     const { checked } = event.target;
     setIsTrackViaHotJar(checked);
-    setFeaturesToggleData((prev) => {
-      if (prev.registration && isTrackViaHotJar) {
-        return { ...prev, staggeredKYC: true, registration: false };
-      }
-      return { ...prev, staggeredKYC: false, registration: true };
-    });
   };
 
   const handleChangeHotJarId = (event) => {
@@ -70,6 +66,7 @@ const PreferencesGeneralPage = () => {
       setLoading(true);
       await asyncErrorHandlerWrapper(async () => {
         await updateMarketplaceFeatures(payload);
+        message.success(updateFeatureToggleSuccess);
       });
     } finally {
       setLoading(false);
@@ -95,6 +92,12 @@ const PreferencesGeneralPage = () => {
       setIsTrackViaHotJar(true);
     }
   }, [hotJarId]);
+
+  React.useEffect(() => {
+    if (!isTrackViaHotJar) {
+      setHotJarId("");
+    }
+  }, [isTrackViaHotJar]);
 
   return (
     <>

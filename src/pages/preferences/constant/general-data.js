@@ -40,3 +40,5 @@ export const whoCreateProductConst = {
 };
 
 export const hotJarLink = "https://www.hotjar.com/";
+
+export const updateFeatureToggleSuccess = "Settings updated.";

@@ -58,7 +58,7 @@ function UploadImage(props) {
     <Box>
       <Divider sx={{ mx: -3, my: 4 }} />
       <Box>
-        <Typography variant="h5" fontWeight={"bold"}>
+        <Typography variant="h5">
           {label}
           {required ? <span style={{ color: "red", marginLeft: 5 }}>*</span> : null}
         </Typography>
@@ -66,14 +66,14 @@ function UploadImage(props) {
           <UploadImageBox {...props} imageUrl={image} onSuccess={onSuccess} />
 
           <Box display={"grid"} marginLeft={"20px"} paddingRight={8}>
-            <Typography variant={"subtitle1"}>{description}</Typography>
+            <Typography variant="body2">{description}</Typography>
             <Typography variant={"caption"} color={"rgba(0,0,0,0.6)"}>
               {note}
             </Typography>
             {image && (
               <Typography
                 onClick={onRemove}
-                variant={"subtitle2"}
+                variant="body2"
                 style={{ cursor: "pointer" }}
                 color={"#2196F3"}
               >
@@ -153,7 +153,7 @@ function UploadImageBox({ shortName, imageUrl, type, onSuccess, messageField }) 
             alt={shortName}
           />
         ) : (
-          <span> Upload {shortName}</span>
+          <Typography variant="body2"> Upload {shortName}</Typography>
         )}
       </Box>
       <ModalCropImage
