@@ -9,6 +9,7 @@ import FeaturesToggleForm from "./components/general-feature-toggle.comp";
 import Header from "./components/general-header.comp";
 // import CreateProductForm from "./components/general-create-product.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
+import { RegexConst } from "@/commons/consts";
 
 const Divider = styled(MuiDivider)({
   margin: "32px -24px 32px -25px"
@@ -50,7 +51,9 @@ const PreferencesGeneralPage = () => {
 
   const handleChangeHotJarId = (event) => {
     const { value } = event.target;
-    setHotJarId(value);
+    const convertedValue = value?.trim();
+    const isValid = new RegExp(RegexConst.ONLY_NUMBER_REGEX).test(convertedValue);
+    setHotJarId(() => (isValid ? convertedValue : ""));
   };
 
   const handleSave = async () => {
@@ -85,6 +88,12 @@ const PreferencesGeneralPage = () => {
       setHotJarId(data?.hotJarId);
     });
   }, [asyncErrorHandlerWrapper]);
+
+  React.useEffect(() => {
+    if (hotJarId?.trim()?.length > 0) {
+      setIsTrackViaHotJar(true);
+    }
+  }, [hotJarId]);
 
   return (
     <>
