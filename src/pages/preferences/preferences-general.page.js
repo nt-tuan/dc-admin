@@ -10,6 +10,7 @@ import Header from "./components/general-header.comp";
 // import CreateProductForm from "./components/general-create-product.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
 import { RegexConst } from "@/commons/consts";
+import { whoCreateProductConst } from "./constant/general-data";
 
 const Divider = styled(MuiDivider)({
   margin: "32px -24px 32px -25px"
@@ -84,7 +85,7 @@ const PreferencesGeneralPage = () => {
         staggeredKYC: data?.staggeredKYC,
         timeConstraint: data?.timeConstraint
       });
-      setWhoCanCreateProduct(data?.whoCanCreateProduct);
+      setWhoCanCreateProduct(whoCreateProductConst.marketplace.value);
       setHotJarId(data?.hotJarId);
     });
   }, [asyncErrorHandlerWrapper]);
