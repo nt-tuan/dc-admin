@@ -16,7 +16,6 @@ export class LoginGoogleCaptchaPlugin {
     );
   }
   static clone(setting) {
-    const plugin = new LoginGoogleCaptchaPlugin(setting);
-    return plugin;
+    return new LoginGoogleCaptchaPlugin(setting);
   }
 }

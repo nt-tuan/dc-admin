@@ -18,9 +18,8 @@ export const updateNotificationChannel = async (values) => {
   await backendAPI.put(ApiPathConsts.NOTIFICATION_SETTING, values);
 };
 
-export const getSecurityQuestions = async () => {
-  const res = await backendAPI.get(ApiPathConsts.SECURITY_QUESTIONS);
-  return res;
+export const getSecurityQuestions = () => {
+  return backendAPI.get(ApiPathConsts.SECURITY_QUESTIONS);
 };
 
 export const createSecurityQuestions = async (data) => {
@@ -37,19 +36,16 @@ export const createPasscode = async (data) => {
   await backendAPI.put(ApiPathConsts.THREE_STEPS_PASSCODE, data);
   return true;
 };
-export const validatePasscode = async (data) => {
-  const res = await backendAPI.post(ApiPathConsts.THREE_STEPS_PASSCODE, data);
-  return res;
+export const validatePasscode = (data) => {
+  return backendAPI.post(ApiPathConsts.THREE_STEPS_PASSCODE, data);
 };
 
-export const validateOTP = async (data) => {
-  const res = await backendAPI.post(ApiPathConsts.THREE_STEPS_OTP, data);
-  return res;
+export const validateOTP = (data) => {
+  return backendAPI.post(ApiPathConsts.THREE_STEPS_OTP, data);
 };
 
-export const get3StepsData = async () => {
-  const res = await backendAPI.get(ApiPathConsts.DATA_3_STEPS);
-  return res;
+export const get3StepsData = () => {
+  return backendAPI.get(ApiPathConsts.DATA_3_STEPS);
 };
 
 export const createOTP = async () => {
@@ -57,7 +53,6 @@ export const createOTP = async () => {
   return true;
 };
 
-export const getUserRebates = async () => {
-  const res = await backendAPI.get(ApiPathConsts.USER_REBATES);
-  return res;
+export const getUserRebates = () => {
+  return backendAPI.get(ApiPathConsts.USER_REBATES);
 };

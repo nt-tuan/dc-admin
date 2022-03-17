@@ -14,6 +14,7 @@ const checkboxStyles = {
 export const withListItem = (
   { gutter, xxl = 24, xl = 24, lg = 24, md = 24, sm = 24, xs = 24 },
   duplicateFieldName = "id"
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => (ItemComponent) => {
   return React.memo(
     ({

@@ -2,36 +2,29 @@ import { backendAPI } from "utils/httpAPI.util";
 import { ApiPathConsts } from "commons/consts";
 
 export class CompanyService {
-  static getBankDetails = async () => {
-    const result = await backendAPI.get(ApiPathConsts.BANK_DETAILS);
-    return result;
+  static getBankDetails = () => {
+    return backendAPI.get(ApiPathConsts.BANK_DETAILS);
   };
 
-  static getCountries = async () => {
-    const result = await backendAPI.get("/companies/addresses/countries");
-    return result;
+  static getCountries = () => {
+    return backendAPI.get("/companies/addresses/countries");
   };
 
-  static getNewCompanyList = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_NEW_COMPANY_LIST, { page, size, sort });
-    return result;
+  static getNewCompanyList = ({ page, size, sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_NEW_COMPANY_LIST, { page, size, sort });
   };
 
-  static approveNewCompany = async ({ companyId }) => {
-    const result = await backendAPI.put(
-      ApiPathConsts.APPROVE_NEW_COMPANY.replace(":companyId", companyId)
-    );
-    return result;
+  static approveNewCompany = ({ companyId }) => {
+    return backendAPI.put(ApiPathConsts.APPROVE_NEW_COMPANY.replace(":companyId", companyId));
   };
 
-  static updateProductCreationPermission = async (companyId, isEnable) => {
-    const result = await backendAPI.put(
+  static updateProductCreationPermission = (companyId, isEnable) => {
+    return backendAPI.put(
       `${ApiPathConsts.UPDATE_PRODUCT_CREATION_PERMISSION.replace(
         ":companyId",
         companyId
       )}${isEnable}`
     );
-    return result;
   };
   static sendEmailConfirmBank = async () => {
     await backendAPI.get(`${ApiPathConsts.COMPANY_SEND_VERIFICATION_CODE}`);

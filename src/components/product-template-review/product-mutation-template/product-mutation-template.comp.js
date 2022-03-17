@@ -181,6 +181,7 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
   ]);
 
   const checkCanSkip = useCallback(
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     (step = currentStep, recentlyChangedValues) => {
       let isFormDirty = false;
       let values;
@@ -266,7 +267,6 @@ export const ProductMutationTemplate = ({ productDetails, isEditing = false }) =
         addProduct(data);
       }
     });
-    return;
   }, [addProduct, editProduct, isEditing, productData]);
 
   const handleNext = useCallback(async () => {

@@ -6,6 +6,7 @@ import { ORDERS_SCHEMA } from "./order.schema";
 const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;
 const { formatDateTime } = DatetimeUtils;
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const parseActiveOrderToExcel = (order) => {
   if (!Array.isArray(order) || order.length <= 0) {
     return [];
@@ -74,6 +75,7 @@ export const activeOrderMapper = {
   parseDataToGridView: parseActiveOrderToGridView
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const parseHistoryOrderToExcel = (order) => {
   if (!Array.isArray(order) || order.length <= 0) {
     return [];
@@ -96,6 +98,7 @@ const parseHistoryOrderToExcel = (order) => {
 
   order.forEach((item) => {
     let row = new Array(9);
+    // eslint-disable-next-line sonarjs/no-identical-functions
     Object.keys(item).forEach((field) => {
       if (columns[field] !== undefined) {
         if (FIELDS.timestamp === field) {

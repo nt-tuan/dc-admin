@@ -45,6 +45,7 @@ const validationSchema = yup.object({
         .endsWith(DOCUMENT_SCHEMA.acceptTypes[documentType].toLowerCase());
     })
 });
+const CREATE_DOCUMENT = "Create Document";
 const DocumentPage = () => {
   const [showDocumentMutationModal, setShowDocumentMutationModal] = useState(false);
   const [mutationTitle, setMutationTitle] = useState("");
@@ -68,7 +69,7 @@ const DocumentPage = () => {
 
   useEffect(() => {
     if (showCreateDocument) {
-      setMutationTitle("Create Document");
+      setMutationTitle(CREATE_DOCUMENT);
       setShowDocumentMutationModal(true);
     }
   }, [showCreateDocument]);
@@ -91,7 +92,7 @@ const DocumentPage = () => {
 
   const handleEditClick = (id) => {
     const targetDoc = documents.find((doc) => doc.id === id);
-    setMutationTitle("Edit Document");
+    setMutationTitle(CREATE_DOCUMENT);
     setShowDocumentMutationModal(true);
     isEdit.current = true;
     selectedDocument.current = targetDoc;
@@ -212,7 +213,7 @@ const DocumentPage = () => {
               isEdit.current = false;
             }}
           >
-            Create Document
+            {CREATE_DOCUMENT}
           </Button>
         </Stack>
 

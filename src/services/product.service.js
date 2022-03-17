@@ -5,94 +5,78 @@ export class ProductService {
   static PRODUCT_CATEGORY = "/products/category";
   static HS_CODE = "/hsCode";
 
-  static addProduct = async (data) => {
+  static addProduct = (data) => {
     const { fileName, productName, typeId, variantList, detail } = data;
-    const result = await backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
+    return backendAPI.post(ApiPathConsts.ADD_PRODUCT, {
       detail,
       fileName,
       productName,
       typeId,
       variantList
     });
-    return result;
   };
 
-  static checkDuplicate = async (data) => {
-    const result = await backendAPI.post(ApiPathConsts.CHECK_DUPLICATE_PRODUCT, data);
-    return result;
+  static checkDuplicate = (data) => {
+    return backendAPI.post(ApiPathConsts.CHECK_DUPLICATE_PRODUCT, data);
   };
 
-  static editProduct = async (data, id) => {
-    const result = await backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
-    return result;
+  static editProduct = (data, id) => {
+    return backendAPI.put(ApiPathConsts.EDIT_PRODUCT.replace(":id", id), data);
   };
 
-  static getProducts = async ({ params }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCTS, params);
-    return result;
+  static getProducts = ({ params }) => {
+    return backendAPI.get(ApiPathConsts.GET_PRODUCTS, params);
   };
 
-  static getProductTypes = async (category) => {
-    const result = await backendAPI.get(`${ApiPathConsts.GET_PRODUCT_CATEGORIES}/${category}`);
-    return result;
+  static getProductTypes = (category) => {
+    return backendAPI.get(`${ApiPathConsts.GET_PRODUCT_CATEGORIES}/${category}`);
   };
 
-  static getProductCategories = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_CATEGORIES);
-    return result;
+  static getProductCategories = () => {
+    return backendAPI.get(ApiPathConsts.GET_PRODUCT_CATEGORIES);
   };
 
-  static getProductSaleChannels = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_SALE_CHANNEL);
-    return result;
+  static getProductSaleChannels = () => {
+    return backendAPI.get(ApiPathConsts.GET_PRODUCT_SALE_CHANNEL);
   };
 
-  static deleteProduct = async (id) => {
-    const result = await backendAPI.delete(ApiPathConsts.DELETE_PRODUCT.replace(":id", id));
-    return result;
+  static deleteProduct = (id) => {
+    return backendAPI.delete(ApiPathConsts.DELETE_PRODUCT.replace(":id", id));
   };
 
-  static getProductDetails = async (id) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_PRODUCT_DETAILS.replace(":id", id));
-    return result;
+  static getProductDetails = (id) => {
+    return backendAPI.get(ApiPathConsts.GET_PRODUCT_DETAILS.replace(":id", id));
   };
 
-  static getProductNameByTypeId = async (typeId) => {
-    const result = await backendAPI.get(
-      ApiPathConsts.GET_PRODUCT_NAMES_BY_TYPE_ID.replace(":id", typeId)
-    );
-    return result;
+  static getProductNameByTypeId = (typeId) => {
+    return backendAPI.get(ApiPathConsts.GET_PRODUCT_NAMES_BY_TYPE_ID.replace(":id", typeId));
   };
 
-  static addAvailableProduct = async (sourceId, targetId) => {
-    const result = await backendAPI.put(
+  static addAvailableProduct = (sourceId, targetId) => {
+    return backendAPI.put(
       ApiPathConsts.ADD_AVAILABLE_PRODUCT.replace(":sourceId", sourceId).replace(
         ":targetId",
         targetId
       )
     );
-    return result;
   };
 
-  static getProductCategories = async () => {
-    const result = await backendAPI.get(this.PRODUCT_CATEGORY);
-    return result;
+  static getProductCategories = () => {
+    return backendAPI.get(this.PRODUCT_CATEGORY);
   };
 
-  static getProductTypeByCategory = async (catId) => {
-    const result = await backendAPI.get(`${this.PRODUCT_CATEGORY}/${catId}`);
-    return result;
+  static getProductTypeByCategory = (catId) => {
+    return backendAPI.get(`${this.PRODUCT_CATEGORY}/${catId}`);
   };
 
-  static getAllHsCode = async (search = null, page = 0, size = 100) => {
-    const result = await backendAPI.get(
+  static getAllHsCode = (search = null, page = 0, size = 100) => {
+    return backendAPI.get(
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
       `${this.HS_CODE}?page=${page}&size=${size}${search !== null ? `&searchText=${search}` : ""}`
     );
-    return result;
   };
 
-  static getHsCodeDetails = async (code) => {
-    const result = await backendAPI.get(`/hsCode/${code}`);
-    return result;
+  static getHsCodeDetails = (code) => {
+    return backendAPI.get(`/hsCode/${code}`);
   };
 }

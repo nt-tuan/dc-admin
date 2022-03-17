@@ -9,10 +9,9 @@ const getId = (document) => document.id;
 const removeItems = (array, itemIds, readonlyItems) => {
   if (itemIds == null) return;
   const defaultDocumentIds = readonlyItems.map(getId) ?? [];
-  const nextDocuments = array.filter(
+  return array.filter(
     (document) => defaultDocumentIds.includes(document.id) || !itemIds.includes(document.id)
   );
-  return nextDocuments;
 };
 const addItems = (documentTypes, array, itemIds, newItems) => {
   if (itemIds == null) return false;

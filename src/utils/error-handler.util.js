@@ -40,13 +40,11 @@ export const asyncErrorHandlerWrapper = async (asyncFunc) => {
   try {
     return await asyncFunc();
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === "401") {
-        removeAuthCredential().then(() => {
-          window.location.href = RouteConst.LOGIN_ROUTE;
-        });
-        return;
-      }
+    if (error instanceof Error && error.message === "401") {
+      removeAuthCredential().then(() => {
+        window.location.href = RouteConst.LOGIN_ROUTE;
+      });
+      return;
     }
     if (process.env.NODE_ENV !== "production") {
       log(error);
@@ -61,13 +59,11 @@ export const useErrorHandler = () => {
   const message = useMessage();
   const onError = React.useCallback(
     (error) => {
-      if (error instanceof Error) {
-        if (error.message === "401") {
-          removeAuthCredential().then(() => {
-            window.location.href = RouteConst.LOGIN_ROUTE;
-          });
-          return;
-        }
+      if (error instanceof Error && error.message === "401") {
+        removeAuthCredential().then(() => {
+          window.location.href = RouteConst.LOGIN_ROUTE;
+        });
+        return;
       }
       if (process.env.NODE_ENV !== "production") {
         log(error);
@@ -90,18 +86,16 @@ export const useErrorHandler = () => {
 export const useAsyncErrorHandler = () => {
   const message = useMessage();
 
-  const asyncErrorHandlerWrapper = React.useCallback(
+  return React.useCallback(
     async (asyncFunc) => {
       try {
         return await asyncFunc();
       } catch (error) {
-        if (error instanceof Error) {
-          if (error.message === "401") {
-            removeAuthCredential().then(() => {
-              window.location.href = RouteConst.LOGIN_ROUTE;
-            });
-            return;
-          }
+        if (error instanceof Error && error.message === "401") {
+          removeAuthCredential().then(() => {
+            window.location.href = RouteConst.LOGIN_ROUTE;
+          });
+          return;
         }
         if (process.env.NODE_ENV !== "production") {
           log(error);
@@ -113,5 +107,4 @@ export const useAsyncErrorHandler = () => {
     },
     [message]
   );
-  return asyncErrorHandlerWrapper;
 };

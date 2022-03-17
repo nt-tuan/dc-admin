@@ -82,6 +82,7 @@ export function* LOAD_CURRENT_ACCOUNT(data) {
     if (onSuccess) {
       onSuccess();
     }
+    // eslint-disable-next-line sonarjs/no-useless-catch
   } catch (error) {
     throw error;
   } finally {

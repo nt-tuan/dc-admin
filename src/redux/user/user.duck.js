@@ -40,6 +40,7 @@ const initialState = {
 };
 
 export default function userReducer(state = initialState, action) {
+  // eslint-disable-next-line sonarjs/no-small-switch
   switch (action.type) {
     case SET_STATE:
       return { ...state, ...action.payload };

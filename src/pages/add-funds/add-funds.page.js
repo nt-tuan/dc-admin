@@ -53,8 +53,8 @@ const RoundedLine = ({ children, index }) => {
       <Box
         component="span"
         sx={{
-          bgcolor: "primary.main",
-          color: "common.white",
+          bgcolor: (theme) => theme.palette.primary.main,
+          color: (theme) => theme.palette.common.white,
           width: 30,
           height: 30,
           borderRadius: "100%",
@@ -76,7 +76,7 @@ const ExampleLine = styled(Box)({
 });
 const PrimarySpan = ({ children }) => {
   return (
-    <Box component="span" sx={{ color: "primary.main" }}>
+    <Box component="span" sx={{ color: (theme) => theme.palette.primary.main }}>
       {children}
     </Box>
   );
@@ -191,7 +191,7 @@ const AddFundsPage = () => {
             </ExampleLine>
             <Box
               sx={{
-                color: "primary.main",
+                color: (theme) => theme.palette.primary.main,
                 marginTop: 1,
                 borderTop: 1,
                 display: "flex",

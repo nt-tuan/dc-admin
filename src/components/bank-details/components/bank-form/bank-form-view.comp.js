@@ -15,15 +15,13 @@ import React from "react";
 import { SwiftCodeField } from "../../swift-code-field.comp";
 import Typography from "@mui/material/Typography";
 import currencyList from "assets/currency.json";
-import { useQueryCompany } from "../../services/use-query-company";
 import { isAbaRequired, isSortCodeRequired } from "./validation.schema";
 import { useFormikContext } from "formik";
 import { CurrencyTooltip } from "./currency-tooltip.comp";
 
 export const FormView = ({ name, onSubmit }) => {
   const { setFieldValue } = useFormikContext();
-  const { data, isLoading: isCompanyLoading } = useQueryCompany();
-  const { name: companyName } = data ?? {};
+
   const getName = (fieldName) => {
     if (!name) return fieldName;
     return `${name}.${fieldName}`;
@@ -34,25 +32,6 @@ export const FormView = ({ name, onSubmit }) => {
       label: `${label} (${value})`
     }));
   }, []);
-  const validateAccountName = (value) => {
-    if (!value) {
-      return;
-    }
-    const splitValue = value?.toLowerCase().split(" ");
-    const splitCompanyName = companyName?.toLowerCase().split(" ");
-    let isOk = false;
-    let i = 0;
-    while (isOk === false && i < splitValue.length) {
-      if (splitCompanyName.includes(splitValue[i])) {
-        isOk = true;
-      }
-      i++;
-    }
-
-    if (!isOk) {
-      return "The Beneficiary Name should include at least one word in the Business Name (Company Name)";
-    }
-  };
 
   const handleBankIdTypeChange = (e) => {
     const { value } = e.target;
@@ -71,8 +50,6 @@ export const FormView = ({ name, onSubmit }) => {
           <TextField
             fullWidth
             required
-            disabled={isCompanyLoading}
-            fieldConfig={{ validate: validateAccountName }}
             name={getName("accountName")}
             label={BANK_LABELS.accountName}
             placeholder="Recipient's Bank Account Name"

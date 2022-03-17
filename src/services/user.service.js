@@ -11,75 +11,56 @@ export class UserService {
     if (localStorageAuth) {
       const { accessToken } = localStorageAuth;
       backendAPI.setAuthHeader(accessToken);
-      const curUser = await backendAPI.get("/me");
-      return curUser;
+      return backendAPI.get("/me");
     }
     return undefined;
   };
 
-  static getUserDetails = async (username) => {
-    const result = await backendAPI.get(
-      `${this.#USER_MANAGEMENT_PREFIX}/company-user-info?username=${username}`
-    );
-    return result;
+  static getUserDetails = (username) => {
+    return backendAPI.get(`${this.#USER_MANAGEMENT_PREFIX}/company-user-info?username=${username}`);
   };
 
   static removeBadge = async (type, id) => {
     await backendAPI.post(`${this.#USER_MANAGEMENT_PREFIX}/${id}/remove/badge/type?type=${type}`);
   };
 
-  static getAllUsers = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ALL_USERS, { page, size, sort });
-    return result;
+  static getAllUsers = ({ page, size, sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_ALL_USERS, { page, size, sort });
   };
 
-  static getAllBuyer = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ALL_BUYERS, { page, size, sort });
-    return result;
+  static getAllBuyer = ({ page, size, sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_ALL_BUYERS, { page, size, sort });
   };
 
-  static getAllSeller = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ALL_SELLERS, { page, size, sort });
-    return result;
+  static getAllSeller = ({ page, size, sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_ALL_SELLERS, { page, size, sort });
   };
 
-  static suspendUser = async ({ companyId }) => {
-    const result = await backendAPI.post(
-      ApiPathConsts.SUSPEND_USER.replace(":companyId", companyId)
-    );
-    return result;
+  static suspendUser = ({ companyId }) => {
+    // eslint-disable-next-line sonarjs/no-duplicate-string
+    return backendAPI.post(ApiPathConsts.SUSPEND_USER.replace(":companyId", companyId));
   };
 
-  static unsuspendUser = async ({ companyId }) => {
-    const result = await backendAPI.post(
-      ApiPathConsts.UNSUSPEND_USER.replace(":companyId", companyId)
-    );
-    return result;
+  static unsuspendUser = ({ companyId }) => {
+    return backendAPI.post(ApiPathConsts.UNSUSPEND_USER.replace(":companyId", companyId));
   };
 
-  static getAvailableBadges = async ({ companyId }) => {
-    const result = await backendAPI.get(
-      ApiPathConsts.GET_AVAILABLE_BADGES.replace(":companyId", companyId)
-    );
-    return result;
+  static getAvailableBadges = ({ companyId }) => {
+    return backendAPI.get(ApiPathConsts.GET_AVAILABLE_BADGES.replace(":companyId", companyId));
   };
 
-  static getAllBadges = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ALL_BADGES);
-    return result;
+  static getAllBadges = () => {
+    return backendAPI.get(ApiPathConsts.GET_ALL_BADGES);
   };
 
-  static assignBadges = async (data) => {
+  static assignBadges = (data) => {
     const { companyId, badgeIdList } = data;
     let queryString = "";
     badgeIdList.forEach((id, index) => {
       const operator = index === 0 ? "?" : "&";
       queryString = `${queryString}${operator}badgeIdList=${id}`;
     });
-    const result = await backendAPI.post(
-      `${ApiPathConsts.GET_ALL_BADGES}/${companyId}${queryString}`
-    );
-    return result;
+    return backendAPI.post(`${ApiPathConsts.GET_ALL_BADGES}/${companyId}${queryString}`);
   };
 
   static manageMarketplaceCredit = async (companyId, isEnable) => {
@@ -88,27 +69,27 @@ export class UserService {
     );
   };
 
-  static getAdminUsers = async (params) => {
+  static getAdminUsers = (params) => {
     return backendAPI.get("/users", params);
   };
 
-  static addAdminUser = async (user) => {
+  static addAdminUser = (user) => {
     return backendAPI.post("/admin/users", user);
   };
 
-  static disableAdminUser = async (userId) => {
+  static disableAdminUser = (userId) => {
     return backendAPI.patch(`/admin/users/${userId}/disable`);
   };
 
-  static enableAdminUser = async (userId) => {
+  static enableAdminUser = (userId) => {
     return backendAPI.patch(`/admin/users/${userId}/enable`);
   };
 
-  static editAdminUser = async (userId, payload) => {
+  static editAdminUser = (userId, payload) => {
     return backendAPI.put(`/admin/users/${userId}`, payload);
   };
 
-  static deleteAdminUser = async (userId) => {
+  static deleteAdminUser = (userId) => {
     return backendAPI.delete(`/users/${userId}`);
   };
 }

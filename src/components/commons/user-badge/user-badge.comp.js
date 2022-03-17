@@ -54,6 +54,7 @@ export const UserBadge = ({ type, value }) => {
   ) : null;
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const getBadge = (type, value) => {
   if (Object.keys(CUSTOM_BADGES).includes(type)) {
     return [CUSTOM_BADGES[type].text, CUSTOM_BADGES[type].component];

@@ -2,26 +2,22 @@ import { backendAPI } from "utils/httpAPI.util";
 import { ApiPathConsts } from "commons/consts/system";
 
 export class FinancialService {
-  static getWalletDashboard = async () => {
-    const result = await backendAPI.get(ApiPathConsts.GET_WALLET_DASHBOARD);
-    return result;
+  static getWalletDashboard = () => {
+    return backendAPI.get(ApiPathConsts.GET_WALLET_DASHBOARD);
   };
 
-  static getWalletTransactionDetails = async ({ sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_WALLET_TRANSACTION_DETAILS, {
+  static getWalletTransactionDetails = ({ sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_WALLET_TRANSACTION_DETAILS, {
       sort
     });
-    return result;
   };
 
-  static getAccountSummary = async ({ page, size, sort }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_ACCOUNT_SUMMARY, { page, size, sort });
-    return result;
+  static getAccountSummary = ({ page, size, sort }) => {
+    return backendAPI.get(ApiPathConsts.GET_ACCOUNT_SUMMARY, { page, size, sort });
   };
 
-  static getWithdrawals = async ({ page, size, sort, status }) => {
-    const result = await backendAPI.get(ApiPathConsts.GET_WITHDRAWAL, { page, size, sort, status });
-    return result;
+  static getWithdrawals = ({ page, size, sort, status }) => {
+    return backendAPI.get(ApiPathConsts.GET_WITHDRAWAL, { page, size, sort, status });
   };
 
   static postRequestWithdrawal = async (data) => {

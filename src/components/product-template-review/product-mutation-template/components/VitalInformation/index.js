@@ -85,7 +85,7 @@ const VitalInformationForm = ({
   }, [productDetails, form, onCategoryChange]);
 
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
-    const fields = [
+    return [
       {
         label: "Product Category",
         name: "productCategory",
@@ -121,6 +121,7 @@ const VitalInformationForm = ({
         }
       },
       {
+        // eslint-disable-next-line sonarjs/no-duplicate-string
         label: "Product Name",
         name: "productName",
         type: INPUT_TYPE.INPUT,
@@ -274,7 +275,6 @@ const VitalInformationForm = ({
         props: {}
       }
     ];
-    return fields;
   }, [categories, productDetails, types, isEditing, hsCodeData.data, form]);
 
   const handleFieldChange = useCallback(
@@ -341,6 +341,7 @@ const VitalInformationForm = ({
     if (pageR <= totalPages) {
       const req = await ProductService.getAllHsCode(keyword, pageR);
       if (req && req?.content.length > 0) {
+        // eslint-disable-next-line sonarjs/no-identical-functions
         const parseHsCode = req?.content.map((item) => ({
           ...item,
           id: item.hsCode,

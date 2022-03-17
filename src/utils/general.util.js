@@ -101,28 +101,26 @@ export const getAllRecordsFromAPI = async (
   });
 
   let allDataRes = { ...res };
+  if (!res) return allDataRes.content;
 
-  if (res) {
-    const { totalElements } = res;
-    if (totalElements > maxSize) {
-      let remainElements = totalElements - maxSize;
-      while (true) {
-        page = page + 1;
-        const remainRes = await serviceFn({
-          size: remainElements > maxSize ? maxSize : remainElements,
-          page,
-          sort: sort,
-          ...outerParams
-        });
-        allDataRes = { ...allDataRes, content: [...allDataRes.content, ...remainRes.content] };
-        remainElements = remainElements - maxSize;
-        if (remainElements <= 0) {
-          break;
-        }
+  const { totalElements } = res;
+  if (totalElements > maxSize) {
+    let remainElements = totalElements - maxSize;
+    while (true) {
+      page = page + 1;
+      const remainRes = await serviceFn({
+        size: remainElements > maxSize ? maxSize : remainElements,
+        page,
+        sort: sort,
+        ...outerParams
+      });
+      allDataRes = { ...allDataRes, content: [...allDataRes.content, ...remainRes.content] };
+      remainElements = remainElements - maxSize;
+      if (remainElements <= 0) {
+        break;
       }
     }
   }
-
   return allDataRes.content;
 };
 

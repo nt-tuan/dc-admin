@@ -25,12 +25,14 @@ const getRoutes = (params) => async () => {
   });
 };
 
+const TRADE_ROUTES_QUERY_KEY = "trade-routes";
 export const useGetTradeRouteList = (params) => {
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery(["trade-routes", params], getRoutes(params));
-  const invalidate = React.useCallback(() => queryClient.invalidateQueries(["trade-routes"]), [
-    queryClient
-  ]);
+  const { data, isLoading } = useQuery([TRADE_ROUTES_QUERY_KEY, params], getRoutes(params));
+  const invalidate = React.useCallback(
+    () => queryClient.invalidateQueries([TRADE_ROUTES_QUERY_KEY]),
+    [queryClient]
+  );
   return { data, isLoading, invalidate };
 };
 
@@ -40,7 +42,7 @@ export const useMutateTradeRoute = (id, isDefault) => {
   const client = useQueryClient();
   const onSuccess = () => {
     message.success("Edit Successfully");
-    client.invalidateQueries(["trade-routes"]);
+    client.invalidateQueries([TRADE_ROUTES_QUERY_KEY]);
     if (isDefault) {
       history.push(`${RouteConst.TRADE_ROUTES}?tab=DEFAULT_ROUTE`);
       return;

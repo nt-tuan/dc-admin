@@ -79,6 +79,7 @@ const ProductDatabase = () => {
         payload: { pageName: "EditProductPage" }
       });
       history.push(
+        // eslint-disable-next-line sonarjs/no-nested-template-literals
         `${RouteConst.EDIT_PRODUCT.replace(":id", `${product.name}`)}?uid=${product.id}`
       );
     },

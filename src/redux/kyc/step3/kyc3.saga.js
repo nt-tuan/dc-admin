@@ -16,6 +16,7 @@ function* GET_STEP3() {
     if (values.length) {
       yield put(setStateAction({ bankDetails: values }));
     }
+    // eslint-disable-next-line sonarjs/no-useless-catch
   } catch (error) {
     throw error;
   } finally {
@@ -33,6 +34,7 @@ function* SAVE_STEP3({ payload }) {
       yield put(setStateAction({ bankDetails: updatedValues }));
     }
     onNext && onNext();
+    // eslint-disable-next-line sonarjs/no-useless-catch
   } catch (error) {
     throw error;
   } finally {

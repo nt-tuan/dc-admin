@@ -37,15 +37,9 @@ const ChildFieldModal = ({
       if (value?.fieldOption[0] === "") {
         return true;
       }
-
-      if (
-        value.fieldOption.find(
-          (childValue) => !childValue.label && !childValue.allowInput && !childValue.textboxType
-        )
-      ) {
-        return true;
-      }
-      return false;
+      return value.fieldOption.find(
+        (childValue) => !childValue.label && !childValue.allowInput && !childValue.textboxType
+      );
     });
     if (errorField) {
       form.validateFields();

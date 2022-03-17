@@ -6,24 +6,22 @@ export class OrderService {
   static getAllActiveOrders = async (options) => {
     const { createdDate } = options;
     const formattedCreatedDate = dayjs(createdDate).utc().format(DATETIME_FORMAT);
-    const result = await backendAPI.post(ApiPathConsts.GET_ALL_ACTIVE_ORDERS, undefined, {
+    return backendAPI.post(ApiPathConsts.GET_ALL_ACTIVE_ORDERS, undefined, {
       ...options,
       createdDate: formattedCreatedDate
     });
-    return result;
   };
 
   static getAllOrderHistory = async (options) => {
     const { createdDate } = options;
     const formattedCreatedDate = dayjs(createdDate).utc().format(DATETIME_FORMAT);
-    const result = await backendAPI.post(ApiPathConsts.GET_ALL_ORDERS_HISTORY, undefined, {
+    return backendAPI.post(ApiPathConsts.GET_ALL_ORDERS_HISTORY, undefined, {
       ...options,
       createdDate: formattedCreatedDate
     });
-    return result;
   };
 
-  static getOrderById = async (orderId) => {
-    return await backendAPI.get(`${ApiPathConsts.GET_ORDER_PREFIX}/${orderId}`);
+  static getOrderById = (orderId) => {
+    return backendAPI.get(`${ApiPathConsts.GET_ORDER_PREFIX}/${orderId}`);
   };
 }

@@ -102,6 +102,9 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
       onClose();
     });
   }, [company, selected, onClose]);
+  const renderBadge = (badge) => (
+    <BadgeCheckbox key={badge.id} badge={badge} selected={selected} onChange={handleChange} />
+  );
   if (totalBadges == null || company == null)
     return (
       <Box width="100%" display="flex" alignItems="center" justifyContent="center">
@@ -114,14 +117,7 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
       <FormGroup>
         {listBadgeFiltered
           .filter((badge) => selected?.some((selected) => selected.id === badge.id))
-          .map((badge) => (
-            <BadgeCheckbox
-              key={badge.id}
-              badge={badge}
-              selected={selected}
-              onChange={handleChange}
-            />
-          ))}
+          .map(renderBadge)}
       </FormGroup>
       <Box my={2}>
         <Input
@@ -135,14 +131,7 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
       <FormGroup>
         {listBadgeFiltered
           .filter((badge) => !selected?.some((selected) => selected.id === badge.id))
-          .map((badge) => (
-            <BadgeCheckbox
-              key={badge.id}
-              badge={badge}
-              selected={selected}
-              onChange={handleChange}
-            />
-          ))}
+          .map(renderBadge)}
       </FormGroup>
       <Stack mt={4} direction="row" spacing={1} justifyContent="flex-end">
         <Button variant="contained" color="inherit" onClick={onClose}>

@@ -33,6 +33,7 @@ export function* SETUP() {
       });
     });
   };
+  // eslint-disable-next-line sonarjs/no-use-of-empty-return-value
   yield changeSettings(history.location.search);
   yield history.listen((params) => {
     const { search } = params;
@@ -69,7 +70,9 @@ export function* SETUP() {
     }
   };
 
+  // eslint-disable-next-line sonarjs/no-use-of-empty-return-value
   yield isMobileView(true);
+  // eslint-disable-next-line sonarjs/no-use-of-empty-return-value
   yield isMenuToggled();
   yield window.addEventListener("resize", () => {
     isMobileView();

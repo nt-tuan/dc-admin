@@ -3,9 +3,8 @@ import { getAccessToken } from "utils";
 import { ApiPathConsts } from "commons/consts";
 import isString from "lodash/isString";
 
-export const getCompanyInfo = async () => {
-  const companyInfo = await backendAPI.get(ApiPathConsts.GET_COMPANY_ME);
-  return companyInfo;
+export const getCompanyInfo = () => {
+  return backendAPI.get(ApiPathConsts.GET_COMPANY_ME);
 };
 
 export const updateCompanyInfo = async (values) => {
@@ -26,8 +25,7 @@ export const uploadCompanyLogo = async (imgFile) => {
 
 export const getCompanyAddresses = async () => {
   const accessToken = await getAccessToken();
-  const addresses = await backendAPI.get(accessToken)(ApiPathConsts.COMPANY_ADDRESSES);
-  return addresses;
+  return backendAPI.get(accessToken)(ApiPathConsts.COMPANY_ADDRESSES);
 };
 
 export const createCompanyAddresses = async (values) => {
@@ -45,18 +43,16 @@ export const deleteCompanyAddresses = async (id) => {
   await backendAPI.delete(accessToken)(`${ApiPathConsts.COMPANY_ADDRESSES}/${id}`);
 };
 
-export const getCompanyMe = async () => {
-  const res = await backendAPI.get(`${ApiPathConsts.GET_COMPANY_ME}`);
-  return res;
+export const getCompanyMe = () => {
+  return backendAPI.get(`${ApiPathConsts.GET_COMPANY_ME}`);
 };
 
 /*
  * BANK DETAILS
  */
 
-export const getBankDetails = async () => {
-  const result = await backendAPI.get(ApiPathConsts.BANK_DETAILS);
-  return result;
+export const getBankDetails = () => {
+  return backendAPI.get(ApiPathConsts.BANK_DETAILS);
 };
 
 export const createBankDetails = async (values) => {
@@ -81,8 +77,7 @@ export const submitBankDetails = async (data) => {
 
 export const getDocuments = async () => {
   const accessToken = await getAccessToken();
-  const result = await backendAPI.get(accessToken)(ApiPathConsts.DOCUMENTS);
-  return result;
+  return backendAPI.get(accessToken)(ApiPathConsts.DOCUMENTS);
 };
 
 export const uploadDocuments = async (fileList) => {
@@ -93,17 +88,11 @@ export const uploadDocuments = async (fileList) => {
     }
     const formData = new FormData();
     formData.append("file", file);
-    const promise = backendAPI.postFile(accessToken)(
-      `${url ? url : ApiPathConsts.DOCUMENTS}`,
-      formData,
-      {
-        type
-      }
-    );
-    return promise;
+    return backendAPI.postFile(accessToken)(`${url ? url : ApiPathConsts.DOCUMENTS}`, formData, {
+      type
+    });
   });
-  const result = await Promise.all(uploadPromises);
-  return result;
+  return Promise.all(uploadPromises);
 };
 
 export const deleteDocuments = async (id) => {
@@ -114,11 +103,10 @@ export const deleteDocuments = async (id) => {
 export const getAuditLogs = async (params) => {
   const { page, size } = params;
   const accessToken = await getAccessToken();
-  const result = await backendAPI.get(accessToken)(`${ApiPathConsts.GET_AUDIT_LOGS}`, {
+  return backendAPI.get(accessToken)(`${ApiPathConsts.GET_AUDIT_LOGS}`, {
     page,
     size
   });
-  return result;
 };
 
 export const sendEmailConfirmBank = async () => {

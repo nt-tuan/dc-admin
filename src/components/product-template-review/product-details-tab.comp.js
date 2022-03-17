@@ -2,6 +2,7 @@ import { PRODUCT_DETAILS_LABELS } from "commons/consts";
 import React, { memo, useMemo } from "react";
 
 export const ProductDetailsTab = memo(({ data, categories, types }) => {
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const parsedData = useMemo(() => {
     const cloneData = [...data];
     cloneData

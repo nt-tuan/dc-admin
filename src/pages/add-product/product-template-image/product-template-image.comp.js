@@ -15,6 +15,7 @@ import { Row, Upload } from "antd";
 import { ImageService } from "services";
 import ImgCrop from "antd-img-crop";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => {
   const [currentImg, setCurrentImg] = useState(productImages[0] || {});
   const [hasError, setHasError] = useState({
@@ -114,7 +115,6 @@ export const ProductTemplateImage = forwardRef(({ productImages = [] }, ref) => 
                   wrapElements[0].style.zIndex = 1000000;
                 }
                 lastModal.parentElement.className = "lagecy";
-                return;
               }, 300);
               return true;
             }}

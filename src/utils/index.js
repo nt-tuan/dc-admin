@@ -68,8 +68,7 @@ export const percentage = (value, total, numberFixed) => {
 export const convertStringToMinutes = (datetime) => {
   const res = datetime.split(":");
   const hourToMinute = res[0] * 60;
-  const minute = parseInt(res[1]) + hourToMinute;
-  return minute;
+  return parseInt(res[1]) + hourToMinute;
 };
 
 export const disableLinkClick = (disabled, e) => (disabled ? e.preventDefault() : () => {});
@@ -145,10 +144,9 @@ export const getFileInLocalStorage = async (key) => {
     return fetch(base64Str)
       .then((res) => res.blob())
       .then((blob) => {
-        const file = new File([blob], fileName, {
+        return new File([blob], fileName, {
           type: mime
         });
-        return file;
       });
   }
   return undefined;
@@ -270,7 +268,7 @@ export const toNumber = (value) => {
 
 export const parseProductsFromOrderDetails = (order) => {
   const { productOrderResponses = [] } = order;
-  const products = productOrderResponses.map((product) => ({
+  return productOrderResponses.map((product) => ({
     id: product.productId,
     url: product.images[0].url,
     name: product.productName,
@@ -281,7 +279,6 @@ export const parseProductsFromOrderDetails = (order) => {
     phoneOperator: product.phoneOperator,
     productCategory: product.productCategory
   }));
-  return products;
 };
 
 const filterMenuData = (data, exceptionArr) => {

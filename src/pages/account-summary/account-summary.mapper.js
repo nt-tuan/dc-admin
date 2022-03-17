@@ -29,14 +29,13 @@ const parseDataToExcel = (accountSummary) => {
   accountSummary.forEach((item) => {
     let row = new Array(9);
     Object.keys(item).forEach((field) => {
-      if (columns[field] !== undefined) {
-        if ([FIELDS.paymentDueDate, FIELDS.createdDate].includes(field)) {
-          row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
-        } else if ([FIELDS.totalPrice, FIELDS.commission].includes(field)) {
-          row[columns[field]] = toNumber(item[field]);
-        } else {
-          row[columns[field]] = item[field];
-        }
+      if (columns[field] == null) return;
+      if ([FIELDS.paymentDueDate, FIELDS.createdDate].includes(field)) {
+        row[columns[field]] = item[field] ? formatDateTime(item[field]) : "";
+      } else if ([FIELDS.totalPrice, FIELDS.commission].includes(field)) {
+        row[columns[field]] = toNumber(item[field]);
+      } else {
+        row[columns[field]] = item[field];
       }
     });
     dataExcel.push(row);

@@ -10,7 +10,6 @@ export const saveStep3 = async ({ bankDetails, deletedIds }) => {
   await Promise.all(promises);
 };
 
-export const getStep3 = async () => {
-  const values = await getBankDetails();
-  return values;
+export const getStep3 = () => {
+  return getBankDetails();
 };

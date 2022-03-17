@@ -24,8 +24,7 @@ export const uploadCompanyLogo = async (imgFile) => {
 
 export const getCompanyAddresses = async () => {
   const accessToken = await getAccessToken();
-  const addresses = await backendAPI.get(accessToken)(ApiPathConsts.COMPANY_ADDRESSES);
-  return addresses;
+  return backendAPI.get(accessToken)(ApiPathConsts.COMPANY_ADDRESSES);
 };
 
 export const createCompanyAddresses = async (values) => {
@@ -43,18 +42,16 @@ export const deleteCompanyAddresses = async (id) => {
   await backendAPI.delete(accessToken)(`${ApiPathConsts.COMPANY_ADDRESSES}/${id}`);
 };
 
-export const getCompanyMe = async () => {
-  const res = await backendAPI.get(`${ApiPathConsts.GET_COMPANY_ME}`);
-  return res;
+export const getCompanyMe = () => {
+  return backendAPI.get(`${ApiPathConsts.GET_COMPANY_ME}`);
 };
 
 /*
  * BANK DETAILS
  */
 
-export const getBankDetails = async () => {
-  const result = await backendAPI.get(ApiPathConsts.BANK_DETAILS);
-  return result;
+export const getBankDetails = () => {
+  return backendAPI.get(ApiPathConsts.BANK_DETAILS);
 };
 
 export const createBankDetails = async (values) => {
@@ -73,52 +70,6 @@ export const deleteBankDetails = async (id) => {
 
 export const submitBankDetails = async (data) => {
   await backendAPI.post(`${ApiPathConsts.BANK_DETAILS}/submit`, data);
-};
-
-/*
- * DOCUMENTS
- */
-
-export const getDocuments = async () => {
-  const accessToken = await getAccessToken();
-  const result = await backendAPI.get(accessToken)(ApiPathConsts.DOCUMENTS);
-  return result;
-};
-
-export const uploadDocuments = async (fileList) => {
-  const accessToken = await getAccessToken();
-  const uploadPromises = fileList.map(({ file, type, url }) => {
-    if (typeof file === "string") {
-      return null;
-    }
-    const formData = new FormData();
-    formData.append("file", file);
-    const promise = backendAPI.postFile(accessToken)(
-      `${url ? url : ApiPathConsts.DOCUMENTS}`,
-      formData,
-      {
-        type
-      }
-    );
-    return promise;
-  });
-  const result = await Promise.all(uploadPromises);
-  return result;
-};
-
-export const deleteDocuments = async (id) => {
-  const accessToken = await getAccessToken();
-  await backendAPI.delete(accessToken)(`${ApiPathConsts.DOCUMENTS}/${id}`);
-};
-
-export const getAuditLogs = async (params) => {
-  const { page, size } = params;
-  const accessToken = await getAccessToken();
-  const result = await backendAPI.get(accessToken)(`${ApiPathConsts.GET_AUDIT_LOGS}`, {
-    page,
-    size
-  });
-  return result;
 };
 
 export const sendEmailConfirmBank = async () => {

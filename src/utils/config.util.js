@@ -8,8 +8,7 @@ const tryGetJSONValue = (jsonString, defaultValue) => {
 
 export const getPlugins = () => {
   const pluginsJSON = window._env_?.REACT_APP_PLUGINS;
-  const plugins = tryGetJSONValue(pluginsJSON, []);
-  return plugins;
+  return tryGetJSONValue(pluginsJSON, []);
 };
 export const getCompanyShortName = () => {
   return window._env_.REACT_COMPANY_SHORT_NAME ?? "";
