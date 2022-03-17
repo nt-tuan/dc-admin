@@ -1,6 +1,6 @@
 import * as USER_DUCK from "redux/user/user.duck";
 
-import { MESSAGES, RouteConst, TWO_FACTOR_AUTH_TYPES } from "commons/consts";
+import { MESSAGES, RouteConst, TWO_FACTOR_AUTH_TYPES, USER_TABS_NAME } from "commons/consts";
 import { useDispatch, useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
@@ -15,7 +15,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { USER_TABS_NAME } from "commons/consts";
+
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
 import { selectBrowserFingerprint } from "redux/settings/settings.duck";
 import { update2FASettings } from "services";

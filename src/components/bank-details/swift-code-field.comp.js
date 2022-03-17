@@ -11,6 +11,12 @@ export const SwiftCodeField = ({ name, bankIdTypeName }) => {
     bankIdType in LABEL_BY_BANK_TYPE ? LABEL_BY_BANK_TYPE[bankIdType] : LABEL_BY_BANK_TYPE.SWIFT;
 
   return (
-    <TextField name={name} label={label} fullWidth placeholder={`Recipient's Bank ${label}`} />
+    <TextField
+      required
+      name={name}
+      label={label}
+      fullWidth
+      placeholder={`Recipient's Bank ${label}`}
+    />
   );
 };

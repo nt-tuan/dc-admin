@@ -16,19 +16,11 @@ const validationSchema = yup.object({
   phone: yup.string().required().matches(phoneRegExp, "Please enter a valid phone number")
 });
 
-export const AddPhoneModal = ({ open, onClose, onVerify }) => {
+export const PhoneFormModal = ({ open, onClose, onUpdated }) => {
   const { data, isLoading } = useUserProfile();
-  const {
-    isLoading: isLoadingVerifyingPhone,
-    isVerifyingPhone,
-    isSubmitting,
-    startVerifyingPhone,
-    verifyPhone,
-    cancelVerifyingPhone
-  } = useNewPhoneVerifier({ onSuccess: onVerify, phone: data.phone });
   const { mutate, isLoading: isUpdating } = useUpdateProfile({
     onSuccess: () => {
-      startVerifyingPhone();
+      if (onUpdated) onUpdated();
     }
   });
   const submit = (values) => {
@@ -40,6 +32,62 @@ export const AddPhoneModal = ({ open, onClose, onVerify }) => {
       lastName
     });
   };
+  return (
+    <DTCModal
+      size="tiny"
+      onClose={onClose}
+      open={open}
+      title={
+        <Typography variant="inherit" alignItems="center">
+          Phone Number
+        </Typography>
+      }
+      content={
+        <Stack spacing={2}>
+          <Typography variant="body2">
+            Please add your phone number for verification to update your notification preference.
+          </Typography>
+          {isLoading && <Loader />}
+          {data && (
+            <>
+              <Formik
+                initialValues={{ phone: data.phone }}
+                validationSchema={validationSchema}
+                onSubmit={submit}
+                onValuesChange
+              >
+                <Form>
+                  <Stack spacing={2}>
+                    <PhoneField name="phone" label="Phone Number" placeholder="Phone Number" />
+                    <Button
+                      sx={{ alignSelf: "center" }}
+                      loading={isUpdating || isLoading}
+                      variant="contained"
+                      type="submit"
+                    >
+                      Verify
+                    </Button>
+                  </Stack>
+                </Form>
+              </Formik>
+            </>
+          )}
+        </Stack>
+      }
+    />
+  );
+};
+
+export const AddPhoneModal = ({ open, onClose, onVerify }) => {
+  const { data } = useUserProfile();
+  const {
+    isLoading: isLoadingVerifyingPhone,
+    isVerifyingPhone,
+    isSubmitting,
+    startVerifyingPhone,
+    verifyPhone,
+    cancelVerifyingPhone
+  } = useNewPhoneVerifier({ onSuccess: onVerify, phone: data.phone });
   const closeOTP = () => {
     cancelVerifyingPhone();
     onClose();
@@ -47,48 +95,7 @@ export const AddPhoneModal = ({ open, onClose, onVerify }) => {
   if (!open) return <></>;
   return (
     <>
-      <DTCModal
-        size="tiny"
-        onClose={onClose}
-        open={open}
-        title={
-          <Typography variant="inherit" alignItems="center">
-            Phone Number
-          </Typography>
-        }
-        content={
-          <Stack spacing={2}>
-            <Typography variant="body2">
-              Please add your phone number for verification to update your notification preference.
-            </Typography>
-            {isLoading && <Loader />}
-            {data && (
-              <>
-                <Formik
-                  initialValues={{ phone: data.phone }}
-                  validationSchema={validationSchema}
-                  onSubmit={submit}
-                  onValuesChange
-                >
-                  <Form>
-                    <Stack spacing={2}>
-                      <PhoneField name="phone" label="Phone Number" placeholder="Phone Number" />
-                      <Button
-                        sx={{ alignSelf: "center" }}
-                        loading={isUpdating || isLoading}
-                        variant="contained"
-                        type="submit"
-                      >
-                        Verify
-                      </Button>
-                    </Stack>
-                  </Form>
-                </Formik>
-              </>
-            )}
-          </Stack>
-        }
-      />
+      <PhoneFormModal onClose={onClose} open={open} onUpdated={startVerifyingPhone} />
       {isVerifyingPhone && (
         <PhoneOTPModal
           open={isVerifyingPhone}

@@ -22,22 +22,22 @@ export const BANK_FIELDS = {
 
 export const BANK_LABELS = {
   [BANK_FIELDS.accountName]: "Beneficiary Name",
-  [BANK_FIELDS.name]: "Beneficiary Bank",
+  [BANK_FIELDS.name]: "Bank Name",
   [BANK_FIELDS.bankIdType]: "Bank ID Type",
   [BANK_FIELDS.swiftCode]: "SWIFT Code",
   [BANK_FIELDS.accountNumber]: "Beneficiary Bank Account Number",
-  [BANK_FIELDS.iban]: "IBAN",
-  [BANK_FIELDS.sortCode]: "Sort Code",
-  [BANK_FIELDS.abaNumber]: "ABA Number",
+  [BANK_FIELDS.iban]: "Recepient’s Bank IBAN",
+  [BANK_FIELDS.sortCode]: "Recepient’s Bank Sort Code",
+  [BANK_FIELDS.abaNumber]: "Recepient’s Bank ABA Number",
   [BANK_FIELDS.address]: "Bank Address",
   [BANK_FIELDS.city]: "Bank City",
-  [BANK_FIELDS.state]: "Bank State/ Province/ Territory",
+  [BANK_FIELDS.state]: "Bank State/Province",
   [BANK_FIELDS.country]: "Bank Country",
-  [BANK_FIELDS.postalCode]: "Bank Postal/Zip Code/P.O.Box",
+  [BANK_FIELDS.postalCode]: "Bank Postal/Zip Code/PO Box",
   [BANK_FIELDS.currency]: "Bank Currency",
-  [BANK_FIELDS.recipientAddress]: "Beneficiary Address",
-  [BANK_FIELDS.recipientCity]: "Beneficiary City",
-  [BANK_FIELDS.recipientState]: "Beneficiary State/ Province/ Territory",
-  [BANK_FIELDS.recipientCountry]: "Beneficiary Country",
-  [BANK_FIELDS.recipientPostalCode]: "Beneficiary Postal/Zip Code/P.O.Box"
+  [BANK_FIELDS.recipientAddress]: "Bank Address",
+  [BANK_FIELDS.recipientCity]: "Bank City",
+  [BANK_FIELDS.recipientState]: "Bank State/Province",
+  [BANK_FIELDS.recipientCountry]: "Bank Country",
+  [BANK_FIELDS.recipientPostalCode]: "Bank Postal/Zip Code/PO Box"
 };

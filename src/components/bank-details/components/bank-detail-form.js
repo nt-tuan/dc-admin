@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 
 import Button from "@mui/material/Button";
-import { FormView } from "./bank-detail-form-view";
+import { FormView } from "./bank-form/bank-form-view.comp";
 import IconButton from "@mui/material/IconButton";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import { RenderField } from "components/commons/fields";

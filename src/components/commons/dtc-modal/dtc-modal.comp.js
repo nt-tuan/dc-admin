@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import React from "react";
 import Typography from "@mui/material/Typography";
+import { Loader } from "../loader/loader.comp";
 
 const style = {
   position: "absolute",
@@ -25,7 +26,15 @@ const contentSizes = {
   small: 416,
   tiny: 324
 };
-export const DTCModal = ({ open, onClose, title, content, width = 450, size = "default" }) => {
+export const DTCModal = ({
+  open,
+  onClose,
+  title,
+  content,
+  width = 450,
+  isLoading,
+  size = "default"
+}) => {
   return (
     <Modal width={width} open={open} onClose={onClose}>
       <Box sx={style} width={contentSizes[size]}>
@@ -41,7 +50,8 @@ export const DTCModal = ({ open, onClose, title, content, width = 450, size = "d
             {title}
           </Typography>
         )}
-        {content && (
+        {isLoading && <Loader />}
+        {!isLoading && content && (
           <Box px={3} mt={2} id="confirm-modal-description">
             {content}
           </Box>

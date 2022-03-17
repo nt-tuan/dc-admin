@@ -1,4 +1,19 @@
 import { createTheme } from "@mui/material/styles";
+const palette = {
+  success: {
+    main: "#4CAF50"
+  },
+  error: {
+    main: "#D32F2F"
+  },
+  primary: {
+    main: "#2196F3"
+  },
+  grey: {
+    7: "#8C8C8C",
+    100: "#F5F5F5"
+  }
+};
 
 export const adminTheme = createTheme({
   components: {
@@ -21,6 +36,7 @@ export const adminTheme = createTheme({
     MuiSvgIcon: {
       styleOverrides: {
         root: {
+          padding: "1px",
           fontSize: "20px"
         }
       }
@@ -43,6 +59,11 @@ export const adminTheme = createTheme({
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: ({ theme }) => ({
+          "&.Mui-disabled": {
+            backgroundColor: theme.palette.grey[100]
+          }
+        }),
         input: {
           paddingTop: 8,
           paddingBottom: 8
@@ -51,6 +72,9 @@ export const adminTheme = createTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
+        asterisk: {
+          color: palette.error.main
+        },
         root: ({ ownerState }) =>
           !ownerState.shrink
             ? {
@@ -70,17 +94,7 @@ export const adminTheme = createTheme({
       }
     }
   },
-  palette: {
-    success: {
-      main: "#4CAF50"
-    },
-    primary: {
-      main: "#2196F3"
-    },
-    grey: {
-      100: "#F5F5F5"
-    }
-  },
+  palette,
   typography: {
     fontFamily: [
       "Inter",

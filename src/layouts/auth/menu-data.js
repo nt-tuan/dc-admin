@@ -8,6 +8,8 @@ import ProductIcon from "@/components/icons/product.comp";
 import FinancialsIcon from "@/components/icons/financials.comp";
 import PreferencesIcon from "@/components/icons/preferences.comp";
 import SettingIcon from "@/components/icons/setting.comp";
+import { BankPathEnum } from "@/components/bank-details/bank-path.enum";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
 const menuData = [
   {
@@ -108,6 +110,12 @@ const menuSettingsData = [
     key: "Preferences",
     icon: PreferencesIcon,
     url: RouteConst.PREFERENCES_GENERAL_PAGES
+  },
+  {
+    title: "Bank Accounts",
+    icon: MonetizationOnIcon,
+    key: BankPathEnum.BANK_HOME,
+    url: BankPathEnum.BANK_HOME
   }
 ];
 const menuPreferencesData = [

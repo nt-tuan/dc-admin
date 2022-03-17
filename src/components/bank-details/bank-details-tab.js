@@ -2,7 +2,7 @@ import { Header, ToggleEditButton } from "components/commons";
 import React, { useEffect, useState } from "react";
 import { getBankDetails, getCompanyInfo } from "services/bankDetail.service";
 
-import { BankDetailForm } from "./bank-detail-form";
+import { BankDetailForm } from "./components/bank-detail-form";
 import BankDetailView from "./bank-detail-view";
 import { ThreeStepVerify } from "components/auth/three-step-verify";
 import { asyncErrorHandlerWrapper } from "utils/error-handler.util";

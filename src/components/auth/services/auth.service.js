@@ -17,3 +17,11 @@ export const getGoogleAuthenticator = () => {
 export const validateGoogleAuthenticator = (code) => {
   return backendAPI.put(`${ApiPathConsts.GET_GOOGLE_AUTHENTICATOR_QRCODE}`, code);
 };
+
+export const createOTP = () => {
+  return backendAPI.put(ApiPathConsts.THREE_STEPS_OTP);
+};
+
+export const validateOTP = (payload) => {
+  return backendAPI.post(ApiPathConsts.THREE_STEPS_OTP, payload);
+};

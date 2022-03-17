@@ -6,6 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import React from "react";
 import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 export const AutocompleteField = ({
   name,
@@ -16,6 +17,7 @@ export const AutocompleteField = ({
   loading,
   disabled,
   filterOptions,
+  endAdornment,
   ...props
 }) => {
   const [field, meta] = useField({ name, type: "search" });
@@ -46,24 +48,29 @@ export const AutocompleteField = ({
         placeholder={placeholder}
         filterOptions={filterOptions}
         getOptionLabel={(item) => (dataMap[item] ? dataMap[item].label : "")}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            disabled={disabled}
-            InputLabelProps={{ ...params?.InputLabelProps, error: showError, disabled, required }}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              )
-            }}
-            error={showError}
-            label={label}
-          />
-        )}
+        renderInput={(params) => {
+          return (
+            <TextField
+              {...params}
+              disabled={disabled}
+              InputLabelProps={{ ...params?.InputLabelProps, error: showError, disabled, required }}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    <Stack direction="row" alignItems="center" mr="-10px">
+                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {endAdornment}
+                    </Stack>
+                    {params.InputProps.endAdornment}
+                  </>
+                )
+              }}
+              error={showError}
+              label={label}
+            />
+          );
+        }}
       />
       {showError && (
         <FormHelperText error={showError} id={`select-field-${name}-helper-text`}>

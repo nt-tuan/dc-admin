@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { getAssetURL } from "utils/config.util";
+import { bankRoutes } from "./components/bank-details/bank.routes";
 
 import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
 import { userProfileRoutes } from "./components/user-profile/user-profile.routes";
@@ -133,7 +134,8 @@ const routeData = [
                 Component: PreferencesBrandingPage
               }
             ]
-          }
+          },
+          ...bankRoutes
         ]
       },
       {

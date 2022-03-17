@@ -11,11 +11,12 @@ import { matchPath } from "react-router";
 import { styled } from "@mui/system";
 
 const ListItemButton = styled(MuiListItemButton)(({ theme }) => ({
+  paddingLeft: theme.spacing(3),
   "&.Mui-selected": {
     backgroundColor: theme.palette.grey[100]
   }
 }));
-export const SubSidebar = ({ menuData, header }) => {
+export const SubSidebar = ({ menuData, header, divider }) => {
   return (
     <Box height="100%" borderRight={1} borderColor="grey.300">
       <Typography variant="h5" fontWeight="bold" px={3} pt={3} pb={2}>
@@ -23,9 +24,12 @@ export const SubSidebar = ({ menuData, header }) => {
       </Typography>
       <List>
         {menuData.map((menu) => (
-          <ListItem disablePadding key={menu.key}>
-            <MenuItem menu={menu} />
-          </ListItem>
+          <>
+            <ListItem disablePadding key={menu.key}>
+              <MenuItem menu={menu} />
+            </ListItem>
+            {divider}
+          </>
         ))}
       </List>
     </Box>
@@ -45,19 +49,26 @@ const MenuItem = ({ menu }) => {
       history.push(menu.url);
     }
   };
-
+  if (menu.url)
+    return (
+      <ListItemButton onClick={handleOnClickMenu} selected={selected}>
+        <Typography component="div" variant="body2">
+          {menu.title}
+        </Typography>
+      </ListItemButton>
+    );
   return (
-    <ListItemButton onClick={handleOnClickMenu} selected={selected}>
-      <Typography variant="body2">{menu.title}</Typography>
-    </ListItemButton>
+    <Typography px={3} py={1} variant="body2">
+      {menu.title}
+    </Typography>
   );
 };
 
-export const SubLayout = ({ children, menuData, header }) => {
+export const SubLayout = ({ children, menuData, header, divider }) => {
   return (
     <Stack height="100%" direction="row" alignItems="stretch">
       <Box width={238} flexShrink={0}>
-        <SubSidebar menuData={menuData} header={header} />
+        <SubSidebar menuData={menuData} header={header} divider={divider} />
       </Box>
       <Box height="100%" flexGrow={1} sx={{ overflowY: "auto" }}>
         <Box p={3}>{children}</Box>

@@ -5,17 +5,25 @@ import {
   SelectField,
   TextField
 } from "components/commons/fields";
-
-import { BANK_LABELS } from "./bank.schema";
-import { BANK_TYPE_ENUM } from "./bank-type.enum";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import { BANK_LABELS } from "../../bank.schema";
+import { BANK_TYPE_ENUM } from "../../bank-type.enum";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import React from "react";
-import { SwiftCodeField } from "./swift-code-field.comp";
+import { SwiftCodeField } from "../../swift-code-field.comp";
 import Typography from "@mui/material/Typography";
 import currencyList from "assets/currency.json";
+import { useQueryCompany } from "../../services/use-query-company";
+import { isAbaRequired, isSortCodeRequired } from "./validation.schema";
+import { useFormikContext } from "formik";
+import { CurrencyTooltip } from "./currency-tooltip.comp";
 
-export const FormView = ({ name, companyName }) => {
+export const FormView = ({ name, onSubmit }) => {
+  const { setFieldValue } = useFormikContext();
+  const { data, isLoading: isCompanyLoading } = useQueryCompany();
+  const { name: companyName } = data ?? {};
   const getName = (fieldName) => {
     if (!name) return fieldName;
     return `${name}.${fieldName}`;
@@ -45,13 +53,25 @@ export const FormView = ({ name, companyName }) => {
       return "The Beneficiary Name should include at least one word in the Business Name (Company Name)";
     }
   };
+
+  const handleBankIdTypeChange = (e) => {
+    const { value } = e.target;
+    if (!isSortCodeRequired(value)) {
+      setFieldValue("sortCode", "");
+    }
+    if (!isAbaRequired(value)) {
+      setFieldValue("abaNumber", "");
+    }
+  };
+
   return (
     <Box>
-      <Grid container columnSpacing={1} rowSpacing={2}>
+      <Grid container columnSpacing={4} rowSpacing={4}>
         <Grid item xs={12} md={6} lg={6}>
           <TextField
             fullWidth
             required
+            disabled={isCompanyLoading}
             fieldConfig={{ validate: validateAccountName }}
             name={getName("accountName")}
             label={BANK_LABELS.accountName}
@@ -72,6 +92,7 @@ export const FormView = ({ name, companyName }) => {
             fullWidth
             name={getName("bankIdType")}
             label={BANK_LABELS.bankIdType}
+            onChangeValue={handleBankIdTypeChange}
             placeholder="Bank ID Type"
             dataSource={Object.keys(BANK_TYPE_ENUM).map((value) => ({ label: value, value }))}
             required
@@ -95,22 +116,22 @@ export const FormView = ({ name, companyName }) => {
             name={getName("iban")}
             label={BANK_LABELS.iban}
             placeholder="Recipient's Bank IBAN"
+            required
           />
         </Grid>
         <RenderField>
           {({ getFieldValue }) => {
             const bankIdType = getFieldValue(getName("bankIdType"));
-            const sortCodeDisabled = bankIdType !== BANK_TYPE_ENUM.SWIFT;
-            const abaDisabled =
-              bankIdType !== BANK_TYPE_ENUM.ACH && bankIdType !== BANK_TYPE_ENUM.CHIPS;
+            const sortCodeDisabled = !isSortCodeRequired(bankIdType);
+            const abaDisabled = !isAbaRequired(bankIdType);
             return (
               <>
                 <Grid item xs={12} md={6} lg={6}>
                   <TextField
                     fullWidth
                     disabled={sortCodeDisabled}
-                    variant={sortCodeDisabled ? "filled" : undefined}
                     name={getName("sortCode")}
+                    required={!sortCodeDisabled}
                     label={BANK_LABELS.sortCode}
                     placeholder="Recipient's Bank Sort Code"
                   />
@@ -119,7 +140,7 @@ export const FormView = ({ name, companyName }) => {
                   <TextField
                     fullWidth
                     disabled={abaDisabled}
-                    variant={abaDisabled ? "filled" : undefined}
+                    required={!abaDisabled}
                     name={getName("abaNumber")}
                     label={BANK_LABELS.abaNumber}
                     placeholder="Recipient's Bank ABA number"
@@ -153,6 +174,7 @@ export const FormView = ({ name, companyName }) => {
             name={getName("state")}
             label={BANK_LABELS.state}
             placeholder="Recipient's Bank State"
+            required
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -168,8 +190,9 @@ export const FormView = ({ name, companyName }) => {
           <TextField
             fullWidth
             name={getName("postalCode")}
-            label={BANK_LABELS.country}
+            label={BANK_LABELS.postalCode}
             placeholder="Recipient's Bank Postal/Zip Code/P.O.Box"
+            required
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -177,16 +200,18 @@ export const FormView = ({ name, companyName }) => {
             label={BANK_LABELS.currency}
             placeholder="Bank Currency"
             name={getName("currency")}
+            endAdornment={<CurrencyTooltip />}
             fullWidth
             dataSource={currenciesDataSource}
             required
           />
         </Grid>
       </Grid>
-      <Typography py={2} color="primary" variant="h5">
+      <Divider sx={{ mt: 4, mx: -3 }} />
+      <Typography py={3} variant="h5">
         Beneficiary Address
       </Typography>
-      <Grid container columnSpacing={1} rowSpacing={2}>
+      <Grid container columnSpacing={4} rowSpacing={4}>
         <Grid item xs={12} md={6} lg={6}>
           <TextField
             fullWidth
@@ -211,6 +236,7 @@ export const FormView = ({ name, companyName }) => {
             name={getName("recipientState")}
             label={BANK_LABELS.recipientState}
             placeholder="Beneficiary State"
+            required
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -228,9 +254,13 @@ export const FormView = ({ name, companyName }) => {
             name={getName("recipientPostalCode")}
             label={BANK_LABELS.recipientPostalCode}
             placeholder="Beneficiary PostalCode"
+            required
           />
         </Grid>
       </Grid>
+      <Button variant="contained" onClick={onSubmit} sx={{ mt: 4 }}>
+        Save
+      </Button>
     </Box>
   );
 };
