@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import { BankPathEnum } from "../bank-path.enum";
 import { Link, useRouteMatch } from "react-router-dom";
 import Divider from "@mui/material/Divider";
+import { Helmet } from "react-helmet";
 
 const Header = () => {
   const matchNewBank = useRouteMatch(BankPathEnum.NEW_BANK);
@@ -73,6 +74,7 @@ const Container = ({ children }) => {
 export const Layout = ({ children }) => {
   return (
     <Box height="100%">
+      <Helmet title="Bank Accounts" />
       <Container>{children}</Container>
     </Box>
   );
