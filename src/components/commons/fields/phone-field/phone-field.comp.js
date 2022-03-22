@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import countryList from "assets/country.json";
+import countryList from "@/assets/country";
 import { useField, useFormikContext } from "formik";
 import React from "react";
 

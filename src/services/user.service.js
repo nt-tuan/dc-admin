@@ -1,7 +1,7 @@
-import { backendAPI } from "utils/httpAPI.util";
+import { backendAPI } from "@/utils/httpAPI.util";
 import store from "store";
-import { ApiPathConsts } from "commons/consts/system/api-paths/api-paths.const";
-import { AUTH_LOCALSTORAGE_KEY } from "utils";
+import { ApiPathConsts } from "@/commons/consts/system/api-paths/api-paths.const";
+import { AUTH_LOCALSTORAGE_KEY } from "@/utils";
 
 export class UserService {
   static #USER_MANAGEMENT_PREFIX = "/admin/users";

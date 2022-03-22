@@ -1,9 +1,9 @@
-import { DTCTabs, useTabSearchParams } from "components/commons";
+import { DTCTabs, useTabSearchParams } from "@/components/commons";
 import { fireEvent, render } from "@testing-library/react";
 
 import WithdrawFundPage from "./withdraw-fund.page";
 
-jest.mock("components/commons");
+jest.mock("@/components/commons");
 beforeEach(() => {
   DTCTabs.mockImplementation(({ onChange }) => (
     <div onClick={() => onChange("new-tab")}>change-tab</div>

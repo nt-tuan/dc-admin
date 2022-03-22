@@ -1,7 +1,7 @@
 import { Box, ListItem, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-import { FeatureFlagService } from "services/feature-flag.service";
+import { FeatureFlagService } from "@/services/feature-flag.service";
 import { useMessage } from "@/hooks/use-message";
 
 function FeatureItem({ featureFlag }) {

@@ -32,7 +32,7 @@ export const DTCModal = ({
   title,
   content,
   width = 450,
-  isLoading,
+  isLoading = false,
   size = "default"
 }) => {
   return (

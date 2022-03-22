@@ -2,11 +2,11 @@ import Stack from "@mui/material/Stack";
 import { parseDataToExcel } from "./wallet.mapper";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { FinancialService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { FinancialService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { WalletDashboard } from "./components/wallet-dashboard.comp";
 import { WalletTransactions } from "./components/wallet-transactions.comp";
-import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "@/utils/general.util";
 
 const WalletPage = () => {
   const [walletDashboard, setWalletDashboard] = useState({});

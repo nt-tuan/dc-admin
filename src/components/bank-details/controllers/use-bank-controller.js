@@ -1,7 +1,7 @@
 import React from "react";
 import { useUserProfile } from "@/components/user-profile/services/use-user-profile";
 import { useBankMutation, useGetBankById } from "../services/use-query-banks";
-import { usePhoneVerifier } from "@/components/auth/components/phone-verifier/use-phone-verifier.comp";
+import { usePhoneVerifier } from "@/components/auth/components/phone-verifier/use-phone-verifier";
 import { useMessage } from "@/hooks/use-message";
 import { useHistory } from "react-router-dom";
 import { getBankDetailPath } from "../utils/path.util";

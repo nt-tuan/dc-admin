@@ -1,6 +1,6 @@
 import { getCompanyName, getDefaultCurrency } from "./config.util";
 
-import { MARKETPLACE_NAME } from "commons/consts";
+import { MARKETPLACE_NAME } from "@/commons/consts";
 import XLSX from "xlsx";
 
 export const isScreensize = (size) => {

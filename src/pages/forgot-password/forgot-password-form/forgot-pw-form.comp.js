@@ -5,9 +5,9 @@ import Button from "@mui/material/Button";
 import { FORGOT_PASSWORD_FORM_SCHEMA } from "./forgot-pw-form.schema";
 import { Link } from "react-router-dom";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
-import { TextField } from "components/commons/fields";
+import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
 
 export const ForgotPasswordForm = ({ onSubmit }) => {

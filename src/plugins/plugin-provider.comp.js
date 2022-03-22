@@ -1,5 +1,5 @@
 import React from "react";
-import { getPlugins } from "utils/config.util";
+import { getPlugins } from "@/utils/config.util";
 import { PluginStore } from "./plugin-store";
 
 export const PluginContext = React.createContext({ store: new PluginStore() });

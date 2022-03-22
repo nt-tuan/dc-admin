@@ -1,4 +1,4 @@
-import { getCompanyName } from "utils/config.util";
+import { getCompanyName } from "@/utils/config.util";
 
 export class MessageConst {
   static get LOGIN_SUCCESS_MSG() {

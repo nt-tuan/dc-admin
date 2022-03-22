@@ -1,9 +1,9 @@
-import { DTCTabs, useTabSearchParams } from "components/commons";
+import { DTCTabs, useTabSearchParams } from "@/components/commons";
 import React, { memo } from "react";
 
 import { Helmet } from "react-helmet";
 import { UserManagementTable } from "./user-management-table";
-import { UserService } from "services";
+import { UserService } from "@/services";
 
 const tabs = [
   {

@@ -12,7 +12,7 @@ import React, {
 } from "react";
 import { Row, Upload } from "antd";
 
-import { ImageService } from "services";
+import { ImageService } from "@/services";
 import ImgCrop from "antd-img-crop";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

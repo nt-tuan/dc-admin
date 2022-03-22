@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 window.matchMedia =
   window.matchMedia ||
   function () {

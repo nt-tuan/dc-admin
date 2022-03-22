@@ -1,4 +1,4 @@
-import { getCompanyName } from "utils/config.util";
+import { getCompanyName } from "@/utils/config.util";
 
 export const MARKETPLACE_NAME = Object.freeze({
   Distichain: "Distichain",

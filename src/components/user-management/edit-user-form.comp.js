@@ -6,8 +6,8 @@ import { REQUIRED_ERR, USER_SCHEMA } from "./schema";
 import { LoadingButton } from "@mui/lab";
 import React from "react";
 import Stack from "@mui/material/Stack";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { useFormik } from "formik";
 
 const EDIT_USER_SCHEMA = [USER_SCHEMA.firstName, USER_SCHEMA.lastName];

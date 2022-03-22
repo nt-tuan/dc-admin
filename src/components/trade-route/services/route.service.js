@@ -1,4 +1,4 @@
-import { backendAPI } from "utils/httpAPI.util";
+import { backendAPI } from "@/utils/httpAPI.util";
 
 export class RouteService {
   static #BASE_URL = "/admin/routes";

@@ -9,7 +9,7 @@ import {
   PW_MIN_MAX_CHARS_ERR,
   REQUIRED_ERR,
   RegexConst
-} from "commons/consts";
+} from "@/commons/consts";
 
 export const passwordValidationSchema = Yup.string()
   .required(REQUIRED_ERR("Password"))

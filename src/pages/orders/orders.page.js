@@ -1,9 +1,9 @@
-import { DTCTabs } from "components/commons";
+import { DTCTabs } from "@/components/commons";
 import { Helmet } from "react-helmet";
 import { OrderActiveTab } from "./order-active-tab.comp";
 import { OrderHistoryTab } from "./order-history-tab.comp";
 import React from "react";
-import { useSearchParams } from "hooks/use-search-params";
+import { useSearchParams } from "@/hooks/use-search-params";
 
 const tabs = [
   {

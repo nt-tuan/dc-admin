@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import countryList from "assets/country.json";
+import countryList from "@/assets/country";
 
 export const UserProfile = ({ data }) => {
   return (

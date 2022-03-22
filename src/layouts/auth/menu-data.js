@@ -1,4 +1,4 @@
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 // import MultipleStopIcon from "@mui/icons-material/MultipleStop";
 import CorporateFareRoundedIcon from "@mui/icons-material/CorporateFareRounded";
 import OrderIcon from "@/components/icons/order.comp";

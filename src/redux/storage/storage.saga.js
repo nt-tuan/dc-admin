@@ -1,6 +1,6 @@
 import { all, put, takeEvery } from "redux-saga/effects";
-import { StorageService } from "services";
-import { log } from "utils/logger.util";
+import { StorageService } from "@/services";
+import { log } from "@/utils/logger.util";
 import * as STORAGE_DUCK from "./storage.duck";
 
 const { setStateAction } = STORAGE_DUCK;

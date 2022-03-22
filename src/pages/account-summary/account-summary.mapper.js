@@ -1,7 +1,7 @@
-import { toCurrency, toNumber } from "utils/general.util";
+import { toCurrency, toNumber } from "@/utils/general.util";
 
 import { ACCOUNT_SUMMARY_SCHEMA } from "./account-summary.schema";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 
 const { FIELDS, LABELS } = ACCOUNT_SUMMARY_SCHEMA;
 const { formatDateTime } = DatetimeUtils;

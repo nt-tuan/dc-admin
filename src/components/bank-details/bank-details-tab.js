@@ -1,11 +1,11 @@
-import { Header, ToggleEditButton } from "components/commons";
+import { Header, ToggleEditButton } from "@/components/commons";
 import React, { useEffect, useState } from "react";
-import { getBankDetails, getCompanyInfo } from "services/bankDetail.service";
+import { getBankDetails, getCompanyInfo } from "@/services/bankDetail.service";
 
 import { BankDetailForm } from "./components/bank-detail-form";
 import BankDetailView from "./bank-detail-view";
-import { ThreeStepVerify } from "components/auth/three-step-verify";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ThreeStepVerify } from "@/components/auth/three-step-verify";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { useMessage } from "@/hooks/use-message";
 
 const BankDetailsTab = () => {

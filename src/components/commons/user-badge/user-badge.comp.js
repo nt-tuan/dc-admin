@@ -1,21 +1,21 @@
-import { getBadgeNumbers, getBadgeValues } from "utils/config.util";
+import { getBadgeNumbers, getBadgeValues } from "@/utils/config.util";
 
-import { BADGE_TYPES } from "commons/consts";
-import { ReactComponent as DistributorBadge } from "assets/icons/badges/manufactor.svg";
-import { ReactComponent as ManuFactorBadge } from "assets/icons/badges/distributor.svg";
+import { BADGE_TYPES } from "@/commons/consts";
+import { ReactComponent as DistributorBadge } from "@/assets/icons/badges/manufactor.svg";
+import { ReactComponent as ManuFactorBadge } from "@/assets/icons/badges/distributor.svg";
 import React from "react";
-import { ReactComponent as Transaction1Badge } from "assets/icons/badges/transaction-1.svg";
-import { ReactComponent as Transaction2Badge } from "assets/icons/badges/transaction-2.svg";
-import { ReactComponent as Transaction3Badge } from "assets/icons/badges/transaction-3.svg";
-import { ReactComponent as Transaction4Badge } from "assets/icons/badges/transaction-4.svg";
-import { ReactComponent as Transaction5Badge } from "assets/icons/badges/transaction-5.svg";
-import { ReactComponent as TransactionSizeBadge1 } from "assets/icons/badges/transaction-size-1.svg";
-import { ReactComponent as TransactionSizeBadge2 } from "assets/icons/badges/transaction-size-2.svg";
-import { ReactComponent as TransactionSizeBadge3 } from "assets/icons/badges/transaction-size-3.svg";
-import { ReactComponent as TransactionSizeBadge4 } from "assets/icons/badges/transaction-size-4.svg";
-import { ReactComponent as TransactionSizeBadge5 } from "assets/icons/badges/transaction-size-5.svg";
-import UserVerifiedBadge from "assets/icons/badges/user-verified-badge.png";
-import { toCurrency } from "utils";
+import { ReactComponent as Transaction1Badge } from "@/assets/icons/badges/transaction-1.svg";
+import { ReactComponent as Transaction2Badge } from "@/assets/icons/badges/transaction-2.svg";
+import { ReactComponent as Transaction3Badge } from "@/assets/icons/badges/transaction-3.svg";
+import { ReactComponent as Transaction4Badge } from "@/assets/icons/badges/transaction-4.svg";
+import { ReactComponent as Transaction5Badge } from "@/assets/icons/badges/transaction-5.svg";
+import { ReactComponent as TransactionSizeBadge1 } from "@/assets/icons/badges/transaction-size-1.svg";
+import { ReactComponent as TransactionSizeBadge2 } from "@/assets/icons/badges/transaction-size-2.svg";
+import { ReactComponent as TransactionSizeBadge3 } from "@/assets/icons/badges/transaction-size-3.svg";
+import { ReactComponent as TransactionSizeBadge4 } from "@/assets/icons/badges/transaction-size-4.svg";
+import { ReactComponent as TransactionSizeBadge5 } from "@/assets/icons/badges/transaction-size-5.svg";
+import UserVerifiedBadge from "@/assets/icons/badges/user-verified-badge.png";
+import { toCurrency } from "@/utils";
 
 const CUSTOM_BADGES = {
   VERIFIED: {

@@ -1,6 +1,6 @@
-import { backendAPI } from "utils/httpAPI.util";
-import { getAccessToken } from "utils";
-import { ApiPathConsts } from "commons/consts";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { getAccessToken } from "@/utils";
+import { ApiPathConsts } from "@/commons/consts";
 
 export const getCompanyInfo = () => {
   return backendAPI.get(ApiPathConsts.GET_COMPANY_ME);

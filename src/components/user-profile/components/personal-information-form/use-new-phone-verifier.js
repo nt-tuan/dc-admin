@@ -1,40 +1,43 @@
 import { WRONG_VERIFICATION_CODE } from "@/commons/consts";
-import { usePhoneCodeProvider } from "@/components/auth/providers/use-phone-code-provider";
+import { usePhoneVerifier } from "@/components/auth/components/phone-verifier/use-phone-verifier";
 import { useMessage } from "@/hooks/use-message";
 import React from "react";
-import { useQueryClient } from "react-query";
+import { useInvalidateUserProfiles } from "../../services/use-user-profile";
 
 export const useNewPhoneVerifier = ({ phone, onSuccess }) => {
-  const { register, ...phoneProvider } = usePhoneCodeProvider({ phone });
-  const queryClient = useQueryClient();
+  const invalidate = useInvalidateUserProfiles();
   const message = useMessage();
-  const [isVerifyingPhone, setIsVerifyingPhone] = React.useState(false);
-  React.useEffect(() => {
-    register("onReady", () => {
-      setIsVerifyingPhone(true);
-    });
-    register("onError", () => {
-      message.error(WRONG_VERIFICATION_CODE);
-    });
-    register("onSuccess", (data) => {
+  const onReady = () => {
+    setIsVerifyingPhone(true);
+  };
+  const onError = () => {
+    message.error(WRONG_VERIFICATION_CODE);
+  };
+  const verifier = usePhoneVerifier({
+    onReady,
+    onError,
+    onSuccess: (data) => {
       if (data) {
         setIsVerifyingPhone(false);
-        queryClient.invalidateQueries(["me"]);
+        invalidate();
         if (onSuccess) onSuccess();
       } else {
         message.error(WRONG_VERIFICATION_CODE);
       }
-    });
-  }, [queryClient, onSuccess, message, register]);
+    }
+  });
+
+  const [isVerifyingPhone, setIsVerifyingPhone] = React.useState(false);
+
   const cancelVerifyingPhone = () => {
     setIsVerifyingPhone(false);
   };
   return {
-    isLoading: phoneProvider.isPreparing,
+    isLoading: verifier.isLoading,
     isVerifyingPhone,
-    isSubmitting: phoneProvider.isSubmitting,
-    startVerifyingPhone: phoneProvider.setup,
-    verifyPhone: phoneProvider.mutate,
+    isSubmitting: verifier.isSubmitting,
+    startVerifyingPhone: verifier.startConfirmPhone,
+    verifyPhone: verifier.validateOTP,
     cancelVerifyingPhone
   };
 };

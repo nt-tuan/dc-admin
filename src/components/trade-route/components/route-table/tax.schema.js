@@ -1,4 +1,4 @@
-import { MAX_CHARS } from "commons/consts";
+import { MAX_CHARS } from "@/commons/consts";
 import numeral from "numeral";
 
 export const typeTAX = {

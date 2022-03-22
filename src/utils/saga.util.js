@@ -1,6 +1,6 @@
 import { log, popError } from "./logger.util";
 
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { removeAuthCredential } from "./auth.util";
 
 export const handleSagaError = (error) => {

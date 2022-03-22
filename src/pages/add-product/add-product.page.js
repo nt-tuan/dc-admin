@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Helmet } from "react-helmet";
-import { ProductMutationTemplate } from "components/product-template-review/product-mutation-template/product-mutation-template.comp";
-import { ProductService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { ProductMutationTemplate } from "@/components/product-template-review/product-mutation-template/product-mutation-template.comp";
+import { ProductService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import qs from "qs";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 

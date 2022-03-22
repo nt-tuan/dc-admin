@@ -1,4 +1,4 @@
-import * as USER_DUCK from "redux/user/user.duck";
+import * as USER_DUCK from "@/redux/user/user.duck";
 
 import {
   Box,
@@ -17,7 +17,7 @@ import Button from "./button.comp";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { RoutePathEnum } from "@/components/user-profile/constants/route-paths.const";
 import Stack from "@mui/material/Stack";
 import { useHistory } from "react-router-dom";

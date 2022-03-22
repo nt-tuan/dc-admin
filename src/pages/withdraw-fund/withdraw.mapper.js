@@ -1,6 +1,6 @@
-import { toCurrency, toNumber } from "utils/general.util";
+import { toCurrency, toNumber } from "@/utils/general.util";
 
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import { WITHDRAWAL_SCHEMA } from "./withdrawal.schema";
 
 const { FIELDS, LABELS } = WITHDRAWAL_SCHEMA;

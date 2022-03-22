@@ -1,12 +1,12 @@
-import { DTCSection, DTCTable } from "components/commons";
+import { DTCSection, DTCTable } from "@/components/commons";
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 
-import { AssignBadgesModal } from "components/user-details";
+import { AssignBadgesModal } from "@/components/user-details";
 import Box from "@mui/material/Box";
-import { DTCConfirmModal } from "components/commons/dtc-modal/dtc-confirm-modal.comp";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { DTCConfirmModal } from "@/components/commons/dtc-modal/dtc-confirm-modal.comp";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
 import { getUserTableColumns } from "./user-management-table.schema";
 import { userMapper } from "./user.mapper";
 

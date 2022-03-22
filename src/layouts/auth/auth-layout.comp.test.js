@@ -5,7 +5,7 @@ import { AppFooter } from "./app-footer.comp";
 import { AppSideBar } from "./app-side-bar.comp";
 import { AuthLayout } from "./auth-layout.comp";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("./app-bar.comp");
 jest.mock("./app-footer.comp");
 jest.mock("./app-side-bar.comp");

@@ -1,7 +1,7 @@
 import { taxRulesValue, taxTypeOtherValue, typeTAX } from "./tax.schema";
 
 import React from "react";
-import { toCurrency } from "utils/general.util";
+import { toCurrency } from "@/utils/general.util";
 
 export function TaxHover({ data }) {
   if (!data || !data?.length) {

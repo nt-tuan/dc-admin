@@ -1,5 +1,5 @@
-import { backendAPI } from "utils/httpAPI.util";
-import { ApiPathConsts } from "commons/consts/system";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts/system";
 
 export class ImageService {
   static uploadImage = (file) => {

@@ -4,7 +4,7 @@ import { transactionData } from "../__mocks__/transactions-data";
 import Tooltip from "@mui/material/Tooltip";
 
 jest.mock("@mui/material/Tooltip");
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 
 beforeEach(() => {
   Tooltip.render.mockImplementation(({ children }) => children);

@@ -1,9 +1,9 @@
-import { DTCSection, DTCTabs, useTabSearchParams } from "components/commons";
+import { DTCSection, DTCTabs, useTabSearchParams } from "@/components/commons";
 import { Link, useHistory } from "react-router-dom";
 
 import { Button } from "@mui/material";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
 import { RouteTable as Table } from "../route-table";
 import { useGetTradeRouteList } from "../../services/use-get-trade-route-list";

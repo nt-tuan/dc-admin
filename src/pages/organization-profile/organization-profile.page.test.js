@@ -2,10 +2,10 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import OrganizationProfilePage from "./organization-profile.page";
-import { getOrganizationName } from "services/organization.service";
-import { getErrorMaxCharactersMessage } from "commons/consts";
+import { getOrganizationName } from "@/services/organization.service";
+import { getErrorMaxCharactersMessage } from "@/commons/consts";
 
-jest.mock("services/organization.service", () => ({
+jest.mock("@/services/organization.service", () => ({
   getOrganizationName: jest.fn(() => Promise.resolve()),
   updateOrganizationName: jest.fn(() => Promise.resolve())
 }));

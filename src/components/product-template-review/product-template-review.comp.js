@@ -4,7 +4,7 @@ import { flatten, get } from "lodash";
 import { OfferDetailsTab } from "./offer-details-tab.comp";
 import { ProductDetailsTab } from "./product-details-tab.comp";
 import { Tabs } from "antd";
-import image from "assets/images/aramex-logo.png";
+import image from "@/assets/images/aramex-logo.png";
 
 export const ProductTemplateReview = memo(({ data = sample, categories, types }) => {
   const productName = useMemo(

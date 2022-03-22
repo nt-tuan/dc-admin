@@ -1,12 +1,12 @@
-import * as NOTI_DUCK from "redux/notification/notification.duck";
+import * as NOTI_DUCK from "@/redux/notification/notification.duck";
 
 import { Box, Divider } from "@mui/material";
-import { DTCSection, LoadMoreButton } from "components/commons";
+import { DTCSection, LoadMoreButton } from "@/components/commons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Helmet } from "react-helmet";
-import { NotificationList } from "components/commons/notification-list/notification-list.comp";
+import { NotificationList } from "@/components/commons/notification-list/notification-list.comp";
 
 const NotificationPage = React.memo(() => {
   const [page, setPage] = useState(0);

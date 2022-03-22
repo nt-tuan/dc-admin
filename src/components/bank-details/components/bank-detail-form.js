@@ -5,13 +5,13 @@ import Button from "@mui/material/Button";
 import { FormView } from "./bank-form/bank-form-view.comp";
 import IconButton from "@mui/material/IconButton";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
-import { RenderField } from "components/commons/fields";
+import { RenderField } from "@/components/commons/fields";
 import Stack from "@mui/material/Stack";
-import { TwoStepsVerifycation } from "components/auth/2StepsVerifycation";
+import { TwoStepsVerifycation } from "@/components/auth/2StepsVerifycation";
 import Typography from "@mui/material/Typography";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { selectUsers } from "redux/user/user.duck";
-import { submitBankDetails } from "services/bankDetail.service";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { selectUsers } from "@/redux/user/user.duck";
+import { submitBankDetails } from "@/services/bankDetail.service";
 import { useMessage } from "@/hooks/use-message";
 import { useSelector } from "react-redux";
 

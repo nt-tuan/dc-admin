@@ -6,9 +6,9 @@ import Rating from "@mui/material/Rating";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { UserBadge } from "components/commons";
-import { roundToHalfDecimal } from "utils/general.util";
-import { useBooleanState } from "hooks/utilHooks";
+import { UserBadge } from "@/components/commons";
+import { roundToHalfDecimal } from "@/utils/general.util";
+import { useBooleanState } from "@/hooks/utilHooks";
 
 export const Reputation = ({ data, getUserDetails, isEditable, user }) => {
   const [isEdit, toggleIsEdit] = useBooleanState(false);

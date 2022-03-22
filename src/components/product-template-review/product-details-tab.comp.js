@@ -1,4 +1,4 @@
-import { PRODUCT_DETAILS_LABELS } from "commons/consts";
+import { PRODUCT_DETAILS_LABELS } from "@/commons/consts";
 import React, { memo, useMemo } from "react";
 
 export const ProductDetailsTab = memo(({ data, categories, types }) => {

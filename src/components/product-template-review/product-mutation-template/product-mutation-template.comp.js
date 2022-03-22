@@ -1,29 +1,28 @@
 import "./product-mutation-template.comp.scss";
 
 import { Button, Form, Steps } from "antd";
-import { DTCSection, Loader } from "components/commons";
+import { DTCSection, Loader } from "@/components/commons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import CertificationDetails from "./components/CertificationDetails";
-import { EMPTY_FIELD } from "./constants";
-import { Lagecy } from "components/lagecy/lagecy.comp";
+import { EMPTY_FIELD, PRODUCT_CREATE_TEMPLATE } from "./constants";
+import { Lagecy } from "@/components/lagecy/lagecy.comp";
 import OfferDetails from "./components/OfferDetails";
-import { PRODUCT_CREATE_TEMPLATE } from "./constants";
 import PackingDetails from "./components/PackingDetails";
-import { ProductService } from "services";
-import { ProductTemplateImage } from "pages/add-product/product-template-image/product-template-image.comp";
-import { ProductTemplateReview } from "components/product-template-review/product-template-review.comp";
-import { RouteConst } from "commons/consts";
+import { ProductService } from "@/services";
+import { ProductTemplateImage } from "@/pages/add-product/product-template-image/product-template-image.comp";
+import { ProductTemplateReview } from "@/components/product-template-review/product-template-review.comp";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
 import VariantDetails from "./components/VariantsDetails";
 import VitalInformation from "./components/VitalInformation";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import classNames from "classnames";
-import { equalFields } from "utils/form.util";
-import { isScreensize } from "utils/general.util";
+import { equalFields } from "@/utils/form.util";
+import { isScreensize } from "@/utils/general.util";
 import { useHistory } from "react-router-dom";
-import { useMessage } from "hooks/use-message";
-import { useSubmitApiService } from "hooks/useApiService";
+import { useMessage } from "@/hooks/use-message";
+import { useSubmitApiService } from "@/hooks/useApiService";
 
 const ALLOW_SKIP = [4, 5];
 

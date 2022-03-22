@@ -1,4 +1,4 @@
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { RouteService } from "@/services";
 import { useHistory } from "react-router-dom";
 import { useMessage } from "@/hooks/use-message";

@@ -1,4 +1,4 @@
-import { OutLinedIcon } from "components/commons";
+import { OutLinedIcon } from "@/components/commons";
 import React from "react";
 
 function Collapse(props) {

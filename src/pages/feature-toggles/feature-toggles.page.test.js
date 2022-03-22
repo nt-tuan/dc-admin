@@ -1,13 +1,13 @@
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
 
-import { FeatureFlagService } from "services/feature-flag.service";
+import { FeatureFlagService } from "@/services/feature-flag.service";
 import FeatureTogglesPage from "./feature-toggles.page";
 import React from "react";
 import { useMessage } from "@/hooks/use-message";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("@/hooks/use-message");
-jest.mock("services/feature-flag.service");
+jest.mock("@/services/feature-flag.service");
 
 const messageError = jest.fn();
 const messageSuccess = jest.fn();

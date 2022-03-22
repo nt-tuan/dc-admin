@@ -1,9 +1,9 @@
 import { Form, Input, Button, Row, Col } from "antd";
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { createFormErrorComp } from "utils/form.util";
-import { REQUIRED_ERR } from "commons/consts";
-import { isScreensize } from "utils/general.util";
+import { createFormErrorComp } from "@/utils/form.util";
+import { REQUIRED_ERR } from "@/commons/consts";
+import { isScreensize } from "@/utils/general.util";
 
 export const VitalInformationAddFieldsForm = ({ form }) => {
   const isSmallDevice = isScreensize("sm");

@@ -1,17 +1,16 @@
-import { CompanyService, FinancialService } from "services";
-import { DTCSection, LoadingIndicator } from "components/commons";
+import { CompanyService, FinancialService } from "@/services";
+import { DTCSection, LoadingIndicator } from "@/components/commons";
 import React, { useCallback, useEffect, useState } from "react";
-import { RouteConst, USER_TABS_NAME } from "commons/consts";
+import { RouteConst, USER_TABS_NAME } from "@/commons/consts";
 
 import Alert from "@mui/material/Alert";
-import { BankDetailsReadonly } from "components/bank-details/bank-details-readonly.comp";
+import { BankDetailsReadonly } from "@/components/bank-details/bank-details-readonly.comp";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import { RequestWithdrawalForm } from "./request-withdrawal-form.comp";
-import { ThreeStepVerify } from "components/auth/three-step-verify";
 import { WithdrawDashboard } from "./withdraw-dashboard.comp";
-import { areObjectValuesUndefined } from "utils/general.util";
-import { useAsyncErrorHandler } from "utils/error-handler.util";
+import { areObjectValuesUndefined } from "@/utils/general.util";
+import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 
 const defaultThreeStepState = { open: false };
 
@@ -87,13 +86,10 @@ export const RequestWithdrawalTab = () => {
               data={{ bankDetails, available_withdrawal: data.availableBalance }}
               isDisabled={isDisabled}
               onSubmit={getData}
-              onCheckValidate={(callback) => setThreeStepVerify({ open: true, callback })}
-            />
-            <ThreeStepVerify
-              open={threeStepVerify.open}
-              onCancel={() => setThreeStepVerify(defaultThreeStepState)}
-              onVerified={handleWithdrawal}
-              resetOnOpen
+              onCheckValidate={(callback) => {
+                setThreeStepVerify({ open: true, callback });
+                handleWithdrawal();
+              }}
             />
           </DTCSection.Content>
         </DTCSection>

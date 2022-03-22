@@ -1,12 +1,12 @@
-import { DatetimeUtils } from "utils/date-time.util";
-import { MockTheme } from "test/mock-theme.comp";
+import { DatetimeUtils } from "@/utils/date-time.util";
+import { MockTheme } from "@/test/mock-theme.comp";
 import { NotificationItem } from "./notification-item.comp";
-import { expectTexts } from "test/expectTexts";
+import { expectTexts } from "@/test/expectTexts";
 import { render } from "@testing-library/react";
 import { useSnackbar } from "notistack";
 
-jest.mock("utils/date-time.util");
-jest.mock("utils/config.util");
+jest.mock("@/utils/date-time.util");
+jest.mock("@/utils/config.util");
 jest.mock("notistack");
 
 beforeEach(() => {

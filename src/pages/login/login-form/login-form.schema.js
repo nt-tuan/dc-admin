@@ -1,4 +1,4 @@
-import { REQUIRED_ERR } from "commons/consts";
+import { REQUIRED_ERR } from "@/commons/consts";
 export const LOGIN_SCHEMA = {
   username: {
     name: "username",

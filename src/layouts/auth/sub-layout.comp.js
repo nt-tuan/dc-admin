@@ -23,13 +23,13 @@ export const SubSidebar = ({ menuData, header, divider }) => {
         {header}
       </Typography>
       <List>
-        {menuData.map((menu) => (
-          <>
-            <ListItem disablePadding key={menu.key}>
-              <MenuItem menu={menu} />
+        {menuData.map((item) => (
+          <React.Fragment key={item.key}>
+            <ListItem disablePadding>
+              <MenuItem menu={item} />
             </ListItem>
             {divider}
-          </>
+          </React.Fragment>
         ))}
       </List>
     </Box>

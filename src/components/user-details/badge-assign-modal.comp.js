@@ -4,16 +4,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { CircularProgress } from "@mui/material";
-import { DTCModal } from "components/commons/dtc-modal/dtc-modal.comp";
+import { DTCModal } from "@/components/commons/dtc-modal/dtc-modal.comp";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import Input from "@mui/material/Input";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { useMessage } from "hooks/use-message";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { useMessage } from "@/hooks/use-message";
 
 const BADGE_SIZE = 40;
 const BadgeCheckbox = ({ badge, onChange, selected }) => {

@@ -1,5 +1,5 @@
 import Button from "@mui/material/IconButton";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";

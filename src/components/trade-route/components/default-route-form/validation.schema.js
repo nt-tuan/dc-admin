@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { REQUIRED_ERR } from "commons/consts";
+import { REQUIRED_ERR } from "@/commons/consts";
 
 export const validationSchema = yup.object({
   typeId: yup.string().required(REQUIRED_ERR("Product Type")),

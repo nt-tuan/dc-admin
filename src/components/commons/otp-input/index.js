@@ -43,6 +43,7 @@ export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
     for (let i = 0; i < numberDigits; i++) {
       elements.push(
         <OutlinedInput
+          autoComplete="off"
           inputRef={(element) => (ref.current[i] = element)}
           onFocus={focus}
           onChange={(event) => onInputChange(event, i)}

@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { toCurrency } from "utils/general.util";
+import { toCurrency } from "@/utils/general.util";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 

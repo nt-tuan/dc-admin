@@ -1,11 +1,11 @@
 import * as serviceWorker from "./serviceWorker";
 
-import { getHotjarID, getHotjarSV } from "utils/config.util";
+import { getHotjarID, getHotjarSV } from "@/utils/config.util";
 
 import { App } from "./app";
 import React from "react";
 import ReactDOM from "react-dom";
-import { hotjar } from "hotjar/hotjar";
+import { hotjar } from "@/hotjar/hotjar";
 
 if (getHotjarID() && getHotjarSV()) {
   hotjar(getHotjarID(), getHotjarID());

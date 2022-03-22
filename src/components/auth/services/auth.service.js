@@ -25,3 +25,11 @@ export const createOTP = () => {
 export const validateOTP = (payload) => {
   return backendAPI.post(ApiPathConsts.THREE_STEPS_OTP, payload);
 };
+
+export const sendTfaCode = ({ tfaType, browserId }) => {
+  return backendAPI.post("/admin/tfa/code", { tfaType, browserId });
+};
+
+export const updateTfaSettings = ({ tfaType, browserId, code }) => {
+  return backendAPI.put("/admin/tfa", { tfaType, browserId, code });
+};

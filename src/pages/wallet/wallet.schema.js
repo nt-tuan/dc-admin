@@ -1,4 +1,4 @@
-import { getCompanyName } from "utils/config.util";
+import { getCompanyName } from "@/utils/config.util";
 
 const FIELDS = {
   createdDate: "createdDate",

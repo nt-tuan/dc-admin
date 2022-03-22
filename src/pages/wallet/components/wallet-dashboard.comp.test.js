@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { expectTexts } from "test";
+import { expectTexts } from "@/test";
 import { WalletDashboard } from "./wallet-dashboard.comp";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 
 test("WalletDashboard should work", () => {
   render(

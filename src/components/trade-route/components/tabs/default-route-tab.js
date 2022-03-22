@@ -1,9 +1,9 @@
 import { Box, Button, Stack } from "@mui/material";
 import { Link, useHistory } from "react-router-dom";
 
-import { DTCSection } from "components/commons";
+import { DTCSection } from "@/components/commons";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { RouteTable } from "../route-table";
 import { useGetTradeRouteList } from "../../services/use-get-trade-route-list";
 

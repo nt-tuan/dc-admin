@@ -3,14 +3,14 @@ import {
   EMAIL_IS_ALREADY_USED_ERR,
   SERVER_UNKNOWN_ERR,
   USERNAME_ALREADY_USED_ERR
-} from "commons/consts";
+} from "@/commons/consts";
 
-import { APIError } from "commons/types";
-import { Lagecy } from "components/lagecy/lagecy.comp";
+import { APIError } from "@/commons/types";
+import { Lagecy } from "@/components/lagecy/lagecy.comp";
 import React from "react";
 import { USER_SCHEMA } from "./schema";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 const MESSAGE_TRANSLATOR = {
   "user.exist.true": USERNAME_ALREADY_USED_ERR,
   "user.email.exist.true": EMAIL_IS_ALREADY_USED_ERR

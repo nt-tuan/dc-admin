@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { animated, useTransition } from "react-spring";
 
 import Box from "@mui/material/Box";
-import { DTCSection } from "components/commons";
+import { DTCSection } from "@/components/commons";
 import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";

@@ -1,10 +1,10 @@
 import { Alert, Box, Grid, Snackbar, TextField, Typography } from "@mui/material";
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { SETTINGS_MESSAGE, getErrorMaxCharactersMessage } from "commons/consts";
-import { getOrganizationName, updateOrganizationName } from "services/organization.service";
+import { SETTINGS_MESSAGE, getErrorMaxCharactersMessage } from "@/commons/consts";
+import { getOrganizationName, updateOrganizationName } from "@/services/organization.service";
 
 import LoadingButton from "@mui/lab/LoadingButton";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { styled } from "@mui/system";
 
 const FieldInput = styled(TextField)(() => ({

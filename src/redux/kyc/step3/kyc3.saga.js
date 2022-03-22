@@ -1,5 +1,5 @@
 import { all, takeLatest, put } from "redux-saga/effects";
-import { getStep3, saveStep3 } from "services/kyc.service";
+import { getStep3, saveStep3 } from "@/services/kyc.service";
 import * as KYC3_ACTIONS from "./kyc3.duck";
 
 const setStateAction = (payload) => {

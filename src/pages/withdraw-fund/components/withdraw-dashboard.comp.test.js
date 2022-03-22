@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { expectTexts } from "test";
+import { expectTexts } from "@/test";
 import { WithdrawDashboard } from "./withdraw-dashboard.comp";
 
 test("WithdrawDashboard should render", () => {

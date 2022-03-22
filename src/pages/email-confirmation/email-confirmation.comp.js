@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-import { AuthService } from "services/auth.service";
+import { AuthService } from "@/services/auth.service";
 import { Helmet } from "react-helmet";
-import { Loader } from "components/commons";
-import { RouteConst } from "commons/consts";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getCompanyShortName } from "utils/config.util";
+import { Loader } from "@/components/commons";
+import { RouteConst } from "@/commons/consts";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getCompanyShortName } from "@/utils/config.util";
 import qs from "qs";
 
 const Content = ({ isChecking, isTokenValid }) => {

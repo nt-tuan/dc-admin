@@ -1,14 +1,14 @@
-import { DTCSection, DTCTable } from "components/commons";
+import { DTCSection, DTCTable } from "@/components/commons";
 import React, { useEffect, useState } from "react";
-import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "@/utils/general.util";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DownloadIcon from "@mui/icons-material/Download";
-import { FinancialService } from "services";
-import { SORT_ORDERS } from "commons/consts";
+import { FinancialService } from "@/services";
+import { SORT_ORDERS } from "@/commons/consts";
 import { WITHDRAWAL_SCHEMA } from "../withdrawal.schema";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { withdrawHistoryMapper } from "../withdraw.mapper";
 const { LABELS, FIELDS } = WITHDRAWAL_SCHEMA;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { getAppVersion } from "utils/config.util";
+import { getAppVersion } from "@/utils/config.util";
 import { useBreakpoints } from "@/utils/use-breakpoints";
 
 export const AppFooter = ({ collapse }) => {

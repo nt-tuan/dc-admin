@@ -1,14 +1,14 @@
 import { render, waitFor, fireEvent } from "@testing-library/react";
 import React from "react";
-import { DTCTable } from "components/commons";
+import { DTCTable } from "@/components/commons";
 import { withdrawHistoryMapper } from "../withdraw.mapper";
-import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "@/utils/general.util";
 import { HistoryWithdrawalTab } from "./history-withdrawal-tab.comp";
 
 jest.mock("../withdraw.mapper");
-jest.mock("services");
-jest.mock("utils/general.util");
-jest.mock("components/commons/dtc-table/dtc-table.comp");
+jest.mock("@/services");
+jest.mock("@/utils/general.util");
+jest.mock("@/components/commons/dtc-table/dtc-table.comp");
 
 beforeEach(() => {
   handleDownloadExcel.mockReturnValue();

@@ -6,7 +6,7 @@ import {
   MenuItem,
   TextField
 } from "@mui/material";
-import { UploadFile } from "components/commons";
+import { UploadFile } from "@/components/commons";
 import React, { useEffect } from "react";
 
 import { RouteService } from "../../services/route.service";

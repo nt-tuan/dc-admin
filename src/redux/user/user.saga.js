@@ -1,10 +1,10 @@
-import * as NOTIFICATION_DUCKS from "redux/notification/notification.duck";
+import * as NOTIFICATION_DUCKS from "@/redux/notification/notification.duck";
 import * as USER_ACTIONS from "./user.duck";
 
-import { AuthService, UserService } from "services";
+import { AuthService, UserService } from "@/services";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
-import { APIError } from "commons/types";
+import { APIError } from "@/commons/types";
 
 const { setStateAction } = USER_ACTIONS;
 

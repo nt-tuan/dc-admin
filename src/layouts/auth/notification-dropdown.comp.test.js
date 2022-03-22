@@ -1,23 +1,23 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
 import { NotificationDropdown } from "./notification-dropdown.comp";
-import { NotificationList } from "components/commons/notification-list/notification-list.comp";
+import { NotificationList } from "@/components/commons/notification-list/notification-list.comp";
 import { Popover } from "@mui/material";
 import React from "react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { selectNotificationLoadingState } from "redux/notification/notification.duck";
-import { setNotificationsRead } from "services";
+import { selectNotificationLoadingState } from "@/redux/notification/notification.duck";
+import { setNotificationsRead } from "@/services";
 
-jest.mock("utils/config.util");
-jest.mock("redux/notification/notification.duck");
-jest.mock("components/commons/notification-list/notification-list.comp");
+jest.mock("@/utils/config.util");
+jest.mock("@/redux/notification/notification.duck");
+jest.mock("@/components/commons/notification-list/notification-list.comp");
 jest.mock("@mui/material/Popover");
 jest.mock("react-redux", () => ({
   useSelector: (fn) => fn(),
   useDispatch: () => jest.fn()
 }));
-jest.mock("services");
+jest.mock("@/services");
 
 beforeEach(() => {
   Popover.render.mockImplementation(({ children }) => children);

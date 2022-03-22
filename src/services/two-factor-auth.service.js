@@ -1,5 +1,5 @@
-import { backendAPI } from "utils/httpAPI.util";
-import { ApiPathConsts } from "commons/consts";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts";
 
 export const check2FAStatus = ({ browserId, password, username }) => {
   return backendAPI.post(ApiPathConsts.CHECK_2FA_STATUS, {

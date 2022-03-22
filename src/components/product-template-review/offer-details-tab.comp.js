@@ -1,7 +1,7 @@
 import { Input, Select } from "antd";
 import React, { memo, useCallback, useState } from "react";
 
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 export const OfferDetailsTab = memo(({ data }) => {
   return (

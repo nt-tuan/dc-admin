@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Property } from "components/commons/property";
+import { Property } from "@/components/commons/property";
 import React from "react";
 import Typography from "@mui/material/Typography";
-import countryList from "assets/country.json";
+import countryList from "@/assets/country";
 
 export const OwnerInfo = ({ owners }) => {
   return (

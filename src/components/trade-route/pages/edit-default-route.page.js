@@ -1,4 +1,4 @@
-import { DTCSection, Loader } from "components/commons";
+import { DTCSection, Loader } from "@/components/commons";
 
 import { DefaultRouteForm } from "@/components/trade-route/components/default-route-form";
 import React from "react";

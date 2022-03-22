@@ -1,12 +1,12 @@
-import { DTCConfirmModal, DTCTable } from "components/commons";
+import { DTCConfirmModal, DTCTable } from "@/components/commons";
 import React, { useState } from "react";
 
-import { APIError } from "commons/types";
+import { APIError } from "@/commons/types";
 import { Box } from "@mui/material";
 import { RouteService } from "../../services/route.service";
 import { getTableSchema } from "./route.schema";
-import { useAsyncErrorHandler } from "utils/error-handler.util";
-import { useMessage } from "hooks/use-message";
+import { useAsyncErrorHandler } from "@/utils/error-handler.util";
+import { useMessage } from "@/hooks/use-message";
 
 export const RouteTable = ({ data, onInvalidate, isLoading, onEditClick, hiddenColumns = [] }) => {
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();

@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
-import { DTCSection } from "components/commons";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DTCSection } from "@/components/commons";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import Grid from "@mui/material/Grid";
-import { Property } from "components/commons/property";
+import { Property } from "@/components/commons/property";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { WEEK_DAYS } from "commons/consts";
-import countryList from "assets/country.json";
+import { WEEK_DAYS } from "@/commons/consts";
+import countryList from "@/assets/country";
 
 export const CompanyInfo = ({ companyInfo, companyAddress }) => {
   return (

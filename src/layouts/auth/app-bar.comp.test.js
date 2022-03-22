@@ -6,10 +6,10 @@ import { createMemoryHistory } from "history";
 import { render } from "@testing-library/react";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("react-redux");
 jest.mock("./notification-dropdown.comp");
-jest.mock("redux/configs/configs.duck");
+jest.mock("@/redux/configs/configs.duck");
 jest.mock("./user-menu.comp");
 jest.mock("react-redux", () => ({
   useSelector: (fn) => fn(),

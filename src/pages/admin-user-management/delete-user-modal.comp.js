@@ -7,8 +7,8 @@ import {
   DialogContent
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { UserService } from "services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { UserService } from "@/services";
 
 export const DeleteUserModal = ({ user, isOpen, onCancel, onSuccess }) => {
   const [loading, setLoading] = React.useState(false);

@@ -2,7 +2,7 @@ import { Collapse, Input, Radio, Select } from "antd";
 import React, { memo, useCallback, useMemo, useState } from "react";
 
 import Modal from "antd/lib/modal/Modal";
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 // import "./ChildFieldReview.comp.scss";
 

@@ -3,7 +3,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { useSnackbar } from "notistack";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("notistack");
 
 beforeEach(() => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 

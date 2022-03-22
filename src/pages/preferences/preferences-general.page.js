@@ -11,7 +11,7 @@ import Header from "./components/general-header.comp";
 import TrackingUserActivityForm from "./components/general-tracking-user-comp";
 import { RegexConst } from "@/commons/consts";
 import { updateFeatureToggleSuccess, whoCreateProductConst } from "./constant/general-data";
-import { useMessage } from "hooks/use-message";
+import { useMessage } from "@/hooks/use-message";
 
 const Divider = styled(MuiDivider)({
   margin: "32px -24px 32px -25px"

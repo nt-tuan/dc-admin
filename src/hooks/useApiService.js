@@ -1,6 +1,6 @@
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 
 export const usePaginatedApiService = (
   serviceFn,

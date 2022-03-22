@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Menu, MenuItem } from "@mui/material";
-import { DTCSection, DTCTable } from "components/commons";
+import { DTCSection, DTCTable } from "@/components/commons";
 import React, { useEffect, useState } from "react";
 
 import { DeleteUserModal } from "./delete-user-modal.comp";
@@ -7,10 +7,10 @@ import { EditUserModal } from "./edit-user-modal.comp";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { RouteConst } from "commons/consts";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { RouteConst } from "@/commons/consts";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
 
 const USER_STATUSES = {
   ACTIVE: "ACTIVE",

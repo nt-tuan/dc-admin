@@ -8,7 +8,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { useBreakpoints } from "utils/use-breakpoints";
+import { useBreakpoints } from "@/utils/use-breakpoints";
 
 export const drawerWidth = 240;
 const MobileDrawer = styled(MuiDrawer)(({ theme }) => ({

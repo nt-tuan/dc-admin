@@ -1,6 +1,6 @@
 import { Divider, List, ListSubheader } from "@mui/material";
 
-import { DTCSection } from "components/commons";
+import { DTCSection } from "@/components/commons";
 import FeatureItem from "./feature-item.comp";
 import React from "react";
 

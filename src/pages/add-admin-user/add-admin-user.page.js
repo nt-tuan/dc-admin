@@ -1,8 +1,8 @@
-import { AddUserForm } from "components/user-management/add-user-form.comp";
-import { DTCSection } from "components/commons";
+import { AddUserForm } from "@/components/user-management/add-user-form.comp";
+import { DTCSection } from "@/components/commons";
 import { Helmet } from "react-helmet";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { useHistory } from "react-router-dom";
 
 const AddAdminUser = () => {

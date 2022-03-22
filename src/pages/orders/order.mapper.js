@@ -1,6 +1,6 @@
-import { toCurrency, toNumber } from "utils/general.util";
+import { toCurrency, toNumber } from "@/utils/general.util";
 
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import { ORDERS_SCHEMA } from "./order.schema";
 
 const { FIELDS, LABELS, ORDER_STATUS_LABELS, ORDER_STATUS } = ORDERS_SCHEMA;

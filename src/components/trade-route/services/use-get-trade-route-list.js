@@ -2,7 +2,7 @@ import { RouteConst } from "@/commons/consts";
 import { useMessage } from "@/hooks/use-message";
 import { DatetimeUtils } from "@/utils/date-time.util";
 import { getAllRecordsFromAPI } from "@/utils/general.util";
-import countryJson from "assets/country.json";
+import countryJson from "@/assets/country";
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useHistory } from "react-router-dom";

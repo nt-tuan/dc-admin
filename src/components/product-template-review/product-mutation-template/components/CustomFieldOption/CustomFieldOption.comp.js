@@ -3,8 +3,8 @@ import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import React, { useCallback, useState } from "react";
 
 import ChildFieldReview from "../ChildFieldReview/ChildFieldReview.comp";
-import { REQUIRED_ERR } from "commons/consts";
-import { createFormErrorComp } from "utils/form.util";
+import { REQUIRED_ERR } from "@/commons/consts";
+import { createFormErrorComp } from "@/utils/form.util";
 import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 const CustomFieldOption = (props) => {

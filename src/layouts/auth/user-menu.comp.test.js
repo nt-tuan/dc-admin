@@ -6,7 +6,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { UserMenu } from "./user-menu.comp";
 import { createMemoryHistory } from "history";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("react-redux");
 jest.mock("@mui/material/Menu");
 

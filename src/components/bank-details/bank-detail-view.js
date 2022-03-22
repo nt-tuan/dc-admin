@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { BankDetailsReadonly } from "components/bank-details/bank-details-readonly.comp";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getBankDetails } from "services/bankDetail.service";
-import { useMessage } from "hooks/use-message";
+import { BankDetailsReadonly } from "@/components/bank-details/bank-details-readonly.comp";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getBankDetails } from "@/services/bankDetail.service";
+import { useMessage } from "@/hooks/use-message";
 
 function BankDetailView() {
   const message = useMessage();

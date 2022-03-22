@@ -4,20 +4,19 @@ import { Form, Formik } from "formik";
 import { LoginFormContext, LoginFormProvider } from "./login-form-provider.comp";
 
 import Box from "@mui/material/Box";
-import { CheckboxField } from "components/commons/fields/checkbox-field/checkbox-field.comp";
+import { CheckboxField } from "@/components/commons/fields/checkbox-field/checkbox-field.comp";
 import FormGroup from "@mui/material/FormGroup";
 import { Link } from "react-router-dom";
 import { LoginFormFooter } from "./login-form-footer.comp";
 import MuiLink from "@mui/material/Link";
-import { PasswordField } from "components/commons/fields/password-field/password-field.comp";
-import { REQUIRED_ERR } from "commons/consts";
+import { PasswordField } from "@/components/commons/fields/password-field/password-field.comp";
+import { REQUIRED_ERR, RouteConst } from "@/commons/consts";
 import React from "react";
-import { RouteConst } from "commons/consts";
 import Stack from "@mui/material/Stack";
-import { TextField } from "components/commons/fields";
+import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
-import { getCompanyName } from "utils/config.util";
-import { withPlugin } from "plugins/with-plugin";
+import { getCompanyName } from "@/utils/config.util";
+import { withPlugin } from "@/plugins/with-plugin";
 
 const TermAndPolicy = () => {
   return (

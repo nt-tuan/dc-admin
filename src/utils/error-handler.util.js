@@ -1,8 +1,8 @@
-import { APIError, CustomError } from "commons/types";
+import { APIError, CustomError } from "@/commons/types";
 import { log, popError } from "./logger.util";
 
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { globalSnackbarRef } from "@/components/snackbar-provider/snackbar-provider.comp";
 import { removeAuthCredential } from "./auth.util";
 import { useMessage } from "@/hooks/use-message";

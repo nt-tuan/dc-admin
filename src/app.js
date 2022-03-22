@@ -1,5 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import { ErrorBoundary } from "components/error-boundary/error-boundary.comp";
+import { ErrorBoundary } from "@/components/error-boundary/error-boundary.comp";
 import { Provider } from "react-redux";
 import { QueryClientProvider } from "./providers/query-client-provider";
 import React from "react";

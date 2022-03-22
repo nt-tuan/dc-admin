@@ -4,7 +4,7 @@ import {
   RenderField,
   SelectField,
   TextField
-} from "components/commons/fields";
+} from "@/components/commons/fields";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { BANK_LABELS } from "../../bank.schema";
@@ -14,7 +14,7 @@ import Grid from "@mui/material/Grid";
 import React from "react";
 import { SwiftCodeField } from "../../swift-code-field.comp";
 import Typography from "@mui/material/Typography";
-import currencyList from "assets/currency.json";
+import currencyList from "@/assets/currency";
 import { isAbaRequired, isSortCodeRequired } from "./validation.schema";
 import { useFormikContext } from "formik";
 import { CurrencyTooltip } from "./currency-tooltip.comp";

@@ -1,9 +1,9 @@
 import { transactionData } from "./__mocks__/transactions-data";
 import { parseDataToExcel } from "./wallet.mapper";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 
-jest.mock("utils/date-time.util");
-jest.mock("utils/config.util");
+jest.mock("@/utils/date-time.util");
+jest.mock("@/utils/config.util");
 beforeEach(() => {
   DatetimeUtils.formatDateTime.mockReturnValue("formattedDatetime");
 });

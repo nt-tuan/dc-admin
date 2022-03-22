@@ -1,4 +1,4 @@
-import { log } from "utils/logger.util";
+import { log } from "@/utils/logger.util";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { getAccessToken } from "./auth.util";

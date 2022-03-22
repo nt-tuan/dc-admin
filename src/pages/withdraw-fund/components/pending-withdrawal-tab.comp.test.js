@@ -1,13 +1,13 @@
 import React from "react";
-import { DTCTable } from "components/commons";
+import { DTCTable } from "@/components/commons";
 import { withdrawPendingMapper } from "../withdraw.mapper";
-import { handleDownloadExcel, getAllRecordsFromAPI } from "utils/general.util";
+import { handleDownloadExcel, getAllRecordsFromAPI } from "@/utils/general.util";
 import { render, waitFor, fireEvent } from "@testing-library/react";
 import { PendingWithdrawalTab } from "./pending-withdrawal-tab.comp";
 
-jest.mock("utils/general.util");
+jest.mock("@/utils/general.util");
 jest.mock("../withdraw.mapper");
-jest.mock("components/commons/dtc-table/dtc-table.comp");
+jest.mock("@/components/commons/dtc-table/dtc-table.comp");
 
 beforeEach(() => {
   withdrawPendingMapper.parseDataToGridView.mockImplementation((data) => data);

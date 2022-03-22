@@ -4,22 +4,21 @@ import {
   OwnerInfo,
   Reputation,
   UserProfile
-} from "components/user-details";
+} from "@/components/user-details";
 import React, { useCallback, useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DTCSection } from "components/commons";
+import { DTCSection } from "@/components/commons";
 import Divider from "@mui/material/Divider";
 import { Helmet } from "react-helmet";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
-import { UserService } from "services";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { UserService } from "@/services";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import qs from "qs";
-import { useHistory } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const UserDetails = () => {
   const [data, setData] = useState({});

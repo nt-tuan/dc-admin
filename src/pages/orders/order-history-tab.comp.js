@@ -1,16 +1,16 @@
-import { DTCSection, DTCTable, FilterDropdown } from "components/commons";
+import { DTCSection, DTCTable, FilterDropdown } from "@/components/commons";
 import { ORDERS_SCHEMA, orderHistoryTableColumns } from "./order.schema";
 import React, { useEffect, useState } from "react";
-import { TIME_FIELDS, TIME_LABELS } from "commons/consts";
-import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+import { TIME_FIELDS, TIME_LABELS } from "@/commons/consts";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "@/utils/general.util";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import DownloadIcon from "@mui/icons-material/Download";
-import { OrderService } from "services";
+import { OrderService } from "@/services";
 import Stack from "@mui/material/Stack";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import dayjs from "dayjs";
 import { historyOrderMapper } from "./order.mapper";
 

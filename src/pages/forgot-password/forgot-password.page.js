@@ -1,9 +1,9 @@
-import { AuthService } from "services/auth.service";
+import { AuthService } from "@/services/auth.service";
 import { ForgotPasswordForm } from "./forgot-password-form/forgot-pw-form.comp";
 import { Helmet } from "react-helmet";
 import React from "react";
-import { RouteConst } from "commons/consts";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { RouteConst } from "@/commons/consts";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { useHistory } from "react-router-dom";
 
 const ForgotPasswordPage = () => {

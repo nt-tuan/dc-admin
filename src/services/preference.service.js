@@ -1,5 +1,5 @@
-import { ApiPathConsts } from "commons/consts";
-import { backendAPI } from "utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts";
+import { backendAPI } from "@/utils/httpAPI.util";
 
 export const updateAssetResource = async (type, formData) => {
   await backendAPI.post(ApiPathConsts.POST_MARKETPLACE_BRANDING_ASSET, formData, { type });

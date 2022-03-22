@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, createStore } from "redux";
 
 import createSagaMiddleware from "redux-saga";
-import { handleSagaError } from "utils/saga.util";
+import { handleSagaError } from "@/utils/saga.util";
 import { history } from "@/history/history";
 import reducers from "./reducers";
 import { routerMiddleware } from "connected-react-router";

@@ -3,7 +3,7 @@ import React from "react";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { usePathParams } from "@/hooks/use-path-params";
-import { useSearchParams } from "hooks/use-search-params";
+import { useSearchParams } from "@/hooks/use-search-params";
 
 function a11yProps(index) {
   return {

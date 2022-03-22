@@ -1,17 +1,17 @@
 import * as yup from "yup";
 
 import { Box, Button, Dialog, DialogContent, DialogTitle, Stack } from "@mui/material";
-import { ConfirmModal, DTCSection, DTCTable } from "components/commons";
+import { ConfirmModal, DTCSection, DTCTable } from "@/components/commons";
 import { DOCUMENT_SCHEMA, DocumentMutationForm } from "../components/document-mutation-form";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { APIError } from "commons/types";
-import { DatetimeUtils } from "utils/date-time.util";
+import { APIError } from "@/commons/types";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import { Helmet } from "react-helmet";
 import { RouteService } from "../services/route.service";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
 import qs from "qs";
 import { useFormik } from "formik";
 import { useMessage } from "@/hooks/use-message";

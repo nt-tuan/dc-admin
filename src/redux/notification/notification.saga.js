@@ -1,9 +1,9 @@
 import { all, put, take, delay, select, takeLatest } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
-import { getNotificationList } from "services/notification.service";
+import { getNotificationList } from "@/services/notification.service";
 import * as NOTIFICATION_DUCK from "./notification.duck";
-import * as USER_DUCK from "redux/user/user.duck";
-import { WSClient } from "utils/web-socket.util";
+import * as USER_DUCK from "@/redux/user/user.duck";
+import { WSClient } from "@/utils/web-socket.util";
 
 let _wsClient;
 const { setStateAction } = NOTIFICATION_DUCK;

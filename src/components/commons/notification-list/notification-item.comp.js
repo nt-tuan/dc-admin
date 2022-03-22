@@ -1,9 +1,9 @@
 import { Box, ListItemButton, ListItemIcon, ListItemText, styled } from "@mui/material";
 
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import React from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { withEnhanceNotification } from "HOCs/withEnhanceNotification";
+import { withEnhanceNotification } from "@/HOCs/withEnhanceNotification";
 
 const contentMessageStyle = {
   small: { fontSize: (theme) => theme.typography.body2.fontSize }

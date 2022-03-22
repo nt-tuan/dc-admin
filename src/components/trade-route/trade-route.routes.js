@@ -1,4 +1,4 @@
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { loadable } from "@/utils/loadable.util";
 
 export const tradeRouteRoutes = [

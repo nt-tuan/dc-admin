@@ -1,5 +1,5 @@
 import React from "react";
-import { OutLinedIcon } from "components/commons";
+import { OutLinedIcon } from "@/components/commons";
 
 function Order(props) {
   return (

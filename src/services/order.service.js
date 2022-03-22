@@ -1,5 +1,5 @@
-import { backendAPI } from "utils/httpAPI.util";
-import { ApiPathConsts } from "commons/consts/system";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts/system";
 import dayjs from "dayjs";
 const DATETIME_FORMAT = "YYYY-MM-DDTHH:mm:ss";
 export class OrderService {

@@ -1,4 +1,4 @@
-import { REQUIRED_ERR } from "commons/consts";
+import { REQUIRED_ERR } from "@/commons/consts";
 
 const LABEL = "E-mail or Username";
 export const FORGOT_PASSWORD_FORM_SCHEMA = {

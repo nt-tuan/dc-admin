@@ -1,11 +1,11 @@
 import { render } from "@testing-library/react";
-import { MockTheme } from "test/mock-theme.comp";
+import { MockTheme } from "@/test/mock-theme.comp";
 import { NotificationList } from "./notification-list.comp";
 import Skeleton from "@mui/material/Skeleton";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 jest.mock("@mui/material/Skeleton");
-jest.mock("HOCs/withEnhanceNotification", () => ({
+jest.mock("@/HOCs/withEnhanceNotification", () => ({
   withEnhanceNotification: () => () => <span>item</span>
 }));
 

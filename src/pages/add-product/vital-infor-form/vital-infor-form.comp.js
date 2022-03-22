@@ -1,10 +1,10 @@
 import { Col, Form, Input, Row, Select } from "antd";
 import React, { useCallback, useMemo } from "react";
 
-import { REQUIRED_ERR } from "commons/consts";
+import { REQUIRED_ERR } from "@/commons/consts";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
-import { createFormErrorComp } from "utils/form.util";
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { createFormErrorComp } from "@/utils/form.util";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 const INPUT_TYPE = {
   SELECT: "SELECT",
@@ -37,7 +37,7 @@ const LAYOUT = {
 
 export const VitalInformationForm = ({ form, formNewFields }) => {
   const VITAL_INFORMATION_SCHEMA = useMemo(() => {
-    const fields = [
+    return [
       {
         label: "Product Category",
         name: "productCategory",
@@ -212,26 +212,23 @@ export const VitalInformationForm = ({ form, formNewFields }) => {
         }
       }
     ];
-    return fields;
   }, []);
 
   const renderSchema = useCallback((schema) => {
-    switch (schema.type) {
-      case INPUT_TYPE.SELECT:
-        return (
-          <Select getPopupContainer={getLagecyModalContainer} model={schema.mode}>
-            {schema?.options?.options?.map((item) => {
-              return (
-                <Option key={item} value={item}>
-                  {item}
-                </Option>
-              );
-            })}
-          </Select>
-        );
-      default:
-        return <Input {...schema.props} />;
+    if (schema.type === INPUT_TYPE.SELECT) {
+      return (
+        <Select getPopupContainer={getLagecyModalContainer} model={schema.mode}>
+          {schema?.options?.options?.map((item) => {
+            return (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            );
+          })}
+        </Select>
+      );
     }
+    return <Input {...schema.props} />;
   }, []);
 
   return (

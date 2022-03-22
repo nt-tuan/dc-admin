@@ -1,9 +1,9 @@
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import React from "react";
 import { WALLET_SCHEMA } from "./wallet.schema";
-import { toNumber } from "utils/general.util";
+import { toNumber } from "@/utils/general.util";
 
 const { FIELDS, LABELS } = WALLET_SCHEMA;
 const { formatDateTime } = DatetimeUtils;

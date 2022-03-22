@@ -5,9 +5,9 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
-import { UserBadge } from "components/commons";
+import { UserBadge } from "@/components/commons";
 
 const FIELDS = {
   id: "id",

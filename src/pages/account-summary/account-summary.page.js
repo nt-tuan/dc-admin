@@ -1,15 +1,15 @@
-import { DTCSection, DTCTable } from "components/commons";
+import { DTCSection, DTCTable } from "@/components/commons";
 import React, { useEffect, useState } from "react";
-import { getAllRecordsFromAPI, handleDownloadExcel } from "utils/general.util";
+import { getAllRecordsFromAPI, handleDownloadExcel } from "@/utils/general.util";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { FinancialService } from "services";
+import { FinancialService } from "@/services";
 import { Helmet } from "react-helmet";
-import { SORT_ORDERS } from "commons/consts";
+import { SORT_ORDERS } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
 import { accountSummaryColumns } from "./account-summary.schema";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { financialMapper } from "./account-summary.mapper";
 
 const { parseDataToExcel, parseDataToGridView } = financialMapper;

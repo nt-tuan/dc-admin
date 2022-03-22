@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
-import { EditUserForm } from "components/user-management/edit-user-form.comp";
+import { EditUserForm } from "@/components/user-management/edit-user-form.comp";
 import React from "react";
 
 export const EditUserModal = ({ isOpen, onCancel, onConfirm, user }) => {

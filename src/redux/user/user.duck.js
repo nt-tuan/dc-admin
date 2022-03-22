@@ -1,4 +1,4 @@
-import { TWO_FACTOR_AUTH_TYPES } from "commons/consts";
+import { TWO_FACTOR_AUTH_TYPES } from "@/commons/consts";
 
 export const SET_STATE = "@@DTC/USER/SET_STATE";
 export const LOGIN = "@@DTC/USER/LOGIN";

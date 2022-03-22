@@ -1,14 +1,14 @@
-import { DTCSection, DTCTable } from "components/commons";
+import { DTCSection, DTCTable } from "@/components/commons";
 import { WALLET_SCHEMA, getWalletDescriptions, getWalletTransactionType } from "../wallet.schema";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import DownloadIcon from "@mui/icons-material/Download";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import { toCurrency } from "utils/general.util";
+import { toCurrency } from "@/utils/general.util";
 
 const { FIELDS, LABELS } = WALLET_SCHEMA;
 const moneyFormatter = (params) => toCurrency(params.value);

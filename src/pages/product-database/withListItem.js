@@ -2,7 +2,7 @@ import { Avatar, Button, Checkbox, Col, Empty, List, Row } from "antd";
 import React, { Fragment, useState } from "react";
 
 import { Link } from "react-router-dom";
-import { LoadingIndicator } from "components/commons";
+import { LoadingIndicator } from "@/components/commons";
 
 const checkboxStyles = {
   position: "absolute",

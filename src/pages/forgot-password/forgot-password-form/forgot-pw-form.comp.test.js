@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { ForgotPasswordForm } from "./forgot-pw-form.comp";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 
 const renderForgotPasswordForm = () => {
   return render(

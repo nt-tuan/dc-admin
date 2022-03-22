@@ -1,8 +1,8 @@
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 
 import { withdrawPendingMapper } from "./withdraw.mapper";
 
-jest.mock("utils/date-time.util");
+jest.mock("@/utils/date-time.util");
 
 const { parseDataToExcel } = withdrawPendingMapper;
 

@@ -1,6 +1,6 @@
 import { AppBar } from "./app-bar.comp";
 import React from "react";
-import { useBreakpoints } from "utils/use-breakpoints";
+import { useBreakpoints } from "@/utils/use-breakpoints";
 import Stack from "@mui/material/Stack";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "@/redux/user/user.duck";

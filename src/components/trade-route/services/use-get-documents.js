@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
 
 import { RouteService } from "./route.service";
 

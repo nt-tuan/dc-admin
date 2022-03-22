@@ -3,7 +3,7 @@ import { parseDefaultDocuments, parseTradeRouteForm } from "@/components/trade-r
 import React from "react";
 import { RouteService } from "./route.service";
 import { useGetDocuments } from "@/components/trade-route/services/use-get-documents";
-import { useMessage } from "hooks/use-message";
+import { useMessage } from "@/hooks/use-message";
 import { useMutation } from "react-query";
 
 export const useAddTradeRoute = (isDefault, { onSuccess }) => {

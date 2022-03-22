@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import { BankDetailsReadonly } from "components/bank-details/bank-details-readonly.comp";
+import { BankDetailsReadonly } from "@/components/bank-details/bank-details-readonly.comp";
 import Box from "@mui/material/Box";
-import { DTCSection } from "components/commons";
-import { FinancialService } from "services";
+import { DTCSection } from "@/components/commons";
+import { FinancialService } from "@/services";
 import { Helmet } from "react-helmet";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { styled } from "@mui/material";
-import { toCurrency } from "utils/general.util";
+import { toCurrency } from "@/utils/general.util";
 
 const PCC_BANK_DETAILS = {
   beneficiary: "beneficiary",

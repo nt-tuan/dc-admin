@@ -1,24 +1,24 @@
-import * as STORAGE_DUCK from "redux/storage/storage.duck";
+import * as STORAGE_DUCK from "@/redux/storage/storage.duck";
 
 import { Button, Menu, Modal } from "antd";
-import { DTCSection, LoadMoreButton } from "components/commons";
-import { Lagecy, getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { DTCSection, LoadMoreButton } from "@/components/commons";
+import { Lagecy, getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 import React, { useCallback } from "react";
-import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "commons/consts";
+import { RouteConst, TEMPLATE_NAME_MAX_CHARS } from "@/commons/consts";
 
 import Box from "@mui/material/Box";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 import { ProductCard } from "./product-card/product-card.comp";
-import { ProductService } from "services";
+import { ProductService } from "@/services";
 import { SearchBar } from "./search-bar/search-bar.comp";
 import Stack from "@mui/material/Stack";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import debounce from "lodash/debounce";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useMessage } from "hooks/use-message";
-import { usePaginatedApiService } from "hooks/useApiService";
+import { useMessage } from "@/hooks/use-message";
+import { usePaginatedApiService } from "@/hooks/useApiService";
 import { withListItem } from "./withListItem";
 
 const { confirm } = Modal;

@@ -1,4 +1,4 @@
-import { DTCTabs, useTabSearchParams } from "components/commons";
+import { DTCTabs, useTabSearchParams } from "@/components/commons";
 import { DefaultRouteTab, RouteTab } from "../components/tabs";
 
 import { Helmet } from "react-helmet";

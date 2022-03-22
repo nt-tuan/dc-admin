@@ -3,14 +3,16 @@ import MuiDrawer from "@mui/material/Drawer";
 import { AppLeftMenu } from "./app-left-menu.comp";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { MockTheme } from "test/mock-theme.comp";
+import { MockTheme } from "@/test/mock-theme.comp";
 
 jest.mock("@mui/material/Drawer");
-jest.mock("utils/config.util");
-jest.mock("utils/general.util");
+jest.mock("@/utils/config.util");
+jest.mock("@/utils/general.util");
 jest.mock("react-redux");
 jest.mock("./menu-data");
 
+const USER_MANAGEMENT = "User Management";
+const PeopleIcon = "people-icon";
 const mockedMenuData = [
   {
     title: "Orders",
@@ -19,9 +21,9 @@ const mockedMenuData = [
     url: "RouteConst.ORDERS"
   },
   {
-    title: "User Management",
-    key: "User Management",
-    icon: () => "people-icon",
+    title: USER_MANAGEMENT,
+    key: USER_MANAGEMENT,
+    icon: () => PeopleIcon,
     children: [
       {
         title: "Users",
@@ -65,14 +67,14 @@ test("AppLeftMenu should work", () => {
 test("AppLeftMenu should show icon only", () => {
   const onExpand = jest.fn();
   const { queryByText } = setup({ collapsed: true, onExpand });
-  expect(queryByText("User Management")).not.toBeInTheDocument();
-  fireEvent.click(queryByText("people-icon"));
+  expect(queryByText(USER_MANAGEMENT)).not.toBeInTheDocument();
+  fireEvent.click(queryByText(PeopleIcon));
   expect(onExpand).toBeCalled();
 });
 
 test("AppLeftMenu should work", () => {
   const { getByText } = setup();
-  fireEvent.click(getByText("people-icon"));
+  fireEvent.click(getByText(PeopleIcon));
   expect(getByText("New User")).toBeInTheDocument();
   fireEvent.click(getByText("Dump"));
   expect(getByText("New User")).toBeInTheDocument();

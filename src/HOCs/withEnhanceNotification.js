@@ -1,12 +1,12 @@
-import { NOTIFICATION_TYPE, RouteConst } from "commons/consts";
+import { NOTIFICATION_TYPE, RouteConst } from "@/commons/consts";
 
-import { OrderService } from "services";
+import { OrderService } from "@/services";
 import React from "react";
-import { UserService } from "services/user.service";
-import { asyncErrorHandlerWrapper } from "utils/error-handler.util";
-import { getAllRecordsFromAPI } from "utils/general.util";
+import { UserService } from "@/services/user.service";
+import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { getAllRecordsFromAPI } from "@/utils/general.util";
 import { useHistory } from "react-router-dom";
-import { useMessage } from "hooks/use-message";
+import { useMessage } from "@/hooks/use-message";
 
 export const withEnhanceNotification = (NotificationItemComp) => {
   return React.memo(({ data, ...rest }) => {

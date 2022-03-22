@@ -16,7 +16,7 @@ const validationSchema = yup.object({
   phone: yup.string().required().matches(phoneRegExp, "Please enter a valid phone number")
 });
 
-export const PhoneFormModal = ({ open, onClose, onUpdated }) => {
+export const PhoneFormModal = ({ open, onClose, onUpdated = undefined }) => {
   const { data, isLoading } = useUserProfile();
   const { mutate, isLoading: isUpdating } = useUpdateProfile({
     onSuccess: () => {

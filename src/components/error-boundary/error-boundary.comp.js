@@ -1,7 +1,7 @@
 import Alert from "@mui/material/Alert";
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
-import { log } from "utils/logger.util";
+import { log } from "@/utils/logger.util";
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {

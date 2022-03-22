@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Typography from "@mui/material/Typography";
 const Error404Page = () => (
   <>

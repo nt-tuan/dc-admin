@@ -1,10 +1,10 @@
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import Button from "@mui/material/Button";
-import { DTCSection } from "components/commons";
+import { DTCSection } from "@/components/commons";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import Stack from "@mui/material/Stack";
 import { StatisticStat } from "./statistic-stat.comp";
 

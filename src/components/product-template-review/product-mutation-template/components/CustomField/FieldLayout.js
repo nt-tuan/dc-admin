@@ -5,9 +5,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import CustomFieldOption from "../CustomFieldOption/CustomFieldOption.comp";
 import { FIELD_TYPE } from "../../constants";
 // import "../../product-mutation-template.comp.scss";
-import { REQUIRED_ERR } from "commons/consts";
-import { createFormErrorComp } from "utils/form.util";
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { REQUIRED_ERR } from "@/commons/consts";
+import { createFormErrorComp } from "@/utils/form.util";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 const { Panel } = Collapse;
 const { Option } = Select;

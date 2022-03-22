@@ -3,14 +3,14 @@ import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.pa
 import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 import Box from "@mui/material/Box";
-import { RouteConst } from "commons/consts";
-import { Loader } from "components/commons";
+import { RouteConst } from "@/commons/consts";
+import { Loader } from "@/components/commons";
 import { ConnectedRouter } from "connected-react-router";
 import React, { Suspense } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { getAssetURL } from "utils/config.util";
+import { getAssetURL } from "@/utils/config.util";
 import { bankRoutes } from "./components/bank-details/bank.routes";
 
 import { tradeRouteRoutes } from "./components/trade-route/trade-route.routes";
@@ -86,22 +86,24 @@ export default AppRouter;
 const publicRoutes = [
   {
     path: RouteConst.LOGIN_ROUTE,
-    Component: loadable(() => import("pages/login/login.page")),
+    Component: loadable(() => import("@/pages/login/login.page")),
     exact: true
   },
   {
     path: RouteConst.EMAIL_VERIFICATION,
-    Component: loadable(() => import("pages/email-confirmation/email-confirmation.comp")),
+    Component: loadable(() => import("@/pages/email-confirmation/email-confirmation.comp")),
     exact: true
   },
   {
     path: RouteConst.FORGOT_PASSWORD_ROUTE,
-    Component: loadable(() => import("pages/forgot-password/forgot-password.page")),
+    Component: loadable(() => import("@/pages/forgot-password/forgot-password.page")),
     exact: true
   },
   {
     path: RouteConst.FORGOT_PASSWORD_SUCCESS_ROUTE,
-    Component: loadable(() => import("pages/forgot-password-success/forgot-password-success.page")),
+    Component: loadable(() =>
+      import("@/pages/forgot-password-success/forgot-password-success.page")
+    ),
     exact: true
   }
 ];
@@ -118,7 +120,7 @@ const routeData = [
           {
             path: RouteConst.ORGANIZATION_PROFILE,
             Component: loadable(() =>
-              import("pages/organization-profile/organization-profile.page")
+              import("@/pages/organization-profile/organization-profile.page")
             )
           },
           {
@@ -153,79 +155,75 @@ const routeData = [
               },
               {
                 path: RouteConst.USER_MANAGEMENT,
-                Component: loadable(() => import("pages/user-management/user-management.page")),
+                Component: loadable(() => import("@/pages/user-management/user-management.page")),
                 exact: true
               },
               {
                 path: RouteConst.ORDERS,
-                Component: loadable(() => import("pages/orders/orders.page")),
+                Component: loadable(() => import("@/pages/orders/orders.page")),
                 exact: true
               },
               {
                 path: RouteConst.ACCOUNT_SUMMARY,
-                Component: loadable(() => import("pages/account-summary/account-summary.page")),
+                Component: loadable(() => import("@/pages/account-summary/account-summary.page")),
                 exact: true
               },
               {
                 path: RouteConst.WITHDRAW_FUND,
-                Component: loadable(() => import("pages/withdraw-fund/withdraw-fund.page")),
+                Component: loadable(() => import("@/pages/withdraw-fund/withdraw-fund.page")),
                 exact: true
               },
               {
                 path: RouteConst.WALLET,
-                Component: loadable(() => import("pages/wallet/wallet.page")),
+                Component: loadable(() => import("@/pages/wallet/wallet.page")),
                 exact: true
               },
               {
                 path: RouteConst.FEATURE_TOGGLES,
-                Component: loadable(() => import("pages/feature-toggles/feature-toggles.page")),
+                Component: loadable(() => import("@/pages/feature-toggles/feature-toggles.page")),
                 exact: true
               },
               {
                 path: RouteConst.ADD_FUNDS,
-                Component: loadable(() => import("pages/add-funds/add-funds.page")),
+                Component: loadable(() => import("@/pages/add-funds/add-funds.page")),
                 exact: true
               },
               {
                 path: RouteConst.PRODUCT_DATABASE,
-                Component: loadable(() => import("pages/product-database/product-database.page")),
+                Component: loadable(() => import("@/pages/product-database/product-database.page")),
                 exact: true
               },
               {
                 path: RouteConst.ADD_PRODUCT,
-                Component: loadable(() => import("pages/add-product/add-product.page")),
+                Component: loadable(() => import("@/pages/add-product/add-product.page")),
                 exact: false
               },
               {
                 path: RouteConst.EDIT_PRODUCT,
-                Component: loadable(() => import("pages/edit-product/edit-product.page")),
+                Component: loadable(() => import("@/pages/edit-product/edit-product.page")),
                 exact: false
               },
               {
                 path: RouteConst.USER_DETAILS,
-                Component: loadable(() => import("pages/user-details/user-details.page")),
+                Component: loadable(() => import("@/pages/user-details/user-details.page")),
                 exact: true
               },
               {
                 path: RouteConst.NOTIFICATION,
-                Component: loadable(() => import("pages/notification/notification.page")),
+                Component: loadable(() => import("@/pages/notification/notification.page")),
                 exact: true
               },
               {
                 path: RouteConst.ADMIN_USER_MANAGEMENT,
                 Component: loadable(() =>
-                  import("pages/admin-user-management/admin-user-management.page")
+                  import("@/pages/admin-user-management/admin-user-management.page")
                 ),
                 exact: true
               },
               {
                 path: RouteConst.ADD_ADMIN_USER,
-                Component: loadable(() => import("pages/add-admin-user/add-admin-user.page")),
+                Component: loadable(() => import("@/pages/add-admin-user/add-admin-user.page")),
                 exact: true
-              },
-              {
-                path: RouteConst.PROFILE_PAGES,
-                Component: loadable(() => import("pages/profile-pages/profile-page"))
               },
               ...tradeRouteRoutes
             ]

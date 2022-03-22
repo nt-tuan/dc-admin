@@ -1,4 +1,4 @@
-import { DatetimeUtils } from "utils/date-time.util";
+import { DatetimeUtils } from "@/utils/date-time.util";
 import { USER_MANAGEMENT_SCHEMA } from "./user-management-table.schema";
 
 const { STATUS_LABELS } = USER_MANAGEMENT_SCHEMA;

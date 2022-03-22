@@ -5,14 +5,14 @@ import {
   REQUIRED_ERR,
   RegexConst,
   TEMPLATE_NAME_MAX_CHARS
-} from "commons/consts";
+} from "@/commons/consts";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import { ProductService } from "services";
+import { ProductService } from "@/services";
 import { VitalInformationAddFieldsForm } from "./vital-infor-add-field-form.comp";
-import { createFormErrorComp } from "utils/form.util";
+import { createFormErrorComp } from "@/utils/form.util";
 import debounce from "lodash/debounce";
-import { getLagecyModalContainer } from "components/lagecy/lagecy.comp";
+import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 const INPUT_TYPE = {
   SELECT: "SELECT",

@@ -1,13 +1,13 @@
 import { fireEvent, render } from "@testing-library/react";
 
-import { AuthService } from "services";
+import { AuthService } from "@/services";
 import ForgotPasswordPage from "./forgot-password.page";
 import React from "react";
-import { RouteConst } from "commons/consts";
+import { RouteConst } from "@/commons/consts";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
-jest.mock("utils/config.util");
+jest.mock("@/utils/config.util");
 
 test("redirect to FORGOT_PASSWORD_SUCCESS_ROUTE page after submit form success", async () => {
   AuthService.sendResetPwEmail = jest.fn(() => Promise.resolve(true));

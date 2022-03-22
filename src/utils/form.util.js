@@ -1,5 +1,5 @@
 import React from "react";
-import { API_ERRORS } from "commons/consts";
+import { API_ERRORS } from "@/commons/consts";
 
 export const createFormErrorComp = (msg) => {
   return <span className="font-size-12 d-block">{msg}</span>;

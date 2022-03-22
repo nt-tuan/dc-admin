@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from "react";
 import { Form, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import get from "lodash/get";
-import { equalFields } from "utils/form.util";
+import { equalFields } from "@/utils/form.util";
 
 import Field from "../CustomField/Field";
 import { EMPTY_FIELD } from "../../constants";

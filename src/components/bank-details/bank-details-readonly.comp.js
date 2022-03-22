@@ -9,8 +9,8 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Grid from "@mui/material/Grid";
 import { LABEL_BY_BANK_TYPE } from "./bank-type.enum";
 import Typography from "@mui/material/Typography";
-import { areObjectValuesUndefined } from "utils";
-import countryList from "assets/country.json";
+import { areObjectValuesUndefined } from "@/utils";
+import countryList from "@/assets/country";
 
 const CopyButton = ({ isCopied, onClick }) => {
   return (

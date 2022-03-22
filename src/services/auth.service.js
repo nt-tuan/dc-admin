@@ -1,7 +1,7 @@
 import store from "store";
-import { backendAPI } from "utils/httpAPI.util";
-import { ApiPathConsts } from "commons/consts/system";
-import { AUTH_LOCALSTORAGE_KEY } from "utils";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts/system";
+import { AUTH_LOCALSTORAGE_KEY } from "@/utils";
 
 export class AuthService {
   static login = async (values) => {

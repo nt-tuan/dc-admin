@@ -1,6 +1,6 @@
 import { LABEL_BY_BANK_TYPE } from "./bank-type.enum";
 import React from "react";
-import { TextField } from "components/commons/fields";
+import { TextField } from "@/components/commons/fields";
 import get from "lodash/get";
 import { useFormikContext } from "formik";
 

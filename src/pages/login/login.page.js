@@ -1,6 +1,6 @@
-import * as USER_DUCK from "redux/user/user.duck";
+import * as USER_DUCK from "@/redux/user/user.duck";
 
-import { API_ERRORS, MessageConst, RouteConst } from "commons/consts";
+import { API_ERRORS, MessageConst, RouteConst } from "@/commons/consts";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 

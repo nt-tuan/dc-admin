@@ -1,5 +1,5 @@
-import { backendAPI } from "utils/httpAPI.util";
-import { ApiPathConsts } from "commons/consts";
+import { backendAPI } from "@/utils/httpAPI.util";
+import { ApiPathConsts } from "@/commons/consts";
 
 export class CompanyService {
   static getBankDetails = () => {
