@@ -1,7 +1,7 @@
 import { FrequencyTypesEnum, MethodEnum } from "../../user-profile/constants/tfa.enum";
 
 import React from "react";
-import { parseTfaSetting, parseTfaSettingFromServer } from "../mappers";
+import { parseTfaSettingFromServer, parseTfaSetting } from "../mappers";
 import { selectBrowserFingerprint } from "@/redux/settings/settings.duck";
 import { update2FASettings } from "../../user-profile/services/user-profile.service";
 import { useInvalidateUserProfiles } from "../../user-profile/services/use-user-profile";
@@ -22,7 +22,7 @@ const parseTfaTypes = (data) => {
 export const useTFASettings = (data) => {
   const message = useMessage();
   const invalidateProfiles = useInvalidateUserProfiles();
-  const BrowserFingerprint = useSelector(selectBrowserFingerprint);
+  const browserId = useSelector(selectBrowserFingerprint);
   const { frequency, method } = parseTfaTypes(data);
 
   const [is2FA, setIs2FA] = React.useState(false);
@@ -49,7 +49,7 @@ export const useTFASettings = (data) => {
     if (!checked && data.tfaType !== TfaTypeEnum.DISABLED) {
       mutate({
         tfaType: TfaTypeEnum.DISABLED,
-        browserId: BrowserFingerprint
+        browserId
       });
     }
     setIs2FA(checked);
@@ -58,7 +58,15 @@ export const useTFASettings = (data) => {
     if (!newFrequency) {
       return;
     }
-    setSelectedFrequency(newFrequency);
+    if (data.tfaType === TfaTypeEnum.DISABLED) {
+      setSelectedFrequency(newFrequency);
+      return;
+    }
+    const nextTfaType = parseTfaSetting(true, method, newFrequency);
+    mutate({
+      tfaType: nextTfaType,
+      browserId
+    });
   };
   const handleMethodChange = (newMethod) => {
     if (!newMethod) {
@@ -73,10 +81,10 @@ export const useTFASettings = (data) => {
     setIsOpenUpdatingTfa(false);
     invalidateProfiles();
   };
-  const currentTfaType = parseTfaSetting(is2FA, selectedMethod, selectedFrequency);
 
   return {
     is2FA,
+    browserId,
     change2FA,
     isOpenUpdatingTfa: isOpenUpdatingTfa || data?.tfaType === TfaTypeEnum.DISABLED,
     selectedMethod,
@@ -86,7 +94,6 @@ export const useTFASettings = (data) => {
     updateTfaSetting: mutate,
     isUpdatingTfaSetting: isSubmitting,
     openMethodSelect,
-    stopUpdatingTfa,
-    currentTfaType
+    stopUpdatingTfa
   };
 };

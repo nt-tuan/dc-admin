@@ -4,11 +4,9 @@ import React from "react";
 import { VerifierComponent } from "../../models/verifier";
 
 export const GAVerifier: VerifierComponent<{
-  qrCodeUrl: string;
-  secretKey: string;
-}> = ({ onClose, verifier }) => {
-  const { data, verify, isSubmitting, isLoading } = verifier;
-  const { qrCodeUrl, secretKey } = data || {};
+  qrCodeUrl?: string;
+  secretKey?: string;
+}> = ({ onClose, onVerify, isSubmitting, isLoading, qrCodeUrl, secretKey }) => {
   const [step, setStep] = React.useState(qrCodeUrl && secretKey ? 0 : 1);
   return (
     <>
@@ -22,11 +20,11 @@ export const GAVerifier: VerifierComponent<{
         />
       )}
       <GAOTPModal
-        isLoading={isLoading}
+        isLoading={Boolean(isLoading)}
         open={step === 1}
         onClose={onClose}
-        onVerify={verify}
-        isSubmitting={isSubmitting}
+        onVerify={onVerify}
+        isSubmitting={Boolean(isSubmitting)}
       />
     </>
   );

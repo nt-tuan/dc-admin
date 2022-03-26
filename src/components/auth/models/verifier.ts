@@ -1,18 +1,10 @@
 import React from "react";
-
-export interface Verifier<T = undefined> {
-  startVerify: (context?: any) => void;
-  verify: (code: string) => void;
-  isSubmitting: boolean;
-  isLoading: boolean;
-  data?: T;
-}
-interface BaseProps<T> {
+export interface BaseVerifierModalProps {
   open: boolean;
   onClose: () => void;
-  verifier: Verifier<T>;
+  onVerify: (code: string) => void;
+  isLoading?: boolean;
+  isSubmitting?: boolean;
 }
 
-type VerifierProps<T, P> = BaseProps<T> & P;
-
-export type VerifierComponent<T = undefined, P = {}> = React.FC<VerifierProps<T, P>>;
+export type VerifierComponent<T = {}> = React.FC<BaseVerifierModalProps & T>;

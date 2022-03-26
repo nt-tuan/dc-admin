@@ -48,7 +48,7 @@ const Content = ({ email, onVerify, isSubmitting, onClose }) => {
     </Stack>
   );
 };
-export const EmailVerifier: VerifierComponent = ({ open, onClose, verifier }) => {
+export const EmailVerifier: VerifierComponent = ({ open, onClose, onVerify, isSubmitting }) => {
   const { data, isLoading } = useUserProfile();
   const { email } = data || {};
   return (
@@ -63,12 +63,7 @@ export const EmailVerifier: VerifierComponent = ({ open, onClose, verifier }) =>
         </Typography>
       }
       content={
-        <Content
-          email={email}
-          onVerify={verifier.verify}
-          isSubmitting={verifier.isSubmitting}
-          onClose={onClose}
-        />
+        <Content email={email} onVerify={onVerify} isSubmitting={isSubmitting} onClose={onClose} />
       }
     />
   );

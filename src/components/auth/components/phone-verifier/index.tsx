@@ -5,8 +5,18 @@ import { PhoneFormModal } from "@/components/user-profile/components/add-phone-m
 import { VerifierComponent } from "../../models/verifier";
 import { usePhoneConfirm } from "./use-phone-confirm";
 
-export const PhoneVerifier: VerifierComponent = ({ open, onClose, verifier }) => {
-  const { phone, isConfirmed, confirmPhone, isLoading } = usePhoneConfirm();
+export const PhoneVerifier: VerifierComponent<{
+  enablePhoneConfirm: boolean;
+  phone?: string;
+}> = ({ open, onClose, onVerify, isSubmitting, isLoading, enablePhoneConfirm, phone }) => {
+  const {
+    phone: currentUserPhone,
+    isConfirmed,
+    confirmPhone,
+    isLoading: phoneConfirmLoading
+  } = usePhoneConfirm({
+    enabled: enablePhoneConfirm
+  });
 
   if (!open || isLoading) return <></>;
   if (!phone) return <PhoneFormModal open={open && !phone} onClose={onClose} />;
@@ -16,16 +26,16 @@ export const PhoneVerifier: VerifierComponent = ({ open, onClose, verifier }) =>
         open={!isConfirmed}
         onConfirm={confirmPhone}
         onClose={onClose}
-        isLoading={false}
+        isLoading={phoneConfirmLoading}
         isSubmitting={false}
       />
       <PhoneOTPModal
         open={isConfirmed}
         onClose={onClose}
-        phone={phone}
-        onVerify={verifier.verify}
-        isSubmitting={verifier.isSubmitting}
-        isLoading={verifier.isLoading}
+        phone={phone ?? currentUserPhone}
+        onVerify={onVerify}
+        isSubmitting={isSubmitting}
+        isLoading={isLoading}
       />
     </>
   );

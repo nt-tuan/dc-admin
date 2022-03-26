@@ -17,13 +17,9 @@ export const useNewPhoneVerifier = ({ phone, onSuccess }) => {
     onReady,
     onError,
     onSuccess: (data) => {
-      if (data) {
-        setIsVerifyingPhone(false);
-        invalidate();
-        if (onSuccess) onSuccess();
-      } else {
-        message.error(WRONG_VERIFICATION_CODE);
-      }
+      setIsVerifyingPhone(false);
+      invalidate();
+      if (onSuccess) onSuccess();
     }
   });
 
@@ -37,7 +33,7 @@ export const useNewPhoneVerifier = ({ phone, onSuccess }) => {
     isVerifyingPhone,
     isSubmitting: verifier.isSubmitting,
     startVerifyingPhone: verifier.startConfirmPhone,
-    verifyPhone: verifier.validateOTP,
+    verifyPhone: verifier.verify,
     cancelVerifyingPhone
   };
 };

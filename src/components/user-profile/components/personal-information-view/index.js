@@ -13,7 +13,9 @@ const Item = ({ label, value }) => {
         </Typography>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="body2">{value}</Typography>
+        <Typography component="div" textAlign="right" variant="body2">
+          {value}
+        </Typography>
       </Box>
     </Stack>
   );
@@ -27,7 +29,7 @@ export const PersonalInformationView = memo(({ data }) => {
       <Item
         label="Phone Number"
         value={
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end">
             <span>{data.phone}</span>
             {data.phoneVerified && <CheckCircleIcon color="success" />}
           </Stack>

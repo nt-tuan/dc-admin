@@ -1,16 +1,14 @@
 import { useMutation } from "react-query";
 import React from "react";
-import type { Verifier } from "../models/verifier";
 
 export interface UseVerifierParameter<T = undefined> {
-  onReady: () => void;
-  onError: () => void;
-  onSuccess: (values: T) => void;
+  onReady: (values?: any) => void;
+  onError: (error?: any) => void;
+  onSuccess: (values?: T) => void;
   validateFn: (code: string) => Promise<unknown>;
   requestVerifyFn: any;
 }
-export type UseVerifierFunction<T = undefined> = (p: UseVerifierParameter<T>) => Verifier<T>;
-export const useVerifier: UseVerifierFunction = <T>({
+export const useVerifier = <T>({
   onReady,
   onError,
   onSuccess,
@@ -18,13 +16,16 @@ export const useVerifier: UseVerifierFunction = <T>({
   requestVerifyFn
 }: UseVerifierParameter<T>) => {
   const [data, setData] = React.useState<T>();
-  const { isLoading, mutate: startVerify } = useMutation(requestVerifyFn, {
+  const { isLoading, mutate: mutateRequest } = useMutation(requestVerifyFn, {
     onSuccess: (values: T) => {
       setData(values);
-      onReady();
+      onReady(values);
     },
     onError
   });
+  const startVerify = (options?: { onSuccess: () => void; onError: () => void }) => {
+    mutateRequest(undefined, options);
+  };
   const { mutate: verify, isLoading: isSubmitting } = useMutation(
     (code: string) => validateFn(code),
     {

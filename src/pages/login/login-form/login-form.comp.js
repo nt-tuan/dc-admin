@@ -90,9 +90,10 @@ const validationSchema = yup.object({
   username: yup.string().required(REQUIRED_ERR("Username")),
   password: yup.string().required(REQUIRED_ERR("Password"))
 });
-export const LoginForm = ({ isLoading, onSubmit }) => {
+export const LoginForm = React.forwardRef(({ isLoading, onSubmit }, ref) => {
   return (
     <Formik
+      innerRef={ref}
       initialValues={{
         username: "",
         password: "",
@@ -114,4 +115,4 @@ export const LoginForm = ({ isLoading, onSubmit }) => {
       </Form>
     </Formik>
   );
-};
+});

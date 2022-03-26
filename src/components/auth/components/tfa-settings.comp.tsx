@@ -2,15 +2,19 @@ import Box from "@mui/material/Box";
 import { Loader } from "@/components/commons";
 import { PreferredFrequency } from "./preferred-frequency.comp";
 import { TwoFactorMethodSelect } from "./two-factor-method-select.comp";
-import { TwoFactorValidator } from "@/components/auth/components/two-factor-validator/two-factor-validator.comp";
 import Typography from "@mui/material/Typography";
 import { TFACheckbox } from "./tfa-checkbox";
 import { useTFASettings } from "../controllers/use-tfa-settings";
 import { useUserProfile } from "@/components/user-profile/services/use-user-profile";
+import { sendTfaCode } from "../services/auth.service";
+import { update2FASettings } from "@/components/user-profile/services/user-profile.service";
+import { TfaTypeEnum } from "../models/enums";
+import { TFAUpdateButton } from "./tfa-update-button";
 
 const Content = ({ data }) => {
   const {
     is2FA,
+    browserId,
     change2FA,
     selectedMethod,
     selectedFrequency,
@@ -18,8 +22,7 @@ const Content = ({ data }) => {
     handleMethodChange,
     openMethodSelect,
     isOpenUpdatingTfa,
-    stopUpdatingTfa,
-    currentTfaType
+    stopUpdatingTfa
   } = useTFASettings(data);
 
   return (
@@ -28,7 +31,24 @@ const Content = ({ data }) => {
         Two-factor authentication (2FA) requires users to enter a one-time verification code sent
         using your preferred channel in order to access your account.
       </Typography>
-      <TFACheckbox tfaType={data?.tfaType} isTFAEnabled={is2FA} onChange={change2FA} />
+      <TFACheckbox
+        tfaType={data?.tfaType}
+        isTFAEnabled={is2FA}
+        onChange={change2FA}
+        requestVerifyFn={() =>
+          sendTfaCode({
+            tfaType: data?.tfaType,
+            browserId
+          })
+        }
+        validateFn={(code) =>
+          update2FASettings({
+            code,
+            tfaType: TfaTypeEnum.DISABLED,
+            browserId
+          })
+        }
+      />
 
       {is2FA && (
         <Box mt={3}>
@@ -41,6 +61,7 @@ const Content = ({ data }) => {
       {is2FA && (
         <Box mt={2}>
           <TwoFactorMethodSelect
+            data={data}
             isOpenUpdatingTfa={isOpenUpdatingTfa}
             onUpdate={openMethodSelect}
             onChange={handleMethodChange}
@@ -51,12 +72,11 @@ const Content = ({ data }) => {
       )}
       {is2FA && selectedMethod && selectedFrequency && isOpenUpdatingTfa && (
         <Box mt={2}>
-          <TwoFactorValidator
-            tfaType={currentTfaType}
+          <TFAUpdateButton
+            data={data}
+            selectedMethod={selectedMethod}
+            selectedFrequency={selectedFrequency}
             onSuccess={stopUpdatingTfa}
-            config={{
-              ga: { isSetup: true }
-            }}
           />
         </Box>
       )}
@@ -66,6 +86,5 @@ const Content = ({ data }) => {
 export const TFASettings = () => {
   const { data, isLoading } = useUserProfile();
   if (isLoading) return <Loader />;
-
   return <>{data && <Content data={data} />}</>;
 };

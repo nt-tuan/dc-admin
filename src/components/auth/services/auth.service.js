@@ -33,3 +33,7 @@ export const sendTfaCode = ({ tfaType, browserId }) => {
 export const updateTfaSettings = ({ tfaType, browserId, code }) => {
   return backendAPI.put("/admin/tfa", { tfaType, browserId, code });
 };
+
+export const checkTfaLogin = ({ username, password, browserId }) => {
+  return backendAPI.post("/public/tfa/checking", { username, password, browserId });
+};

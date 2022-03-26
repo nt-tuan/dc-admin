@@ -1,8 +1,7 @@
 import { MethodEnum } from "@/components/user-profile/constants/tfa.enum";
 import { usePhoneVerifier } from "../components/phone-verifier/use-phone-verifier";
-import { sendTfaCode, updateTfaSettings } from "../services/auth.service";
 import { useVerifier } from "./use-verifier";
-import { useTwoFactorValidator, VerifyStatusEnum } from "./use-tfa-verifier";
+import { useTFAState } from "./use-tfa-state";
 import Box from "@mui/material/Box";
 import Button from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
@@ -10,10 +9,10 @@ import { useUserProfile } from "@/components/user-profile/services/use-user-prof
 import { PhoneVerifier } from "../components/phone-verifier";
 import { GAVerifier } from "../components/ga-verifier";
 import { EmailVerifier } from "../components/email-verifier";
-import { useSelector } from "react-redux";
-import { selectBrowserFingerprint } from "@/redux/settings/settings.duck";
-import type { Verifier } from "../models/verifier";
+// import type { Verifier } from "../models/verifier";
 import { useGAVerifier } from "./use-ga-verifier";
+import { parseTfaSettingFromServer } from "../mappers";
+import React from "react";
 
 const Activator = ({ helperText, loading, disabled, onClick, buttonText }) => (
   <Box>
@@ -69,84 +68,123 @@ const verifierComponents = {
   }
 };
 
-export const useTFAVaildator = (
-  { tfaType, onSuccess, method },
-  config: {
-    ga: {
-      isSetup: boolean;
-    };
+export interface ValidatorConfig {
+  sms: {
+    enabled: boolean;
+    phone?: string;
+    useProfile: boolean;
+  };
+  ga: {
+    enabled: boolean;
+    isSetup: boolean;
+  };
+  email: {
+    enabled: boolean;
+    email?: string;
+  };
+}
+
+export const defaultTFAConfig: ValidatorConfig = {
+  sms: {
+    enabled: true,
+    useProfile: true
+  },
+  ga: {
+    enabled: true,
+    isSetup: false
+  },
+  email: {
+    enabled: true
   }
+};
+
+export const useTFAVaildator = (
+  {
+    validateFn,
+    requestVerifyFn,
+    ...callbacks
+  }: {
+    onSuccess?: () => void;
+    onReady?: () => void;
+    onError?: () => void;
+    requestVerifyFn?: () => Promise<void>;
+    validateFn: (code: string) => Promise<void>;
+  },
+  defaultConfig: ValidatorConfig
 ) => {
-  const browserId = useSelector(selectBrowserFingerprint);
   const {
+    isVerifying,
+    start,
+    method,
     onReady,
-    onSuccess: onValidateSuccess,
+    onSuccess,
     onError,
     verifiedData,
     verifyStatus,
     cancel
-  } = useTwoFactorValidator();
-  const requestVerifyFn = () =>
-    sendTfaCode({
-      tfaType,
-      browserId
-    });
-  const handleSuccess = () => {
-    onValidateSuccess();
-    if (onSuccess) {
-      onSuccess();
-    }
-  };
+  } = useTFAState(callbacks);
+  const [config, setConfig] = React.useState<ValidatorConfig>(defaultConfig);
   const phoneVerifier = usePhoneVerifier({
     onReady,
-    onSuccess: handleSuccess,
+    onSuccess,
     onError,
     requestVerifyFn,
-    validateFn: (code) => updateTfaSettings({ tfaType, browserId, code })
+    validateFn: validateFn,
+    phone: config?.sms?.phone,
+    useProfile: config?.sms?.useProfile
   });
   const gaVerifier = useGAVerifier({
     onReady,
-    onSuccess: handleSuccess,
+    onSuccess,
     onError,
     requestVerifyFn,
-    validateFn: (code) => updateTfaSettings({ tfaType, browserId, code }),
+    validateFn,
     isSetup: config?.ga?.isSetup
   });
   const emailVerifier = useVerifier({
     onReady,
-    onSuccess: handleSuccess,
+    onSuccess,
     onError,
     requestVerifyFn,
-    validateFn: (code) => updateTfaSettings({ tfaType, browserId, code })
+    validateFn
   });
-  const verifiers: {
-    [key: string]: Verifier;
-  } = {
+  const verifiers = {
     [MethodEnum.SMS]: phoneVerifier,
     [MethodEnum.GA]: gaVerifier,
     [MethodEnum.EMAIL]: emailVerifier
   };
   const availableMethods = Object.keys(verifiers);
-  const currentVerifier = verifiers[method];
-  const currentVerifierComponent = verifierComponents[method];
+  const startVerify = (tfaType: string) => {
+    const { method } = parseTfaSettingFromServer(tfaType);
+    if (!method || !verifiers[method]) {
+      return;
+    }
+    const currentVerifier = verifiers[method];
+    currentVerifier.startVerify();
+    start(method);
+  };
+  const verify = (code: string) => {
+    if (!method || !verifiers[method]) {
+      return;
+    }
+    const currentVerifier = verifiers[method];
+    currentVerifier.verify(code);
+  };
 
-  const { Activator: CustomActivator, Modal } = currentVerifierComponent || {};
-  const tfaVerifyModal =
-    verifyStatus === VerifyStatusEnum.PENDING && currentVerifier ? (
-      <Modal open onClose={cancel} verifier={currentVerifier as any} />
-    ) : (
-      <></>
-    );
+  const isLoading = method && verifiers[method] && verifiers[method].isLoading;
 
   return {
+    isVerifying,
+    setConfig,
     verifiers,
-    currentVerifier,
+    method,
     verifierComponents,
     availableMethods,
     verifiedData,
     verifyStatus,
     cancel,
-    tfaVerifyModal,
-    CustomActivator
+    startVerify,
+    verify,
+    isLoading
   };
 };

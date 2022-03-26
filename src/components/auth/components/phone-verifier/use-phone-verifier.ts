@@ -16,10 +16,14 @@ export const usePhoneVerifier = ({
   validateFn = (code: string) => validateOTPRequest({ code }),
   onReady,
   onError,
-  onSuccess
+  onSuccess,
+  phone,
+  useProfile
 }) => {
   const [status, setStatus] = React.useState(STATUS.NOT_VERIFIED);
-  const { data, isLoading } = useUserProfile();
+  const { data, isLoading } = useUserProfile({
+    enabled: Boolean(phone == null && useProfile)
+  });
 
   const requestMutation = useMutation(requestVerifyFn, {
     onError,
@@ -39,7 +43,7 @@ export const usePhoneVerifier = ({
 
   const startVerify = () => {
     if (data == null) return;
-    if (!data.phoneVerified) {
+    if (!data.phoneVerified && phone == null) {
       setStatus(STATUS.CONFIRM_PHONE);
       onReady();
       return;
@@ -63,7 +67,7 @@ export const usePhoneVerifier = ({
   const isVerifying = status === STATUS.VERIFYING;
 
   return {
-    phone: data?.phone ?? "",
+    phone: phone ?? data?.phone,
     isLoading,
     isSubmitting: requestMutation.isLoading || verifyMutation.isLoading,
     isConfirmingPhone,

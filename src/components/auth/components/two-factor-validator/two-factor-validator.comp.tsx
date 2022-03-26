@@ -1,23 +1,62 @@
-import { parseTfaSettingFromServer } from "@/components/auth/mappers";
-import { useTFAVaildator } from "../../controllers/use-tfa-validator";
-import { VerifyStatusEnum } from "../../controllers/use-tfa-verifier";
+import { useTFAVaildator, ValidatorConfig } from "../../controllers/use-tfa-validator";
+import { TFAModal } from "../tfa-modal";
 
-export const TwoFactorValidator = ({ tfaType, Activator = undefined, onSuccess, config }) => {
-  const { method } = parseTfaSettingFromServer(tfaType);
-  const { verifyStatus, CustomActivator, currentVerifier, tfaVerifyModal } = useTFAVaildator(
+interface Props {
+  tfaType: string;
+  Activator: React.FC<{ loading: boolean; onClick: () => void }>;
+  onSuccess: () => void;
+  config: ValidatorConfig;
+  validateFn: (code: string) => Promise<void>;
+  requestVerifyFn: () => Promise<void>;
+  enablePhoneConfirm: boolean;
+  phone?: string;
+  qrCodeUrl?: string;
+  secretKey?: string;
+}
+export const TwoFactorValidator = ({
+  tfaType,
+  Activator,
+  onSuccess,
+  config,
+  validateFn,
+  requestVerifyFn,
+  enablePhoneConfirm,
+  phone
+}: Props) => {
+  const {
+    method,
+    cancel,
+    startVerify,
+    isLoading,
+    isVerifying,
+    verify,
+    verifiedData
+  } = useTFAVaildator(
     {
-      tfaType,
-      onSuccess,
-      method
+      validateFn,
+      requestVerifyFn,
+      onSuccess
     },
     config
   );
-  const DisplayedActivator = Activator || CustomActivator;
-  if (currentVerifier == null) return <></>;
-  if (verifyStatus === VerifyStatusEnum.PENDING) {
-    return tfaVerifyModal;
-  }
+
+  const handleClick = () => {
+    startVerify(tfaType);
+  };
+
   return (
-    <DisplayedActivator loading={currentVerifier.isLoading} onClick={currentVerifier.startVerify} />
+    <>
+      <Activator loading={Boolean(isLoading)} onClick={handleClick} />
+      <TFAModal
+        method={method}
+        open={isVerifying}
+        onClose={cancel}
+        onVerify={verify}
+        enablePhoneConfirm={enablePhoneConfirm}
+        phone={phone}
+        qrCodeUrl={verifiedData?.qrCodeUrl}
+        secretKey={verifiedData?.secretKey}
+      />
+    </>
   );
 };
