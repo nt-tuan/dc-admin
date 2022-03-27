@@ -26,14 +26,12 @@ import { AddPhoneModal } from "@/components/user-profile/components/add-phone-mo
 
 export default function NewWithdrawalPage() {
   const { data } = useUserProfile();
-  var verifyWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectVerifyWithdrawData);
-  var createWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectCreateWithdrawData);
-
   const dispatch = useDispatch();
   const message = useMessage();
   const history = useHistory();
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();
-
+  var verifyWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectVerifyWithdrawData);
+  var createWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectCreateWithdrawData);
   const [isFocus, setIsFocus] = useState(null);
   const [inputCode, setInputCode] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -198,7 +196,7 @@ export default function NewWithdrawalPage() {
       </Grid>
 
       {/* Model : create - verify OTP */}
-      {data && data.phone.length > 4 ? (
+      {data && data?.phone?.length > 4 ? (
         <PhoneOTPModal
           open={isOpen}
           onClose={closeModal}
@@ -213,7 +211,10 @@ export default function NewWithdrawalPage() {
       <NewWithdrawalTransactionModal
         onSubmit={handleRouter}
         open={transactionOpen}
-        onClose={() => setTransactionOpen(false)}
+        onClose={() => {
+          setTransactionOpen(false);
+          getData();
+        }}
         bankAccount={_get(selectedBank, "accountNumber")}
         amount={amountWithdraw}
         walletName={_get(selectedBank, "name")}

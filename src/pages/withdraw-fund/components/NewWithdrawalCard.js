@@ -9,7 +9,7 @@ import { toCurrency } from "@/utils/general.util";
 
 const CardBox = styled(Card)(
   ({ theme }) => ({
-    border: `2px solid ${theme.palette.primary.main}`,
+    border: `2px solid #E5E5E5`,
     cursor: "pointer",
     padding: theme.spacing(2)
   }),
