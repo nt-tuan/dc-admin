@@ -264,4 +264,8 @@ export class ApiPathConsts {
   static get ADMIN_MARKETPLACE_FEATURES() {
     return `${this.#ADMIN_PREFIX}/marketplace/settings`;
   }
+
+  static get CREATE_WITHDRAW_FUND() {
+    return `${this.#WALLET_PREFIX}/withdrawal`;
+  }
 }

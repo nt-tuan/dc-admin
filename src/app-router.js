@@ -170,7 +170,7 @@ const routeData = [
               },
               {
                 path: RouteConst.WITHDRAW_FUND,
-                Component: loadable(() => import("@/pages/withdraw-fund/withdraw-fund.page")),
+                Component: loadable(() => import("@/pages/withdraw-fund/new-withdraw-fund.page")),
                 exact: true
               },
               {

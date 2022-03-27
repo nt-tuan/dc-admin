@@ -20,7 +20,9 @@ export const PhoneFormModal = ({ open, onClose, onUpdated = undefined }) => {
   const { data, isLoading } = useUserProfile();
   const { mutate, isLoading: isUpdating } = useUpdateProfile({
     onSuccess: () => {
-      if (onUpdated) onUpdated();
+      if (onUpdated) {
+        onUpdated();
+      }
     }
   });
   const submit = (values) => {
@@ -87,7 +89,7 @@ export const AddPhoneModal = ({ open, onClose, onVerify }) => {
     startVerifyingPhone,
     verifyPhone,
     cancelVerifyingPhone
-  } = useNewPhoneVerifier({ onSuccess: onVerify, phone: data.phone });
+  } = useNewPhoneVerifier({ onSuccess: onVerify, phone: data?.phone });
   const closeOTP = () => {
     cancelVerifyingPhone();
     onClose();

@@ -95,7 +95,7 @@ const BadgeSelectForm = ({ onClose, username, getUserDetails = UserService.getUs
     setIsAssigning(true);
     asyncErrorHandlerWrapper(async () => {
       await UserService.assignBadges({
-        companyId: company.id,
+        companyId: company?.id,
         badgeIdList: selected.map((item) => item.id)
       });
       setIsAssigning(false);

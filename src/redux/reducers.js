@@ -6,6 +6,7 @@ import settings from "./settings/settings.duck";
 import storage from "./storage/storage.duck";
 import user from "./user/user.duck";
 import configs from "./configs/configs.duck";
+import withdrawFund from "./withdraw-fund/withdrawFund.duck";
 
 const reducer = (history) =>
   combineReducers({
@@ -15,6 +16,7 @@ const reducer = (history) =>
     storage,
     notification,
     kyc3,
-    configs
+    configs,
+    withdrawFund
   });
 export default reducer;
