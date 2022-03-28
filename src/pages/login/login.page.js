@@ -61,35 +61,39 @@ const LoginPage = () => {
   const loading = useSelector((state) => state?.user?.loading);
   const handleSubmit = async (values) => {
     asyncErrorHandler(async () => {
-      const { username, password } = values;
-      const { is_locked, tfa_check, tfa_config } = await checkTfaLogin({
-        username,
-        password,
-        browserId
-      });
-      if (is_locked) {
-        message.error("Your account has been locked!");
-        return;
-      }
-      if (tfa_check) {
-        const tfaType = tfa_config.defaultMethod;
-        setConfig({
-          ga: {
-            isSetup: false
-          },
-          sms: {
-            phone: tfa_config.phoneHidden,
-            enablePhoneConfirm: false
-          },
-          email: {
-            email: tfa_config.emailHidden,
-            loadEmailFromProfile: false
-          }
+      try {
+        const { username, password } = values;
+        const { is_locked, tfa_check, tfa_config } = await checkTfaLogin({
+          username,
+          password,
+          browserId
         });
-        startVerify(tfaType);
-        return;
+        if (is_locked) {
+          message.error("Your account has been locked!");
+          return;
+        }
+        if (tfa_check) {
+          const tfaType = tfa_config.defaultMethod;
+          setConfig({
+            ga: {
+              isSetup: false
+            },
+            sms: {
+              phone: tfa_config.phoneHidden,
+              enablePhoneConfirm: false
+            },
+            email: {
+              email: tfa_config.emailHidden,
+              loadEmailFromProfile: false
+            }
+          });
+          startVerify(tfaType);
+          return;
+        }
+        dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
+      } catch (error) {
+        onError(error?.errors);
       }
-      dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
     });
   };
 

@@ -27,7 +27,7 @@ export const PasswordField = ({ inputProps, label, name, disabled, placeholder, 
         label={label}
         placeholder={placeholder}
         onChange={field.onChange}
-        error={meta.touched && meta.error}
+        error={Boolean(meta.touched && meta.error)}
         disabled={disabled}
         type={passwordVisible ? "text" : "password"}
         endAdornment={
@@ -45,7 +45,7 @@ export const PasswordField = ({ inputProps, label, name, disabled, placeholder, 
         {...inputProps}
       />
       {meta.touched && meta.error && (
-        <FormHelperText error={meta.error} id={`password-field-${name}-helper-text`}>
+        <FormHelperText error={Boolean(meta.error)} id={`password-field-${name}-helper-text`}>
           {meta.error}
         </FormHelperText>
       )}
