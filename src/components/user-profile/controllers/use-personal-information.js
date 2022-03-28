@@ -1,9 +1,14 @@
-import { useUpdateProfile, useUserProfile } from "../services/use-user-profile";
+import {
+  useInvalidateUserProfiles,
+  useUpdateProfile,
+  useUserProfile
+} from "../services/use-user-profile";
 
 import { useSearchParams } from "@/hooks/use-search-params";
 
 export const usePersonalInformation = () => {
   const { data, isLoading } = useUserProfile();
+  const invalidate = useInvalidateUserProfiles();
   const [{ mode }, setParams] = useSearchParams({ defaultValue: {} });
   const isEdit = mode === "edit";
 
@@ -11,7 +16,9 @@ export const usePersonalInformation = () => {
     setParams({ mode: "edit" });
   };
   const onSuccess = () => {
-    setParams();
+    invalidate().then(() => {
+      setParams();
+    });
   };
   const { mutate, isLoading: isSubmitting } = useUpdateProfile({ onSuccess });
 

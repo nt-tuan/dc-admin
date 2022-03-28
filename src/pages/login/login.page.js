@@ -11,11 +11,13 @@ import { checkTfaLogin } from "@/components/auth/services/auth.service";
 import { selectBrowserFingerprint } from "@/redux/settings/settings.duck";
 import { useTFAVaildator } from "@/components/auth/controllers/use-tfa-validator";
 import { TFAModal } from "@/components/auth/components/tfa-modal";
+import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 
 const LoginPage = () => {
   const message = useMessage();
   const formRef = React.useRef();
   const history = useHistory();
+  const asyncErrorHandler = useAsyncErrorHandler();
   const onError = React.useCallback((errors) => {
     const errorCode = errors[0][1];
     const serverError = API_ERRORS[errorCode];
@@ -58,35 +60,37 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state?.user?.loading);
   const handleSubmit = async (values) => {
-    const { username, password } = values;
-    const { is_locked, tfa_check, tfa_config } = await checkTfaLogin({
-      username,
-      password,
-      browserId
-    });
-    if (is_locked) {
-      message.error("Your account has been locked!");
-      return;
-    }
-    if (tfa_check) {
-      const tfaType = tfa_config.defaultMethod;
-      setConfig({
-        ga: {
-          isSetup: false
-        },
-        sms: {
-          phone: tfa_config.phoneHidden,
-          enablePhoneConfirm: false
-        },
-        email: {
-          email: tfa_config.emailHidden,
-          loadEmailFromProfile: false
-        }
+    asyncErrorHandler(async () => {
+      const { username, password } = values;
+      const { is_locked, tfa_check, tfa_config } = await checkTfaLogin({
+        username,
+        password,
+        browserId
       });
-      startVerify(tfaType);
-      return;
-    }
-    dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
+      if (is_locked) {
+        message.error("Your account has been locked!");
+        return;
+      }
+      if (tfa_check) {
+        const tfaType = tfa_config.defaultMethod;
+        setConfig({
+          ga: {
+            isSetup: false
+          },
+          sms: {
+            phone: tfa_config.phoneHidden,
+            enablePhoneConfirm: false
+          },
+          email: {
+            email: tfa_config.emailHidden,
+            loadEmailFromProfile: false
+          }
+        });
+        startVerify(tfaType);
+        return;
+      }
+      dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
+    });
   };
 
   if (!loading && isAuthorized) return <Redirect to={RouteConst.HOME_ROUTE} />;

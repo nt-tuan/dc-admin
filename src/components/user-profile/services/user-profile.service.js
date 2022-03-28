@@ -31,6 +31,15 @@ export const validatePasscode = (data) => {
   return backendAPI.post(ApiPathConsts.THREE_STEPS_PASSCODE, data);
 };
 
+export const requestPhoneCode = async () => {
+  await backendAPI.get(ApiPathConsts.PHONE_VERIFICATION);
+};
+
+export const verifyPhoneCode = async (code) => {
+  await backendAPI.post(ApiPathConsts.PHONE_VERIFICATION, null, { code });
+  return true;
+};
+
 export const validateOTP = (data) => {
   return backendAPI.post(ApiPathConsts.THREE_STEPS_OTP, data);
 };
