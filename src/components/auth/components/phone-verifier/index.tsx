@@ -1,25 +1,24 @@
-import React from "react";
 import { PhoneOTPModal } from "../phone-otp-modal";
 import { VerifyPhoneRequestModal } from "./verify-phone-request-modal.comp";
 import { PhoneFormModal } from "@/components/user-profile/components/add-phone-modal/add-phone-modal.comp";
-import { VerifierComponent } from "../../models/verifier";
+import { PhoneVerifierConfig, VerifierComponent } from "../../models/verifier";
 import { usePhoneConfirm } from "./use-phone-confirm";
 
-export const PhoneVerifier: VerifierComponent<{
-  enablePhoneConfirm: boolean;
-  phone?: string;
-}> = ({ open, onClose, onVerify, isSubmitting, isLoading, enablePhoneConfirm, phone }) => {
-  const {
-    phone: currentUserPhone,
-    isConfirmed,
-    confirmPhone,
-    isLoading: phoneConfirmLoading
-  } = usePhoneConfirm({
-    enabled: enablePhoneConfirm
+export const PhoneVerifier: VerifierComponent<PhoneVerifierConfig> = ({
+  open,
+  onClose,
+  onVerify,
+  isSubmitting,
+  isLoading,
+  config
+}) => {
+  const { phone, isConfirmed, confirmPhone, isLoading: phoneConfirmLoading } = usePhoneConfirm({
+    enabled: Boolean(config?.enablePhoneConfirm)
   });
 
   if (!open || isLoading) return <></>;
-  if (!phone) return <PhoneFormModal open={open && !phone} onClose={onClose} />;
+  if (!phone && config?.enablePhoneConfirm)
+    return <PhoneFormModal open={open && !phone} onClose={onClose} />;
   return (
     <>
       <VerifyPhoneRequestModal
@@ -32,7 +31,8 @@ export const PhoneVerifier: VerifierComponent<{
       <PhoneOTPModal
         open={isConfirmed}
         onClose={onClose}
-        phone={phone ?? currentUserPhone}
+        sensor={config?.phone == null}
+        phone={config?.phone ?? phone}
         onVerify={onVerify}
         isSubmitting={isSubmitting}
         isLoading={isLoading}

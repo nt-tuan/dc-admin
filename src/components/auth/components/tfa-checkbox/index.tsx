@@ -3,6 +3,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 
 import { defaultTFAConfig, useTFAVaildator } from "@/components/auth/controllers/use-tfa-validator";
+import { TFAModal } from "../tfa-modal";
 // import { VerifyStatusEnum } from "@/components/auth/controllers/use-tfa-state";
 
 interface Props {
@@ -37,9 +38,25 @@ export const TFACheckbox = ({
   };
   // if (validator.verifyStatus === VerifyStatusEnum.PENDING) return validator.tfaVerifyModal;
   return (
-    <FormControlLabel
-      control={<Checkbox checked={isTFAEnabled} onChange={changeTFA} />}
-      label={<Typography variant="body2">Enable two step authentication</Typography>}
-    />
+    <>
+      <FormControlLabel
+        control={<Checkbox checked={isTFAEnabled} onChange={changeTFA} />}
+        label={<Typography variant="body2">Enable two step authentication</Typography>}
+      />
+      <TFAModal
+        method={validator.method}
+        open={validator.isVerifying}
+        onClose={validator.cancel}
+        onVerify={validator.verify}
+        config={{
+          sms: {
+            enablePhoneConfirm: false
+          },
+          ga: {},
+          email: {}
+        }}
+        isSubmitting={validator.isSubmitting}
+      />
+    </>
   );
 };

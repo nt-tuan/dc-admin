@@ -28,7 +28,9 @@ const Edition = () => {
     updateBank,
     verifier,
     isVerifingPhone,
-    isUpdating
+    isUpdating,
+    phone,
+    enablePhoneConfirm
   } = useBankController({ id, mutateFn: (values) => updateBankDetails(id, values) });
   if (isLoading) return <></>;
   return (
@@ -45,7 +47,16 @@ const Edition = () => {
           ref={ref}
         />
       </Stack>
-      <PhoneVerifier verifier={verifier} open={isVerifingPhone} onClose={cancel} />
+      <PhoneVerifier
+        phone={phone}
+        enablePhoneConfirm={enablePhoneConfirm}
+        onVerify={verifier.verify}
+        isSubmitting={verifier.isSubmitting}
+        isLoading={verifier.isLoading}
+        open={isVerifingPhone}
+        onClose={cancel}
+        config={{ enablePhoneConfirm: true }}
+      />
     </>
   );
 };

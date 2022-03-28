@@ -26,9 +26,12 @@ export const useBankController = ({ id, mutateFn }) => {
     onError: (error) => {
       message.error(error);
     },
-    onSuccess: (values) => {
+    onSuccess: () => {
       setIsVerifyingPhone(false);
       if (submitData) mutate(submitData);
+    },
+    config: {
+      enablePhoneConfirm: true
     }
   });
 
@@ -47,9 +50,13 @@ export const useBankController = ({ id, mutateFn }) => {
     verifier.startVerify();
   };
 
+  const phone = data?.phone;
+  const enablePhoneConfirm = data?.phoneVerified;
+
   return {
     verifier,
-    data,
+    phone,
+    enablePhoneConfirm,
     isVerifingPhone,
     isLoading: isLoadingProfile || isLoadingBankData,
     ref,

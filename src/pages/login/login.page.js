@@ -16,28 +16,38 @@ const LoginPage = () => {
   const message = useMessage();
   const formRef = React.useRef();
   const history = useHistory();
-  const onError = (errors) => {
+  const onError = React.useCallback((errors) => {
     const errorCode = errors[0][1];
     const serverError = API_ERRORS[errorCode];
     formRef.current.setFieldError("password", serverError);
-  };
-  const onSuccess = () => {
+  }, []);
+  const onSuccess = React.useCallback(() => {
     history.push(RouteConst.HOME_ROUTE);
     message.success(MessageConst.LOGIN_SUCCESS_MSG);
-  };
-  const handleTfalogin = () => {
+  }, [history, message]);
+  const handleTfalogin = async () => {
     const values = formRef.current.values;
     dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
   };
-  const { startVerify, verifyStatus, cancel, setConfig, verify, method } = useTFAVaildator(
+
+  const {
+    startVerify,
+    isVerifying,
+    cancel,
+    verify,
+    method,
+    isSubmitting,
+    config,
+    setConfig
+  } = useTFAVaildator(
     {
-      onSuccess,
       onError,
       requestVerifyFn: async () => {},
-      validateFn: async () => handleTfalogin()
+      validateFn: handleTfalogin
     },
     {
-      ga: { isSetup: false }
+      ga: { isSetup: false },
+      sms: { enablePhoneConfirm: false }
     }
   );
 
@@ -47,7 +57,6 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const loading = useSelector((state) => state?.user?.loading);
-
   const handleSubmit = async (values) => {
     const { username, password } = values;
     const { is_locked, tfa_check, tfa_config } = await checkTfaLogin({
@@ -62,13 +71,16 @@ const LoginPage = () => {
     if (tfa_check) {
       const tfaType = tfa_config.defaultMethod;
       setConfig({
+        ga: {
+          isSetup: false
+        },
         sms: {
-          enabled: true,
-          phone: tfa_config.phoneHidden
+          phone: tfa_config.phoneHidden,
+          enablePhoneConfirm: false
         },
         email: {
-          enabled: true,
-          email: tfa_config.email
+          email: tfa_config.emailHidden,
+          loadEmailFromProfile: false
         }
       });
       startVerify(tfaType);
@@ -82,11 +94,12 @@ const LoginPage = () => {
     <>
       <LoginForm ref={formRef} onSubmit={handleSubmit} isLoading={loading} />
       <TFAModal
-        open={verifyStatus === "PENDING"}
+        open={isVerifying}
         method={method}
         onCancel={cancel}
         onVerify={verify}
-        enablePhoneConfirm={false}
+        isSubmitting={isSubmitting}
+        config={config}
       />
     </>
   );

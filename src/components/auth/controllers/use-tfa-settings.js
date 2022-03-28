@@ -32,6 +32,7 @@ export const useTFASettings = (data) => {
   const { mutate, isLoading: isSubmitting } = useMutation(update2FASettings, {
     onSuccess: () => {
       invalidateProfiles();
+      setIsOpenUpdatingTfa(false);
       message.success("Update Two-Factor Authentication successfully");
     }
   });

@@ -8,16 +8,14 @@ export const VerifyStatusEnum = {
 };
 export const useTFAState = (callbacks) => {
   const errorHandler = useErrorHandler();
-  const [verifiedData, setVerifiedData] = React.useState<any>();
   const [verifyStatus, setVerifyStatus] = React.useState(VerifyStatusEnum.NONE);
-  const [tfaMethod, setTfaMethod] = React.useState();
+  const [tfaMethod, setTfaMethod] = React.useState<string>();
 
-  const start = (method) => {
+  const start = (method: string | undefined) => {
     setTfaMethod(method);
   };
 
-  const onReady = (values) => {
-    setVerifiedData(values);
+  const onReady = () => {
     setVerifyStatus(VerifyStatusEnum.PENDING);
     if (callbacks?.onReady) {
       callbacks.onReady();
@@ -48,7 +46,6 @@ export const useTFAState = (callbacks) => {
     onReady,
     onSuccess,
     onError,
-    verifiedData,
     verifyStatus,
     cancel
   };

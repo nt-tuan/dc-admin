@@ -59,20 +59,19 @@ export const TFAUpdateButton = ({ data, selectedMethod, selectedFrequency, onSuc
   const browserId = useSelector(selectBrowserFingerprint);
   const validateFn = (code: string) => updateTfaSettings({ tfaType, browserId, code });
   const requestVerifyFn = () => sendTfaCode({ tfaType, browserId });
+
   if (activators[selectedMethod] == null) return <></>;
   return (
     <TwoFactorValidator
       Activator={activators[selectedMethod]}
       tfaType={tfaType}
-      phone={data.phone}
-      enablePhoneConfirm
       validateFn={validateFn}
       requestVerifyFn={requestVerifyFn}
       onSuccess={onSuccess}
       config={{
-        ga: { enabled: true, isSetup: true },
-        sms: { enabled: true, useProfile: true },
-        email: { enabled: true, email: data.email }
+        ga: { isSetup: true },
+        sms: { enablePhoneConfirm: true },
+        email: { loadEmailFromProfile: true }
       }}
     />
   );

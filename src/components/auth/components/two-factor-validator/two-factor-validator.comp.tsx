@@ -1,17 +1,14 @@
-import { useTFAVaildator, ValidatorConfig } from "../../controllers/use-tfa-validator";
+import { useTFAVaildator } from "../../controllers/use-tfa-validator";
+import { TFAConfig } from "../../models/verifier";
 import { TFAModal } from "../tfa-modal";
 
 interface Props {
   tfaType: string;
   Activator: React.FC<{ loading: boolean; onClick: () => void }>;
   onSuccess: () => void;
-  config: ValidatorConfig;
+  config: TFAConfig;
   validateFn: (code: string) => Promise<void>;
   requestVerifyFn: () => Promise<void>;
-  enablePhoneConfirm: boolean;
-  phone?: string;
-  qrCodeUrl?: string;
-  secretKey?: string;
 }
 export const TwoFactorValidator = ({
   tfaType,
@@ -19,9 +16,7 @@ export const TwoFactorValidator = ({
   onSuccess,
   config,
   validateFn,
-  requestVerifyFn,
-  enablePhoneConfirm,
-  phone
+  requestVerifyFn
 }: Props) => {
   const {
     method,
@@ -30,7 +25,7 @@ export const TwoFactorValidator = ({
     isLoading,
     isVerifying,
     verify,
-    verifiedData
+    isSubmitting
   } = useTFAVaildator(
     {
       validateFn,
@@ -43,7 +38,6 @@ export const TwoFactorValidator = ({
   const handleClick = () => {
     startVerify(tfaType);
   };
-
   return (
     <>
       <Activator loading={Boolean(isLoading)} onClick={handleClick} />
@@ -52,10 +46,8 @@ export const TwoFactorValidator = ({
         open={isVerifying}
         onClose={cancel}
         onVerify={verify}
-        enablePhoneConfirm={enablePhoneConfirm}
-        phone={phone}
-        qrCodeUrl={verifiedData?.qrCodeUrl}
-        secretKey={verifiedData?.secretKey}
+        config={config}
+        isSubmitting={isSubmitting}
       />
     </>
   );

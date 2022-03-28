@@ -1,27 +1,31 @@
-import { getGoogleAuthenticator } from "../services/auth.service";
-import { useVerifier, UseVerifierParameter } from "./use-verifier";
+import React from "react";
+import { tfaSettingValidate } from "../mappers";
+import { GAVerifierConfig, VerifierHook } from "../models/verifier";
+import { useVerifier } from "./use-verifier";
 
-interface Params extends UseVerifierParameter {
-  isSetup: boolean;
-}
-export const useGAVerifier = ({
+export const useGAVerifier: VerifierHook<GAVerifierConfig> = ({
   onError,
   onSuccess,
   onReady,
-  validateFn,
+  validateFn = tfaSettingValidate,
   requestVerifyFn,
-  isSetup
-}: Params) => {
-  return useVerifier({
-    onReady,
+  config
+}) => {
+  const [isVerifying, setIsVerifying] = React.useState(false);
+  const verifier = useVerifier({
+    onReady: () => {
+      setIsVerifying(true);
+      if (onReady) onReady();
+    },
     onSuccess,
     onError,
-    requestVerifyFn: async () => {
-      await requestVerifyFn();
-      if (isSetup) {
-        return getGoogleAuthenticator();
-      }
-    },
-    validateFn
+    requestVerifyFn,
+    validateFn,
+    config
   });
+  return {
+    ...verifier,
+    isVerifying,
+    setIsVerifying
+  };
 };

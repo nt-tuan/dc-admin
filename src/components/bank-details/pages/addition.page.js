@@ -16,7 +16,9 @@ const Addition = () => {
     updateBank,
     verifier,
     isVerifingPhone,
-    isUpdating
+    isUpdating,
+    enablePhoneConfirm,
+    phone
   } = useBankController({
     mutateFn: (values) => createBankDetails([values])
   });
@@ -36,7 +38,16 @@ const Addition = () => {
         onTriggerSubmit={startUpdateBank}
         ref={ref}
       />
-      <PhoneVerifier verifier={verifier} open={isVerifingPhone} onClose={cancel} />
+      <PhoneVerifier
+        phone={phone}
+        enablePhoneConfirm={enablePhoneConfirm}
+        onVerify={verifier.verify}
+        isSubmitting={verifier.isSubmitting}
+        isLoading={verifier.isLoading}
+        open={isVerifingPhone}
+        onClose={cancel}
+        config={{ enablePhoneConfirm: true }}
+      />
     </Stack>
   );
 };

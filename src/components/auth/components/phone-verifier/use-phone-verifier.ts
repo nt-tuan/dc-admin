@@ -2,79 +2,64 @@ import { useUserProfile } from "@/components/user-profile/services/use-user-prof
 import React from "react";
 
 import { useMutation } from "react-query";
-import { createOTP, validateOTP as validateOTPRequest } from "../../services/auth.service";
+import { tfaSettingValidate } from "../../mappers";
+import { PhoneVerifierConfig, VerifierHook } from "../../models/verifier";
+import { createOTP } from "../../services/auth.service";
 
-const STATUS = {
-  NOT_VERIFIED: "NOT_VERIFIED",
-  CONFIRM_PHONE: "CONFIRM_PHONE",
-  VERIFYING: "VERIFYING",
-  VERIFIED: "VERIFIED"
-};
-
-export const usePhoneVerifier = ({
+export const usePhoneVerifier: VerifierHook<PhoneVerifierConfig> = ({
   requestVerifyFn = createOTP,
-  validateFn = (code: string) => validateOTPRequest({ code }),
+  validateFn = tfaSettingValidate,
   onReady,
   onError,
   onSuccess,
-  phone,
-  useProfile
+  config
 }) => {
-  const [status, setStatus] = React.useState(STATUS.NOT_VERIFIED);
+  const [isVerifying, setIsVerifying] = React.useState(false);
   const { data, isLoading } = useUserProfile({
-    enabled: Boolean(phone == null && useProfile)
+    enabled: Boolean(config?.enablePhoneConfirm)
   });
 
   const requestMutation = useMutation(requestVerifyFn, {
     onError,
     onSuccess: () => {
-      setStatus(STATUS.VERIFYING);
-      onReady();
+      setIsVerifying(true);
+      if (onReady) onReady();
     }
   });
 
   const verifyMutation = useMutation(validateFn, {
     onSuccess: () => {
-      setStatus(STATUS.VERIFIED);
-      onSuccess();
+      setIsVerifying(false);
+      if (onSuccess) onSuccess();
     },
     onError
   });
 
   const startVerify = () => {
-    if (data == null) return;
-    if (!data.phoneVerified && phone == null) {
-      setStatus(STATUS.CONFIRM_PHONE);
-      onReady();
+    if (config?.enablePhoneConfirm && data == null) return;
+    if (!data?.phoneVerified && config?.enablePhoneConfirm) {
+      setIsVerifying(true);
+      if (onReady) onReady();
       return;
     }
     requestMutation.mutate();
   };
 
-  const startConfirmPhone = () => {
-    requestMutation.mutate();
-  };
-
-  const verify = (code) => {
+  const verify = (code: string) => {
     verifyMutation.mutate(code);
   };
 
   const reset = () => {
-    setStatus(STATUS.NOT_VERIFIED);
+    setIsVerifying(false);
   };
 
-  const isConfirmingPhone = status === STATUS.CONFIRM_PHONE;
-  const isVerifying = status === STATUS.VERIFYING;
-
   return {
-    phone: phone ?? data?.phone,
+    phone: data?.phone,
     isLoading,
     isSubmitting: requestMutation.isLoading || verifyMutation.isLoading,
-    isConfirmingPhone,
     isVerifying,
     startVerify,
     verify,
-    startConfirmPhone,
     reset
   };
 };

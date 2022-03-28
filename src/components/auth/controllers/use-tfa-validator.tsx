@@ -13,6 +13,7 @@ import { EmailVerifier } from "../components/email-verifier";
 import { useGAVerifier } from "./use-ga-verifier";
 import { parseTfaSettingFromServer } from "../mappers";
 import React from "react";
+import { TFAConfig } from "../models/verifier";
 
 const Activator = ({ helperText, loading, disabled, onClick, buttonText }) => (
   <Box>
@@ -68,34 +69,14 @@ const verifierComponents = {
   }
 };
 
-export interface ValidatorConfig {
+export const defaultTFAConfig: TFAConfig = {
   sms: {
-    enabled: boolean;
-    phone?: string;
-    useProfile: boolean;
-  };
-  ga: {
-    enabled: boolean;
-    isSetup: boolean;
-  };
-  email: {
-    enabled: boolean;
-    email?: string;
-  };
-}
-
-export const defaultTFAConfig: ValidatorConfig = {
-  sms: {
-    enabled: true,
-    useProfile: true
+    enablePhoneConfirm: true
   },
   ga: {
-    enabled: true,
     isSetup: false
   },
-  email: {
-    enabled: true
-  }
+  email: {}
 };
 
 export const useTFAVaildator = (
@@ -107,10 +88,10 @@ export const useTFAVaildator = (
     onSuccess?: () => void;
     onReady?: () => void;
     onError?: () => void;
-    requestVerifyFn?: () => Promise<void>;
+    requestVerifyFn: () => Promise<void>;
     validateFn: (code: string) => Promise<void>;
   },
-  defaultConfig: ValidatorConfig
+  defaultConfig: TFAConfig
 ) => {
   const {
     isVerifying,
@@ -119,19 +100,17 @@ export const useTFAVaildator = (
     onReady,
     onSuccess,
     onError,
-    verifiedData,
     verifyStatus,
     cancel
   } = useTFAState(callbacks);
-  const [config, setConfig] = React.useState<ValidatorConfig>(defaultConfig);
+  const [config, setConfig] = React.useState<TFAConfig>(defaultConfig);
   const phoneVerifier = usePhoneVerifier({
     onReady,
     onSuccess,
     onError,
     requestVerifyFn,
-    validateFn: validateFn,
-    phone: config?.sms?.phone,
-    useProfile: config?.sms?.useProfile
+    validateFn,
+    config: config.sms
   });
   const gaVerifier = useGAVerifier({
     onReady,
@@ -139,7 +118,7 @@ export const useTFAVaildator = (
     onError,
     requestVerifyFn,
     validateFn,
-    isSetup: config?.ga?.isSetup
+    config: config.ga
   });
   const emailVerifier = useVerifier({
     onReady,
@@ -170,21 +149,23 @@ export const useTFAVaildator = (
     const currentVerifier = verifiers[method];
     currentVerifier.verify(code);
   };
-
-  const isLoading = method && verifiers[method] && verifiers[method].isLoading;
+  const currentMethod = method ? verifiers[method] : undefined;
+  const isLoading = Boolean(currentMethod?.isLoading);
+  const isSubmitting = Boolean(currentMethod && currentMethod.isSubmitting);
 
   return {
     isVerifying,
+    config,
     setConfig,
     verifiers,
     method,
     verifierComponents,
     availableMethods,
-    verifiedData,
     verifyStatus,
     cancel,
     startVerify,
     verify,
-    isLoading
+    isLoading,
+    isSubmitting
   };
 };

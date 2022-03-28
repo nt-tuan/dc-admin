@@ -1,39 +1,39 @@
 import { WRONG_VERIFICATION_CODE } from "@/commons/consts";
 import { usePhoneVerifier } from "@/components/auth/components/phone-verifier/use-phone-verifier";
+import { validateOTP } from "@/components/auth/services/auth.service";
 import { useMessage } from "@/hooks/use-message";
-import React from "react";
 import { useInvalidateUserProfiles } from "../../services/use-user-profile";
+import { createOTP } from "../../services/user-profile.service";
 
-export const useNewPhoneVerifier = ({ phone, onSuccess }) => {
+interface Parameter {
+  onSuccess: () => void;
+}
+export const useNewPhoneVerifier = ({ onSuccess }: Parameter) => {
   const invalidate = useInvalidateUserProfiles();
   const message = useMessage();
-  const onReady = () => {
-    setIsVerifyingPhone(true);
-  };
+  const onReady = () => {};
   const onError = () => {
     message.error(WRONG_VERIFICATION_CODE);
   };
   const verifier = usePhoneVerifier({
     onReady,
     onError,
-    onSuccess: (data) => {
-      setIsVerifyingPhone(false);
+    validateFn: (code: string) => validateOTP({ code }),
+    requestVerifyFn: createOTP,
+    onSuccess: () => {
       invalidate();
       if (onSuccess) onSuccess();
+    },
+    config: {
+      enablePhoneConfirm: false
     }
   });
-
-  const [isVerifyingPhone, setIsVerifyingPhone] = React.useState(false);
-
-  const cancelVerifyingPhone = () => {
-    setIsVerifyingPhone(false);
-  };
   return {
     isLoading: verifier.isLoading,
-    isVerifyingPhone,
+    isVerifyingPhone: verifier.isVerifying,
     isSubmitting: verifier.isSubmitting,
-    startVerifyingPhone: verifier.startConfirmPhone,
+    startVerifyingPhone: verifier.startVerify,
     verifyPhone: verifier.verify,
-    cancelVerifyingPhone
+    cancelVerifyingPhone: verifier.reset
   };
 };

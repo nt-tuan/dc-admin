@@ -1,25 +1,19 @@
 import { useMutation } from "react-query";
 import React from "react";
+import { VerifierHookParameter } from "../models/verifier";
 
-export interface UseVerifierParameter<T = undefined> {
-  onReady: (values?: any) => void;
-  onError: (error?: any) => void;
-  onSuccess: (values?: T) => void;
-  validateFn: (code: string) => Promise<unknown>;
-  requestVerifyFn: any;
-}
 export const useVerifier = <T>({
   onReady,
   onError,
   onSuccess,
   validateFn,
-  requestVerifyFn
-}: UseVerifierParameter<T>) => {
-  const [data, setData] = React.useState<T>();
+  requestVerifyFn = async () => {}
+}: VerifierHookParameter<T>) => {
+  const [isVerifying, setIsVerifying] = React.useState(false);
   const { isLoading, mutate: mutateRequest } = useMutation(requestVerifyFn, {
-    onSuccess: (values: T) => {
-      setData(values);
-      onReady(values);
+    onSuccess: () => {
+      setIsVerifying(true);
+      if (onReady) onReady();
     },
     onError
   });
@@ -33,11 +27,15 @@ export const useVerifier = <T>({
       onError
     }
   );
+  const reset = () => {
+    setIsVerifying(false);
+  };
   return {
+    isVerifying,
     isLoading,
     startVerify,
     isSubmitting,
     verify,
-    data
+    reset
   };
 };

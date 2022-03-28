@@ -44,21 +44,14 @@ const CurrentMethod = ({ data, selectedMethod, onUpdate, tfaType }) => {
       onSuccess={onUpdate}
       validateFn={validateFn}
       requestVerifyFn={requestVerifyFn}
-      enablePhoneConfirm={false}
       config={{
         ga: {
-          enabled: true,
           isSetup: false
         },
         sms: {
-          enabled: true,
-          phone: data.phone,
-          useProfile: false
+          enablePhoneConfirm: false
         },
-        email: {
-          enabled: true,
-          email: data.email
-        }
+        email: {}
       }}
     />
   );

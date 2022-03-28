@@ -1,4 +1,5 @@
 import { TfaTypeEnum } from "../models/enums";
+import { validateOTP } from "../services/auth.service";
 
 type NullableString = string | undefined | null;
 export const parseTfaSetting = (
@@ -20,4 +21,11 @@ export const parseTfaSettingFromServer = (tfaType: string | undefined | null) =>
   const frequency = frequencyWords?.join("_");
   if (frequency && method) return { frequency, method };
   return {};
+};
+
+export const tfaSettingValidate = async (code: string) => {
+  const data = await validateOTP({ code });
+  if (data?.status !== "SUCCESS") {
+    throw new Error();
+  }
 };

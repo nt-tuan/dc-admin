@@ -3,7 +3,7 @@ import { useUserProfile } from "@/components/user-profile/services/use-user-prof
 import Button from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { VerifierComponent } from "@/components/auth/models/verifier";
+import { EmailVerifierConfig, VerifierComponent } from "@/components/auth/models/verifier";
 import React from "react";
 import { DTCModal } from "@/components/commons";
 
@@ -48,13 +48,18 @@ const Content = ({ email, onVerify, isSubmitting, onClose }) => {
     </Stack>
   );
 };
-export const EmailVerifier: VerifierComponent = ({ open, onClose, onVerify, isSubmitting }) => {
-  const { data, isLoading } = useUserProfile();
-  const { email } = data || {};
+export const EmailVerifier: VerifierComponent<EmailVerifierConfig> = ({
+  open,
+  onClose,
+  onVerify,
+  isSubmitting,
+  config
+}) => {
+  const { data, isLoading } = useUserProfile({ enabled: Boolean(config?.loadEmailFromProfile) });
   return (
     <DTCModal
       open={open}
-      isLoading={isLoading}
+      isLoading={Boolean(config?.email && isLoading)}
       onClose={onClose}
       size="tiny"
       title={
@@ -63,7 +68,12 @@ export const EmailVerifier: VerifierComponent = ({ open, onClose, onVerify, isSu
         </Typography>
       }
       content={
-        <Content email={email} onVerify={onVerify} isSubmitting={isSubmitting} onClose={onClose} />
+        <Content
+          email={config?.email ?? data?.email}
+          onVerify={onVerify}
+          isSubmitting={isSubmitting}
+          onClose={onClose}
+        />
       }
     />
   );

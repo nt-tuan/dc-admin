@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Box from "@mui/material/Box";
 import { Loader } from "@/components/commons";
 import { PreferredFrequency } from "./preferred-frequency.comp";
