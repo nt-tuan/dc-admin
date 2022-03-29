@@ -124,11 +124,16 @@ export const getAllRecordsFromAPI = async (
   return allDataRes.content;
 };
 
-export const toCurrency = (value) => {
+export const money = (value, decimal) => {
+  return Number(value).toLocaleString(undefined, {
+    minimumFractionDigits: decimal,
+    maximumFractionDigits: decimal
+  });
+};
+
+export const toCurrency = (value, decimal) => {
   const currency = getDefaultCurrency();
-  return value !== undefined && !isNaN(value)
-    ? currency + " " + Number(value).toLocaleString()
-    : value;
+  return value !== undefined && !isNaN(value) ? currency + " " + money(value, decimal) : value;
 };
 
 export const toNumber = (value) => {

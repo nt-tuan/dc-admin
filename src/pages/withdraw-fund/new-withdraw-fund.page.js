@@ -141,7 +141,7 @@ export default function NewWithdrawalPage() {
       <Grid item xs={12}>
         <Typography variant="body2">Select a wallet to withdraw funds from:</Typography>
       </Grid>
-      <Grid item xs={12} sm={6} md={3} lg={2}>
+      <Grid item xs={12} sm={6} md={3} lg={2.1}>
         <NewWithdrawalCard balance={accountData.availableBalance} />
       </Grid>
       <Grid item xs={12}>
@@ -215,7 +215,6 @@ export default function NewWithdrawalPage() {
         }}
         bankAccount={_get(selectedBank, "accountNumber")}
         amount={amountWithdraw}
-        walletName={_get(selectedBank, "name")}
       />
     </Grid>
   );

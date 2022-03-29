@@ -22,7 +22,7 @@ export default function NewWithdrawalCard({ balance }) {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography>
-            <b>GMEX</b>
+            <b>Escrow Wallet</b>
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -33,7 +33,7 @@ export default function NewWithdrawalCard({ balance }) {
         <Grid item xs={12}>
           <Typography component="div">
             <Typography variant="h6" component="span">
-              <b>{toCurrency(balance)}</b>
+              <b>{toCurrency(balance, 2)}</b>
             </Typography>
           </Typography>
         </Grid>
