@@ -63,7 +63,7 @@ export const GAOTPModal = ({ open, onClose, onVerify, isSubmitting, isLoading }:
       size="tiny"
       title={
         <Typography fontSize="16px" lineHeight="24px" variant="inherit" textAlign="center">
-          Setup Google Authentication
+          Google Authentication
         </Typography>
       }
       content={
