@@ -268,4 +268,7 @@ export class ApiPathConsts {
   static get CREATE_WITHDRAW_FUND() {
     return `${this.#WALLET_PREFIX}/withdrawal`;
   }
+  static get CHECK_VALIDATION_CODE() {
+    return `/tfa/code/validation`;
+  }
 }

@@ -12,24 +12,37 @@ import { selectBrowserFingerprint } from "@/redux/settings/settings.duck";
 import { useTFAVaildator } from "@/components/auth/controllers/use-tfa-validator";
 import { TFAModal } from "@/components/auth/components/tfa-modal";
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
+import { checkValidationCode } from "@/services";
 
 const LoginPage = () => {
   const message = useMessage();
   const formRef = React.useRef();
   const history = useHistory();
   const asyncErrorHandler = useAsyncErrorHandler();
-  const onError = React.useCallback((errors) => {
-    const errorCode = errors[0][1];
-    const serverError = API_ERRORS[errorCode];
-    formRef.current.setFieldError("password", serverError);
-  }, []);
+  const onError = React.useCallback(
+    (errors) => {
+      if (typeof errors?.message === "string") {
+        message.error(errors.message);
+        return;
+      }
+      const errorCode = errors[0][1];
+      const serverError = API_ERRORS[errorCode];
+      formRef.current.setFieldError("password", serverError);
+    },
+    [message]
+  );
   const onSuccess = React.useCallback(() => {
     history.push(RouteConst.HOME_ROUTE);
     message.success(MessageConst.LOGIN_SUCCESS_MSG);
   }, [history, message]);
-  const handleTfalogin = async () => {
+  const browserId = useSelector(selectBrowserFingerprint);
+  const [tfaData, setTfaData] = React.useState();
+  const handleTfalogin = () => {
     const values = formRef.current.values;
-    dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
+    dispatch({
+      type: USER_DUCK.LOGIN,
+      payload: { values, onError, onSuccess }
+    });
   };
 
   const {
@@ -44,8 +57,21 @@ const LoginPage = () => {
   } = useTFAVaildator(
     {
       onError,
+      onSuccess: () => {
+        handleTfalogin();
+      },
       requestVerifyFn: async () => {},
-      validateFn: handleTfalogin
+      validateFn: (code) =>
+        checkValidationCode({
+          code,
+          browserId,
+          username: formRef.current.values.username,
+          type: tfaData?.tfaType
+        }).then(({ matcher }) => {
+          if (!matcher) {
+            throw new Error("Wrong verification code");
+          }
+        })
     },
     {
       ga: { isSetup: false },
@@ -53,7 +79,6 @@ const LoginPage = () => {
     }
   );
 
-  const browserId = useSelector(selectBrowserFingerprint);
   const user = useSelector(USER_DUCK.selectCurrentUser);
   const isAuthorized = user.authorized;
 
@@ -74,6 +99,9 @@ const LoginPage = () => {
         }
         if (tfa_check) {
           const tfaType = tfa_config.defaultMethod;
+          setTfaData({
+            tfaType
+          });
           setConfig({
             ga: {
               isSetup: false

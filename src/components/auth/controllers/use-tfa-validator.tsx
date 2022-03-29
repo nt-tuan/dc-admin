@@ -87,7 +87,7 @@ export const useTFAVaildator = (
   }: {
     onSuccess?: () => void;
     onReady?: () => void;
-    onError?: () => void;
+    onError?: (error?: Error) => void;
     requestVerifyFn: () => Promise<void>;
     validateFn: (code: string) => Promise<void>;
   },

@@ -28,10 +28,11 @@ export const useTFAState = (callbacks) => {
     }
   };
   const onError = (errorMessage) => {
-    errorHandler.onError(errorMessage);
     setVerifyStatus(VerifyStatusEnum.PENDING);
     if (callbacks?.onError) {
-      callbacks?.onError();
+      callbacks?.onError(errorMessage);
+    } else {
+      errorHandler.onError(errorMessage);
     }
   };
   const cancel = () => {
