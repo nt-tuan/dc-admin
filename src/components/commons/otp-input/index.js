@@ -7,6 +7,9 @@ const removeInvalidChars = (value) => {
   return value.replace(/[^0-9a-zA-Z]/, "");
 };
 const defaultOtpInput = new Array(6).fill("");
+const isNotEmpty = (value) => {
+  return value != null && value !== "";
+};
 export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
   const [digits, setDigits] = React.useState(defaultOtpInput);
   const ref = React.useRef([]);
@@ -38,6 +41,22 @@ export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
     updateInput(event.target.value, i);
   };
   const focus = (event) => event.target.select();
+  const handleKeyDown = (event, i) => {
+    const removeDigit = (current, at) => {
+      const nextCurrent = [...current];
+      nextCurrent[at] = "";
+      return nextCurrent;
+    };
+    if (event.key === "Backspace") {
+      if (isNotEmpty(event.target.value) || i === 0) {
+        setDigits((current) => removeDigit(current, i));
+      } else {
+        setDigits((current) => removeDigit(current, i - 1));
+        ref.current[i - 1].focus();
+      }
+      event.stopPropagation();
+    }
+  };
   const renderInputs = () => {
     const elements = [];
     for (let i = 0; i < numberDigits; i++) {
@@ -47,6 +66,7 @@ export const OtpInput = ({ numberDigits = 6, onFinish, onChange }) => {
           inputRef={(element) => (ref.current[i] = element)}
           onFocus={focus}
           onChange={(event) => onInputChange(event, i)}
+          onKeyDown={(event) => handleKeyDown(event, i)}
           key={i}
           value={digits[i]}
         />
