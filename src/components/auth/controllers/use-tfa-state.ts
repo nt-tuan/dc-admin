@@ -27,6 +27,7 @@ export const useTFAState = (callbacks) => {
       callbacks.onSuccess();
     }
   };
+
   const onError = (errorMessage) => {
     setVerifyStatus(VerifyStatusEnum.PENDING);
     if (callbacks?.onError) {
