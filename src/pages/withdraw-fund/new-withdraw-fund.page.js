@@ -17,13 +17,11 @@ import { createOTP, getUserProfile } from "@/services/user-profile.service";
 import { useDispatch, useSelector } from "react-redux";
 import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
 import * as WITHDRAW_FUND_ACTIONS from "@/redux/withdraw-fund/withdrawFund.duck";
-import * as USER_ACTIONS from "@/redux/user/user.duck";
 
 import _get from "lodash/get";
 import { PhoneOTPModal } from "../../components/auth/components/phone-otp-modal";
 import { AddPhoneModal } from "@/components/user-profile/components/add-phone-modal/add-phone-modal.comp";
 import { NumberField, RenderField } from "@/components/commons/fields";
-import numeral from "numeral";
 import { Form, Formik } from "formik";
 
 export default function NewWithdrawalPage() {
@@ -33,7 +31,6 @@ export default function NewWithdrawalPage() {
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();
   const verifyWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectVerifyWithdrawData);
   const createWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectCreateWithdrawData);
-  const data = useSelector(USER_ACTIONS.selectUsers);
   const [isFocus, setIsFocus] = useState(null);
   const [inputCode, setInputCode] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -81,31 +78,31 @@ export default function NewWithdrawalPage() {
     setIsOpen(false);
   };
 
-  const handleChange = (e) => {
-    setAmountWithdraw(e);
-  };
-
-  const validateAmount = async (value) => {
-    const amountNum = numeral(value).value();
-    if (!isNaN(value)) {
-      if (amountNum > data?.available_withdrawal) {
-        return "The withdrawal amount should not exceed the amount of your available funds.";
-      } else if (amountNum < 100) {
-        return "Minimum withdrawal amount is 100 USD";
-      }
-    }
+  const handleChange = (value) => {
+    setAmountWithdraw(value);
   };
 
   const isInvalidField = useMemo(() => {
-    return !amountWithdraw || amountWithdraw === "-" || amountWithdraw < 100;
-  }, [amountWithdraw]);
+    return (
+      !amountWithdraw ||
+      amountWithdraw == "-" ||
+      amountWithdraw < 100 ||
+      amountWithdraw > accountData?.availableBalance
+    );
+  }, [amountWithdraw, accountData?.availableBalance]);
 
   const errorMessage = useMemo(() => {
-    return (
-      ((!amountWithdraw || amountWithdraw === "-") && "Only numeric number greater than 0.") ||
-      (amountWithdraw < 100 && amountWithdraw >= 0 && "Minimum withdrawal amount is 100 USD.")
-    );
-  }, [amountWithdraw]);
+    if (!amountWithdraw || amountWithdraw == "-") {
+      return "Only numeric number greater than 0.";
+    }
+    if (amountWithdraw < 100) {
+      return "Minimum withdrawal amount is 100 USD.";
+    }
+    if (amountWithdraw > accountData?.availableBalance) {
+      return "The withdrawal amount should not exceed the amount of your available funds.";
+    }
+    return "";
+  }, [amountWithdraw, accountData?.availableBalance]);
 
   const handleRouter = () => {
     history.push(RouteConst.WALLET);
@@ -265,9 +262,6 @@ export default function NewWithdrawalPage() {
                     value={amountWithdraw}
                     onBlur={onBlur}
                     onChange={(e) => handleChange(e.target.value)}
-                    fieldConfig={{
-                      validate: validateAmount
-                    }}
                     error={isInvalidField}
                     helperText={errorMessage}
                   />
