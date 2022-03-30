@@ -96,7 +96,7 @@ export default function NewWithdrawalPage() {
       return "Only numeric number greater than 0.";
     }
     if (amountWithdraw < 100) {
-      return "Minimum withdrawal amount is 100 USD.";
+      return "Minimum withdrawal amount is 100.00 USD.";
     }
     if (amountWithdraw > accountData?.availableBalance) {
       return "The withdrawal amount should not exceed the amount of your available funds.";
