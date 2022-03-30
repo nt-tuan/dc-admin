@@ -32,7 +32,7 @@ export const getBadgeValues = () => [
   window._env_.REACT_APP_VALUE_BADGE_5
 ];
 export const getDefaultCurrency = () => {
-  return window._env_.REACT_APP_DEFAULT_CURRENCY_TYPE ?? "USD";
+  return window._env_.REACT_APP_DEFAULT_CURRENCY_TYPE || "USD";
 };
 export const getCompanyName = () => {
   const value = localStorage.getItem("REACT_APP_COMPANY_NAME");
