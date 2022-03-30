@@ -1,3 +1,4 @@
+import { LOCATION_CHANGE } from "connected-react-router";
 export const SET_STATE = "@@DTC/CONFIG/SET_STATE_CONFIG";
 export const VERIFY_WITHDRAW_CODE_REQUEST = "@@DTC/WITHDRAW_FUND/VERIFY_WITHDRAW_CODE_REQUEST";
 export const VERIFY_WITHDRAW_CODE_SUCCESS = "@@DTC/WITHDRAW_FUND/VERIFY_WITHDRAW_CODE_SUCCESS";
@@ -8,18 +9,14 @@ export const CREATE_WITHDRAW_CODE_SUCCESS = "@@DTC/WITHDRAW_FUND/CREATE_WITHDRAW
 export const CREATE_WITHDRAW_CODE_FAIL = "@@DTC/WITHDRAW_FUND/CREATE_WITHDRAW_CODE_FAIL";
 
 export const initialState = {
-  verifyWithdrawCode: {
-    isApiRequest: false,
-    isApiSuccess: false,
-    isApiFail: false,
-    verifyWithdrawCode: null
-  },
-  createWithdrawCode: {
-    isApiRequest: false,
-    isApiSuccess: false,
-    isApiFail: false,
-    createWithdrawCode: null
-  }
+  isApiRequest: false,
+  isApiSuccess: false,
+  isApiFail: false,
+  isCreateRequest: false,
+  isCreateSuccess: false,
+  isCreateFail: false,
+  verifyWithdrawCode: {},
+  createWithdrawCode: {}
 };
 
 // ACTION : Verify Withdraw Fund
@@ -68,13 +65,33 @@ export default function withdrawFundReducer(state, action) {
   } else if (action.type === SET_STATE) {
     return { ...state, ...action.payload };
   }
+  if (action.type === LOCATION_CHANGE) {
+    return {
+      ...state,
+      ...{
+        isApiRequest: false,
+        isApiSuccess: false,
+        isApiFail: false,
+        verifyWithdrawCode: {},
+        createWithdrawCode: {},
+        isCreateRequest: false,
+        isCreateSuccess: false,
+        isCreateFail: false
+      }
+    };
+  }
   if (action.type === VERIFY_WITHDRAW_CODE_REQUEST) {
     return {
       ...state,
       ...{
         isApiRequest: true,
         isApiSuccess: false,
-        isApiFail: false
+        isApiFail: false,
+        verifyWithdrawCode: {},
+        createWithdrawCode: {},
+        isCreateRequest: false,
+        isCreateSuccess: false,
+        isCreateFail: false
       }
     };
   }
@@ -103,9 +120,11 @@ export default function withdrawFundReducer(state, action) {
     return {
       ...state,
       ...{
-        isApiRequest: true,
-        isApiSuccess: false,
-        isApiFail: false
+        isCreateRequest: true,
+        isCreateSuccess: false,
+        isCreateFail: false,
+        createWithdrawCode: {},
+        verifyWithdrawCode: {}
       }
     };
   }
@@ -113,9 +132,9 @@ export default function withdrawFundReducer(state, action) {
     return {
       ...state,
       ...{
-        isApiRequest: false,
-        isApiSuccess: true,
-        isApiFail: false,
+        isCreateRequest: false,
+        isCreateSuccess: true,
+        isCreateFail: false,
         createWithdrawCode: action.payload
       }
     };
@@ -124,9 +143,9 @@ export default function withdrawFundReducer(state, action) {
     return {
       ...state,
       ...{
-        isApiSuccess: false,
-        isApiFail: true,
-        isApiRequest: false
+        isCreateRequest: false,
+        isCreateSuccess: false,
+        isCreateFail: true
       }
     };
   }
@@ -134,5 +153,5 @@ export default function withdrawFundReducer(state, action) {
   return state;
 }
 
-export const selectVerifyWithdrawData = (state) => state.withdrawFund.verifyWithdrawCode;
-export const selectCreateWithdrawData = (state) => state.withdrawFund.createWithdrawCode;
+export const selectVerifyWithdrawData = (state) => state.withdrawFund;
+export const selectCreateWithdrawData = (state) => state.withdrawFund;

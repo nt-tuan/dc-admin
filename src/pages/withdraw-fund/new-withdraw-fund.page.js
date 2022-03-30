@@ -2,9 +2,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import NewWithdrawalCard from "./components/NewWithdrawalCard";
 import NewWithdrawalBankCard from "./components/NewWithdrawalBankCard";
@@ -14,33 +13,38 @@ import { CompanyService, FinancialService } from "@/services";
 import { LoadingIndicator } from "@/components/commons";
 import { RouteConst } from "@/commons/consts";
 import { useHistory } from "react-router-dom";
-import { useUserProfile } from "@/components/user-profile/services/use-user-profile";
-import { createOTP } from "@/services/user-profile.service";
+import { createOTP, getUserProfile } from "@/services/user-profile.service";
 import { useDispatch, useSelector } from "react-redux";
 import * as CONFIGS_DUCK from "@/redux/configs/configs.duck";
 import * as WITHDRAW_FUND_ACTIONS from "@/redux/withdraw-fund/withdrawFund.duck";
+import * as USER_ACTIONS from "@/redux/user/user.duck";
 
 import _get from "lodash/get";
 import { PhoneOTPModal } from "../../components/auth/components/phone-otp-modal";
 import { AddPhoneModal } from "@/components/user-profile/components/add-phone-modal/add-phone-modal.comp";
+import { NumberField, RenderField } from "@/components/commons/fields";
+import numeral from "numeral";
+import { Form, Formik } from "formik";
 
 export default function NewWithdrawalPage() {
-  const { data } = useUserProfile();
   const dispatch = useDispatch();
   const message = useMessage();
   const history = useHistory();
   const asyncErrorHandlerWrapper = useAsyncErrorHandler();
-  var verifyWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectVerifyWithdrawData);
-  var createWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectCreateWithdrawData);
+  const verifyWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectVerifyWithdrawData);
+  const createWithdrawData = useSelector(WITHDRAW_FUND_ACTIONS.selectCreateWithdrawData);
+  const data = useSelector(USER_ACTIONS.selectUsers);
   const [isFocus, setIsFocus] = useState(null);
   const [inputCode, setInputCode] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [transactionOpen, setTransactionOpen] = useState(false);
-  const [selectedBank, setSelectedBank] = useState();
+  const [selectedBank, setSelectedBank] = useState(null);
   const [amountWithdraw, setAmountWithdraw] = useState(100);
   const [bankDetails, setBankDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [accountData, setAccountData] = useState({});
+  const [checkCreateWithdraw, setCheckCreateWithdraw] = useState();
+  const [userData, setUserData] = useState();
 
   const handleSetInputCode = (code) => {
     setInputCode(code);
@@ -67,8 +71,10 @@ export default function NewWithdrawalPage() {
   };
 
   const openModal = () => {
-    setIsOpen(true);
-    createOTP();
+    if (selectedBank && amountWithdraw && amountWithdraw >= 100) {
+      setIsOpen(true);
+      createOTP();
+    }
   };
 
   const closeModal = () => {
@@ -76,8 +82,30 @@ export default function NewWithdrawalPage() {
   };
 
   const handleChange = (e) => {
-    setAmountWithdraw(e.target.value);
+    setAmountWithdraw(e);
   };
+
+  const validateAmount = async (value) => {
+    const amountNum = numeral(value).value();
+    if (!isNaN(value)) {
+      if (amountNum > data?.available_withdrawal) {
+        return "The withdrawal amount should not exceed the amount of your available funds.";
+      } else if (amountNum < 100) {
+        return "Minimum withdrawal amount is 100 USD";
+      }
+    }
+  };
+
+  const isInvalidField = useMemo(() => {
+    return !amountWithdraw || amountWithdraw === "-" || amountWithdraw < 100;
+  }, [amountWithdraw]);
+
+  const errorMessage = useMemo(() => {
+    return (
+      ((!amountWithdraw || amountWithdraw === "-") && "Only numeric number greater than 0.") ||
+      (amountWithdraw < 100 && amountWithdraw >= 0 && "Minimum withdrawal amount is 100 USD.")
+    );
+  }, [amountWithdraw]);
 
   const handleRouter = () => {
     history.push(RouteConst.WALLET);
@@ -98,38 +126,77 @@ export default function NewWithdrawalPage() {
   }, [dispatch, inputCode]);
 
   useEffect(() => {
-    if (verifyWithdrawData.status === "SUCCESS" && selectedBank && amountWithdraw) {
+    if (
+      verifyWithdrawData.verifyWithdrawCode.status === "SUCCESS" &&
+      selectedBank &&
+      amountWithdraw &&
+      !checkCreateWithdraw
+    ) {
+      setCheckCreateWithdraw(true);
       dispatch(
         WITHDRAW_FUND_ACTIONS.createWithdrawCodeRequest({
-          companyBankDetailId: _get(selectedBank, "id"),
+          companyBankDetailId: _get(selectedBank, "id", bankDetails[0].id),
           amount: amountWithdraw
         })
       );
     }
+
+    if (verifyWithdrawData.verifyWithdrawCode.status === "INVALID") {
+      message.error("Invalid verification code.");
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, verifyWithdrawData]);
+  }, [verifyWithdrawData]);
+
+  useEffect(() => {
+    try {
+      setLoading(true);
+      asyncErrorHandlerWrapper(async () => {
+        const user = await getUserProfile();
+        setUserData(user);
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [asyncErrorHandlerWrapper]);
 
   useEffect(() => {
     if (transactionOpen) {
       setTransactionOpen(false);
     }
-    if (_get(createWithdrawData, "status", "") && !transactionOpen) {
+    if (createWithdrawData.isCreateSuccess) {
       setTransactionOpen(true);
       setIsOpen(false);
+      setCheckCreateWithdraw(false);
     }
-
-    if (createWithdrawData.isApiFail && !verifyWithdrawData.status && !transactionOpen) {
+    if (createWithdrawData.isCreateFail) {
       message.error("Withdrawal from wallet failed.");
+      setCheckCreateWithdraw(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createWithdrawData, verifyWithdrawData, message]);
+  }, [createWithdrawData]);
 
-  if (loading)
+  useEffect(() => {
+    if (bankDetails) {
+      handleIsFocus(0);
+      setSelectedBank(bankDetails[0]);
+    }
+  }, [bankDetails]);
+
+  if (loading) {
     return (
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: 200
+        }}
+      >
         <LoadingIndicator />
       </Box>
     );
+  }
 
   return (
     <Grid container spacing={2}>
@@ -141,7 +208,7 @@ export default function NewWithdrawalPage() {
       <Grid item xs={12}>
         <Typography variant="body2">Select a wallet to withdraw funds from:</Typography>
       </Grid>
-      <Grid item xs={12} sm={6} md={3} lg={2.1}>
+      <Grid item xs={12} sm={6} md={3} lg={2}>
         <NewWithdrawalCard balance={accountData.availableBalance} />
       </Grid>
       <Grid item xs={12}>
@@ -178,27 +245,57 @@ export default function NewWithdrawalPage() {
         <Typography variant="body2">Enter the amount you wish to withdraw:</Typography>
       </Grid>
       <Grid item xs={12} md={4}>
-        <TextField
-          variant="outlined"
-          label="Amount"
-          required
-          fullWidth
-          onChange={(e) => handleChange(e)}
-          value={amountWithdraw}
-        />
+        <Formik initialValues={{ amount: "" }}>
+          <Form>
+            <RenderField>
+              {({ values, setFieldValue }) => {
+                const onBlur = () => {
+                  const value = values.amount;
+                  if (isNaN(value) || value < 100) {
+                    setFieldValue("amount", 100);
+                  }
+                };
+                return (
+                  <NumberField
+                    name="amount"
+                    size="small"
+                    variant="outlined"
+                    fullWidth
+                    label="Amount"
+                    value={amountWithdraw}
+                    onBlur={onBlur}
+                    onChange={(e) => handleChange(e.target.value)}
+                    fieldConfig={{
+                      validate: validateAmount
+                    }}
+                    error={isInvalidField}
+                    helperText={errorMessage}
+                  />
+                );
+              }}
+            </RenderField>
+          </Form>
+        </Formik>
       </Grid>
+
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={() => openModal()}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={() => openModal()}
+          disabled={isInvalidField}
+        >
           Withdraw
         </Button>
       </Grid>
 
       {/* Model : create - verify OTP */}
-      {data && data?.phone?.length > 4 ? (
+      {userData && userData?.phone?.length > 4 ? (
         <PhoneOTPModal
           open={isOpen}
           onClose={closeModal}
-          phone={data.phone}
+          phone={userData.phone}
           onVerify={handleSetInputCode}
         />
       ) : (
@@ -215,6 +312,7 @@ export default function NewWithdrawalPage() {
         }}
         bankAccount={_get(selectedBank, "accountNumber")}
         amount={amountWithdraw}
+        walletName={_get(selectedBank, "name")}
       />
     </Grid>
   );

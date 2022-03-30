@@ -1,6 +1,8 @@
 import { ApiPathConsts } from "@/commons/consts";
 import { backendAPI } from "@/utils/httpAPI.util";
 
+export const getUserProfile = async () => backendAPI.get(ApiPathConsts.UPDATE_USER_INFO);
+
 export const updateProfile = async (values) => {
   await backendAPI.put(ApiPathConsts.UPDATE_USER_INFO, values);
 };
