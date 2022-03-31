@@ -22,7 +22,7 @@ export default function NewWithdrawalCard({ balance }) {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography>
-            <b>Escrow Wallet</b>
+            <b>GMEX Wallet</b>
           </Typography>
         </Grid>
         <Grid item xs={12}>
