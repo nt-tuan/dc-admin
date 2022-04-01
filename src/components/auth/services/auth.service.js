@@ -35,5 +35,5 @@ export const updateTfaSettings = ({ tfaType, browserId, code }) => {
 };
 
 export const checkTfaLogin = ({ username, password, browserId }) => {
-  return backendAPI.post("/public/tfa/checking", { username, password, browserId });
+  return backendAPI.post("/admin/public/tfa/checking", { username, password, browserId });
 };

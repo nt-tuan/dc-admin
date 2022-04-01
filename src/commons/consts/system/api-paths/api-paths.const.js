@@ -65,7 +65,7 @@ export class ApiPathConsts {
     return `${this.#BADGE}`;
   }
   static get LOGIN() {
-    return `${this.#PUBLIC_PREFIX}/login`;
+    return `/admin${this.#PUBLIC_PREFIX}/login`;
   }
 
   static get GET_ALL_ACTIVE_ORDERS() {
