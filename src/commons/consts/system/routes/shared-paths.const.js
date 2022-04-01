@@ -129,10 +129,15 @@ export class SharedPaths {
     return "/admin/profile";
   }
   static get ADMIN_USER_MANAGEMENT() {
-    return "/admin/users";
+    return "/admin/settings/users";
   }
+
   static get ADD_ADMIN_USER() {
-    return "/admin/users/add-user";
+    return "/admin/settings/users/add-user";
+  }
+
+  static get EDIT_ADMIN_USER() {
+    return "/admin/settings/users/edit-user";
   }
 
   static get SETTINGS() {

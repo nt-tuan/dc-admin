@@ -14,10 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AccountIcon from "@/components/icons/account.comp";
 import ArrowDown from "@/components/icons/arrow-down.comp";
 import Button from "./button.comp";
-import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import React from "react";
-import { RouteConst } from "@/commons/consts";
 import { RoutePathEnum } from "@/components/user-profile/constants/route-paths.const";
 import Stack from "@mui/material/Stack";
 import { useHistory } from "react-router-dom";
@@ -30,11 +28,6 @@ const menuItems = [
     title: "My Profile",
     url: RoutePathEnum.PERSIONAL_INFORMATION,
     icon: <AccountIcon />
-  },
-  {
-    title: "User Management",
-    url: RouteConst.ADMIN_USER_MANAGEMENT,
-    icon: <GroupIcon />
   }
 ];
 

@@ -1,6 +1,4 @@
 import { PreferencesLayout } from "@/layouts/auth/preference-layout.comp";
-import PreferencesBrandingPage from "@/pages/preferences/preferences-branding.page";
-import PreferencesGeneralPage from "@/pages/preferences/preferences-general.page";
 import { selectBrandingAssetsData } from "@/redux/configs/configs.duck";
 import Box from "@mui/material/Box";
 import { RouteConst } from "@/commons/consts";
@@ -129,13 +127,30 @@ const routeData = [
             children: [
               {
                 path: RouteConst.PREFERENCES_GENERAL_PAGES,
-                Component: PreferencesGeneralPage
+                Component: loadable(() => import("@/pages/preferences/preferences-general.page"))
               },
               {
                 path: RouteConst.PREFERENCES_BRANDING_PAGES,
-                Component: PreferencesBrandingPage
+                Component: loadable(() => import("@/pages/preferences/preferences-branding.page"))
               }
             ]
+          },
+          {
+            path: RouteConst.ADMIN_USER_MANAGEMENT,
+            Component: loadable(() =>
+              import("@/pages/admin-user-management/admin-user-management.page")
+            ),
+            exact: true
+          },
+          {
+            path: RouteConst.ADD_ADMIN_USER,
+            Component: loadable(() => import("@/pages/add-admin-user/add-admin-user.page")),
+            exact: true
+          },
+          {
+            path: RouteConst.EDIT_ADMIN_USER,
+            Component: loadable(() => import("@/pages/edit-admin-user/edit-admin-user.page")),
+            exact: true
           },
           ...bankRoutes
         ]
@@ -211,18 +226,6 @@ const routeData = [
               {
                 path: RouteConst.NOTIFICATION,
                 Component: loadable(() => import("@/pages/notification/notification.page")),
-                exact: true
-              },
-              {
-                path: RouteConst.ADMIN_USER_MANAGEMENT,
-                Component: loadable(() =>
-                  import("@/pages/admin-user-management/admin-user-management.page")
-                ),
-                exact: true
-              },
-              {
-                path: RouteConst.ADD_ADMIN_USER,
-                Component: loadable(() => import("@/pages/add-admin-user/add-admin-user.page")),
                 exact: true
               },
               ...tradeRouteRoutes

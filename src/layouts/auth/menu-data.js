@@ -10,6 +10,7 @@ import PreferencesIcon from "@/components/icons/preferences.comp";
 import SettingIcon from "@/components/icons/setting.comp";
 import { BankPathEnum } from "@/components/bank-details/bank-path.enum";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import GroupIcon from "@mui/icons-material/Group";
 
 const menuData = [
   {
@@ -106,16 +107,22 @@ const menuSettingsData = [
     url: RouteConst.ORGANIZATION_PROFILE
   },
   {
-    title: "Preferences",
-    key: "Preferences",
-    icon: PreferencesIcon,
-    url: RouteConst.PREFERENCES_GENERAL_PAGES
-  },
-  {
     title: "Bank Accounts",
     icon: MonetizationOnIcon,
     key: BankPathEnum.BANK_HOME,
     url: BankPathEnum.BANK_HOME
+  },
+  {
+    title: "Users",
+    icon: GroupIcon,
+    key: RouteConst.ADMIN_USER_MANAGEMENT,
+    url: RouteConst.ADMIN_USER_MANAGEMENT
+  },
+  {
+    title: "Preferences",
+    key: "Preferences",
+    icon: PreferencesIcon,
+    url: RouteConst.PREFERENCES_GENERAL_PAGES
   }
 ];
 const menuPreferencesData = [

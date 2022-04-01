@@ -1,154 +1,61 @@
-import { Box, Button, Chip, Menu, MenuItem } from "@mui/material";
-import { DTCSection, DTCTable } from "@/components/commons";
-import React, { useEffect, useState } from "react";
-
-import { DeleteUserModal } from "./delete-user-modal.comp";
-import { EditUserModal } from "./edit-user-modal.comp";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { RouteConst } from "@/commons/consts";
+import { Box, Chip, Typography } from "@mui/material";
+import { DTCSection, DTCTable, LoadingIndicator } from "@/components/commons";
 import { UserService } from "@/services";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
 import { getAllRecordsFromAPI } from "@/utils/general.util";
-
-const USER_STATUSES = {
-  ACTIVE: "ACTIVE",
-  DISABLED: "DISABLED",
-  INACTIVE: "INACTIVE",
-  DELETED: "DELETED"
-};
-
-const USER_STATUS_LABELS = {
-  ACTIVE: "ACTIVE",
-  DISABLED: "INACTIVE",
-  INACTIVE: "PENDING",
-  DELETED: "DELETED"
-};
-
-const ActionList = ({ user, setUsers }) => {
-  const [deletingUser, setDeletingUser] = useState();
-  const [editingUser, setEditingUser] = useState();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openMenuDropdown = Boolean(anchorEl);
-
-  const updateUserStatus = (updatedData) => (users) => {
-    return users.map((currentUser) => {
-      if (currentUser.id !== user.id) return currentUser;
-      return {
-        ...currentUser,
-        ...updatedData
-      };
-    });
-  };
-  const handleClickEditUser = (clickedUser) => {
-    setEditingUser(clickedUser);
-  };
-  const handleCancelEditUser = () => {
-    setEditingUser();
-  };
-  const handleEditUserSuccess = (editedUser) => {
-    setUsers(updateUserStatus(editedUser));
-    setEditingUser();
-  };
-  const handleDeleteUser = () => {
-    setUsers((users) => users?.filter((currentUser) => currentUser.id !== user.id));
-    setDeletingUser(false);
-  };
-  const handleActivateUser = () => {
-    asyncErrorHandlerWrapper(async () => {
-      await UserService.enableAdminUser(user.id);
-      setUsers(updateUserStatus({ status: USER_STATUSES.ACTIVE }));
-    });
-  };
-  const handleDeactiveUser = () => {
-    asyncErrorHandlerWrapper(async () => {
-      await UserService.disableAdminUser(user.id);
-      setUsers(updateUserStatus({ status: USER_STATUSES.DISABLED }));
-    });
-  };
-
-  const showConfirmModal = () => {
-    setDeletingUser(user);
-  };
-
-  const closeConfirmModal = () => {
-    setDeletingUser();
-  };
-
-  const handleClickMenuIcon = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const overlayContent = (
-    <Menu
-      anchorEl={anchorEl}
-      open={openMenuDropdown}
-      onClose={handleCloseMenu}
-      PaperProps={{
-        style: {
-          maxWidth: 150
-        }
-      }}
-    >
-      {user.status === USER_STATUSES.DISABLED && (
-        <MenuItem key="0" onClick={handleActivateUser}>
-          <a style={{ color: "black" }}>Activate</a>
-        </MenuItem>
-      )}
-      {user.status === USER_STATUSES.ACTIVE && (
-        <MenuItem key="1" onClick={handleDeactiveUser}>
-          <a style={{ color: "black" }}>Deactivate</a>
-        </MenuItem>
-      )}
-      {user.status !== USER_STATUSES.DELETED && (
-        <MenuItem key="2" onClick={() => handleClickEditUser(user)}>
-          <a style={{ color: "black" }}>Edit</a>
-        </MenuItem>
-      )}
-      {user.status !== USER_STATUSES.DELETED && (
-        <MenuItem key="3" onClick={() => showConfirmModal()}>
-          <a style={{ color: "red" }}>Delete</a>
-        </MenuItem>
-      )}
-    </Menu>
-  );
-
-  return (
-    <>
-      <DeleteUserModal
-        user={user}
-        isOpen={deletingUser ? true : false}
-        onCancel={closeConfirmModal}
-        onSuccess={handleDeleteUser}
-      />
-      <EditUserModal
-        isOpen={editingUser ? true : false}
-        user={editingUser}
-        onCancel={handleCancelEditUser}
-        onConfirm={handleEditUserSuccess}
-      />
-      <Button variant="outlined" onClick={handleClickMenuIcon}>
-        <MoreHorizIcon />
-      </Button>
-      {overlayContent}
-    </>
-  );
-};
+import { SEARCH_TIME, USER_STATUSES, USER_STATUS_LABELS } from "./constant/user.const";
+import ActionList from "./components/action-list.comp";
+import SearchEmailInput from "./components/search-email-input.comp";
+import NoUsers from "./components/no-users.comp";
+import InviteUserButton from "./components/invite-user-button.comp";
 
 const AdminUserManagement = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [email, setEmail] = useState("");
+  const [searchedText, setSearchedText] = useState("");
+  const searchRef = useRef();
+
+  const haveUsers = useMemo(() => {
+    return Array.isArray(users) && users?.length > 0;
+  }, [users]);
+
+  const tableLoading = useMemo(() => {
+    return isSearching || !users;
+  }, [users, isSearching]);
+
+  const handleSearchEmail = (e) => {
+    const { value } = e.target;
+    setEmail(value);
+    setIsSearching(true);
+    if (searchRef.current) {
+      clearTimeout(searchRef.current);
+    }
+    searchRef.current = setTimeout(() => {
+      setSearchedText(value);
+      setIsSearching(false);
+    }, SEARCH_TIME);
+  };
+
   useEffect(() => {
-    getAllRecordsFromAPI(UserService.getAdminUsers).then((respondedUsers) => {
-      const sortedUsers = respondedUsers.sort(
-        (a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime()
-      );
-      setUsers(sortedUsers);
-    });
-  }, []);
+    if (users === null) setLoading(true);
+    if (haveUsers) setIsSearching(true);
+
+    getAllRecordsFromAPI(UserService.getAdminUsers, { outerParams: { searchText: searchedText } })
+      .then((respondedUsers) => {
+        const sortedUsers = respondedUsers.sort(
+          (a, b) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime()
+        );
+        setUsers(sortedUsers);
+      })
+      .finally(() => {
+        setLoading(false);
+        setIsSearching(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchedText]);
 
   const getStatusColor = (status) => {
     switch (true) {
@@ -167,32 +74,32 @@ const AdminUserManagement = () => {
     {
       headerName: "Username",
       field: "username",
-      width: 180
+      width: 200
+    },
+    {
+      headerName: "Email",
+      width: 300,
+      field: "email"
     },
     {
       headerName: "First Name",
-      width: 180,
+      width: 200,
       field: "firstName"
     },
     {
       headerName: "Last Name",
-      width: 180,
+      width: 200,
       field: "lastName"
     },
     {
-      headerName: "Email",
-      width: 280,
-      field: "email"
-    },
-    {
       headerName: "Status",
-      width: 150,
+      width: 180,
       field: "status",
       renderCell: ({ row }) => {
         const { status } = row;
         const statusColor = getStatusColor(status);
         return (
-          <Chip color={statusColor} label={USER_STATUS_LABELS[status]} sx={{ borderRadius: 0 }} />
+          <Chip color={statusColor} label={USER_STATUS_LABELS[status]} sx={{ borderRadius: 16 }} />
         );
       }
     },
@@ -204,26 +111,63 @@ const AdminUserManagement = () => {
         const user = row;
         return <ActionList user={user} setUsers={setUsers} />;
       },
-      width: 100
+      width: 120
     }
   ];
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: 200
+        }}
+      >
+        <LoadingIndicator />
+      </Box>
+    );
+  }
+
   return (
     <React.Fragment>
-      <Helmet title="User Management" />
+      <Helmet title="Users" />
       <DTCSection>
+        <Box
+          paddingTop={2}
+          paddingLeft={2}
+          paddingRight={2}
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+        >
+          <Typography variant="h5">Users</Typography>
+          {users && !loading && (
+            <Box display="flex" paddingTop={{ xs: 2, sm: 0 }}>
+              <SearchEmailInput value={email} onChange={handleSearchEmail} />
+              <InviteUserButton />
+            </Box>
+          )}
+        </Box>
         <DTCSection.Content>
-          <Link to={RouteConst.ADD_ADMIN_USER}>
-            <Button variant="contained">Add new user</Button>
-          </Link>
+          {!users && <NoUsers />}
           <Box mt={2} sx={{ height: "500px" }}>
-            <DTCTable
-              showSettings={false}
-              loading={users == null}
-              columns={columns}
-              columnBuffer={columns.length}
-              dataSource={users}
-            />
+            {users && (
+              <DTCTable
+                showSettings={false}
+                loading={tableLoading}
+                columns={columns}
+                columnBuffer={columns.length}
+                dataSource={users}
+                sx={{
+                  "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "grey.100",
+                    boxShadow: "inset 0px -1px 0px rgba(0, 0, 0, 0.12)"
+                  }
+                }}
+              />
+            )}
           </Box>
         </DTCSection.Content>
       </DTCSection>

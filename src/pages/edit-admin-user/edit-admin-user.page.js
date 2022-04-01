@@ -1,30 +1,34 @@
-import { AddUserForm } from "@/components/user-management/add-user-form.comp";
 import { DTCSection } from "@/components/commons";
 import { Helmet } from "react-helmet";
-import React from "react";
 import { RouteConst } from "@/commons/consts";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import { EditUserForm } from "@/components/user-management/edit-user-form.comp";
 
-const AddAdminUser = () => {
+const EditAdminUser = () => {
   const history = useHistory();
+  const { state: user } = useLocation();
+  console.log("user: ", user);
+
   const handleCancel = () => {
     history.goBack();
   };
+
   const handleSuccess = () => {
     history.push(RouteConst.ADMIN_USER_MANAGEMENT);
   };
+
   return (
     <article>
-      <Helmet title="Add User" />
+      <Helmet title="Edit User" />
       <Box p={2}>
-        <Typography variant="h5">Add User Details</Typography>
+        <Typography variant="h5">Edit User Details</Typography>
       </Box>
       <DTCSection.Content>
-        <AddUserForm onCancel={handleCancel} onSuccess={handleSuccess} />
+        <EditUserForm onCancel={handleCancel} onSuccess={handleSuccess} user={user} />
       </DTCSection.Content>
     </article>
   );
 };
 
-export default AddAdminUser;
+export default EditAdminUser;

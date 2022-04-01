@@ -1,16 +1,15 @@
 import * as yup from "yup";
 
-import { Divider, FormControl, FormHelperText, FormLabel, OutlinedInput } from "@mui/material";
+import { Box } from "@mui/material";
 import { REQUIRED_ERR, USER_SCHEMA } from "./schema";
 
 import { LoadingButton } from "@mui/lab";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { UserService } from "@/services";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
+import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import { useFormik } from "formik";
-
-const EDIT_USER_SCHEMA = [USER_SCHEMA.firstName, USER_SCHEMA.lastName];
+import UserField from "./user-field.comp";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(REQUIRED_ERR("first name")),
@@ -19,11 +18,13 @@ const validationSchema = yup.object({
 
 export const EditUserForm = ({ onSuccess, onCancel, user }) => {
   const [loading, setLoading] = React.useState();
+  const asyncErrorHandler = useAsyncErrorHandler();
 
   const handleSubmit = (values) => {
-    asyncErrorHandlerWrapper(async () => {
+    const payload = { firstName: values.firstName, lastName: values.lastName };
+    asyncErrorHandler(async () => {
       setLoading(true);
-      await UserService.editAdminUser(user.id, values);
+      await UserService.editAdminUser(user.id, payload);
       onSuccess && onSuccess(values);
     }).finally(() => setLoading());
   };
@@ -31,7 +32,9 @@ export const EditUserForm = ({ onSuccess, onCancel, user }) => {
   const formik = useFormik({
     initialValues: {
       firstName: user ? user["firstName"] : "",
-      lastName: user ? user["lastName"] : ""
+      lastName: user ? user["lastName"] : "",
+      email: user ? user["email"] : "",
+      username: user ? user["username"] : ""
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit
@@ -39,56 +42,42 @@ export const EditUserForm = ({ onSuccess, onCancel, user }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="container">
-        <div className="row">
-          {EDIT_USER_SCHEMA.map((item, index) => {
-            const { name, label } = item;
-            return (
-              <FormControl
-                component="fieldset"
-                variant="outlined"
-                fullWidth
-                sx={{
-                  marginTop: "10px",
-                  "& legend": {
-                    width: "auto"
-                  }
-                }}
-                key={index}
-              >
-                <FormLabel component="legend">
-                  {label}
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-                <OutlinedInput
-                  size="large"
-                  name={name}
-                  value={formik.values[name]}
-                  onChange={formik.handleChange}
-                />
-                {formik.touched[name] && (
-                  <FormHelperText error={formik.touched[name] && Boolean(formik.errors[name])}>
-                    {formik.errors[name]}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            );
-          })}
-        </div>
-      </div>
-      <Divider sx={{ margin: "20px 0" }} />
-      <Stack spacing={1} direction="row">
-        <LoadingButton loading={loading} variant="contained" size="large" type="submit">
-          Save
-        </LoadingButton>
+      <Box display="flex" flexDirection="column">
+        <UserField
+          name={USER_SCHEMA.firstName.name}
+          label={USER_SCHEMA.firstName.label}
+          formik={formik}
+        />
+        <UserField
+          name={USER_SCHEMA.lastName.name}
+          label={USER_SCHEMA.lastName.label}
+          formik={formik}
+        />
+        <UserField
+          disabled
+          name={USER_SCHEMA.email.name}
+          label={USER_SCHEMA.email.label}
+          formik={formik}
+        />
+        <UserField
+          disabled
+          name={USER_SCHEMA.username.name}
+          label={USER_SCHEMA.username.label}
+          formik={formik}
+        />
+      </Box>
+
+      <Stack spacing={2} direction="row" marginTop={5}>
         <LoadingButton
           loading={loading}
           variant="outlined"
-          style={{ color: "red", borderColor: "red" }}
           size="large"
           onClick={() => onCancel && onCancel()}
         >
           Cancel
+        </LoadingButton>
+        <LoadingButton loading={loading} variant="contained" size="large" type="submit">
+          Save
         </LoadingButton>
       </Stack>
     </form>

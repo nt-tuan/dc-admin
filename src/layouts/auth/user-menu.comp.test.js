@@ -29,8 +29,8 @@ test("UserMenu clicking item should work", () => {
     </Router>
   );
   jest.spyOn(history, "push");
-  fireEvent.click(getByText("User Management"));
-  expect(history.push).toBeCalledWith("/admin/users");
+  fireEvent.click(getByText("My Profile"));
+  expect(history.push).toBeCalledWith("/admin/v2/profile/personal-information");
 });
 
 test("UserMenu.logout should work", () => {

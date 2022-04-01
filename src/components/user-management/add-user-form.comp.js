@@ -1,83 +1,87 @@
-import { Button, Divider, Form, Input } from "antd";
-import {
-  EMAIL_IS_ALREADY_USED_ERR,
-  SERVER_UNKNOWN_ERR,
-  USERNAME_ALREADY_USED_ERR
-} from "@/commons/consts";
+import * as yup from "yup";
 
-import { APIError } from "@/commons/types";
-import { Lagecy } from "@/components/lagecy/lagecy.comp";
+import { Box } from "@mui/material";
+import { REQUIRED_ERR, USER_SCHEMA } from "./schema";
+
+import { LoadingButton } from "@mui/lab";
 import React from "react";
-import { USER_SCHEMA } from "./schema";
+import Stack from "@mui/material/Stack";
 import { UserService } from "@/services";
-import { asyncErrorHandlerWrapper } from "@/utils/error-handler.util";
-const MESSAGE_TRANSLATOR = {
-  "user.exist.true": USERNAME_ALREADY_USED_ERR,
-  "user.email.exist.true": EMAIL_IS_ALREADY_USED_ERR
-};
+import { useAsyncErrorHandler } from "@/utils/error-handler.util";
+import { useFormik } from "formik";
+import { EMAIL_NOT_VALID_ERR } from "@/commons/consts";
+import UserField from "./user-field.comp";
+
+const validationSchema = yup.object({
+  firstName: yup.string().required(REQUIRED_ERR("first name")),
+  lastName: yup.string().required(REQUIRED_ERR("last name")),
+  username: yup.string().required(REQUIRED_ERR("user name")),
+  email: yup.string().required(REQUIRED_ERR("email")).email(EMAIL_NOT_VALID_ERR)
+});
 
 export const AddUserForm = ({ onSuccess, onCancel }) => {
   const [loading, setLoading] = React.useState();
-  const [form] = Form.useForm();
+  const asyncErrorHandler = useAsyncErrorHandler();
+
   const handleSubmit = (values) => {
-    asyncErrorHandlerWrapper(async () => {
-      try {
-        setLoading(true);
-        const createdUser = await UserService.addAdminUser(values);
-        onSuccess && onSuccess(createdUser);
-      } catch (e) {
-        if (e instanceof APIError) {
-          const { errors } = e;
-          form.setFields(
-            errors.map(([fieldName, errorMessage]) => ({
-              name: fieldName,
-              errors: [MESSAGE_TRANSLATOR[errorMessage] ?? SERVER_UNKNOWN_ERR]
-            }))
-          );
-        }
-      } finally {
-        setLoading(false);
-      }
-    });
+    asyncErrorHandler(async () => {
+      setLoading(true);
+      await UserService.addAdminUser(values);
+      onSuccess && onSuccess(values);
+    }).finally(() => setLoading(false));
   };
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: ""
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit
+  });
+
   return (
-    <Lagecy>
-      <Form form={form} onFinish={handleSubmit} layout="vertical">
-        <div className="container">
-          <div className="row">
-            {Object.values(USER_SCHEMA).map((item, index) => {
-              const { name, label, rules } = item;
-              return (
-                <Form.Item
-                  key={index}
-                  name={name}
-                  label={label}
-                  rules={rules}
-                  className="col-12 col-sm-6 col-lg-4 pr-2"
-                >
-                  <Input size="large" />
-                </Form.Item>
-              );
-            })}
-          </div>
-        </div>
-        <Divider />
-        <div className="d-flex justify-content-center flex-wrap">
-          <Button loading={loading} type="primary" size="large" ghost htmlType="submit">
-            Create
-          </Button>
-          <Button
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Box display="flex" flexDirection="column">
+          <UserField
+            name={USER_SCHEMA.firstName.name}
+            label={USER_SCHEMA.firstName.label}
+            formik={formik}
+          />
+          <UserField
+            name={USER_SCHEMA.lastName.name}
+            label={USER_SCHEMA.lastName.label}
+            formik={formik}
+          />
+          <UserField
+            name={USER_SCHEMA.email.name}
+            label={USER_SCHEMA.email.label}
+            formik={formik}
+          />
+          <UserField
+            name={USER_SCHEMA.username.name}
+            label={USER_SCHEMA.username.label}
+            formik={formik}
+          />
+        </Box>
+
+        <Stack spacing={2} direction="row" marginTop={5}>
+          <LoadingButton
             loading={loading}
-            type="danger"
+            variant="outlined"
             size="large"
-            className="ml-1"
-            ghost
             onClick={() => onCancel && onCancel()}
           >
             Cancel
-          </Button>
-        </div>
-      </Form>
-    </Lagecy>
+          </LoadingButton>
+          <LoadingButton loading={loading} variant="contained" size="large" type="submit">
+            Save
+          </LoadingButton>
+        </Stack>
+      </form>
+    </>
   );
 };

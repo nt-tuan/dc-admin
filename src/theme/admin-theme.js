@@ -4,7 +4,7 @@ const palette = {
     main: "#4CAF50"
   },
   error: {
-    main: "#D32F2F"
+    main: "#F44336"
   },
   primary: {
     main: "#2196F3"
@@ -12,6 +12,9 @@ const palette = {
   grey: {
     7: "#8C8C8C",
     100: "#F5F5F5"
+  },
+  text: {
+    primary: "#000000DE"
   }
 };
 
