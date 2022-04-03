@@ -1,4 +1,3 @@
-import { DTCSection } from "@/components/commons";
 import { Helmet } from "react-helmet";
 import { RouteConst } from "@/commons/consts";
 import { useHistory, useLocation } from "react-router-dom";
@@ -8,7 +7,6 @@ import { EditUserForm } from "@/components/user-management/edit-user-form.comp";
 const EditAdminUser = () => {
   const history = useHistory();
   const { state: user } = useLocation();
-  console.log("user: ", user);
 
   const handleCancel = () => {
     history.goBack();
@@ -21,12 +19,10 @@ const EditAdminUser = () => {
   return (
     <article>
       <Helmet title="Edit User" />
-      <Box p={2}>
+      <Box p={3}>
         <Typography variant="h5">Edit User Details</Typography>
-      </Box>
-      <DTCSection.Content>
         <EditUserForm onCancel={handleCancel} onSuccess={handleSuccess} user={user} />
-      </DTCSection.Content>
+      </Box>
     </article>
   );
 };

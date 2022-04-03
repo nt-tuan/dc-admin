@@ -1,17 +1,18 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { memo } from "react";
 import InviteUserButton from "./invite-user-button.comp";
+import { InviteUserButtonWrapper, NoUserContainer, NoUserDescription } from "../style.comp";
 
 const NoUsers = () => {
   return (
-    <Box height="100vh" display="flex" justifyContent="center">
-      <Box paddingTop={4}>
-        <Typography>You have not added any users yet</Typography>
-        <Box paddingTop={3.75} textAlign="center">
+    <NoUserContainer>
+      <Box>
+        <NoUserDescription>You have not added any users yet</NoUserDescription>
+        <InviteUserButtonWrapper>
           <InviteUserButton />
-        </Box>
+        </InviteUserButtonWrapper>
       </Box>
-    </Box>
+    </NoUserContainer>
   );
 };
 

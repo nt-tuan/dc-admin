@@ -6,6 +6,9 @@ const palette = {
   error: {
     main: "#F44336"
   },
+  warning: {
+    main: "#ED6C02"
+  },
   primary: {
     main: "#2196F3"
   },

@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import { useHistory } from "react-router-dom";
 
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { DeleteUserModal } from "../delete-user-modal.comp";
 import { EditUserModal } from "../edit-user-modal.comp";
 
@@ -11,7 +11,15 @@ import { USER_STATUSES } from "../constant/user.const";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { RouteConst } from "@/commons/consts";
 
-const ActionList = ({ user, setUsers }) => {
+const Item = ({ children, color = "text.primary" }) => {
+  return (
+    <Typography variant="body2" sx={{ color }}>
+      {children}
+    </Typography>
+  );
+};
+
+const ActionList = ({ user, setUsers, onDeleteSuccess }) => {
   const asyncErrorHandler = useAsyncErrorHandler();
   const [deletingUser, setDeletingUser] = useState();
   const [editingUser, setEditingUser] = useState();
@@ -31,15 +39,22 @@ const ActionList = ({ user, setUsers }) => {
   const handleClickEditUser = (clickedUser) => {
     history.push(RouteConst.EDIT_ADMIN_USER, clickedUser);
   };
+
   const handleCancelEditUser = () => {
     setEditingUser();
   };
+
   const handleEditUserSuccess = (editedUser) => {
     setUsers(updateUserStatus(editedUser));
     setEditingUser();
   };
+
   const handleDeleteUser = () => {
-    setUsers((users) => users?.filter((currentUser) => currentUser.id !== user.id));
+    setUsers((users) => {
+      const filteredUsers = users?.filter((currentUser) => currentUser.id !== user.id);
+      onDeleteSuccess(filteredUsers);
+      return filteredUsers;
+    });
     setDeletingUser(false);
   };
 
@@ -85,22 +100,22 @@ const ActionList = ({ user, setUsers }) => {
     >
       {user.status === USER_STATUSES.DISABLED && (
         <MenuItem key="0" onClick={handleActivateUser}>
-          <a style={{ color: "black" }}>Activate</a>
+          <Item>Activate</Item>
         </MenuItem>
       )}
       {user.status === USER_STATUSES.ACTIVE && (
         <MenuItem key="1" onClick={handleDeactiveUser}>
-          <a style={{ color: "black" }}>Deactivate</a>
+          <Item>Deactivate</Item>
         </MenuItem>
       )}
       {user.status !== USER_STATUSES.DELETED && (
         <MenuItem key="2" onClick={() => handleClickEditUser(user)}>
-          <a style={{ color: "black" }}>Edit</a>
+          <Item>Edit</Item>
         </MenuItem>
       )}
       {user.status !== USER_STATUSES.DELETED && (
         <MenuItem key="3" onClick={() => showConfirmModal()}>
-          <a style={{ color: "red" }}>Delete</a>
+          <Item color="error.main">Delete</Item>
         </MenuItem>
       )}
     </Menu>
@@ -121,7 +136,7 @@ const ActionList = ({ user, setUsers }) => {
         onConfirm={handleEditUserSuccess}
       />
       <IconButton onClick={handleClickMenuIcon}>
-        <MoreHorizRoundedIcon sx={{ fontSize: 25 }} htmlColor="#000000DE" />
+        <MoreHorizRoundedIcon sx={{ fontSize: 25, color: "text.primary" }} />
       </IconButton>
       {overlayContent}
     </>

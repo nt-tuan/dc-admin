@@ -41,6 +41,7 @@ const DialogTitle = (props) => {
 export const DeleteUserModal = ({ user, isOpen, onCancel, onSuccess }) => {
   const asyncErrorHandler = useAsyncErrorHandler();
   const [loading, setLoading] = React.useState(false);
+
   const handleDeleteUser = () => {
     setLoading(true);
     asyncErrorHandler(async () => {
@@ -48,17 +49,21 @@ export const DeleteUserModal = ({ user, isOpen, onCancel, onSuccess }) => {
       onSuccess && onSuccess();
     }).finally(() => setLoading(false));
   };
+
   return (
     <Dialog open={isOpen} onClose={onCancel}>
       <Box p={2}>
-        <DialogTitle onClose={onCancel}>
-          <Typography color="text.primary" align="center" variant="subtitle1" fontWeight={700}>
-            Confirm Delete
-          </Typography>
+        <DialogTitle
+          onClose={onCancel}
+          sx={{ color: "text.primary", textAlign: "center", fontWeight: 700, fontSize: 16 }}
+        >
+          Confirm Delete
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography color="text.primary">Are you sure want to delete the user?</Typography>
+            <Typography variant="body2" color="text.primary" align="center">
+              Are you sure want to delete the user?
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

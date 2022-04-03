@@ -32,6 +32,6 @@ DTCSection.Header = ({ children, actions }) => {
     />
   );
 };
-DTCSection.Content = ({ children }) => {
-  return <CardContent sx={{ minHeight: 200 }}>{children}</CardContent>;
+DTCSection.Content = ({ children, sx }) => {
+  return <CardContent sx={{ minHeight: 200, ...sx }}>{children}</CardContent>;
 };

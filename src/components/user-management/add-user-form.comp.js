@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import { REQUIRED_ERR, USER_SCHEMA } from "./schema";
 
 import { LoadingButton } from "@mui/lab";
@@ -10,7 +10,7 @@ import { UserService } from "@/services";
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import { useFormik } from "formik";
 import { EMAIL_NOT_VALID_ERR } from "@/commons/consts";
-import UserField from "./user-field.comp";
+import FieldItem from "./field-item";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(REQUIRED_ERR("first name")),
@@ -45,29 +45,32 @@ export const AddUserForm = ({ onSuccess, onCancel }) => {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <Box display="flex" flexDirection="column">
-          <UserField
+        <Grid container flexDirection="column">
+          <FieldItem
             name={USER_SCHEMA.firstName.name}
             label={USER_SCHEMA.firstName.label}
             formik={formik}
+            disabled={loading}
           />
-          <UserField
+          <FieldItem
             name={USER_SCHEMA.lastName.name}
             label={USER_SCHEMA.lastName.label}
             formik={formik}
+            disabled={loading}
           />
-          <UserField
+          <FieldItem
             name={USER_SCHEMA.email.name}
             label={USER_SCHEMA.email.label}
             formik={formik}
+            disabled={loading}
           />
-          <UserField
+          <FieldItem
             name={USER_SCHEMA.username.name}
             label={USER_SCHEMA.username.label}
             formik={formik}
+            disabled={loading}
           />
-        </Box>
-
+        </Grid>
         <Stack spacing={2} direction="row" marginTop={5}>
           <LoadingButton
             loading={loading}

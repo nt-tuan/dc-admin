@@ -1,5 +1,4 @@
 import { AddUserForm } from "@/components/user-management/add-user-form.comp";
-import { DTCSection } from "@/components/commons";
 import { Helmet } from "react-helmet";
 import React from "react";
 import { RouteConst } from "@/commons/consts";
@@ -17,12 +16,10 @@ const AddAdminUser = () => {
   return (
     <article>
       <Helmet title="Add User" />
-      <Box p={2}>
+      <Box p={3}>
         <Typography variant="h5">Add User Details</Typography>
-      </Box>
-      <DTCSection.Content>
         <AddUserForm onCancel={handleCancel} onSuccess={handleSuccess} />
-      </DTCSection.Content>
+      </Box>
     </article>
   );
 };

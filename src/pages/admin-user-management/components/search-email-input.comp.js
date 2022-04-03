@@ -1,10 +1,11 @@
 import { memo } from "react";
-import { Box, InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { SearchInputWrapper } from "../style.comp";
 
 const SearchEmailInput = ({ onChange, value, ...rest }) => {
   return (
-    <Box paddingRight={2} width={{ md: 400, xs: 300 }}>
+    <SearchInputWrapper>
       <TextField
         onChange={onChange}
         placeholder="Search email"
@@ -19,7 +20,7 @@ const SearchEmailInput = ({ onChange, value, ...rest }) => {
         }}
         {...rest}
       />
-    </Box>
+    </SearchInputWrapper>
   );
 };
 
