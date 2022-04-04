@@ -59,3 +59,6 @@ export const getAccountLockMessage = (duration, type) =>
   `Your account has been locked for ${duration} because you have reached the maximum limit of invalid ${type} Attempts.`;
 export const getErrorMaxCharactersMessage = (fieldName, numberChar) =>
   `${fieldName} must be under ${numberChar} characters.`;
+
+export const getErrorExistMessage = (fieldName) =>
+  `${fieldName} is already a part of this organization.`;

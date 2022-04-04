@@ -17,3 +17,8 @@ export const USER_SCHEMA = {
     label: "User Name"
   }
 };
+
+export const ERROR_EXIST = {
+  EMAIL: "user.email.exist.true",
+  USER_NAME: "user.exist.true"
+};

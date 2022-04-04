@@ -1,16 +1,16 @@
 import * as yup from "yup";
 
 import { Grid } from "@mui/material";
-import { REQUIRED_ERR, USER_SCHEMA } from "./schema";
+import { ERROR_EXIST, REQUIRED_ERR, USER_SCHEMA } from "./schema";
 
 import { LoadingButton } from "@mui/lab";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { UserService } from "@/services";
-import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import { useFormik } from "formik";
-import { EMAIL_NOT_VALID_ERR } from "@/commons/consts";
+import { EMAIL_NOT_VALID_ERR, getErrorExistMessage } from "@/commons/consts";
 import FieldItem from "./field-item";
+import { useMessage } from "@/hooks/use-message";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(REQUIRED_ERR("first name")),
@@ -21,14 +21,45 @@ const validationSchema = yup.object({
 
 export const AddUserForm = ({ onSuccess, onCancel }) => {
   const [loading, setLoading] = React.useState();
-  const asyncErrorHandler = useAsyncErrorHandler();
+  const message = useMessage();
 
-  const handleSubmit = (values) => {
-    asyncErrorHandler(async () => {
+  const handleShowErrorMessage = (errors, values) => {
+    const { email, username } = values;
+    const haveErrors = errors?.length > 0;
+
+    if (!haveErrors) return;
+
+    const showErrorMessage = (value, ...rest) => message.error(value, { ...rest });
+    const isErrorField = (errorExist) =>
+      errors?.some((errorItem) => errorItem.includes(errorExist));
+
+    if (
+      (isErrorField(ERROR_EXIST.EMAIL) && isErrorField(ERROR_EXIST.USER_NAME)) ||
+      isErrorField(ERROR_EXIST.EMAIL)
+    ) {
+      return showErrorMessage(getErrorExistMessage(email));
+    }
+
+    if (isErrorField(ERROR_EXIST.USER_NAME)) {
+      return showErrorMessage(getErrorExistMessage(username));
+    }
+
+    return showErrorMessage("Something went wrong, please press F5 to refresh the page", {
+      persist: true
+    });
+  };
+
+  const handleSubmit = async (values) => {
+    try {
       setLoading(true);
       await UserService.addAdminUser(values);
       onSuccess && onSuccess(values);
-    }).finally(() => setLoading(false));
+    } catch (error) {
+      const { errors } = error;
+      handleShowErrorMessage(errors, values);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formik = useFormik({
