@@ -37,12 +37,17 @@ const getPhoneObject = (phone) => {
     localNumber: parts[1] ?? ""
   };
 };
-const usePhoneField = ({ name, countryFieldName }) => {
+const getPhoneString = (countryCode, phoneNumber) => {
+  if (!countryCode) return phoneNumber;
+  return `${countryCode} ${phoneNumber}`;
+};
+export const usePhoneField = ({ name, countryFieldName }) => {
   const [field, meta] = useField({ name, type: "text" });
   const [countryField] = useField({ name: countryFieldName });
   const { setFieldValue } = useFormikContext();
   const phone = field.value;
   const [{ countryCode, localNumber }, setPhone] = React.useState(getPhoneObject(phone));
+
   const country = countryField.value;
   React.useEffect(() => {
     setPhone(getPhoneObject(phone));
@@ -60,13 +65,11 @@ const usePhoneField = ({ name, countryFieldName }) => {
     }
   }, [country]);
   const changeCountryCode = (value) => {
-    const newPhone = `${value} ${localNumber}`;
-    setFieldValue(name, newPhone);
+    setFieldValue(name, getPhoneString(value, localNumber));
   };
   const changeLocalNumber = (event) => {
     const value = event.target.value;
-    const newPhone = `${countryCode} ${value}`;
-    setFieldValue(name, newPhone);
+    setFieldValue(name, getPhoneString(countryCode, value));
   };
   return { meta, countryCode, localNumber, changeCountryCode, changeLocalNumber };
 };
