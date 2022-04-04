@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import Button from "@mui/lab/LoadingButton";
 import { FORGOT_PASSWORD_FORM_SCHEMA } from "./forgot-pw-form.schema";
 import { Link } from "react-router-dom";
 import React from "react";
@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
 
-export const ForgotPasswordForm = ({ onSubmit }) => {
+export const ForgotPasswordForm = React.forwardRef(({ onSubmit, isLoading }, ref) => {
   const { email } = FORGOT_PASSWORD_FORM_SCHEMA;
 
   return (
@@ -22,7 +22,7 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
         Please enter your username or registered email address. You will receive an email shortly to
         reset your password.
       </Typography>
-      <Formik onSubmit={onSubmit} initialValues={{ email: "" }}>
+      <Formik innerRef={ref} onSubmit={onSubmit} initialValues={{ email: "" }}>
         <Form>
           <Stack spacing={3}>
             <TextField
@@ -33,7 +33,7 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
               placeholder={email.placeholder}
             />
             <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={2}>
-              <Button type="submit" variant="contained">
+              <Button loading={isLoading} type="submit" variant="contained">
                 Send
               </Button>
               <Link to={RouteConst.LOGIN_ROUTE}>
@@ -47,4 +47,4 @@ export const ForgotPasswordForm = ({ onSubmit }) => {
       </Formik>
     </Box>
   );
-};
+});

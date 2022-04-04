@@ -6,6 +6,7 @@ import { RouteConst } from "@/commons/consts";
 import { globalSnackbarRef } from "@/components/snackbar-provider/snackbar-provider.comp";
 import { removeAuthCredential } from "./auth.util";
 import { useMessage } from "@/hooks/use-message";
+import { API_ERRORS, API_ERROR_CODES } from "../commons/consts/system/api-error-code.const";
 
 export const axiosErrorHandler = (err) => {
   if (err.response) {
@@ -107,4 +108,25 @@ export const useAsyncErrorHandler = () => {
     },
     [message]
   );
+};
+
+export const parseServerError = (error) => {
+  if (error?.errMsg?.error_message) {
+    if (error?.errMsg?.error_message.includes("User not found"))
+      return {
+        message: API_ERRORS[API_ERROR_CODES.LOGIN_INVALID]
+      };
+    return {
+      message: error?.errMsg?.error_message
+    };
+  }
+  if (typeof error?.errors?.message === "string") {
+    return { message: error?.errors?.message };
+  }
+  if (Array.isArray(error?.errors) && Array.isArray(error.errors[0])) {
+    return {
+      field: error.errors[0][0],
+      message: API_ERRORS[error.errors[0][1]]
+    };
+  }
 };

@@ -1,6 +1,6 @@
 import * as USER_DUCK from "@/redux/user/user.duck";
 
-import { API_ERRORS, MessageConst, RouteConst } from "@/commons/consts";
+import { MessageConst, RouteConst } from "@/commons/consts";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,7 +11,7 @@ import { checkTfaLogin } from "@/components/auth/services/auth.service";
 import { selectBrowserFingerprint } from "@/redux/settings/settings.duck";
 import { useTFAVaildator } from "@/components/auth/controllers/use-tfa-validator";
 import { TFAModal } from "@/components/auth/components/tfa-modal";
-import { useAsyncErrorHandler } from "@/utils/error-handler.util";
+import { useAsyncErrorHandler, parseServerError } from "@/utils/error-handler.util";
 import { checkValidationCode } from "@/services";
 
 const LoginPage = () => {
@@ -19,18 +19,10 @@ const LoginPage = () => {
   const formRef = React.useRef();
   const history = useHistory();
   const asyncErrorHandler = useAsyncErrorHandler();
-  const onError = React.useCallback(
-    (errors) => {
-      if (typeof errors?.message === "string") {
-        message.error(errors.message);
-        return;
-      }
-      const errorCode = errors[0][1];
-      const serverError = API_ERRORS[errorCode];
-      formRef.current.setFieldError("password", serverError);
-    },
-    [message]
-  );
+  const onError = React.useCallback((error) => {
+    const serverError = parseServerError(error);
+    formRef.current.setFieldError("password", serverError.message);
+  }, []);
   const onSuccess = React.useCallback(() => {
     history.push(RouteConst.HOME_ROUTE);
     message.success(MessageConst.LOGIN_SUCCESS_MSG);
@@ -120,7 +112,7 @@ const LoginPage = () => {
         }
         dispatch({ type: USER_DUCK.LOGIN, payload: { values, onError, onSuccess } });
       } catch (error) {
-        onError(error?.errors);
+        onError(error);
       }
     });
   };

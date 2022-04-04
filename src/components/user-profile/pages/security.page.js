@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import { ChangePasswordForm } from "../components/change-password-form";
 import { PageContainer } from "../components/page-container.comp";
@@ -6,9 +7,14 @@ import { parseFormValues } from "../components/change-password-form/mapper";
 import { useChangePassword } from "../services/use-change-password";
 
 const SecurityPage = () => {
+  const ref = React.useRef();
   const { mutate, isLoading } = useChangePassword();
   const submit = (values) => {
-    mutate(parseFormValues(values));
+    mutate(parseFormValues(values), {
+      onSuccess: () => {
+        ref.current.resetForm();
+      }
+    });
   };
   return (
     <PageContainer title="Security">
@@ -16,7 +22,7 @@ const SecurityPage = () => {
         Password
       </Typography>
       <Box maxWidth={416}>
-        <ChangePasswordForm onSubmit={submit} isLoading={isLoading} />
+        <ChangePasswordForm ref={ref} onSubmit={submit} isLoading={isLoading} />
       </Box>
     </PageContainer>
   );
