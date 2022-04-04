@@ -11,6 +11,7 @@ import SettingIcon from "@/components/icons/setting.comp";
 import { BankPathEnum } from "@/components/bank-details/bank-path.enum";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import GroupIcon from "@mui/icons-material/Group";
+import { pimMenu } from "@/pages/pim/routes";
 
 const menuData = [
   {
@@ -47,6 +48,7 @@ const menuData = [
       }
     ]
   },
+  pimMenu,
   {
     title: "Product Template",
     key: "Product",

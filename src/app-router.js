@@ -19,6 +19,7 @@ import { MainAuthLayout } from "./layouts/auth/main-layout.comp";
 import { SettingsLayout } from "./layouts/auth/settings-layout.comp";
 import { PublicLayout } from "./layouts/public/public.layout";
 import { loadable } from "./utils/loadable.util";
+import { pimRoutes } from "./pages/pim/routes";
 
 const getChildrenPaths = (route) => {
   if (route.children == null || route.children.length === 0) return [route.path];
@@ -228,7 +229,8 @@ const routeData = [
                 Component: loadable(() => import("@/pages/notification/notification.page")),
                 exact: true
               },
-              ...tradeRouteRoutes
+              ...tradeRouteRoutes,
+              ...pimRoutes
             ]
           },
           ...userProfileRoutes
