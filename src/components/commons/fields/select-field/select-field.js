@@ -6,7 +6,14 @@ import React from "react";
 import Select from "@mui/material/Select";
 import { useField } from "formik";
 
-export const SelectField = ({ name, dataSource, label, onChangeValue, required, ...props }) => {
+export const SelectField = ({
+  name,
+  dataSource,
+  label,
+  onChangeValue = undefined,
+  required = false,
+  ...props
+}) => {
   const [field, meta] = useField({ name, type: "search" });
   const labelId = `select-field-${name}-label`.replace(".", "__");
   const showError = Boolean(meta.touched && meta.error);

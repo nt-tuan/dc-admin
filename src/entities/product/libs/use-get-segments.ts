@@ -1,10 +1,16 @@
 import { getSegments, getDefaultSegments } from "@/services/pim.service";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
+const SEGMENT_QUERY_KEY = "segments";
 export const useGetSegments = () => {
-  return useQuery(["segments"], getSegments);
+  return useQuery(SEGMENT_QUERY_KEY, getSegments);
+};
+export const useInvalidateGetSegments = () => {
+  const queryClient = useQueryClient();
+  return () => queryClient.invalidateQueries(SEGMENT_QUERY_KEY);
 };
 
-export const useDefaultGetSegments = () => {
-  return useQuery(["segments"], getDefaultSegments);
+const DC_SEGMENT_QUERY_KEY = "dc-segments";
+export const useGetDCSegments = () => {
+  return useQuery(DC_SEGMENT_QUERY_KEY, getDefaultSegments);
 };

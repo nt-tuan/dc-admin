@@ -13,11 +13,11 @@ export const AutocompleteField = ({
   dataSource,
   label,
   placeholder,
-  required,
-  loading,
-  disabled,
-  filterOptions,
-  endAdornment,
+  required = false,
+  loading = false,
+  disabled = false,
+  filterOptions = undefined,
+  endAdornment = undefined,
   ...props
 }) => {
   const [field, meta] = useField({ name, type: "search" });

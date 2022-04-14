@@ -74,10 +74,11 @@ class HttpApi {
     }
   };
 
-  delete = async (path, params) => {
+  delete = async (path, params, data) => {
     try {
       const result = await this.api.delete(path, {
-        params: params
+        params: params,
+        data
       });
       return result.data;
     } catch (error) {
@@ -99,7 +100,7 @@ class HttpApi {
 
 export const backendAPI = new HttpApi({
   baseURL: getAPIEndPoint(),
-  timeout: 25000,
+  timeout: 45000,
   headers: {
     "Content-Type": "application/json"
   }
