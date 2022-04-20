@@ -28,6 +28,3 @@ debug.log
 *.iws
 *.iml
 *.ipr
-
-### Configuration file
-public/env-config.js
