@@ -18,6 +18,7 @@ export const AutocompleteField = ({
   disabled = false,
   filterOptions = undefined,
   endAdornment = undefined,
+  fullWidth = true,
   ...props
 }) => {
   const [field, meta] = useField({ name, type: "search" });
@@ -38,14 +39,14 @@ export const AutocompleteField = ({
   };
 
   return (
-    <FormControl error={showError} {...props}>
+    <FormControl fullWidth={fullWidth} error={showError} {...props}>
       <Autocomplete
         loading={loading}
+        fullWidth={fullWidth}
         disabled={disabled}
         value={field.value}
         options={options}
         onChange={handleChange}
-        placeholder={placeholder}
         filterOptions={filterOptions}
         getOptionLabel={(item) => (dataMap[item] ? dataMap[item].label : "")}
         renderInput={(params) => {
@@ -56,6 +57,7 @@ export const AutocompleteField = ({
               InputLabelProps={{ ...params?.InputLabelProps, error: showError, disabled, required }}
               InputProps={{
                 ...params.InputProps,
+                placeholder,
                 endAdornment: (
                   <>
                     <Stack direction="row" alignItems="center" mr="-10px">

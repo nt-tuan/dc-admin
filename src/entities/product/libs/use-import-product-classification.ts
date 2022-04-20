@@ -5,7 +5,7 @@ import type { TreeNodeValue, Dictionary } from "../model/types";
 import { getNodesByCode, isNodeChecked } from "./tree-node";
 
 interface BaseValue {
-  code: number;
+  code: string;
   title: string;
   localCode: string;
 }
@@ -56,22 +56,22 @@ const parseTreeNodeValue = (
     brick.attributes = children;
   });
   return segments.map((segment) => ({
-    code: Number(segment.code),
+    code: segment.code,
     title: segment.title,
     families: segment.families?.map((family) => ({
-      code: Number(family.code),
-      segmentCode: Number(segment.code),
+      code: family.code,
+      segmentCode: segment.code,
       title: family.title,
       classes: family.classes?.map((cl) => ({
-        code: Number(cl.code),
-        familyCode: Number(family.code),
+        code: cl.code,
+        familyCode: family.code,
         title: cl.title,
         bricks: cl.bricks?.map((brick) => ({
-          code: Number(brick.code),
-          classCode: Number(cl.code),
+          code: brick.code,
+          classCode: cl.code,
           title: brick.title,
           attributes: brick.attributes?.map((attribute) => ({
-            code: Number(attribute.code),
+            code: attribute.code,
             title: attribute.title
           }))
         }))

@@ -36,7 +36,7 @@ const ProductClassificationCell = ({ type, title, expanded, isLoading, level, on
         }}
       >
         <Stack direction="row" alignItems="center" paddingLeft={level} spacing={1}>
-          {getButtonIcon()}
+          <span>{getButtonIcon()}</span>
           <Typography variant="body2">
             {type} {title}
           </Typography>

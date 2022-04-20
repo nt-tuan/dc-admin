@@ -10,8 +10,10 @@ import { useHistory } from "react-router-dom";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { useInvalidateGetSegments } from "../../libs/use-get-segments";
 import { getDCDataLoaders } from "../../libs/tree-node";
+import { Dictionary } from "../../model/types";
 interface Props {
   segments: Segment[];
+  defaulSelection?: Dictionary<boolean>;
 }
 const CreateButton = () => {
   const history = useHistory();
@@ -43,9 +45,13 @@ const CreateButton = () => {
     </Stack>
   );
 };
-const Importer = ({ segments }: Props) => {
+const Importer = ({ segments, defaulSelection }: Props) => {
   return (
-    <ProductClassificationProvider segments={segments} loaders={getDCDataLoaders()}>
+    <ProductClassificationProvider
+      segments={segments}
+      defaulSelection={defaulSelection}
+      loaders={getDCDataLoaders()}
+    >
       <Stack height="100%" spacing={3}>
         <Typography variant="body2">
           Browse the below classification wizard and select the required components (Segment,

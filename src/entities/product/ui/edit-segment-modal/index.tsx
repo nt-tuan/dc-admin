@@ -1,9 +1,8 @@
 import React from "react";
 import { TextField } from "@/components/commons/fields";
 import { Form, Formik, FormikProps } from "formik";
-import useUpdateSegmentTitle from "../../libs/use-update-segment-title";
+import { useUpdateSegmentTitle } from "../../libs/use-update-entity";
 import FormModal, { BaseFormModalProps } from "../form-modal";
-import { getActualCode } from "../../libs/tree-node";
 import { Segment } from "@/services/pim.service";
 
 interface Props extends BaseFormModalProps {
@@ -16,7 +15,7 @@ interface FormValue {
 }
 const EditSegmentModal = ({ code, title, open, onClose, onSuccess }: Props) => {
   const ref = React.useRef<FormikProps<FormValue>>(null);
-  const { mutate, isLoading } = useUpdateSegmentTitle(getActualCode(code));
+  const { mutate, isLoading } = useUpdateSegmentTitle(code);
   const triggerSubmit = () => {
     if (ref.current == null) return;
     ref.current.submitForm();

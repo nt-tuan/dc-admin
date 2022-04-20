@@ -3,19 +3,21 @@ import { useHistory, useLocation } from "react-router-dom";
 import React from "react";
 
 function paramsToObject(entries) {
-  const result = {};
+  const result: Record<string, string> = {};
   for (const [key, value] of entries) {
     result[key] = value;
   }
   return result;
 }
 
-const parseParamsToString = (paramsObject) => {
+const parseParamsToString = (paramsObject: Record<string, string>) => {
   const params = new URLSearchParams(paramsObject);
   return params.toString();
 };
 
-export const useSearchParams = (props) => {
+export const useSearchParams: (props?: {
+  defaultValue?: Record<string, string>;
+}) => [Record<string, string>, (filter: Record<string, string>) => void] = (props) => {
   const { defaultValue } = props || {};
   const { push } = useHistory();
   const { search } = useLocation();

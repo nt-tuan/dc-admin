@@ -9,17 +9,19 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { Divider } from "@mui/material";
+import { EntityType } from "../../model/types";
 
-const CreateClassificationItemDropdown = () => {
+interface Props {
+  onCreate: (type: EntityType) => void;
+}
+
+const CreateClassificationItemDropdown = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
 
-  const handleClick = () => {
-    // console.info(`You clicked ${options[selectedIndex]}`);
-  };
-
-  const handleMenuItemClick = (event) => {
+  const handleMenuItemClick = (type: EntityType) => {
     setOpen(false);
+    props.onCreate(type);
   };
 
   const handleToggle = () => {
@@ -36,7 +38,7 @@ const CreateClassificationItemDropdown = () => {
   return (
     <React.Fragment>
       <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-        <Button onClick={handleClick}>Create Brick</Button>
+        <Button onClick={() => props.onCreate("Brick")}>Create Brick</Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
@@ -59,13 +61,11 @@ const CreateClassificationItemDropdown = () => {
             <Paper sx={{ width: 200 }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu" autoFocusItem>
-                  <MenuItem onClick={(event) => handleMenuItemClick(event)}>Create Brick</MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Brick")}>Create Brick</MenuItem>
                   <Divider />
-                  <MenuItem onClick={(event) => handleMenuItemClick(event)}>
-                    Create Segment
-                  </MenuItem>
-                  <MenuItem onClick={(event) => handleMenuItemClick(event)}>Create Family</MenuItem>
-                  <MenuItem onClick={(event) => handleMenuItemClick(event)}>Create Class</MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Segment")}>Create Segment</MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Family")}>Create Family</MenuItem>
+                  <MenuItem onClick={() => handleMenuItemClick("Class")}>Create Class</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

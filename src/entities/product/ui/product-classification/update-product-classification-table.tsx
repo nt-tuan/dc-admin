@@ -1,3 +1,7 @@
+import {
+  getAttributeEditionPath,
+  getBrickEditionPath
+} from "@/commons/consts/system/routes/pim-route-paths.const";
 import { getSegment, Segment } from "@/services/pim.service";
 import Edit from "@mui/icons-material/Edit";
 import {
@@ -8,15 +12,19 @@ import {
   Table,
   TableBody,
   TableHead,
-  Typography
+  Typography,
+  Chip
 } from "@mui/material";
 import MuiTableRow from "@mui/material/TableRow";
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { countNotSetHSCode, getActualCode, getHSCode } from "../../libs/tree-node";
 import useDeleteProductClassification from "../../libs/use-delete-product-classification";
-import { TreeNodeValue } from "../../model/types";
+import { EntityType, TreeNodeValue } from "../../model/types";
 import EditClassModal from "../edit-class-modal";
 import EditFamilyModal from "../edit-family-modal";
 import EditSegmentModal from "../edit-segment-modal";
+import NewEntityModalGroup from "../new-entity-modal-group";
 import CreateClassificationItemDropdown from "./create-classification-item-dropdown";
 import Provider, { useProductClassificationContext } from "./provider";
 import TableCell from "./table-cell";
@@ -27,13 +35,16 @@ interface Props {
 }
 
 const Consumer = () => {
+  const history = useHistory();
   const [editingNode, setEditingNode] = React.useState<TreeNodeValue>();
+  const [newNodeType, setNewNodeType] = React.useState<EntityType>();
   const {
     nodes: allNodes,
     getNodes,
     nodeSelection,
     updateNode
   } = useProductClassificationContext();
+
   const { canDelete, mutate: deleteEntities } = useDeleteProductClassification(
     allNodes,
     nodeSelection
@@ -44,9 +55,30 @@ const Consumer = () => {
   const closeModal = () => {
     setEditingNode(undefined);
   };
+  const openCreateModal = (type: EntityType) => {
+    setNewNodeType(type);
+  };
+  const closeCreateModal = () => {
+    setNewNodeType(undefined);
+  };
+
   const reloadSegment = async (segment?: Segment) => {
     if (editingNode == null || segment == null) return;
     updateNode(editingNode.code, (currentNode) => ({ ...currentNode, title: segment.title }));
+  };
+
+  const handleNodeClick = (nodeValue: TreeNodeValue) => {
+    const actualCode = getActualCode(nodeValue.code);
+    if (!actualCode) return;
+    if (nodeValue.type === "Brick") {
+      history.push(getBrickEditionPath(actualCode));
+      return;
+    }
+    if (nodeValue.type === "Attribute") {
+      history.push(getAttributeEditionPath(actualCode));
+      return;
+    }
+    setEditingNode(nodeValue);
   };
 
   const renderCells = (
@@ -59,13 +91,18 @@ const Consumer = () => {
         {checkboxCells}
         {productClassification}
         <TableCell>
-          <Typography variant="body2" color="error">
-            No HS Code
-          </Typography>
+          {nodeValue.type === "Segment" && (
+            <Chip color="error" size="small" label={countNotSetHSCode()} />
+          )}
+          {nodeValue.type === "Brick" && (
+            <Typography variant="body2" color="error">
+              {getHSCode()}
+            </Typography>
+          )}
         </TableCell>
         <TableCell>
           <IconButton>
-            <Edit color="primary" onClick={() => setEditingNode(nodeValue)} />
+            <Edit color="primary" onClick={() => handleNodeClick(nodeValue)} />
           </IconButton>
         </TableCell>
       </>
@@ -85,10 +122,10 @@ const Consumer = () => {
                   </Button>
                 )}
                 <div />
-                <CreateClassificationItemDropdown />
+                <CreateClassificationItemDropdown onCreate={openCreateModal} />
               </Stack>
             </TableCell>
-            <TableCell>HS Code</TableCell>
+            <TableCell align="center">HS Code</TableCell>
             <TableCell>Edit</TableCell>
           </MuiTableRow>
         </TableHead>
@@ -98,6 +135,7 @@ const Consumer = () => {
           ))}
         </TableBody>
       </Table>
+      <NewEntityModalGroup type={newNodeType} onClose={closeCreateModal} />
       {editingNode && (
         <>
           {editingNode.type === "Segment" && (
@@ -113,6 +151,7 @@ const Consumer = () => {
             <EditFamilyModal
               open
               code={editingNode.code}
+              segmentCode={editingNode.parentCode ?? ""}
               title={editingNode.title}
               onClose={closeModal}
             />
@@ -120,9 +159,9 @@ const Consumer = () => {
           {editingNode.type === "Class" && editingNode.parentCode && (
             <EditClassModal
               open
+              parentCode={editingNode.parentCode}
               code={editingNode.code}
               title={editingNode.title}
-              segmentCode={editingNode.parentCode}
               onClose={closeModal}
             />
           )}
@@ -131,17 +170,18 @@ const Consumer = () => {
     </Box>
   );
 };
-const segmentLoader = async (code: number) => {
+const familiesLoader = async (code?: string) => {
+  if (code == null) return [];
   const segment = await getSegment(code);
   if (segment == null) return [];
-  return [segment];
+  return segment.families ?? [];
 };
 const UpdateClassificationTable = ({ segments }: Props) => {
   return (
     <Provider
       segments={segments}
       loaders={{
-        Segment: segmentLoader
+        Family: familiesLoader
       }}
     >
       <Consumer />

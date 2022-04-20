@@ -16,7 +16,7 @@ export interface Dictionary<T> {
   [key: string]: T;
 }
 export interface TreeNodeValue {
-  actualCode: number;
+  actualCode: string;
   code: string;
   title: string;
   parentCode?: string;

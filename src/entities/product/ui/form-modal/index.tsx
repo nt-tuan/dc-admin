@@ -3,10 +3,10 @@ import { Box, Button, IconButton, Modal, Stack, Typography } from "@mui/material
 import LoadingButton from "@mui/lab/LoadingButton";
 export interface BaseFormModalProps {
   open: boolean;
+  isLoading?: boolean;
   onClose: () => void;
 }
 interface Props extends BaseFormModalProps {
-  isLoading?: boolean;
   title: string;
   onSave: () => void;
   children: React.ReactNode;
@@ -56,10 +56,10 @@ const FormModal = ({ open, onClose, title, onSave, children, isLoading }: Props)
           {children}
         </Box>
         <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-          <Button variant="outlined" onClick={onClose}>
+          <Button size="large" variant="outlined" onClick={onClose}>
             Cancel
           </Button>
-          <LoadingButton loading={isLoading} variant="contained" onClick={onSave}>
+          <LoadingButton size="large" loading={isLoading} variant="contained" onClick={onSave}>
             Save
           </LoadingButton>
         </Stack>

@@ -1,31 +1,47 @@
 import React from "react";
 import { AutocompleteField } from "@/components/commons/fields";
 import { useGetClasses } from "../../libs/use-get-classes";
+import { useGetFamily } from "../../libs/use-get-families";
+import { ProductClass } from "@/services/pim.service";
 
 interface Props {
   name: string;
   value?: string;
   label: string;
   placeholder: string;
-  familyCode?: number;
+  familyCode?: string;
+  required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ClassSelect = ({ familyCode, name, value, label, onChange, placeholder }: Props) => {
-  const { data, isLoading } = useGetClasses();
+const parseFromClass = (cl: ProductClass) => {
+  return {
+    value: cl.code,
+    label: cl.title
+  };
+};
+const ClassSelect = ({
+  familyCode,
+  name,
+  value,
+  label,
+  onChange,
+  required,
+  placeholder
+}: Props) => {
+  const { data, isLoading } = useGetClasses({ enabled: !Boolean(familyCode) });
+  const { data: familyData, isLoading: isFamilyLoading } = useGetFamily(familyCode);
   const dataSource = React.useMemo(() => {
-    if (data == null) return [];
-    const classes = data.classes.map((cl) => ({
-      value: cl.code,
-      label: cl.title
-    }));
-    if (!familyCode) return classes;
-    return classes.filter((cl) => cl.value === familyCode);
-  }, [data, familyCode]);
+    if (familyCode) {
+      return familyData?.classes?.map(parseFromClass) ?? [];
+    }
+    return data?.classes?.map(parseFromClass) ?? [];
+  }, [data, familyData, familyCode]);
   return (
     <AutocompleteField
       label={label}
-      loading={isLoading}
+      required={required}
+      loading={isLoading || isFamilyLoading}
       placeholder={placeholder}
       dataSource={dataSource}
       name={name}
