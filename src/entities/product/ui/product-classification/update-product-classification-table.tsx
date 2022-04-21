@@ -1,5 +1,3 @@
-import { getSegment, Segment } from "@/services/pim.service";
-import Edit from "@mui/icons-material/Edit";
 import {
   Box,
   Button,
@@ -10,17 +8,20 @@ import {
   TableHead,
   Typography
 } from "@mui/material";
-import MuiTableRow from "@mui/material/TableRow";
-import React from "react";
-import useDeleteProductClassification from "../../libs/use-delete-product-classification";
-import { TreeNodeValue } from "../../model/types";
+import Provider, { useProductClassificationContext } from "./provider";
+import { Segment, getSegment } from "@/services/pim.service";
+
+import CreateClassificationItemDropdown from "./create-classification-item-dropdown";
+import Edit from "@mui/icons-material/Edit";
 import EditClassModal from "../edit-class-modal";
 import EditFamilyModal from "../edit-family-modal";
 import EditSegmentModal from "../edit-segment-modal";
-import CreateClassificationItemDropdown from "./create-classification-item-dropdown";
-import Provider, { useProductClassificationContext } from "./provider";
+import MuiTableRow from "@mui/material/TableRow";
+import React from "react";
 import TableCell from "./table-cell";
 import TableRow from "./table-row";
+import { TreeNodeValue } from "../../model/types";
+import useDeleteProductClassification from "../../libs/use-delete-product-classification";
 
 interface Props {
   segments: Segment[];

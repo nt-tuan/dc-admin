@@ -1,5 +1,5 @@
-import { loadable } from "@/utils/loadable.util";
 import ProductIcon from "@/components/icons/product.comp";
+import { loadable } from "@/utils/loadable.util";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 export const pimRoutes = [
   {
@@ -23,6 +23,21 @@ export const pimRoutes = [
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_CLASSFICATION_WIZARD,
     Component: loadable(() => import("./product-classification/wizard")),
+    exact: true
+  },
+  {
+    title: "Attributes",
+    icon: ProductIcon,
+    path: pimRoutePaths.PRODUCT_ATTRIBUTES,
+    Component: loadable(() => import("./attributes")),
+    exact: true
+  },
+  {
+    title: "Create Attributes",
+    hideInMenu: true,
+    icon: ProductIcon,
+    path: pimRoutePaths.PRODUCT_ATTRIBUTES_CREATION,
+    Component: loadable(() => import("./attributes/creation")),
     exact: true
   }
 ];

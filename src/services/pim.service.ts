@@ -90,3 +90,45 @@ export interface ImportSegment {
 }
 export const importPimData = (segments: ImportSegment[]) =>
   backendAPI.post("/pim/jobs/import", segments);
+
+export interface Attributes extends AttributeValue {
+  attributeValue: AttributeValue[];
+}
+export interface AttributesResponse {
+  _links: {
+    self: string;
+    first: string;
+    prev: string;
+    next: string;
+    last: string;
+  };
+  attributes: Attributes[];
+}
+
+interface AnAttributesResponse {
+  code: string;
+  title: string;
+  attributeValue: AttributeValue[];
+}
+
+export const getAttributes: (values) => Promise<AttributesResponse | null> = () =>
+  backendAPI.post("/pim/product-classification/attributes", values);
+
+export const getAttributeByCode: () => Promise<AnAttributesResponse | null> = (
+  attributeCode: string
+) => backendAPI.get(`/pim/product-classification/attributes/${attributeCode}`);
+
+export const createAttribute: () => Promise<AnAttributesResponse | null> = (values: any) =>
+  backendAPI.post("/pim/product-classification/attributes", values);
+
+export const updateAttribute: () => Promise<AnAttributesResponse | null> = (
+  attributeCode: string,
+  values: any
+) => backendAPI.put(`/pim/product-classification/attributes${attributeCode}`, values);
+
+export const deleteAttribute: () => Promise<AnAttributesResponse | null> = (
+  attributeCode: string
+) => backendAPI.delete(`/pim/product-classification/attributes${attributeCode}`);
+
+export const deleteBulkAttribute: () => Promise<AnAttributesResponse | null> = (values: string[]) =>
+  backendAPI.delete("/pim/product-classification/attributes/bulk", values);
