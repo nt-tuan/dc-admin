@@ -1,5 +1,6 @@
 import AttributesCreation from "./attribute-creation";
 import { Button } from "@mui/material";
+import { Formik } from "formik";
 import PageContentLayout from "../page-layout";
 import Typography from "@mui/material/Typography";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
@@ -17,17 +18,25 @@ const Attributes = () => {
     });
   };
 
+  const initialValues = {};
+
   return (
-    <PageContentLayout
-      title="Create Attribute"
-      parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
-      actions={<Button variant="contained">Save</Button>}
-    >
-      <Typography mb={3} variant="body2">
-        General Properties
-      </Typography>
-      <AttributesCreation onSubmit={submit} isLoading={isLoading} />
-    </PageContentLayout>
+    <Formik initialValues={{ ...initialValues, type: "dropdown" }} onSubmit={submit}>
+      <PageContentLayout
+        title="Create Attribute"
+        parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
+        actions={
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        }
+      >
+        <Typography mb={3} variant="body2">
+          General Properties
+        </Typography>
+        <AttributesCreation isLoading={isLoading} />
+      </PageContentLayout>
+    </Formik>
   );
 };
 export default Attributes;

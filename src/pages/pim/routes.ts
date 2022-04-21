@@ -39,6 +39,14 @@ export const pimRoutes = [
     path: pimRoutePaths.PRODUCT_ATTRIBUTES_CREATION,
     Component: loadable(() => import("./attributes/creation")),
     exact: true
+  },
+  {
+    title: "Input Registration",
+    hideInMenu: true,
+    icon: ProductIcon,
+    path: pimRoutePaths.PRODUCT_ATTRIBUTES_EDITION,
+    Component: loadable(() => import("./attributes/edition")),
+    exact: true
   }
 ];
 
