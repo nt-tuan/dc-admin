@@ -27,7 +27,7 @@ const Content = ({ onClose }) => {
   const [type, setType] = React.useState("");
 
   const onSubmit = () => {
-    history.push(pimRoutePaths.PRODUCT_ATTRIBUTES_CREATION);
+    history.push(pimRoutePaths.PRODUCT_ATTRIBUTE_CREATION);
   };
 
   return (
