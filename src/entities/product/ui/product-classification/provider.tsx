@@ -10,76 +10,15 @@ import {
   getDecendantCodes,
   getLowerEntityType,
   getNodesByCode,
-  isNodeChecked
+  isNodeChecked,
+  toDictionary,
+  toTreeNodeDictionary
 } from "../../libs/tree-node";
 
-const toDictionary = (
-  entities: ProductEntity[],
-  intialType: EntityType = "Segment",
-  intialParentCode?: string
-) => {
-  const dictionary: Dictionary<TreeNodeValue> = {};
-  interface IQueueItem {
-    entity: ProductEntity;
-    code: string;
-    parentCode?: string;
-    type: EntityType;
-  }
-  const queue: IQueueItem[] = [];
-  const enqueueEntities = (
-    entities: ProductEntity[] | undefined,
-    type: EntityType,
-    parentCode?: string
-  ) => {
-    if (entities == null) return;
-    for (const entity of entities) {
-      let composedCode = parentCode ? `${parentCode}.${entity.code}` : `${entity.code}`;
-      queue.push({
-        entity,
-        type,
-        code: composedCode,
-        parentCode
-      });
-    }
-  };
-  enqueueEntities(entities, intialType, intialParentCode);
-
-  let first = 0;
-  while (first < queue.length) {
-    const current = queue[first];
-    const currentEntity = current.entity;
-    const currentType = current.type;
-    let type: EntityType = "Attribute";
-    if (currentType === "Segment") {
-      enqueueEntities((currentEntity as Segment).families, "Family", current.code);
-      type = "Segment";
-    }
-    if (currentType === "Family") {
-      enqueueEntities((currentEntity as ProductFamily).classes, "Class", current.code);
-      type = "Family";
-    }
-    if (currentType === "Class") {
-      enqueueEntities((currentEntity as ProductClass).bricks, "Brick", current.code);
-      type = "Class";
-    }
-    if ("attributes" in currentEntity) {
-      enqueueEntities((currentEntity as ProductBrick).attributes, "Attribute", current.code);
-      type = "Brick";
-    }
-    dictionary[current.code] = {
-      code: current.code,
-      actualCode: currentEntity.code,
-      title: currentEntity.title,
-      parentCode: current.parentCode,
-      type
-    };
-    first++;
-  }
-  return dictionary;
-};
 type UpdateAction = (code: string, fn: (node: TreeNodeValue) => TreeNodeValue) => void;
 interface IProductClassificationContext {
   nodes: Dictionary<TreeNodeValue>;
+  setNodes: React.Dispatch<React.SetStateAction<Dictionary<TreeNodeValue>>>;
   nodeSelection: Dictionary<boolean>;
   getNodes: (code?: string) => TreeNodeValue[];
   loadMoreData: (parentCode: string, type: EntityType) => Promise<void>;
@@ -89,6 +28,7 @@ interface IProductClassificationContext {
 }
 const ProductClassificationContext = React.createContext<IProductClassificationContext>({
   nodes: {},
+  setNodes: () => {},
   nodeSelection: {},
   getNodes: () => [],
   loadMoreData: async () => {},
@@ -97,16 +37,27 @@ const ProductClassificationContext = React.createContext<IProductClassificationC
   updateNode: () => {}
 });
 
+type LoaderFunction = (parentCode?: string) => Promise<ProductEntity[]>;
 interface Props {
   segments: Segment[];
+  defaulSelection?: Dictionary<boolean>;
   loaders: {
-    [key in EntityType]?: (parentCode: number) => Promise<ProductEntity[]>;
+    [key in EntityType]?: LoaderFunction;
+  };
+  selectionLoaders?: {
+    [key in EntityType]?: LoaderFunction;
   };
 }
 
-const Provider = ({ children, segments, loaders }: React.PropsWithChildren<Props>) => {
+const Provider = ({
+  children,
+  segments,
+  loaders,
+  selectionLoaders,
+  defaulSelection
+}: React.PropsWithChildren<Props>) => {
   const asyncWrapper = useAsyncErrorHandler();
-  const [nodeDictionary, setNodeDictionary] = React.useState(toDictionary(segments));
+  const [nodeDictionary, setNodeDictionary] = React.useState(() => toTreeNodeDictionary(segments));
   const getNodes = (code?: string) => {
     return getNodesByCode(nodeDictionary, code);
   };
@@ -116,30 +67,66 @@ const Provider = ({ children, segments, loaders }: React.PropsWithChildren<Props
     for (const code of codes) {
       initSelection[code] = false;
     }
-    return initSelection;
+    return { ...initSelection, ...defaulSelection };
   });
+
+  const findNodeByActualCode = (code: string) => {
+    const foundEntry = Object.entries(nodeDictionary).find(
+      ([key]) => key === code || key.endsWith(`.${code}`)
+    );
+    if (foundEntry == null) return undefined;
+    return foundEntry[1];
+  };
   const updateNode: UpdateAction = (code, fn) => {
-    const currentNode = nodeDictionary[code];
+    const currentNode = findNodeByActualCode(code);
+    if (currentNode == null) return;
     const nextNode = fn(currentNode);
-    setNodeDictionary({ ...nodeDictionary, [code]: nextNode });
+    const nextDictionary = { ...nodeDictionary };
+    delete nextDictionary[code];
+    const nextNodeParentLocalCode = nextNode.parentCode
+      ? findNodeByActualCode(nextNode.parentCode)
+      : undefined;
+    const nextNodeCode = nextNodeParentLocalCode
+      ? `${nextNodeParentLocalCode}.${nextNode.actualCode}`
+      : nextNode.actualCode;
+    nextNode.code = nextNodeCode;
+    if (nextNode) setNodeDictionary({ ...nodeDictionary, [nextNodeCode]: nextNode });
   };
   const [loadedCodes, setLoadedCodes] = React.useState<Set<string>>(new Set());
-  const loadMoreData = async (parentCode: string, type: EntityType) => {
+  const loadSelection = async (parentCode: string, type: EntityType) => {
+    if (!nodeSelection[parentCode]) {
+      return;
+    }
+    const codeNumber = getActualCode(parentCode);
+    if (selectionLoaders == null || codeNumber == null) return;
+    const selectionLoader = selectionLoaders[type];
+    if (selectionLoader == null) return;
+    const entities = await selectionLoader(codeNumber);
+    const nextSelection = toDictionary(entities, type, parentCode, () => true);
+    setNodeSelection((current) => ({
+      ...current,
+      ...nextSelection
+    }));
+  };
+  const loadNode = async (parentCode: string, type: EntityType) => {
     const loader = loaders[type];
+    const codeNumber = getActualCode(parentCode);
+    if (codeNumber == null || loader == null) return;
+    const loadedEntities = await loader(codeNumber);
+    const appendedDictionary = toTreeNodeDictionary(loadedEntities, type, parentCode);
+    setNodeDictionary((current) => ({
+      ...current,
+      ...appendedDictionary
+    }));
+  };
+
+  const loadMoreData = async (parentCode: string, type: EntityType) => {
     if (loadedCodes.has(parentCode)) {
       return;
     }
-    await asyncWrapper(async () => {
-      const codeNumber = getActualCode(parentCode);
-      if (codeNumber == null || loader == null) return;
-      const loadedEntities = await loader(codeNumber);
-      const lowerType = getLowerEntityType(type);
-      if (lowerType == null) return;
-      const appendedDictionary = toDictionary(loadedEntities, lowerType, parentCode);
-      setNodeDictionary((current) => ({
-        ...current,
-        ...appendedDictionary
-      }));
+    return await asyncWrapper(async () => {
+      await loadNode(parentCode, type);
+      await loadSelection(parentCode, type);
       setLoadedCodes((loadedCodes) => {
         const next = new Set(loadedCodes);
         next.add(parentCode);
@@ -159,11 +146,9 @@ const Provider = ({ children, segments, loaders }: React.PropsWithChildren<Props
     for (const d of decendants) {
       decendantDictionary[d] = checked;
     }
-
     for (const ancestor of ancestors) {
       ancestorDictionary[ancestor] = checked;
     }
-
     setNodeSelection((current) => {
       const nextCurrent = { ...current, ...decendantDictionary };
       return nextCurrent;
@@ -181,6 +166,7 @@ const Provider = ({ children, segments, loaders }: React.PropsWithChildren<Props
       value={{
         updateNode,
         nodes: nodeDictionary,
+        setNodes: setNodeDictionary,
         nodeSelection,
         getNodes,
         loadMoreData,

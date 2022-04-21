@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import React from "react";
 import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
+import Tabs, { TabsProps } from "@mui/material/Tabs";
 import { usePathParams } from "@/hooks/use-path-params";
 import { useSearchParams } from "@/hooks/use-search-params";
 
@@ -26,8 +27,20 @@ function TabPanel(props) {
     </div>
   );
 }
-export const DTCTabs = ({ tabs, value, onChange, ...props }) => {
-  const handleChange = (_, newValue) => {
+
+interface TabDef {
+  key: string;
+  label: string;
+  component: React.ReactNode;
+}
+interface Props extends Omit<TabsProps, "onChange"> {
+  value?: string;
+  onChange?: (value: string) => void;
+  actions?: React.ReactNode;
+  tabs: TabDef[];
+}
+export const DTCTabs = ({ tabs, value, onChange, actions, ...props }: Props) => {
+  const handleChange = (_, newValue: string) => {
     if (onChange) {
       onChange(newValue);
     }
@@ -39,24 +52,38 @@ export const DTCTabs = ({ tabs, value, onChange, ...props }) => {
           {tabs.map((tab) => (
             <Tab key={tab.key} value={tab.key} label={tab.label} {...a11yProps(tab.key)} />
           ))}
+          {actions && (
+            <Stack direction="row" flexGrow={1} alignItems="center" justifyContent="flex-end">
+              {actions}
+            </Stack>
+          )}
         </Tabs>
       </Box>
       {tabs.map((tab) => (
         <TabPanel key={tab.key} value={value} index={tab.key}>
-          {tab.component}
+          <Box mx={-3}>{tab.component}</Box>
         </TabPanel>
       ))}
     </Box>
   );
 };
 
-const extractValue = (tabs, key, filter, defaultValue) => {
+const extractValue = (
+  tabs: Omit<TabDef, "component">[],
+  key: string,
+  filter: Record<string, string>,
+  defaultValue: string | null
+) => {
   if (tabs.some((tab) => tab.key === filter[key])) return filter[key];
   if (defaultValue) return defaultValue;
   return tabs[0]?.key;
 };
 
-export const useTabSearchParams = (tabs, key = "tab", defaultValue = null) => {
+export const useTabSearchParams: (
+  tabs: TabDef[],
+  key?: string,
+  defaultValue?: string | null
+) => [string, (newValue: string) => void] = (tabs, key = "tab", defaultValue = null) => {
   const [filter, setFilter] = useSearchParams();
   const value = React.useMemo(() => extractValue(tabs, key, filter, defaultValue), [
     tabs,
@@ -70,7 +97,12 @@ export const useTabSearchParams = (tabs, key = "tab", defaultValue = null) => {
   return [value, handleChange];
 };
 
-export const useTabPathParams = (tabs, path, key = "tab", defaultValue = null) => {
+export const useTabPathParams = (
+  tabs: Omit<TabDef, "component">[],
+  path: string,
+  key = "tab",
+  defaultValue = null
+) => {
   const [filter, setFilter] = usePathParams(path);
   const value = React.useMemo(() => extractValue(tabs, key, filter, defaultValue), [
     tabs,
@@ -78,8 +110,8 @@ export const useTabPathParams = (tabs, path, key = "tab", defaultValue = null) =
     filter,
     defaultValue
   ]);
-  const handleChange = (newValue) => {
+  const handleChange = (newValue: string) => {
     setFilter({ ...filter, [key]: newValue });
   };
-  return [value, handleChange];
+  return [value, handleChange] as [string, (value: string) => void];
 };

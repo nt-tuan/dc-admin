@@ -4,14 +4,16 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import { Loader } from "@/components/commons";
 
 interface Props {
   parentPage?: string;
   title: string;
   actions?: React.ReactNode;
   children: React.ReactNode;
+  loading?: boolean;
 }
-const PageContentLayout = ({ parentPage, title, actions, children }: Props) => {
+const PageContentLayout = ({ parentPage, title, actions, children, loading }: Props) => {
   return (
     <Stack spacing={4} height="100%">
       <Stack direction="row" justifyContent="space-between">
@@ -28,7 +30,7 @@ const PageContentLayout = ({ parentPage, title, actions, children }: Props) => {
         {actions}
       </Stack>
       <Box height={0} flexGrow={1}>
-        {children}
+        {loading ? <Loader /> : children}
       </Box>
     </Stack>
   );

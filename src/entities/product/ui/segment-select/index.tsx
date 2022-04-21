@@ -7,9 +7,10 @@ interface Props {
   value?: string;
   label: string;
   placeholder: string;
+  required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const SegmentSelect = ({ name, value, label, placeholder, onChange }: Props) => {
+const SegmentSelect = ({ name, value, label, placeholder, required, onChange }: Props) => {
   const { data, isLoading } = useGetSegments();
   const dataSource = React.useMemo(() => {
     if (data == null) return [];
@@ -22,6 +23,7 @@ const SegmentSelect = ({ name, value, label, placeholder, onChange }: Props) => 
     <AutocompleteField
       loading={isLoading}
       label={label}
+      required={required}
       dataSource={dataSource}
       name={name}
       value={value}

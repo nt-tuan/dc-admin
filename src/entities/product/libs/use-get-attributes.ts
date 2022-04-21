@@ -1,7 +1,7 @@
 import {
   createAttribute,
-  getAttributeByCode,
-  getAttributes,
+  getAttribute,
+  getProductAttributes,
   updateAttribute
 } from "@/services/pim.service";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -9,16 +9,17 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useMessage } from "@/hooks/use-message";
 
 const ATTRIBUTES_QUERY_KEY = "product-attributes";
+
 export const useGetAttributes = () => {
-  return useQuery(ATTRIBUTES_QUERY_KEY, getAttributes);
+  return useQuery(ATTRIBUTES_QUERY_KEY, getProductAttributes);
 };
 export const useInvalidateGetAttibutes = () => {
   const queryClient = useQueryClient();
   return () => queryClient.invalidateQueries(ATTRIBUTES_QUERY_KEY);
 };
 
-export const useGetAttributeByCode = () => {
-  return useQuery(ATTRIBUTES_QUERY_KEY, getAttributeByCode);
+export const useGetAttribute = () => {
+  return useQuery("product-attribute", getAttribute);
 };
 
 export const useCreateAttribute = () => {

@@ -1,37 +1,54 @@
-import { Loader } from "@/components/commons";
+import React from "react";
 import { TextField } from "@/components/commons/fields";
-import { Form, Formik } from "formik";
-import { getActualCode } from "../../libs/tree-node";
-import { useGetFamilies } from "../../libs/use-get-families";
+import { Form, Formik, FormikProps } from "formik";
 import FamilySelect from "../family-select";
 import FormModal, { BaseFormModalProps } from "../form-modal";
+import Stack from "@mui/material/Stack";
+import { extractLocalCode } from "../../libs/tree-node";
+import { useUpdateClassTitle } from "../../libs/use-update-entity";
 
 interface Props extends BaseFormModalProps {
   code: string;
   title: string;
-  segmentCode: string;
+  parentCode: string | undefined;
 }
 
-const EditClassModal = ({ code, segmentCode, title, open, onClose }: Props) => {
-  const { data, isLoading } = useGetFamilies();
-  const submit = () => {};
+interface FormValue {
+  title: string;
+  familyCode: string;
+}
+const EditClassModal = ({ code, parentCode, title, open, onClose }: Props) => {
+  const { mutate, isLoading } = useUpdateClassTitle(code);
+  const ref = React.useRef<FormikProps<FormValue>>(null);
+  const { familyCode } = extractLocalCode(parentCode);
+  const triggerSubmit = () => {
+    ref.current?.submitForm();
+  };
+  const submit = (value: FormValue) => {
+    mutate(value, {
+      onSuccess: () => onClose()
+    });
+  };
   return (
-    <FormModal open={open} onClose={onClose} title={`Edit ${title}`} onSave={submit}>
-      {data == null || isLoading ? (
-        <Loader />
-      ) : (
-        <Formik initialValues={{ name: title }} onSubmit={submit}>
-          <Form>
+    <FormModal
+      open={open}
+      onClose={onClose}
+      title={`Edit ${title}`}
+      onSave={triggerSubmit}
+      isLoading={isLoading}
+    >
+      <Formik innerRef={ref} initialValues={{ title, familyCode }} onSubmit={submit}>
+        <Form>
+          <Stack spacing={3}>
             <TextField required name="title" label="Family Name" fieldConfig={{}} />
             <FamilySelect
-              segmentCode={getActualCode(segmentCode)}
-              name="parentSegment"
-              label="Parent Segment"
-              placeholder="Select Parent Segment"
+              name="familyCode"
+              label="Parent Family"
+              placeholder="Select Parent Family"
             />
-          </Form>
-        </Formik>
-      )}
+          </Stack>
+        </Form>
+      </Formik>
     </FormModal>
   );
 };

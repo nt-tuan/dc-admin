@@ -15,18 +15,18 @@ const useDeleteProductClassification = (
 ) => {
   const { mutate } = useMutation(async () => {
     const deletedCodes = Object.keys(nodeSelection).filter((item) => nodeSelection[item]);
-    const deletedSegments: number[] = [];
-    const deletedFamilies: number[] = [];
-    const deletedClasses: number[] = [];
-    const deletedBricks: number[] = [];
-    const deletedAttributes: number[] = [];
+    const deletedSegments: string[] = [];
+    const deletedFamilies: string[] = [];
+    const deletedClasses: string[] = [];
+    const deletedBricks: string[] = [];
+    const deletedAttributes: string[] = [];
 
     for (const code of deletedCodes) {
       const node = nodes[code];
       if (node == null) continue;
       switch (node.type) {
         case "Segment":
-          deletedSegments.push(Number(node.actualCode));
+          deletedSegments.push(node.actualCode);
           break;
         case "Family":
           deletedFamilies.push(node.actualCode);

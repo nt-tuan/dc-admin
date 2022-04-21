@@ -7,10 +7,19 @@ interface Props {
   value?: string;
   label: string;
   placeholder: string;
-  segmentCode?: number;
+  segmentCode?: string;
+  required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const FamilySelect = ({ segmentCode, name, value, label, placeholder, onChange }: Props) => {
+const FamilySelect = ({
+  segmentCode,
+  name,
+  value,
+  label,
+  placeholder,
+  required,
+  onChange
+}: Props) => {
   const { data } = useGetFamilies();
   const dataSource = React.useMemo(() => {
     const tempFamilies = data?.families.filter(
@@ -26,6 +35,7 @@ const FamilySelect = ({ segmentCode, name, value, label, placeholder, onChange }
   return (
     <AutocompleteField
       label={label}
+      required={required}
       placeholder={placeholder}
       dataSource={dataSource}
       name={name}

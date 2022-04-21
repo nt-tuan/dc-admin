@@ -98,6 +98,17 @@ export const adminTheme = createTheme({
           }
         }
       }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          fontWeight: "bold",
+          paddingLeft: 8,
+          minWidth: 170,
+          alignItems: "flex-start"
+        }
+      }
     }
   },
   palette,

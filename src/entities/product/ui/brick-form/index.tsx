@@ -1,51 +1,69 @@
 import React from "react";
-import { Formik, Form } from "formik";
+import { Form, FormikProps } from "formik";
 import Grid from "@mui/material/Grid";
-import { TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import SegmentSelect from "../segment-select";
 import FamilySelect from "../family-select";
-import { RenderField } from "@/components/commons/fields";
+import { RenderField, TextField } from "@/components/commons/fields";
 import ClassSelect from "../class-select";
 
-interface BrickValue {
-  code?: number;
-  title?: string;
-  familyCode?: number;
-  classCode?: number;
-  segmentCode?: number;
+export interface BrickFormValue {
+  code: string;
+  title: string;
+  familyCode: string;
+  classCode: string;
+  segmentCode: string;
+  hsCode: string;
 }
 
 interface Props {
-  onSubmit: (value: BrickValue) => void;
-  initialValues: BrickValue;
+  gridColumns?: number;
 }
 
-const BrickForm = ({ onSubmit, initialValues }: Props) => {
-  return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+const BrickForm = React.forwardRef(
+  ({ gridColumns = 12 }: Props, ref: React.RefObject<FormikProps<BrickFormValue>>) => {
+    return (
       <Form>
-        <Grid container>
+        <Grid container spacing={3} columns={gridColumns}>
           <Grid item xs={6}>
-            <TextField name="code" label="Brick Code" placeholder="Ex: 10001198 or Mobile Phones" />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField name="name" label="Brick Name" placeholder="Ex: Mobilephone/Smartphones" />
-          </Grid>
-          <Grid item xs={6}>
-            <SegmentSelect
-              name="parentSegment"
-              label="Parent Segment"
-              placeholder="Ex: Communications"
+            <TextField
+              required
+              fullWidth
+              name="code"
+              label="Brick Code"
+              placeholder="Ex: 10001198 or Mobile Phones"
+              fieldConfig={{}}
             />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              required
+              fullWidth
+              name="title"
+              label="Brick Name"
+              placeholder="Ex: Mobilephone/Smartphones"
+              fieldConfig={{}}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Box width="100%">
+              <SegmentSelect
+                required
+                name="segmentCode"
+                label="Parent Segment"
+                placeholder="Ex: Communications"
+              />
+            </Box>
           </Grid>
           <Grid item xs={6}>
             <RenderField>
               {({ getFieldValue }) => {
-                const segmentCode = getFieldValue("parentSegment");
+                const segmentCode = getFieldValue("segmentCode");
                 return (
                   <FamilySelect
+                    required
                     segmentCode={segmentCode}
-                    name="parentFamily"
+                    name="familyCode"
                     label="Parent Family"
                     placeholder="Ex: Communications"
                   />
@@ -56,11 +74,12 @@ const BrickForm = ({ onSubmit, initialValues }: Props) => {
           <Grid item xs={6}>
             <RenderField>
               {({ getFieldValue }) => {
-                const familyCode = getFieldValue("parentFamily");
+                const familyCode = getFieldValue("familyCode");
                 return (
                   <ClassSelect
+                    required
                     familyCode={familyCode}
-                    name="parentClass"
+                    name="classCode"
                     label="Parent Class"
                     placeholder="Ex: Mobile Communication Devices/Services "
                   />
@@ -70,17 +89,18 @@ const BrickForm = ({ onSubmit, initialValues }: Props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              multiline
-              rows={3}
+              required
+              fullWidth
               name="hsCode"
               placeholder="Ex: 85171300, 851713"
               label="HS Code"
+              fieldConfig={{}}
             />
           </Grid>
         </Grid>
       </Form>
-    </Formik>
-  );
-};
+    );
+  }
+);
 
 export default BrickForm;
