@@ -18,8 +18,8 @@ export const useInvalidateGetAttibutes = () => {
   return () => queryClient.invalidateQueries(ATTRIBUTES_QUERY_KEY);
 };
 
-export const useGetAttribute = () => {
-  return useQuery("product-attribute", getAttribute);
+export const useGetAttribute = (code: string) => {
+  return useQuery(["product-attribute", code], () => getAttribute(code ?? ""), { enabled: !!code });
 };
 
 export const useCreateAttribute = () => {

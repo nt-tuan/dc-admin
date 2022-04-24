@@ -1,13 +1,15 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-const OptionsFormEmpty = () => {
+const OptionsFormEmpty = ({ onSetLayoutReady }: { onSetLayoutReady: () => void }) => {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
+    <Stack justifyContent="center" alignItems="center" direction="column" spacing={2}>
       <Typography>Sorry, you have not created any options for this attribute.</Typography>
-      <Button>Add Option</Button>
-    </Box>
+      <Button variant="contained" onClick={onSetLayoutReady}>
+        Add Option
+      </Button>
+    </Stack>
   );
 };
 

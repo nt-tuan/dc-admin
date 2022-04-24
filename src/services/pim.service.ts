@@ -8,8 +8,9 @@ export interface AttributeValue {
   title: string;
 }
 export interface ProductAttribute extends BaseEntity {
-  attributeValues: AttributeValue[];
+  attributeValue: AttributeValue[];
 }
+
 export interface ProductBrick extends BaseEntity {
   attributes?: ProductAttribute[];
   classCode: string;
@@ -162,14 +163,13 @@ export interface AttributesResponse {
   attributes: Attributes[];
 }
 
-export const getAttribute: (attributeCode: string) => Promise<ProductAttribute | null> = (
-  attributeCode
-) => backendAPI.get(`/pim/product-classification/attributes/${attributeCode}`);
+export const getAttribute: (code: string) => Promise<ProductAttribute | null> = (code) =>
+  backendAPI.get(`/pim/product-classification/attributes/${code}`);
 
-export const createAttribute: (values: ProductAttribute) => Promise<ProductAttribute | null> = (
-  values
-) => backendAPI.post("/pim/product-classification/attributes", values);
+export const createAttribute: (payload: BaseEntity) => Promise<ProductAttribute | null> = (
+  payload
+) => backendAPI.post("/pim/product-classification/attributes", payload);
 
-export const updateAttribute: (values: ProductAttribute) => Promise<ProductAttribute | null> = (
-  values
-) => backendAPI.put(`/pim/product-classification/attributes${values.code}`, values);
+export const updateAttribute: (payload: ProductAttribute) => Promise<ProductAttribute | null> = (
+  payload
+) => backendAPI.put(`/pim/product-classification/attributes/${payload.code}`, payload);

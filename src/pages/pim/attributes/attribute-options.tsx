@@ -1,28 +1,31 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useCallback, useState } from "react";
 
+import { AttributeValue } from "@/services/pim.service";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { IconButton } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import { Typography } from "antd";
-
-interface Options {
-  title: string;
-  value: string;
-}
+import Typography from "@mui/material/Typography";
+import { useCallback } from "react";
 
 interface Props {
   editable: boolean;
+  options: AttributeValue[];
+  onChange: (options: AttributeValue[]) => void;
+  onDelete: (index: number) => void;
+}
+interface OptionComponentProps {
+  editable: boolean;
   index: number;
-  options: Options[];
+  option: AttributeValue;
+  onDelete: (index: number) => void;
 }
 
-const OptionComponent = ({ option, index }) => {
-  const { title, value } = option;
+const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentProps) => {
+  const { title, code } = option;
 
   return (
-    <Draggable index={index} draggableId={value}>
+    <Draggable index={index} draggableId={code}>
       {(provided) => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
           <Stack
@@ -35,10 +38,10 @@ const OptionComponent = ({ option, index }) => {
             bgcolor="white"
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <DragIndicatorIcon />
+              {editable && <DragIndicatorIcon />}
               <Typography>{title}</Typography>
             </Stack>
-            <IconButton color="error">
+            <IconButton color="error" onClick={() => onDelete(index)}>
               <DeleteOutlineIcon />
             </IconButton>
           </Stack>
@@ -48,13 +51,11 @@ const OptionComponent = ({ option, index }) => {
   );
 };
 
-const AttributeOptions = ({ editable, options }: Props) => {
-  const [sourceOptions, setSourceOptions] = useState(options);
-
+const AttributeOptions = ({ editable, options: sourceOptions, onChange, onDelete }: Props) => {
   /**
    * reordering the result
    */
-  const reorder = (list, startIndex, endIndex) => {
+  const reorder = (list: AttributeValue[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -64,24 +65,27 @@ const AttributeOptions = ({ editable, options }: Props) => {
   const onDragEnd = useCallback(
     ({ source, destination }) => {
       if (!destination) return;
-      const items = reorder(sourceOptions, source.index, destination.index);
-      setSourceOptions(items);
+      const items: AttributeValue[] = reorder(sourceOptions, source.index, destination.index);
+      onChange(items);
     },
-    [sourceOptions]
+    [sourceOptions, onChange]
   );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="options-container">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            // style={{ backgroundColor: snapshot.isDraggingOver ? "blue" : "grey" }}
-            {...provided.droppableProps}
-          >
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
             {sourceOptions.map((option, index) => (
-              <OptionComponent key={option.value} option={option} index={index} />
+              <OptionComponent
+                key={option.code}
+                option={option}
+                index={index}
+                editable={editable}
+                onDelete={onDelete}
+              />
             ))}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>

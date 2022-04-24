@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
+import { Loader } from "@/components/commons";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import ArrowBack from "@mui/icons-material/ArrowBack";
-import IconButton from "@mui/material/IconButton";
-import { Loader } from "@/components/commons";
 
 interface Props {
   parentPage?: string;
-  title: string;
+  title: string | React.ReactNode;
   actions?: React.ReactNode;
   children: React.ReactNode;
   loading?: boolean;
