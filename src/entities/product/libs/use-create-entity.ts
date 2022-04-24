@@ -1,3 +1,4 @@
+import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import {
   createProductBrick,
   createProductClass,
@@ -10,6 +11,7 @@ import {
   updateProductBrick
 } from "@/services/pim.service";
 import { useMutation } from "react-query";
+import { useHistory } from "react-router-dom";
 
 export const useCreateSegment = ({
   onSuccess
@@ -51,5 +53,10 @@ export const useCreateProductBrick = (options?: {
 };
 
 export const useUpdateProductBrick = () => {
-  return useMutation(updateProductBrick);
+  const history = useHistory();
+  return useMutation(updateProductBrick, {
+    onSuccess: async () => {
+      history.push(pimRoutePaths.PRODUCT_BRICK);
+    }
+  });
 };

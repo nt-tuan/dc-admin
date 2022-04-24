@@ -28,7 +28,7 @@ export const getAncestorCodes = (code?: string) => {
     const nextAncestor = lastAncestor ? `${lastAncestor}.${codePart}` : codePart;
     ancestors.push(nextAncestor);
   }
-  return ancestors.reverse().slice(0, ancestors.length - 1);
+  return ancestors.slice(0, ancestors.length - 1).reverse();
 };
 
 export const getDecendantCodes = (nodeDictionary: Dictionary<TreeNodeValue>, code?: string) => {
@@ -66,7 +66,7 @@ export const getLowerEntityType = (type: EntityType) => {
   return entityTypes[foundIndex + 1];
 };
 
-export const getHSCode = () => {
+export const getHSCode = (node: TreeNodeValue) => {
   return "No HS Codes";
 };
 

@@ -1,32 +1,33 @@
 import { DTCModal } from "@/components/commons";
-import WarningAmber from "@mui/icons-material/WarningAmber";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 
 interface Props {
+  open?: boolean;
+  isLoading?: boolean;
   onCancel: () => void;
-  onSave: () => void;
-  onClose: () => void;
-  isUpdating: boolean;
+  onDelete: () => void;
 }
-const LeaveConfirm = ({ onCancel, onSave, onClose, isUpdating }: Props) => {
+const DeleteConfirm = ({ open, onCancel, onDelete, isLoading }: Props) => {
   return (
     <DTCModal
-      size="small"
-      onClose={onClose}
-      open
-      title={<WarningAmber color="warning" />}
+      size="tiny"
+      onClose={onCancel}
+      open={open}
+      title="Confirm Delete"
       content={
         <Stack alignItems="center" spacing={2}>
-          <Typography variant="body2">There are unsaved changes</Typography>
+          <Typography variant="body2" textAlign="center">
+            Are you sure you want to delete the selected item(s)?
+          </Typography>
           <Stack direction="row" spacing={2}>
             <Button onClick={onCancel} variant="outlined">
               Cancel
             </Button>
-            <LoadingButton loading={isUpdating} onClick={onSave} variant="contained">
-              Save
+            <LoadingButton loading={isLoading} color="error" onClick={onDelete} variant="contained">
+              Delete
             </LoadingButton>
           </Stack>
         </Stack>
@@ -35,4 +36,4 @@ const LeaveConfirm = ({ onCancel, onSave, onClose, isUpdating }: Props) => {
   );
 };
 
-export default LeaveConfirm;
+export default DeleteConfirm;

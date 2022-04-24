@@ -96,11 +96,18 @@ export const useUpdateClassTitle = (localCode: string) => {
   return { mutate, isLoading };
 };
 
-export const useDeleteBricks = () => {
+export const useDeleteBricks = (options?: {
+  onError: (error: Error) => void;
+  onSuccess: () => void;
+}) => {
   const invalidate = useInvalidateBrick();
   return useMutation(deleteBulkBricks, {
     onSuccess: async () => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
       await invalidate();
-    }
+    },
+    onError: options?.onError
   });
 };

@@ -2,7 +2,13 @@ import {
   getAttributeEditionPath,
   getBrickEditionPath
 } from "@/commons/consts/system/routes/pim-route-paths.const";
-import { getSegment, Segment } from "@/services/pim.service";
+import {
+  getProductBrick,
+  getProductClass,
+  getProductFamily,
+  getSegment,
+  Segment
+} from "@/services/pim.service";
 import Edit from "@mui/icons-material/Edit";
 import {
   Box,
@@ -12,13 +18,12 @@ import {
   Table,
   TableBody,
   TableHead,
-  Typography,
-  Chip
+  Typography
 } from "@mui/material";
 import MuiTableRow from "@mui/material/TableRow";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { countNotSetHSCode, getActualCode, getHSCode } from "../../libs/tree-node";
+import { getActualCode, getDecendantCodes, getHSCode } from "../../libs/tree-node";
 import useDeleteProductClassification from "../../libs/use-delete-product-classification";
 import { EntityType, TreeNodeValue } from "../../model/types";
 import EditClassModal from "../edit-class-modal";
@@ -41,7 +46,9 @@ const Consumer = () => {
   const {
     nodes: allNodes,
     getNodes,
+    setNodes,
     nodeSelection,
+    setNodeSelection,
     updateNode
   } = useProductClassificationContext();
 
@@ -49,6 +56,22 @@ const Consumer = () => {
     allNodes,
     nodeSelection
   );
+  const removeAllDecendants = () => {
+    const deletedCodes = Object.keys(nodeSelection).filter((item) => nodeSelection[item]);
+    const allDecendantCodes: string[] = [];
+    for (const code of deletedCodes) {
+      const decendantCodes = getDecendantCodes(allNodes, code);
+      allDecendantCodes.push(...decendantCodes);
+    }
+    const nextNodes = { ...allNodes };
+    const nextNodeSelection = { ...nodeSelection };
+    for (const deletedCode of allDecendantCodes) {
+      delete nextNodes[deletedCode];
+      delete nextNodeSelection[deletedCode];
+    }
+    setNodes(nextNodes);
+    setNodeSelection(nextNodeSelection);
+  };
   const nodes = React.useMemo(() => {
     return getNodes();
   }, [getNodes]);
@@ -91,12 +114,9 @@ const Consumer = () => {
         {checkboxCells}
         {productClassification}
         <TableCell>
-          {nodeValue.type === "Segment" && (
-            <Chip color="error" size="small" label={countNotSetHSCode()} />
-          )}
           {nodeValue.type === "Brick" && (
             <Typography variant="body2" color="error">
-              {getHSCode()}
+              {getHSCode(nodeValue)}
             </Typography>
           )}
         </TableCell>
@@ -117,7 +137,10 @@ const Consumer = () => {
             <TableCell colSpan={2}>
               <Stack px={1.5} direction="row" justifyContent="space-between">
                 {canDelete && (
-                  <Button variant="contained" onClick={() => deleteEntities()}>
+                  <Button
+                    variant="contained"
+                    onClick={() => deleteEntities(undefined, { onSuccess: removeAllDecendants })}
+                  >
                     Bulk Delete
                   </Button>
                 )}
@@ -176,12 +199,33 @@ const familiesLoader = async (code?: string) => {
   if (segment == null) return [];
   return segment.families ?? [];
 };
+const classesLoader = async (code?: string) => {
+  if (code == null) return [];
+  const family = await getProductFamily(code);
+  if (family == null) return [];
+  return family.classes ?? [];
+};
+const bricksLoader = async (code?: string) => {
+  if (code == null) return [];
+  const cl = await getProductClass(code);
+  if (cl == null) return [];
+  return cl.bricks ?? [];
+};
+const attributesLoader = async (code?: string) => {
+  if (code == null) return [];
+  const brick = await getProductBrick(code);
+  if (brick == null) return [];
+  return brick.attributes ?? [];
+};
 const UpdateClassificationTable = ({ segments }: Props) => {
   return (
     <Provider
       segments={segments}
       loaders={{
-        Family: familiesLoader
+        Family: familiesLoader,
+        Class: classesLoader,
+        Brick: bricksLoader,
+        Attribute: attributesLoader
       }}
     >
       <Consumer />

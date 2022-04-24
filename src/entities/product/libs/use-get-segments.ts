@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 const SEGMENT_QUERY_KEY = "segments";
 
 export const useGetSegments = () => {
-  return useQuery(SEGMENT_QUERY_KEY, getSegments, {
+  return useQuery(SEGMENT_QUERY_KEY, () => getSegments(), {
     refetchOnMount: false
   });
 };

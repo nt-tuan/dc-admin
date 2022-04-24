@@ -38,7 +38,7 @@ const AttributeSelect = ({ attributes, onDelete }: Props) => {
         <TableBody>
           {attributes.map((att) => {
             return (
-              <TableRow>
+              <TableRow key={att.code}>
                 <TableCell>{att.title}</TableCell>
                 <TableCell>{getAttributeType(att)}</TableCell>
                 <TableCell>

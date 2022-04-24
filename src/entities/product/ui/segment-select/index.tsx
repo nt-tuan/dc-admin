@@ -19,6 +19,7 @@ const SegmentSelect = ({ name, value, label, placeholder, required, onChange }: 
       label: segment.title
     }));
   }, [data]);
+
   return (
     <AutocompleteField
       loading={isLoading}

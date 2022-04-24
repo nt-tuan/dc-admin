@@ -12,17 +12,32 @@ import { ProductBrick } from "@/services/pim.service";
 import NavigationPrompt from "react-router-navigation-prompt";
 import Layout from "./layout";
 import LeaveConfirm from "@/entities/product/ui/leave-confirm";
+import { useFormikContext } from "formik";
 
-const LeaveConfirmConsumer = () => {
-  const { hasChanged, triggerSubmit } = React.useContext(BrickFormTabsContext);
+const LeaveConfirmConsumer = ({ isUpdating }: { isUpdating: boolean }) => {
+  const formContext = useFormikContext();
+  const { hasAttributesChanged, triggerSubmit } = React.useContext(BrickFormTabsContext);
 
   return (
-    <NavigationPrompt when={true}>
-      {({ onConfirm }) => {
-        if (!hasChanged()) {
-          onConfirm();
-        }
-        return <LeaveConfirm onCancel={onConfirm} onSave={triggerSubmit} />;
+    <NavigationPrompt
+      when={(currentLocation, nextLocation, _action) => {
+        return (
+          nextLocation?.pathname !== currentLocation.pathname &&
+          formContext?.submitCount != null &&
+          formContext.submitCount === 0 &&
+          (hasAttributesChanged() || formContext?.dirty)
+        );
+      }}
+    >
+      {({ onConfirm, onCancel }) => {
+        return (
+          <LeaveConfirm
+            isUpdating={isUpdating}
+            onClose={onCancel}
+            onCancel={onConfirm}
+            onSave={triggerSubmit}
+          />
+        );
       }}
     </NavigationPrompt>
   );
@@ -42,21 +57,22 @@ const Edition = () => {
   };
 
   return (
-    <BrickFormTabsProvider onSubmit={submit} brick={data}>
+    <BrickFormTabsProvider
+      classCode={classCode}
+      familyCode={familyCode}
+      segmentCode={segmentCode}
+      onSubmit={submit}
+      brick={data}
+      isLoading={isLoading || isParentLoading}
+    >
       <Layout
         title={data?.title ?? ""}
         isSaving={isUpdating}
         loading={isLoading || isParentLoading}
       >
-        {data && (
-          <BrickFormTabsConsumer
-            classCode={classCode}
-            familyCode={familyCode}
-            segmentCode={segmentCode}
-          />
-        )}
+        {data && <BrickFormTabsConsumer />}
       </Layout>
-      <LeaveConfirmConsumer />
+      <LeaveConfirmConsumer isUpdating={isUpdating} />
     </BrickFormTabsProvider>
   );
 };

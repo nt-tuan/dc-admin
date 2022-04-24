@@ -8,7 +8,7 @@ RUN apk add --no-cache git
 RUN yarn install
 RUN npx browserslist@latest --update-db
 COPY . /app
-RUN yarn build-prod
+RUN yarn build
 
 # production environment
 FROM nginx:alpine

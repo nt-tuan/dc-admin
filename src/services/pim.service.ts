@@ -1,4 +1,4 @@
-import { backendAPI } from "@/utils/httpAPI.util";
+import { backendAPI, jobAPI } from "@/utils/httpAPI.util";
 export interface BaseEntity {
   code: string;
   title: string;
@@ -13,6 +13,7 @@ export interface ProductAttribute extends BaseEntity {
 export interface ProductBrick extends BaseEntity {
   attributes?: ProductAttribute[];
   classCode: string;
+  hsCode: string;
   attributeCodes?: string[];
 }
 export interface ProductClass extends BaseEntity {
@@ -34,8 +35,11 @@ export const getDefaultSegments: () => Promise<Segment[]> = () =>
 export interface SegmentResponse {
   segments: Segment[];
 }
-export const getSegments: () => Promise<SegmentResponse | null> = () =>
-  backendAPI.get("/pim/product-classification/segments");
+export const getSegments: (params?: {
+  page: number;
+  size: number;
+}) => Promise<SegmentResponse | null> = (params = { page: 1, size: 100 }) =>
+  backendAPI.get("/pim/product-classification/segments", params);
 export const getSegment: (code: string) => Promise<Segment | null> = (code) =>
   backendAPI.get(`/pim/product-classification/segments/${code}`);
 export const updateSegment: (code: string, segment: Segment) => Promise<Segment> = (
@@ -87,6 +91,7 @@ export const createProductClass: (payload: {
 }) => Promise<ProductClass> = (payload) =>
   backendAPI.post(`/pim/product-classification/classes`, payload);
 
+// Product Bricks
 export const getProductBricks: () => Promise<{ bricks: ProductBrick[] }> = () =>
   backendAPI.get("/pim/product-classification/bricks");
 export const getProductBrick: (code: string) => Promise<ProductBrick> = (code: string) =>
@@ -95,12 +100,14 @@ export const createProductBrick: (payload: {
   code: string;
   title: string;
   classCode: string;
+  hsCode: string;
 }) => Promise<ProductBrick> = (payload) =>
   backendAPI.post(`/pim/product-classification/bricks`, payload);
 export const updateProductBrick: (payload: {
   code: string;
   title: string;
   classCode: string;
+  hsCode: string;
 }) => Promise<ProductBrick> = (payload) =>
   backendAPI.put(`/pim/product-classification/bricks/${payload.code}`, payload);
 
@@ -115,13 +122,10 @@ export const deleteBulkFamilies = (codes: string[]) =>
 
 export const deleteBulkClasses = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/classes/bulk", undefined, codes);
-
 export const deleteBulkBricks = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
-
 export const deleteBulkAttributes = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
-
 export const deleteBulkAttributeValues = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/attributes-values/bulk", undefined, codes);
 
@@ -146,4 +150,4 @@ export interface ImportSegment {
   }[];
 }
 export const importPimData = (segments: ImportSegment[]) =>
-  backendAPI.post("/pim/jobs/import", segments);
+  jobAPI.post("/pim/jobs/import", segments);
