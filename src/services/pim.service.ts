@@ -1,4 +1,5 @@
-import { backendAPI } from "@/utils/httpAPI.util";
+import { backendAPI, jobAPI } from "@/utils/httpAPI.util";
+// #region types
 export interface BaseEntity {
   code: string;
   title: string;
@@ -14,6 +15,7 @@ export interface ProductAttribute extends BaseEntity {
 export interface ProductBrick extends BaseEntity {
   attributes?: ProductAttribute[];
   classCode: string;
+  hsCode: string;
   attributeCodes?: string[];
 }
 export interface ProductClass extends BaseEntity {
@@ -24,108 +26,25 @@ export interface ProductFamily extends BaseEntity {
   classes?: ProductClass[];
   segmentCode: string;
 }
-
 export interface Segment extends BaseEntity {
   families?: ProductFamily[];
 }
-export const getDefaultSegments: () => Promise<Segment[]> = () =>
-  backendAPI.get("/pim/dc-data/product-classification/segments");
 
-// Product Segment
-export interface SegmentResponse {
-  segments: Segment[];
+export interface PaginationParams {
+  page: number;
+  size: number;
 }
-export const getSegments: () => Promise<SegmentResponse | null> = () =>
-  backendAPI.get("/pim/product-classification/segments");
-export const getSegment: (code: string) => Promise<Segment | null> = (code) =>
-  backendAPI.get(`/pim/product-classification/segments/${code}`);
-export const updateSegment: (code: string, segment: Segment) => Promise<Segment> = (
-  code,
-  segment
-) => backendAPI.put(`/pim/product-classification/segments/${code}`, segment);
-export const createSegment: (payload: { code: string; title: string }) => Promise<Segment> = (
-  payload
-) => backendAPI.post(`/pim/product-classification/segments`, payload);
+const defaultPagination: PaginationParams = {
+  page: 0,
+  size: 100
+};
+// #endregion
 
-// Product family
-export const getProductFamilies: () => Promise<{ families: ProductFamily[] }> = () =>
-  backendAPI.get("pim/product-classification/families");
-export const getProductFamily: (code: string) => Promise<ProductFamily> = (code) =>
-  backendAPI.get(`pim/product-classification/families/${code}`);
-export const updateProductFamily: (payload: {
-  code: string;
-  segmentCode: string;
-  title: string;
-}) => Promise<ProductFamily | undefined> = (payload) =>
-  backendAPI.put(`/pim/product-classification/families/${payload.code}`, payload);
-export const createProductFamily: (payload: {
-  code: string;
-  title: string;
-  segmentCode: string;
-}) => Promise<ProductFamily> = (payload) =>
-  backendAPI.post(`/pim/product-classification/families`, payload);
-
-// Product Class
+// #region DC API
+export const getDCSegments: () => Promise<Segment[]> = () =>
+  backendAPI.get("/pim/dc-data/product-classification/segments");
 export const getDCProductClass: (code: string) => Promise<ProductClass> = (code: string) =>
   backendAPI.get(`/pim/dc-data/product-classification/classes/${code}`);
-export const getProductClasses: (params?: {
-  page?: number;
-  size?: number;
-}) => Promise<{ classes: ProductClass[] }> = (params) =>
-  backendAPI.get("/pim/product-classification/classes", params);
-export const getProductClass: (code: string) => Promise<ProductClass> = (code: string) =>
-  backendAPI.get(`/pim/product-classification/classes/${code}`);
-export const updateProductClass: (payload: {
-  code: string;
-  title: string;
-  familyCode: string;
-}) => Promise<ProductClass> = (payload) =>
-  backendAPI.put(`/pim/product-classification/classes/${payload.code}`, payload);
-export const createProductClass: (payload: {
-  code: string;
-  title: string;
-  familyCode: string;
-}) => Promise<ProductClass> = (payload) =>
-  backendAPI.post(`/pim/product-classification/classes`, payload);
-
-export const getProductBricks: () => Promise<{ bricks: ProductBrick[] }> = () =>
-  backendAPI.get("/pim/product-classification/bricks");
-export const getProductBrick: (code: string) => Promise<ProductBrick> = (code: string) =>
-  backendAPI.get(`/pim/product-classification/bricks/${code}`);
-export const createProductBrick: (payload: {
-  code: string;
-  title: string;
-  classCode: string;
-}) => Promise<ProductBrick> = (payload) =>
-  backendAPI.post(`/pim/product-classification/bricks`, payload);
-export const updateProductBrick: (payload: {
-  code: string;
-  title: string;
-  classCode: string;
-}) => Promise<ProductBrick> = (payload) =>
-  backendAPI.put(`/pim/product-classification/bricks/${payload.code}`, payload);
-
-export const getProductAttributes: () => Promise<{ attributes: ProductAttribute[] }> = () =>
-  backendAPI.get("/pim/product-classification/attributes");
-
-export const deleteBulkSegments = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/segments/bulk", undefined, codes);
-
-export const deleteBulkFamilies = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/families/bulk", undefined, codes);
-
-export const deleteBulkClasses = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/classes/bulk", undefined, codes);
-
-export const deleteBulkBricks = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
-
-export const deleteBulkAttributes = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
-
-export const deleteBulkAttributeValues = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/attributes-values/bulk", undefined, codes);
-
 export interface ImportSegment {
   code: string;
   title: string;
@@ -147,29 +66,102 @@ export interface ImportSegment {
   }[];
 }
 export const importPimData = (segments: ImportSegment[]) =>
-  backendAPI.post("/pim/jobs/import", segments);
+  jobAPI.post("/pim/jobs/import", segments);
 
-export interface Attributes extends AttributeValue {
-  attributeValue: AttributeValue[];
-}
-export interface AttributesResponse {
-  _links: {
-    self: string;
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
-  attributes: Attributes[];
-}
+// #endregion
 
-export const getAttribute: (code: string) => Promise<ProductAttribute | null> = (code) =>
-  backendAPI.get(`/pim/product-classification/attributes/${code}`);
-
-export const createAttribute: (payload: BaseEntity) => Promise<ProductAttribute | null> = (
+// #region Product Segment
+export const getSegments: (params?: {
+  page: number;
+  size: number;
+}) => Promise<{ segments: Segment[] } | null> = (params = { page: 1, size: 100 }) =>
+  backendAPI.get("/pim/product-classification/segments", params);
+export const getSegment: (code: string) => Promise<Segment | null> = (code) =>
+  backendAPI.get(`/pim/product-classification/segments/${code}`);
+export const updateSegment: (segment: Segment) => Promise<Segment> = (segment) =>
+  backendAPI.put(`/pim/product-classification/segments/${segment.code}`, segment);
+export const createSegment: (payload: { code: string; title: string }) => Promise<Segment> = (
   payload
-) => backendAPI.post("/pim/product-classification/attributes", payload);
+) => backendAPI.post(`/pim/product-classification/segments`, payload);
+export const deleteBulkSegments = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/segments/bulk", undefined, codes);
+// #endregion
 
-export const updateAttribute: (payload: ProductAttribute) => Promise<ProductAttribute | null> = (
-  payload
-) => backendAPI.put(`/pim/product-classification/attributes/${payload.code}`, payload);
+// #region Product Family API
+export const getProductFamilies: (
+  params?: PaginationParams
+) => Promise<{ families: ProductFamily[] }> = (params = defaultPagination) =>
+  backendAPI.get("/pim/product-classification/families", params);
+export const getProductFamily: (code: string) => Promise<ProductFamily> = (code) =>
+  backendAPI.get(`/pim/product-classification/families/${code}`);
+export const updateProductFamily: (payload: {
+  code: string;
+  segmentCode: string;
+  title: string;
+}) => Promise<ProductFamily | undefined> = (payload) =>
+  backendAPI.put(`/pim/product-classification/families/${payload.code}`, payload);
+export const createProductFamily: (payload: {
+  code: string;
+  title: string;
+  segmentCode: string;
+}) => Promise<ProductFamily> = (payload) =>
+  backendAPI.post(`/pim/product-classification/families`, payload);
+export const deleteBulkFamilies = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/families/bulk", undefined, codes);
+// #endregion
+
+// #region Product Class API
+export const getProductClasses: (
+  params?: PaginationParams
+) => Promise<{ classes: ProductClass[] }> = (params = defaultPagination) =>
+  backendAPI.get("/pim/product-classification/classes", params);
+export const getProductClass: (code: string) => Promise<ProductClass> = (code: string) =>
+  backendAPI.get(`/pim/product-classification/classes/${code}`);
+export const updateProductClass: (payload: {
+  code: string;
+  title: string;
+  familyCode: string;
+}) => Promise<ProductClass> = (payload) =>
+  backendAPI.put(`/pim/product-classification/classes/${payload.code}`, payload);
+export const createProductClass: (payload: {
+  code: string;
+  title: string;
+  familyCode: string;
+}) => Promise<ProductClass> = (payload) =>
+  backendAPI.post(`/pim/product-classification/classes`, payload);
+export const deleteBulkClasses = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/classes/bulk", undefined, codes);
+// #endregion
+
+// #region Product Brick API
+export const getProductBricks: (
+  params?: PaginationParams
+) => Promise<{ bricks: ProductBrick[] }> = (params = defaultPagination) =>
+  backendAPI.get("/pim/product-classification/bricks", params);
+export const getProductBrick: (code: string) => Promise<ProductBrick> = (code: string) =>
+  backendAPI.get(`/pim/product-classification/bricks/${code}`);
+export const createProductBrick: (payload: {
+  code: string;
+  title: string;
+  classCode: string;
+  hsCode: string;
+}) => Promise<ProductBrick> = (payload) =>
+  backendAPI.post(`/pim/product-classification/bricks`, payload);
+export const updateProductBrick: (payload: {
+  code: string;
+  title: string;
+  classCode: string;
+  hsCode: string;
+}) => Promise<ProductBrick> = (payload) =>
+  backendAPI.put(`/pim/product-classification/bricks/${payload.code}`, payload);
+export const deleteBulkBricks = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
+// #endregion
+
+export const getProductAttributes: () => Promise<{ attributes: ProductAttribute[] }> = () =>
+  backendAPI.get("/pim/product-classification/attributes");
+
+export const deleteBulkAttributes = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
+export const deleteBulkAttributeValues = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/attributes-values/bulk", undefined, codes);

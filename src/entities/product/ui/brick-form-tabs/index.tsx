@@ -11,6 +11,10 @@ import validationSchema from "../brick-form/validation-schema";
 interface Props {
   brick?: ProductBrick;
   onSubmit: (brick: ProductBrick) => void;
+  classCode: string;
+  familyCode: string;
+  segmentCode: string;
+  isLoading?: boolean;
 }
 interface IBrickFormTabsContext {
   triggerSubmit: () => void;
@@ -20,7 +24,7 @@ interface IBrickFormTabsContext {
   addAttributes: (addedAttributes: ProductAttribute[]) => void;
   brick?: ProductBrick;
   ref: React.RefObject<FormikProps<BrickFormValue>>;
-  hasChanged: () => boolean;
+  hasAttributesChanged: () => boolean;
 }
 export const BrickFormTabsContext = React.createContext<IBrickFormTabsContext>(
   {} as IBrickFormTabsContext
@@ -28,7 +32,11 @@ export const BrickFormTabsContext = React.createContext<IBrickFormTabsContext>(
 export const BrickFormTabsProvider = ({
   brick,
   onSubmit,
-  children
+  children,
+  classCode,
+  familyCode,
+  segmentCode,
+  isLoading
 }: React.PropsWithChildren<Props>) => {
   const ref = React.useRef<FormikProps<BrickFormValue>>(null);
   const [attributes, setAttributes] = React.useState<ProductAttribute[]>(brick?.attributes ?? []);
@@ -42,6 +50,7 @@ export const BrickFormTabsProvider = ({
       code: values.code,
       title: values.title,
       classCode: values.classCode,
+      hsCode: values.hsCode,
       attributes
     });
   };
@@ -60,15 +69,7 @@ export const BrickFormTabsProvider = ({
       return [...uniqueAttributes, ...current];
     });
   };
-  const hasChanged = () => {
-    if (ref.current == null) return false;
-    const { initialValues, values } = ref.current;
-    const isValueChanged =
-      initialValues.code !== values.code ||
-      initialValues.title !== values.title ||
-      initialValues.classCode !== values.classCode;
-    console.log(initialValues, values);
-    if (isValueChanged) return true;
+  const hasAttributesChanged = () => {
     const initialAttributeCodes = (brick?.attributes ?? [])
       .map((att) => att.code)
       .sort()
@@ -89,21 +90,34 @@ export const BrickFormTabsProvider = ({
         ref,
         attributes,
         brick,
-        hasChanged
+        hasAttributesChanged
       }}
     >
-      {children}
+      {!isLoading ? (
+        <Formik
+          innerRef={ref}
+          initialValues={{
+            code: brick?.code ?? "",
+            title: brick?.title ?? "",
+            segmentCode,
+            familyCode,
+            classCode,
+            hsCode: brick?.hsCode ?? ""
+          }}
+          onSubmit={submit}
+          validationSchema={validationSchema}
+        >
+          <div>{children}</div>
+        </Formik>
+      ) : (
+        children
+      )}
     </BrickFormTabsContext.Provider>
   );
 };
 
-interface ConsumerProps {
-  classCode: string;
-  familyCode: string;
-  segmentCode: string;
-}
-export const BrickFormTabsConsumer = ({ classCode, familyCode, segmentCode }: ConsumerProps) => {
-  const { ref, attributes, deleteAttribute, addAttributes, submit, brick } = React.useContext(
+export const BrickFormTabsConsumer = () => {
+  const { ref, attributes, deleteAttribute, addAttributes } = React.useContext(
     BrickFormTabsContext
   );
 
@@ -125,25 +139,11 @@ export const BrickFormTabsConsumer = ({ classCode, familyCode, segmentCode }: Co
   ];
   const [value, onChange] = useTabSearchParams(tabs);
   return (
-    <Formik
-      innerRef={ref}
-      initialValues={{
-        code: brick?.code ?? "",
-        title: brick?.title ?? "",
-        segmentCode,
-        familyCode,
-        classCode,
-        hsCode: ""
-      }}
-      onSubmit={submit}
-      validationSchema={validationSchema}
-    >
-      <DTCTabs
-        tabs={tabs}
-        value={value}
-        onChange={onChange}
-        actions={value === "Attributes" ? <AttributeDropdown onAdd={addAttributes} /> : null}
-      />
-    </Formik>
+    <DTCTabs
+      tabs={tabs}
+      value={value}
+      onChange={onChange}
+      actions={value === "Attributes" ? <AttributeDropdown onAdd={addAttributes} /> : null}
+    />
   );
 };

@@ -3,6 +3,7 @@ import { TextField } from "@/components/commons/fields";
 import { Form, Formik, FormikProps } from "formik";
 import FormModal, { BaseFormModalProps } from "../form-modal";
 import Stack from "@mui/material/Stack";
+import { newSegmentValidation } from "./validation-schema";
 
 interface FormValue {
   title: string;
@@ -26,7 +27,12 @@ const NewSegmentModal = ({ open, onClose, onSubmit, isLoading }: Props) => {
       onSave={triggerSubmit}
       isLoading={isLoading}
     >
-      <Formik innerRef={ref} initialValues={{ title: "", code: "" }} onSubmit={onSubmit}>
+      <Formik
+        innerRef={ref}
+        initialValues={{ title: "", code: "" }}
+        onSubmit={onSubmit}
+        validationSchema={newSegmentValidation}
+      >
         <Form>
           <Stack spacing={3}>
             <TextField

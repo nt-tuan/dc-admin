@@ -70,9 +70,9 @@ export const useErrorHandler = () => {
         log(error);
       }
       if (error != null) {
-        const { errMsg } = error;
-        if (typeof errMsg === "string" && error.message === "400") {
-          message.error(errMsg);
+        const errorString = parseServerError(error);
+        if (errorString) {
+          message.error(errorString);
           return;
         }
       }
@@ -111,6 +111,12 @@ export const useAsyncErrorHandler = () => {
 };
 
 export const parseServerError = (error) => {
+  if (typeof error?.errMsg === "string" && error.message === "400") {
+    return error.errMsg;
+  }
+  if (typeof error?.errMsg?.message === "string") {
+    return error.errMsg.message;
+  }
   if (error?.errMsg?.error_message) {
     if (error?.errMsg?.error_message.includes("User not found"))
       return {

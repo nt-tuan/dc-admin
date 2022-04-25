@@ -7,7 +7,7 @@ import BrickTable from "@/entities/product/ui/brick-table";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import useGetBricks from "@/entities/product/libs/use-get-bricks";
+import { useGetBricks } from "@/entities/product/libs/use-get-entity";
 import { Loader } from "@/components/commons";
 import { Link } from "react-router-dom";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";

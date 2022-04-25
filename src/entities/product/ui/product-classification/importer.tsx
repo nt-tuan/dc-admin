@@ -8,7 +8,7 @@ import ProductClassificationTable from "./product-classification-table";
 import useImportProductClassification from "../../libs/use-import-product-classification";
 import { useHistory } from "react-router-dom";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
-import { useInvalidateGetSegments } from "../../libs/use-get-segments";
+import { useInvalidateGetSegments } from "../../libs/use-get-entity";
 import { getDCDataLoaders } from "../../libs/tree-node";
 import { Dictionary } from "../../model/types";
 interface Props {

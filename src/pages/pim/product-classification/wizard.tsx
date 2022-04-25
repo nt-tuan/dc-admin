@@ -1,10 +1,12 @@
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { Loader } from "@/components/commons";
 import { getDCDataLoaders, toDictionary } from "@/entities/product/libs/tree-node";
-import { useGetDCSegments, useGetSegments } from "@/entities/product/libs/use-get-segments";
+import { useGetDCSegments, useGetSegments } from "@/entities/product/libs/use-get-entity";
+import useImportProductClassification from "@/entities/product/libs/use-import-product-classification";
 import {
   ProductClassificationProvider,
-  ProductClassificationTable
+  ProductClassificationTable,
+  useProductClassificationContext
 } from "@/entities/product/ui/product-classification";
 import {
   getProductBrick,
@@ -12,14 +14,33 @@ import {
   getProductFamily,
   getSegment
 } from "@/services/pim.service";
-import { Box, Button, Stack, Typography } from "@mui/material";
-import { Redirect } from "react-router-dom";
+import { Box, Stack, Typography } from "@mui/material";
+import Button from "@mui/lab/LoadingButton";
+import { Redirect, useHistory } from "react-router-dom";
 import PageContentLayout from "../page-layout";
 
 const AddButton = () => {
+  const history = useHistory();
+  const { nodes, nodeSelection } = useProductClassificationContext();
+  const { importData, isCreatable, isLoading } = useImportProductClassification(
+    nodes,
+    nodeSelection
+  );
+  const handleClick = () => {
+    importData(() => {
+      history.push(pimRoutePaths.PRODUCT_CLASSFICATION);
+    });
+  };
   return (
     <Stack alignItems="center">
-      <Button fullWidth sx={{ maxWidth: 304 }} variant="contained">
+      <Button
+        loading={isLoading}
+        disabled={isCreatable}
+        onClick={handleClick}
+        fullWidth
+        sx={{ maxWidth: 304 }}
+        variant="contained"
+      >
         Add
       </Button>
     </Stack>
@@ -62,7 +83,7 @@ const Wizard = () => {
     >
       <ProductClassificationProvider
         segments={dcSegments}
-        defaulSelection={toDictionary(segment?.segments ?? [], undefined, undefined, () => true)}
+        defaulSelection={toDictionary(segment.segments ?? [], undefined, undefined, () => true)}
         loaders={getDCDataLoaders()}
         selectionLoaders={selectionLoaders}
       >

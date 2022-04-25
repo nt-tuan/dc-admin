@@ -6,8 +6,7 @@ import {
   ProductBrick,
   ProductClass,
   ProductFamily,
-  Segment,
-  updateProductBrick
+  Segment
 } from "@/services/pim.service";
 import { useMutation } from "react-query";
 
@@ -48,8 +47,4 @@ export const useCreateProductBrick = (options?: {
 }) => {
   const { mutate, isLoading } = useMutation(createProductBrick, options);
   return { mutate, isLoading };
-};
-
-export const useUpdateProductBrick = () => {
-  return useMutation(updateProductBrick);
 };

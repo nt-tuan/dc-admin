@@ -20,22 +20,14 @@ interface IProductClassificationContext {
   nodes: Dictionary<TreeNodeValue>;
   setNodes: React.Dispatch<React.SetStateAction<Dictionary<TreeNodeValue>>>;
   nodeSelection: Dictionary<boolean>;
+  setNodeSelection: React.Dispatch<React.SetStateAction<Dictionary<boolean>>>;
   getNodes: (code?: string) => TreeNodeValue[];
   loadMoreData: (parentCode: string, type: EntityType) => Promise<void>;
   changeCheckbox: (code: string | undefined, checked: boolean) => void;
   isChecked: (code: string) => boolean;
   updateNode: UpdateAction;
 }
-const ProductClassificationContext = React.createContext<IProductClassificationContext>({
-  nodes: {},
-  setNodes: () => {},
-  nodeSelection: {},
-  getNodes: () => [],
-  loadMoreData: async () => {},
-  changeCheckbox: () => {},
-  isChecked: () => true,
-  updateNode: () => {}
-});
+const ProductClassificationContext = React.createContext<IProductClassificationContext>({} as any);
 
 type LoaderFunction = (parentCode?: string) => Promise<ProductEntity[]>;
 interface Props {
@@ -118,6 +110,12 @@ const Provider = ({
       ...current,
       ...appendedDictionary
     }));
+    const parentChecked = isNodeChecked(nodeSelection, parentCode);
+    const appenedSelection = toDictionary(loadedEntities, type, parentCode, () => parentChecked);
+    setNodeSelection((current) => ({
+      ...current,
+      ...appenedSelection
+    }));
   };
 
   const loadMoreData = async (parentCode: string, type: EntityType) => {
@@ -146,11 +144,13 @@ const Provider = ({
     for (const d of decendants) {
       decendantDictionary[d] = checked;
     }
-    for (const ancestor of ancestors) {
-      ancestorDictionary[ancestor] = checked;
+    if (checked) {
+      for (const ancestor of ancestors) {
+        ancestorDictionary[ancestor] = checked;
+      }
     }
     setNodeSelection((current) => {
-      const nextCurrent = { ...current, ...decendantDictionary };
+      const nextCurrent = { ...current, ...decendantDictionary, ...ancestorDictionary };
       return nextCurrent;
     });
   };
@@ -168,6 +168,7 @@ const Provider = ({
         nodes: nodeDictionary,
         setNodes: setNodeDictionary,
         nodeSelection,
+        setNodeSelection,
         getNodes,
         loadMoreData,
         changeCheckbox,

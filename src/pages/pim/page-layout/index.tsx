@@ -20,7 +20,7 @@ const PageContentLayout = ({ parentPage, title, actions, children, loading }: Pr
         <Stack direction="row" alignItems="center">
           {parentPage && (
             <Link to={parentPage}>
-              <IconButton>
+              <IconButton sx={{ color: "common.black" }}>
                 <ArrowBack />
               </IconButton>
             </Link>

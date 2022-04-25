@@ -18,12 +18,12 @@ import {
 import Button from "@mui/lab/LoadingButton";
 import { visuallyHidden } from "@mui/utils";
 import { useDeleteBricks } from "../../libs/use-update-entity";
+import DeleteConfirm from "../delete-confirm";
+import DeleteFailedAlert from "../delete-failed-alert";
+import { ProductBrick } from "@/services/pim.service";
 
 interface Props {
-  dataSource: {
-    title: string;
-    code: string;
-  }[];
+  dataSource: ProductBrick[];
   filter: string;
 }
 function descendingComparator<T>(a: T, b: T, orderBy: string) {
@@ -57,6 +57,8 @@ function getComparator<T>(order: "asc" | "desc", orderBy: string) {
 }
 
 export default function DataTable({ dataSource, filter }: Props) {
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState<boolean>(false);
+  const [deleteFailedBrick, setDeleteFailedBrick] = React.useState<string>();
   const { mutate, isLoading } = useDeleteBricks();
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -116,8 +118,25 @@ export default function DataTable({ dataSource, filter }: Props) {
     setOrderBy(property);
   };
 
+  const openDeleteFailAlert = (brickTitle: string) => {
+    setDeleteFailedBrick(brickTitle);
+  };
+  const closeDeleteFailAlert = () => {
+    setDeleteFailedBrick(undefined);
+  };
+
   const deleteBricks = () => {
-    mutate(selected);
+    mutate(selected, {
+      onSuccess: closeDeleteConfirm,
+      onError: (error: Error) => openDeleteFailAlert(error.message)
+    });
+  };
+
+  const openDeleteConfirm = () => {
+    setDeleteConfirmOpen(true);
+  };
+  const closeDeleteConfirm = () => {
+    setDeleteConfirmOpen(false);
   };
 
   return (
@@ -125,41 +144,43 @@ export default function DataTable({ dataSource, filter }: Props) {
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
           <TableHead sx={{ backgroundColor: "grey.100" }}>
-            <TableCell padding="checkbox">
-              <Checkbox
-                color="primary"
-                indeterminate={selected.length > 0 && selected.length < filteredDataSource.length}
-                checked={
-                  filteredDataSource.length > 0 && selected.length === filteredDataSource.length
-                }
-                onChange={handleSelectAllClick}
-                inputProps={{
-                  "aria-label": "select all desserts"
-                }}
-              />
-            </TableCell>
-            <TableCell padding="none">
-              {selected.length > 0 ? (
-                <Button variant="contained" onClick={deleteBricks} loading={isLoading}>
-                  Bulk Delete
-                </Button>
-              ) : (
-                <TableSortLabel
-                  active={orderBy === "title"}
-                  direction={orderBy === "title" ? order : "asc"}
-                  onClick={(event) => handleRequestSort(event, "title")}
-                >
-                  Brick Name
-                  {orderBy === "title" ? (
-                    <Box component="span" sx={visuallyHidden as any}>
-                      {order === "desc" ? "sorted descending" : "sorted ascending"}
-                    </Box>
-                  ) : null}
-                </TableSortLabel>
-              )}
-            </TableCell>
-            <TableCell>HS Code</TableCell>
-            <TableCell></TableCell>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  color="primary"
+                  indeterminate={selected.length > 0 && selected.length < filteredDataSource.length}
+                  checked={
+                    filteredDataSource.length > 0 && selected.length === filteredDataSource.length
+                  }
+                  onChange={handleSelectAllClick}
+                  inputProps={{
+                    "aria-label": "select all desserts"
+                  }}
+                />
+              </TableCell>
+              <TableCell padding="none">
+                {selected.length > 0 ? (
+                  <Button variant="contained" onClick={openDeleteConfirm} loading={isLoading}>
+                    Bulk Delete
+                  </Button>
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === "title"}
+                    direction={orderBy === "title" ? order : "asc"}
+                    onClick={(event) => handleRequestSort(event, "title")}
+                  >
+                    Brick Name
+                    {orderBy === "title" ? (
+                      <Box component="span" sx={visuallyHidden as any}>
+                        {order === "desc" ? "sorted descending" : "sorted ascending"}
+                      </Box>
+                    ) : null}
+                  </TableSortLabel>
+                )}
+              </TableCell>
+              <TableCell>HS Code</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {stableSort(filteredDataSource, getComparator(order, orderBy))
@@ -189,7 +210,7 @@ export default function DataTable({ dataSource, filter }: Props) {
                     <TableCell align="left" component="th" id={labelId} scope="row" padding="none">
                       {row.title}
                     </TableCell>
-                    <TableCell align="left">Dropdown</TableCell>
+                    <TableCell align="left">{row.hsCode}</TableCell>
                     <TableCell align="right">
                       <Link to={getBrickEditionPath(row.code)}>
                         <IconButton color="primary">
@@ -211,6 +232,17 @@ export default function DataTable({ dataSource, filter }: Props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <DeleteConfirm
+        isLoading={isLoading}
+        open={deleteConfirmOpen}
+        onCancel={closeDeleteConfirm}
+        onDelete={deleteBricks}
+      />
+      <DeleteFailedAlert
+        brickTitle={deleteFailedBrick}
+        open={deleteFailedBrick != null}
+        onCancel={closeDeleteFailAlert}
       />
     </div>
   );

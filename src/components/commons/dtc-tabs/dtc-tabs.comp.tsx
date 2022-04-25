@@ -48,16 +48,20 @@ export const DTCTabs = ({ tabs, value, onChange, actions, ...props }: Props) => 
   return (
     <Box>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs {...props} value={value} onChange={handleChange} aria-label="basic tabs example">
-          {tabs.map((tab) => (
-            <Tab key={tab.key} value={tab.key} label={tab.label} {...a11yProps(tab.key)} />
-          ))}
+        <Stack direction="row">
+          <Box width={0} flexGrow={1}>
+            <Tabs {...props} value={value} onChange={handleChange} aria-label="basic tabs example">
+              {tabs.map((tab) => (
+                <Tab key={tab.key} value={tab.key} label={tab.label} {...a11yProps(tab.key)} />
+              ))}
+            </Tabs>
+          </Box>
           {actions && (
-            <Stack direction="row" flexGrow={1} alignItems="center" justifyContent="flex-end">
+            <Stack direction="row" alignItems="center" justifyContent="flex-end">
               {actions}
             </Stack>
           )}
-        </Tabs>
+        </Stack>
       </Box>
       {tabs.map((tab) => (
         <TabPanel key={tab.key} value={value} index={tab.key}>

@@ -67,7 +67,7 @@ export const DTCModal = ({
           </Box>
         )}
         <Box position="absolute" top={1} right={1}>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} sx={{ color: "common.black" }}>
             <CloseIcon />
           </IconButton>
         </Box>

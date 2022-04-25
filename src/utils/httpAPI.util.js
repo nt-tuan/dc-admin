@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAPIEndPoint, getMarketplaceEndPoint } from "./config.util";
+import { getAPIEndPoint } from "./config.util";
 import { axiosErrorHandler } from "./error-handler.util";
 
 class HttpApi {
@@ -105,9 +105,9 @@ export const backendAPI = new HttpApi({
     "Content-Type": "application/json"
   }
 });
-export const marketPlaceAPI = new HttpApi({
-  baseURL: getMarketplaceEndPoint(),
-  timeout: 25000,
+export const jobAPI = new HttpApi({
+  baseURL: getAPIEndPoint(),
+  timeout: 240_000,
   headers: {
     "Content-Type": "application/json"
   }

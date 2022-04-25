@@ -6,6 +6,7 @@ import SegmentSelect from "../segment-select";
 import FormModal, { BaseFormModalProps } from "../form-modal";
 import FamilySelect from "../family-select";
 import { RenderField } from "@/components/commons/fields";
+import { newClassValidation } from "./validation-schema";
 interface FormValue {
   code: string;
   title: string;
@@ -37,6 +38,7 @@ const NewClassModal = ({ open, onClose, onSubmit, isLoading }: Props) => {
           segmentCode: ""
         }}
         onSubmit={onSubmit}
+        validationSchema={newClassValidation}
       >
         <Form>
           <Stack spacing={3}>
