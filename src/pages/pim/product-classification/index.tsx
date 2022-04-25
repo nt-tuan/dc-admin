@@ -1,5 +1,5 @@
 import { Loader } from "@/components/commons";
-import { useGetSegments } from "@/entities/product/libs/use-get-segments";
+import { useGetSegments } from "@/entities/product/libs/use-get-entity";
 import UpdateClassificationTable from "@/entities/product/ui/product-classification/update-product-classification-table";
 import EmptyProductClassification from "@/pages/pim/empty-product-classification";
 import { Button, IconButton, Stack, Tooltip } from "@mui/material";
@@ -12,7 +12,7 @@ import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.co
 const ProductClassification = () => {
   const { data, isLoading } = useGetSegments();
   if (isLoading) return <Loader />;
-  if (data == null || data.segments.length === 0) return <EmptyProductClassification />;
+  if (data == null || data?.segments.length === 0) return <EmptyProductClassification />;
   return (
     <PageContentLayout
       title="Product Classification"

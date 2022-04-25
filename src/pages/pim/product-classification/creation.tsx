@@ -1,6 +1,6 @@
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { Loader } from "@/components/commons";
-import { useGetDCSegments } from "@/entities/product/libs/use-get-segments";
+import { useGetDCSegments } from "@/entities/product/libs/use-get-entity";
 import { ProductClassificationImporter } from "@/entities/product/ui/product-classification";
 import PageContentLayout from "../page-layout";
 

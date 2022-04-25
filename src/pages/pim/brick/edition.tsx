@@ -5,9 +5,9 @@ import {
   BrickFormTabsProvider
 } from "@/entities/product/ui/brick-form-tabs";
 import { useParams } from "react-router-dom";
-import { useGetBrick } from "@/entities/product/libs/use-get-bricks";
+import { useGetBrick } from "@/entities/product/libs/use-get-entity";
 import useLoadBrickParent from "@/entities/product/libs/use-load-brick-parent";
-import { useUpdateProductBrick } from "@/entities/product/libs/use-create-entity";
+import { useUpdateProductBrick } from "@/entities/product/libs/use-update-entity";
 import { ProductBrick } from "@/services/pim.service";
 import NavigationPrompt from "react-router-navigation-prompt";
 import Layout from "./layout";

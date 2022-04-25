@@ -1,6 +1,6 @@
 
 var _env_ = {
-	"REACT_APP_API_ENDPOINT":"http://localhost:5100/admin/api",
+	"REACT_APP_API_ENDPOINT":"http://my-shell.com/admin/api",
 	"REACT_APP_CCC_ENDPOINT":"http://localhost:5100",
 	"REACT_APP_NUMBER_BADGE_NONE":"9",
 	"REACT_APP_NUMBER_BADGE_1":"99",

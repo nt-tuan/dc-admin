@@ -1,7 +1,6 @@
 import React from "react";
 import { AutocompleteField } from "@/components/commons/fields";
-import { useGetClasses } from "../../libs/use-get-classes";
-import { useGetFamily } from "../../libs/use-get-families";
+import { useGetFamily, useGetClasses } from "../../libs/use-get-entity";
 import { ProductClass } from "@/services/pim.service";
 
 interface Props {

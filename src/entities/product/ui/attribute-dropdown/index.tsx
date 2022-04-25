@@ -3,7 +3,7 @@ import ArrowDown from "@/components/icons/arrow-down.comp";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import FormGroup from "@mui/material/FormGroup";
-import useGetAttributes from "../../libs/use-get-attributes";
+import { useGetAttributes } from "../../libs/use-get-entity";
 import { ProductAttribute } from "@/services/pim.service";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";

@@ -1,8 +1,10 @@
+import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import {
   deleteBulkBricks,
   getProductClass,
   ProductFamily,
   Segment,
+  updateProductBrick,
   updateProductClass,
   updateProductFamily,
   updateSegment
@@ -11,7 +13,8 @@ import { useMutation } from "react-query";
 import { Dictionary, TreeNodeValue } from "../model/types";
 import { useProductClassificationContext } from "../ui/product-classification/provider";
 import { findNode, getActualCode, getDecendantCodes, toTreeNodeDictionary } from "./tree-node";
-import { useInvalidateBrick } from "./use-get-bricks";
+import { useInvalidateBrick } from "./use-get-entity";
+import { useHistory } from "react-router-dom";
 
 export const deleteNodeAndDecendants = (nodes: Dictionary<TreeNodeValue>, localCode: string) => {
   const nextNodes = { ...nodes };
@@ -32,7 +35,7 @@ export const useUpdateSegmentTitle = (localCode: string) => {
   };
   const updateSegmentTitle = async (title: string) => {
     if (code == null) return;
-    return await updateSegment(code, {
+    return await updateSegment({
       code,
       title
     });
@@ -109,5 +112,14 @@ export const useDeleteBricks = (options?: {
       await invalidate();
     },
     onError: options?.onError
+  });
+};
+
+export const useUpdateProductBrick = () => {
+  const history = useHistory();
+  return useMutation(updateProductBrick, {
+    onSuccess: async () => {
+      history.push(pimRoutePaths.PRODUCT_BRICK);
+    }
   });
 };

@@ -117,6 +117,7 @@
     "stylelint": "^13.3.2",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",
+    "ts-jest": "^27.1.4",
     "worker-loader": "^2.0.0"
   },
   "eslintConfig": {

@@ -1,5 +1,4 @@
-import { useGetFamily } from "./use-get-families";
-import { useGetProductClass } from "./use-get-product-class";
+import { useGetFamily, useGetProductClass } from "./use-get-entity";
 
 const useLoadBrickParent = (classCode?: string) => {
   const classQuery = useGetProductClass(classCode);

@@ -32,10 +32,13 @@ export const getAncestorCodes = (code?: string) => {
 };
 
 export const getDecendantCodes = (nodeDictionary: Dictionary<TreeNodeValue>, code?: string) => {
+  if (code == null) return [];
   const decendantCodes: string[] = code ? [code] : [];
-  const decendantNodes = getNodesByCode(nodeDictionary, code);
-  for (const dec of decendantNodes) {
-    decendantCodes.push(...getDecendantCodes(nodeDictionary, dec.code));
+  const keys = Object.keys(nodeDictionary);
+  for (const key of keys) {
+    if (key.includes(`${code}.`)) {
+      decendantCodes.push(key);
+    }
   }
   return decendantCodes;
 };
@@ -64,14 +67,6 @@ const entityTypes: EntityType[] = ["Segment", "Family", "Class", "Brick", "Attri
 export const getLowerEntityType = (type: EntityType) => {
   const foundIndex = entityTypes.indexOf(type);
   return entityTypes[foundIndex + 1];
-};
-
-export const getHSCode = (node: TreeNodeValue) => {
-  return "No HS Codes";
-};
-
-export const countNotSetHSCode = () => {
-  return "29 HC Codes Not Set";
 };
 
 interface IQueueItem {
@@ -158,60 +153,6 @@ export const extractLocalCode = (localCode?: string) => {
     brickCode,
     attributeCode
   };
-};
-
-export const updateLocalCode = (
-  preCode: string,
-  {
-    segmentCode,
-    familyCode,
-    classCode,
-    brickCode,
-    attributeCode
-  }: {
-    segmentCode?: string;
-    familyCode?: string;
-    classCode?: string;
-    brickCode?: string;
-    attributeCode?: string;
-  }
-) => {
-  const codes = preCode?.split(".") ?? [];
-  const [preSegmentCode, preFamilyCode, preClassCode, preBrickCode, preAttributeCode] = codes;
-  return {
-    segmentCode: segmentCode ?? preSegmentCode,
-    familyCode: familyCode ?? preFamilyCode,
-    classCode: classCode ?? preClassCode,
-    brickCode: brickCode ?? preBrickCode,
-    attributeCode: attributeCode ?? preAttributeCode
-  };
-};
-
-export const parseLocalCode = ({
-  segmentCode,
-  familyCode,
-  classCode,
-  brickCode,
-  attributeCode
-}: {
-  segmentCode?: string;
-  familyCode?: string;
-  classCode?: string;
-  brickCode?: string;
-  attributeCode?: string;
-}) => {
-  let localCode = "";
-  if (segmentCode == null) return localCode;
-  localCode = segmentCode;
-  if (familyCode == null) return localCode;
-  localCode += "." + familyCode;
-  if (classCode == null) return localCode;
-  localCode += "." + classCode;
-  if (brickCode == null) return localCode;
-  localCode += "." + brickCode;
-  if (attributeCode == null) return localCode;
-  localCode += "." + attributeCode;
-  return localCode;
 };
 
 export const findNode = (nodes: Dictionary<TreeNodeValue>, code: string) => {

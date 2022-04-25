@@ -1,6 +1,6 @@
 import React from "react";
 import { AutocompleteField } from "@/components/commons/fields";
-import { useGetFamilies } from "../../libs/use-get-families";
+import { useGetFamilies } from "../../libs/use-get-entity";
 
 interface Props {
   name: string;

@@ -1,6 +1,6 @@
 import React from "react";
 import { AutocompleteField } from "@/components/commons/fields";
-import { useGetSegments } from "../../libs/use-get-segments";
+import { useGetSegments } from "../../libs/use-get-entity";
 
 interface Props {
   name: string;
@@ -14,7 +14,7 @@ const SegmentSelect = ({ name, value, label, placeholder, required, onChange }: 
   const { data, isLoading } = useGetSegments();
   const dataSource = React.useMemo(() => {
     if (data == null) return [];
-    return data.segments.map((segment) => ({
+    return data?.segments.map((segment) => ({
       value: segment.code,
       label: segment.title
     }));

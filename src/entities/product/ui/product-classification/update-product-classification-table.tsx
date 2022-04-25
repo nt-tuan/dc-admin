@@ -23,7 +23,8 @@ import {
 import MuiTableRow from "@mui/material/TableRow";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { getActualCode, getDecendantCodes, getHSCode } from "../../libs/tree-node";
+import { getHSCodeFromBrick } from "../../libs/mapper";
+import { getActualCode, getDecendantCodes } from "../../libs/tree-node";
 import useDeleteProductClassification from "../../libs/use-delete-product-classification";
 import { EntityType, TreeNodeValue } from "../../model/types";
 import EditClassModal from "../edit-class-modal";
@@ -116,7 +117,7 @@ const Consumer = () => {
         <TableCell>
           {nodeValue.type === "Brick" && (
             <Typography variant="body2" color="error">
-              {getHSCode(nodeValue)}
+              {getHSCodeFromBrick(nodeValue as never)}
             </Typography>
           )}
         </TableCell>
