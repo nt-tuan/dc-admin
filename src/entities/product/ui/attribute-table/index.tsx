@@ -2,25 +2,25 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { getBrickEditionPath } from "@/commons/consts/system/routes/pim-route-paths.const";
-import { useDeleteBricks } from "../../libs/use-update-entity";
+import { getAttributeEditionPath } from "@/commons/consts/system/routes/pim-route-paths.const";
 import DeleteConfirm from "../delete-confirm";
 import DeleteFailedAlert from "../delete-failed-alert";
-import { ProductBrick } from "@/services/pim.service";
+import { ProductAttribute } from "@/services/pim.service";
 import SelectableEntityTable from "../selectable-entity-table";
-import Stack from "@mui/material/Stack";
+import { Stack, Typography } from "@mui/material";
+import { useDeleteProductAttributes } from "../../libs/use-update-entity";
 import SearchInput from "../search-input";
 import { filterProductEntity } from "../../libs/filter";
 
 interface Props {
-  dataSource: ProductBrick[];
+  dataSource: ProductAttribute[];
 }
 
-export default function BrickTable({ dataSource }: Props) {
-  const [filter, setFilter] = React.useState("");
+export default function AttributeTable({ dataSource }: Props) {
+  const [filter, setFilter] = React.useState<string>("");
   const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState<boolean>(false);
   const [deleteFailedBrick, setDeleteFailedBrick] = React.useState<string>();
-  const { mutate, isLoading } = useDeleteBricks();
+  const { mutate, isLoading } = useDeleteProductAttributes();
   const [willDeletedBricks, setWillDeletedBricks] = React.useState<string[]>([]);
 
   const filteredDataSource = React.useMemo(() => {
@@ -52,7 +52,7 @@ export default function BrickTable({ dataSource }: Props) {
 
   return (
     <Stack spacing={3}>
-      <SearchInput filter={filter} setFilter={setFilter} placeholder="Search Bricks" />
+      <SearchInput filter={filter} setFilter={setFilter} placeholder="Search Attributes" />
       <SelectableEntityTable
         dataSource={filteredDataSource}
         onDelete={openDeleteConfirm}
@@ -65,9 +65,9 @@ export default function BrickTable({ dataSource }: Props) {
             isLabel: true
           },
           {
-            key: "hsCode",
-            dataIndex: "hsCode",
-            header: "HS Code"
+            key: "type",
+            header: "Attribute Type",
+            renderCell: () => <Typography variant="body2">Dropdown</Typography>
           },
           {
             key: "action",
@@ -75,7 +75,7 @@ export default function BrickTable({ dataSource }: Props) {
               align: "right"
             },
             renderCell: (row) => (
-              <Link to={getBrickEditionPath(row.code)}>
+              <Link to={getAttributeEditionPath(row.code)}>
                 <IconButton color="primary">
                   <EditIcon />
                 </IconButton>

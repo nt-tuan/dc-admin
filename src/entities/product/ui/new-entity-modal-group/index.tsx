@@ -57,7 +57,9 @@ const NewEntityModalGroup = ({ type, onClose }: Props) => {
         <NewBrickModal
           open
           onClose={onClose}
-          onSubmit={brickMutation.mutate}
+          onSubmit={({ title, code, hsCode, classCode }) =>
+            brickMutation.mutate({ title, code, hsCode, classCode, attributeCodes: [] })
+          }
           isLoading={brickMutation.isLoading}
         />
       )}

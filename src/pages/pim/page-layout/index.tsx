@@ -10,7 +10,7 @@ interface Props {
   parentPage?: string;
   title: string | React.ReactNode;
   actions?: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   loading?: boolean;
 }
 const PageContentLayout = ({ parentPage, title, actions, children, loading }: Props) => {
@@ -25,7 +25,9 @@ const PageContentLayout = ({ parentPage, title, actions, children, loading }: Pr
               </IconButton>
             </Link>
           )}
-          <Typography variant="h5">{title}</Typography>
+          <Typography component="div" variant="h5">
+            {title}
+          </Typography>
         </Stack>
         {actions}
       </Stack>

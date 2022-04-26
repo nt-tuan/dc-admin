@@ -12,11 +12,21 @@ const Creation = () => {
   const history = useHistory();
   const { mutate, isLoading } = useCreateProductBrick();
   const submit = (brick: ProductBrick) => {
-    mutate(brick, {
-      onSuccess: () => {
-        history.push(pimRoutePaths.PRODUCT_BRICK);
+    const { title, code, classCode, hsCode, attributes } = brick;
+    mutate(
+      {
+        title,
+        code,
+        classCode,
+        hsCode,
+        attributeCodes: attributes?.map((attribute) => attribute.code) ?? []
+      },
+      {
+        onSuccess: () => {
+          history.push(pimRoutePaths.PRODUCT_BRICK);
+        }
       }
-    });
+    );
   };
   return (
     <BrickFormTabsProvider classCode="" familyCode="" segmentCode="" onSubmit={submit}>

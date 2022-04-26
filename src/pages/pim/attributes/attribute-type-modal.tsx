@@ -36,7 +36,6 @@ const Content = ({ onClose }) => {
         {TYPES.map(({ value, label }) => (
           <Button
             fullWidth
-            textAlign="center"
             variant={type === value ? "contained" : "outlined"}
             onClick={() => setType(value)}
           >
@@ -60,6 +59,7 @@ const AttributeTypeModal = ({ open, onClose }) => {
     <DTCModal
       open={open}
       onClose={onClose}
+      size="tiny"
       title={
         <Typography variant="inherit" textAlign="center">
           Choose Attribute Type

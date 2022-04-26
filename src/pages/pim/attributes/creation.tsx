@@ -7,21 +7,19 @@ import {
 import AttributesCreation from "./attribute-creation";
 import { Button } from "@mui/material";
 import PageContentLayout from "../page-layout";
-import { ProductAttribute } from "@/services/pim.service";
 import Typography from "@mui/material/Typography";
-import { useCreateAttribute } from "@/entities/product/libs/use-get-attributes";
 import { useHistory } from "react-router-dom";
+import { useCreateProductAttribute } from "@/entities/product/libs/use-update-entity";
 
 const Attributes = () => {
   const history = useHistory();
-  const { mutate, isLoading } = useCreateAttribute();
+  const { mutate, isLoading } = useCreateProductAttribute();
 
   const submit = ({ code, title }) => {
     mutate(
       { code, title },
       {
-        onSuccess: async (res: ProductAttribute) => {
-          const { code } = res;
+        onSuccess: async () => {
           history.push(getAttributeEditionPath(code));
         }
       }

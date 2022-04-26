@@ -1,9 +1,16 @@
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import {
+  AttributeValue,
+  createBulkProductAttributes,
+  createProductAttribute,
+  deleteBulkAttributes,
+  deleteBulkAttributeValues,
   deleteBulkBricks,
   getProductClass,
+  ProductAttribute,
   ProductFamily,
   Segment,
+  updateProductAttribute,
   updateProductBrick,
   updateProductClass,
   updateProductFamily,
@@ -13,8 +20,9 @@ import { useMutation } from "react-query";
 import { Dictionary, TreeNodeValue } from "../model/types";
 import { useProductClassificationContext } from "../ui/product-classification/provider";
 import { findNode, getActualCode, getDecendantCodes, toTreeNodeDictionary } from "./tree-node";
-import { useInvalidateBrick } from "./use-get-entity";
+import { useInvalidateBrick, useInvalidateProductAttibutes } from "./use-get-entity";
 import { useHistory } from "react-router-dom";
+import { useMessage } from "@/hooks/use-message";
 
 export const deleteNodeAndDecendants = (nodes: Dictionary<TreeNodeValue>, localCode: string) => {
   const nextNodes = { ...nodes };
@@ -99,22 +107,6 @@ export const useUpdateClassTitle = (localCode: string) => {
   return { mutate, isLoading };
 };
 
-export const useDeleteBricks = (options?: {
-  onError: (error: Error) => void;
-  onSuccess: () => void;
-}) => {
-  const invalidate = useInvalidateBrick();
-  return useMutation(deleteBulkBricks, {
-    onSuccess: async () => {
-      if (options?.onSuccess) {
-        options.onSuccess();
-      }
-      await invalidate();
-    },
-    onError: options?.onError
-  });
-};
-
 export const useUpdateProductBrick = () => {
   const history = useHistory();
   return useMutation(updateProductBrick, {
@@ -122,4 +114,69 @@ export const useUpdateProductBrick = () => {
       history.push(pimRoutePaths.PRODUCT_BRICK);
     }
   });
+};
+
+interface useDeleteOptions {
+  onError: (error: Error) => void;
+  onSuccess: () => Promise<void>;
+}
+const handleOnSuccess = (
+  options: useDeleteOptions | undefined,
+  invalidate: () => Promise<void>
+) => async () => {
+  await invalidate();
+  if (options?.onSuccess) {
+    options.onSuccess();
+  }
+};
+export const useDeleteBricks = (options?: useDeleteOptions) => {
+  const invalidate = useInvalidateBrick();
+  return useMutation(deleteBulkBricks, {
+    onSuccess: handleOnSuccess(options, invalidate),
+    onError: options?.onError
+  });
+};
+export const useDeleteProductAttributes = (options?: useDeleteOptions) => {
+  const invalidate = useInvalidateProductAttibutes();
+  return useMutation(deleteBulkAttributes, {
+    onSuccess: handleOnSuccess(options, invalidate),
+    onError: options?.onError
+  });
+};
+
+export const useCreateProductAttribute = () => {
+  const { mutate, isLoading } = useMutation(createProductAttribute);
+  return { mutate, isLoading };
+};
+
+const updateProductAttributeAndValue = async ({
+  attribute,
+  newValues,
+  deletedValues
+}: {
+  attribute: ProductAttribute;
+  newValues: AttributeValue[];
+  deletedValues: string[];
+}) => {
+  await updateProductAttribute({
+    code: attribute.code,
+    title: attribute.title
+  });
+  if (newValues.length > 0) {
+    await createBulkProductAttributes(newValues);
+  }
+  if (deletedValues.length > 0) {
+    await deleteBulkAttributeValues(deletedValues);
+  }
+};
+export const useUpdateProductAttribute = (options?: useDeleteOptions) => {
+  const invalidate = useInvalidateProductAttibutes();
+  const message = useMessage();
+  const { mutate, isLoading } = useMutation(updateProductAttributeAndValue, {
+    onSuccess: async () => {
+      await invalidate();
+      message.success("Update successfully.");
+    }
+  });
+  return { mutate, isLoading };
 };

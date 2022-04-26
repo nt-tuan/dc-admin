@@ -12,13 +12,13 @@ interface Props {
   editable: boolean;
   options: AttributeValue[];
   onChange: (options: AttributeValue[]) => void;
-  onDelete: (index: number) => void;
+  onDelete: (code: string) => void;
 }
 interface OptionComponentProps {
   editable: boolean;
   index: number;
   option: AttributeValue;
-  onDelete: (index: number) => void;
+  onDelete: (code: string) => void;
 }
 
 const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentProps) => {
@@ -41,7 +41,7 @@ const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentP
               {editable && <DragIndicatorIcon />}
               <Typography>{title}</Typography>
             </Stack>
-            <IconButton color="error" onClick={() => onDelete(index)}>
+            <IconButton color="error" onClick={() => onDelete(option.code)}>
               <DeleteOutlineIcon />
             </IconButton>
           </Stack>

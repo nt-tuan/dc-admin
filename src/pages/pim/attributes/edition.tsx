@@ -1,17 +1,18 @@
-import { DTCTabs, Loader, useTabSearchParams } from "@/components/commons";
-import { Form, Formik } from "formik";
-import { useGetAttribute, useUpdateAttribute } from "@/entities/product/libs/use-get-attributes";
-import { useHistory, useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { DTCTabs, useTabSearchParams } from "@/components/commons";
+import { Form } from "formik";
+import { useParams } from "react-router-dom";
+import { useMemo } from "react";
 
-import { AttributeValue } from "@/services/pim.service";
+import { ProductAttribute } from "@/services/pim.service";
 import Button from "@mui/material/Button";
 import OptionsForm from "./options-form";
 import PageContentLayout from "../page-layout";
 import PropertiesForm from "./properties-form";
 import Typography from "@mui/material/Typography";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
-import { useMessage } from "@/hooks/use-message";
+import { useUpdateProductAttribute } from "@/entities/product/libs/use-update-entity";
+import { useGetProductAttribute } from "@/entities/product/libs/use-get-entity";
+import { AttributeFormProvider } from "@/entities/product/ui/attribute-form";
 
 const TAB_KEYS = {
   PROPERTIES: "PROPERTIES",
@@ -24,18 +25,7 @@ type QuizParams = {
   code: string;
 };
 
-const AttributeEdition = () => {
-  const message = useMessage();
-  const history = useHistory();
-  const { code } = useParams<QuizParams>();
-
-  const { data: attributeData, isLoading: getAttributeLoading } = useGetAttribute(code);
-
-  const [isManualSort, setManualSort] = useState<boolean>(false);
-  const [options, setOptions] = useState<AttributeValue[]>([]);
-
-  const { mutate, isLoading } = useUpdateAttribute();
-
+const Content = ({ attribute }: { attribute: ProductAttribute }) => {
   const tabs = useMemo(
     () => [
       {
@@ -46,76 +36,54 @@ const AttributeEdition = () => {
       {
         label: "Options",
         key: OPTIONS,
-        component: (
-          <OptionsForm
-            isManualSort={isManualSort}
-            setManualSort={() => setManualSort((s) => !s)}
-            options={options}
-            onChange={setOptions}
-          />
-        )
+        component: <OptionsForm />
       }
     ],
-    [options, isManualSort]
+    []
   );
-
-  const validation = (code: string, title: string) => {
-    if (!code || !title) {
-      return false;
-    }
-    if (options.length === 0) {
-      message.error("You have not created any options for this attribute");
-      return false;
-    }
-
-    return true;
-  };
-
-  const submit = ({ code, title }) => {
-    if (validation(code, title))
-      mutate(
-        { code, title, attributeValue: options },
-        {
-          onSuccess: async () => {
-            history.push(pimRoutePaths.PRODUCT_ATTRIBUTES);
-          }
-        }
-      );
-  };
-
   const [value, onChange] = useTabSearchParams(tabs);
 
-  const initialValues = { code: attributeData?.code || "", title: attributeData?.title || "" };
+  return (
+    <Form name="properties-form">
+      <PageContentLayout
+        title={
+          <Typography component="div" variant="h5">
+            Input Registration
+            <Typography component="span" variant="subtitle1" ml={1} color="rgba(0, 0, 0, 0.38)">
+              (Code {attribute.code})
+            </Typography>
+          </Typography>
+        }
+        parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
+        actions={
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        }
+      >
+        <DTCTabs value={value} onChange={onChange} tabs={tabs} />
+      </PageContentLayout>
+    </Form>
+  );
+};
+
+const AttributeEdition = () => {
+  const { code } = useParams<QuizParams>();
+  const { data, isLoading: getAttributeLoading } = useGetProductAttribute(code);
+  const { mutate, isLoading } = useUpdateProductAttribute();
+  if (getAttributeLoading || data == null)
+    return (
+      <PageContentLayout
+        loading
+        title="Input Registration"
+        parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
+      />
+    );
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{ ...initialValues, type: "dropdown" }}
-      onSubmit={submit}
-    >
-      <Form name="properties-form">
-        <PageContentLayout
-          title={
-            <Typography variant="h5">
-              Input Registration
-              <Typography component="span" variant="subtitle1" ml={2} color="rgba(0, 0, 0, 0.38)">
-                (Code {code})
-              </Typography>
-            </Typography>
-          }
-          parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
-          actions={
-            <Button type="submit" variant="contained">
-              Save
-            </Button>
-          }
-        >
-          <DTCTabs value={value} onChange={onChange} tabs={tabs} />
-
-          {(getAttributeLoading || isLoading) && <Loader />}
-        </PageContentLayout>
-      </Form>
-    </Formik>
+    <AttributeFormProvider attribute={data} onSubmit={mutate} isMutating={isLoading}>
+      <Content attribute={data} />
+    </AttributeFormProvider>
   );
 };
 export default AttributeEdition;

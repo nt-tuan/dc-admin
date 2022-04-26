@@ -7,9 +7,10 @@ export interface BaseEntity {
 export interface AttributeValue {
   code: string;
   title: string;
+  attributeCode: string;
 }
 export interface ProductAttribute extends BaseEntity {
-  attributeValue: AttributeValue[];
+  attributeValues?: AttributeValue[];
 }
 
 export interface ProductBrick extends BaseEntity {
@@ -74,7 +75,7 @@ export const importPimData = (segments: ImportSegment[]) =>
 export const getSegments: (params?: {
   page: number;
   size: number;
-}) => Promise<{ segments: Segment[] } | null> = (params = { page: 1, size: 100 }) =>
+}) => Promise<{ segments: Segment[] } | null> = (params = defaultPagination) =>
   backendAPI.get("/pim/product-classification/segments", params);
 export const getSegment: (code: string) => Promise<Segment | null> = (code) =>
   backendAPI.get(`/pim/product-classification/segments/${code}`);
@@ -145,6 +146,7 @@ export const createProductBrick: (payload: {
   title: string;
   classCode: string;
   hsCode: string;
+  attributeCodes: string[];
 }) => Promise<ProductBrick> = (payload) =>
   backendAPI.post(`/pim/product-classification/bricks`, payload);
 export const updateProductBrick: (payload: {
@@ -152,16 +154,31 @@ export const updateProductBrick: (payload: {
   title: string;
   classCode: string;
   hsCode: string;
+  attributeCodes: string[];
 }) => Promise<ProductBrick> = (payload) =>
   backendAPI.put(`/pim/product-classification/bricks/${payload.code}`, payload);
 export const deleteBulkBricks = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
 // #endregion
 
+// #region Product Attribute API
 export const getProductAttributes: () => Promise<{ attributes: ProductAttribute[] }> = () =>
   backendAPI.get("/pim/product-classification/attributes");
-
+export const getProductAttribute: (code: string) => Promise<ProductAttribute> = (code) =>
+  backendAPI.get(`/pim/product-classification/attributes/${code}`);
+export const createProductAttribute: (attribute: ProductAttribute) => Promise<void> = (attribute) =>
+  backendAPI.post(`/pim/product-classification/attributes`, attribute);
+export const updateProductAttribute: (attribute: ProductAttribute) => Promise<void> = (attribute) =>
+  backendAPI.put(`/pim/product-classification/attributes/${attribute.code}`, attribute);
 export const deleteBulkAttributes = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
 export const deleteBulkAttributeValues = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/attributes-values/bulk", undefined, codes);
+// #endregion
+
+// #region Product Attribute API
+export const createBulkProductAttributes: (values: AttributeValue[]) => Promise<void> = (values) =>
+  backendAPI.post(`pim/product-classification/attributes-values/bulk`, values);
+export const deleteBulkProductAttributes: (codes: string) => Promise<void> = (codes) =>
+  backendAPI.delete(`pim/product-classification/attributes-values/bulk`, undefined, codes);
+// #region

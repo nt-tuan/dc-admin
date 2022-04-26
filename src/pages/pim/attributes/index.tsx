@@ -1,29 +1,19 @@
 import AttributeTypeModal from "./attribute-type-modal";
-import AttributesTable from "./attributes-table";
 import { Button } from "@mui/material";
-import { Loader } from "@/components/commons";
 import PageContentLayout from "../page-layout";
 import Typography from "@mui/material/Typography";
-import { useGetAttributes } from "@/entities/product/libs/use-get-attributes";
 import { useState } from "react";
-
-const data = [
-  { id: "1", title: "Brand", code: "1" },
-  { id: "2", title: "Brand", code: "1" },
-  { id: "3", title: "Brand", code: "1" },
-  { id: "4", title: "Brand", code: "1" },
-  { id: "5", title: "Brand", code: "1" },
-  { id: "6", title: "Brand", code: "1" }
-];
+import { useGetProductAttributes } from "@/entities/product/libs/use-get-entity";
+import AttributeTable from "@/entities/product/ui/attribute-table";
 
 const Attributes = () => {
   const [modal, setModal] = useState(false);
-  // const { data, isLoading } = useGetAttributes();
+  const { data, isLoading } = useGetProductAttributes();
 
-  // if (isLoading) return <Loader />;
   return (
     <PageContentLayout
       title="Attributes"
+      loading={isLoading}
       actions={
         <Button variant="contained" onClick={() => setModal(true)}>
           Create Attribute
@@ -36,7 +26,7 @@ const Attributes = () => {
         example, you can specify the mobile phone Brand (iPhone, Samsung, etc.) Storage size (64GB,
         128GB, etc.) Color (White, Grey,etc.).
       </Typography>
-      <AttributesTable loading={false} dataSource={data} />
+      {data && <AttributeTable dataSource={data.attributes} />}
       <AttributeTypeModal open={modal} onClose={() => setModal(false)} />
     </PageContentLayout>
   );

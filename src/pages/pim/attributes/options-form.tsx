@@ -1,7 +1,6 @@
-import { useCallback, useState } from "react";
+import { useState, useContext } from "react";
 
 import AttributeOptions from "./attribute-options";
-import { AttributeValue } from "@/services/pim.service";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -10,47 +9,35 @@ import OptionsFormEmpty from "./options-form-empty";
 import Stack from "@mui/material/Stack";
 import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
+import { AttributeFormContext } from "@/entities/product/ui/attribute-form";
 
-export interface IProps {
-  options: AttributeValue[];
-  isManualSort: boolean;
-  onChange: (options: AttributeValue[]) => void;
-  setManualSort: () => void;
-}
-
-const OptionsForm = (props: IProps) => {
-  const { onChange, isManualSort, options, setManualSort } = props;
+const OptionsForm = () => {
+  const {
+    addOption,
+    deleteOption,
+    setOptions,
+    isManualSort,
+    options,
+    changeManualSort,
+    saveOptions
+  } = useContext(AttributeFormContext);
 
   const [isLayoutReady, onSetLayoutReady] = useState<boolean>((options || []).length !== 0);
-  const [option, setOption] = useState<string>("");
+  const [title, changeTitle] = useState<string>("");
 
   const onSort = () => {
-    setManualSort();
+    changeManualSort(!isManualSort);
     let result = Array.from(options);
     result.sort((a, b) => a.title.localeCompare(b.title));
-    onChange(result);
+    setOptions(result);
   };
 
   const onAddOption = () => {
-    const uuid = new Date().getTime().toString(36) + Math.random().toString(36).slice(2);
-    const newOption = {
-      code: `option_${uuid}`,
-      title: option
-    };
-    onChange([...options, newOption]);
-    setOption("");
+    addOption(title);
+    changeTitle("");
   };
 
-  const onChangeOption = (e) => setOption(e.target.value);
-
-  const onDelete = useCallback(
-    (index: number) => {
-      let removed = Array.from(options);
-      removed.splice(index, 1);
-      onChange(removed);
-    },
-    [options, onChange]
-  );
+  const onChangeOption = (e) => changeTitle(e.target.value);
 
   if (!isLayoutReady) return <OptionsFormEmpty onSetLayoutReady={() => onSetLayoutReady(true)} />;
 
@@ -69,31 +56,47 @@ const OptionsForm = (props: IProps) => {
               </Typography>
             }
           />
-          <Button size="small" variant="contained">
+          <Button onClick={saveOptions} size="small" variant="contained" sx={{ flexShrink: 0 }}>
             Add option
           </Button>
         </Stack>
         <AttributeOptions
           editable={isManualSort}
           options={options}
-          onChange={onChange}
-          onDelete={onDelete}
+          onChange={setOptions}
+          onDelete={deleteOption}
         />
       </Grid>
       <Grid item xs={6}>
         <Typography variant="h6">Options Settings</Typography>
-        <Stack direction="row" justifyContent="space-between" spacing={2} mt={2}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+          mt={2}
+        >
           <TextField
-            required={false}
+            required
             fullWidth
             name="add-options"
             label="Options Value"
             fieldConfig={{}}
-            placeholder="|Ex: Touchscreen"
-            value={option}
+            placeholder="Ex: Touchscreen"
+            value={title}
             onChange={onChangeOption}
           />
-          <Button size="small" variant="contained" onClick={() => onAddOption()}>
+
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => onAddOption()}
+            sx={{
+              visibility: title ? "visible" : "hidden",
+              py: 0.5,
+              minHeight: 0
+            }}
+          >
             Done
           </Button>
         </Stack>

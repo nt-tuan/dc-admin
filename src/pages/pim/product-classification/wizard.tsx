@@ -35,7 +35,7 @@ const AddButton = () => {
     <Stack alignItems="center">
       <Button
         loading={isLoading}
-        disabled={isCreatable}
+        disabled={!isCreatable}
         onClick={handleClick}
         fullWidth
         sx={{ maxWidth: 304 }}

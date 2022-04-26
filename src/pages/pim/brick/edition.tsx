@@ -52,8 +52,14 @@ const Edition = () => {
     data?.classCode
   );
 
-  const submit = (brick: ProductBrick) => {
-    mutate(brick);
+  const submit = ({ code, title, classCode, hsCode, attributes }: ProductBrick) => {
+    mutate({
+      code,
+      title,
+      classCode,
+      hsCode,
+      attributeCodes: attributes?.map((attribute) => attribute.code) ?? []
+    });
   };
 
   return (

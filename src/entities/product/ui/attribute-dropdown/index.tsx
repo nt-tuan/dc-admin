@@ -14,7 +14,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useGetAttributes } from "../../libs/use-get-attributes";
+import { useGetProductAttributes } from "../../libs/use-get-entity";
 
 interface Props {
   onAdd: (attributes: ProductAttribute[]) => void;
@@ -91,7 +91,7 @@ const CheckboxList = ({ onAdd, foundAttributes, isLoading }: CheckboxListProps) 
 
 const AttributeDropdown = ({ onAdd }: Props) => {
   const [searchText, setSearchText] = React.useState<string>("");
-  const { data, isLoading } = useGetAttributes();
+  const { data, isLoading } = useGetProductAttributes();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [foundAttributes, setFoundAttributes] = React.useState<ProductAttribute[]>([]);

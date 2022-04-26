@@ -32,7 +32,7 @@ export const getAncestorCodes = (code?: string) => {
 };
 
 export const getDecendantCodes = (nodeDictionary: Dictionary<TreeNodeValue>, code?: string) => {
-  if (code == null) return [];
+  if (code == null) return Object.keys(nodeDictionary);
   const decendantCodes: string[] = code ? [code] : [];
   const keys = Object.keys(nodeDictionary);
   for (const key of keys) {

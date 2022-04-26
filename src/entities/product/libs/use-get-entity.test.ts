@@ -1,5 +1,5 @@
 import {
-  useGetAttributes,
+  useGetProductAttributes,
   useGetBrick,
   useGetBricks,
   useGetClasses,
@@ -52,7 +52,7 @@ const testInvalidateHook = async (hook: unknown) => {
 
 test("useGetAttributes should work", async () => {
   await act(async () => {
-    renderQuery(useGetAttributes as never);
+    renderQuery(useGetProductAttributes as never);
   });
   expect(getProductAttributes).toBeCalled();
 });

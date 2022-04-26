@@ -10,12 +10,24 @@ import {
   getDCSegments,
   getSegment,
   PaginationParams,
-  getProductClass
+  getProductClass,
+  getProductAttribute
 } from "@/services/pim.service";
 import { useQuery, useQueryClient } from "react-query";
 
-export const useGetAttributes = () => {
-  return useQuery("attributes", getProductAttributes);
+const ATTRIBUTE_QUERY_KEY = "attributes";
+export const useGetProductAttributes = () => {
+  return useQuery(ATTRIBUTE_QUERY_KEY, getProductAttributes);
+};
+
+export const useGetProductAttribute = (code: string) => {
+  return useQuery([ATTRIBUTE_QUERY_KEY, code], () => getProductAttribute(code ?? ""), {
+    enabled: code != null
+  });
+};
+export const useInvalidateProductAttibutes = () => {
+  const queryClient = useQueryClient();
+  return () => queryClient.invalidateQueries(ATTRIBUTE_QUERY_KEY);
 };
 
 export const useGetBricks = (params?: PaginationParams) => {
