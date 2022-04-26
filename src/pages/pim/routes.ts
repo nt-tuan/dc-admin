@@ -26,6 +26,26 @@ export const pimRoutes = [
     exact: true
   },
   {
+    title: "Brick",
+    path: pimRoutePaths.PRODUCT_BRICK,
+    Component: loadable(() => import("./brick")),
+    exact: true
+  },
+  {
+    title: "Create Brick",
+    hideInMenu: true,
+    path: pimRoutePaths.PRODUCT_BRICK_CREATION,
+    Component: loadable(() => import("./brick/creation")),
+    exact: true
+  },
+  {
+    title: "Edit Brick",
+    hideInMenu: true,
+    path: pimRoutePaths.PRODUCT_BRICK_EDITION,
+    Component: loadable(() => import("./brick/edition")),
+    exact: true
+  },
+  {
     title: "Attributes",
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_ATTRIBUTES,
@@ -46,26 +66,6 @@ export const pimRoutes = [
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_ATTRIBUTE_EDITION,
     Component: loadable(() => import("./attributes/edition"))
-  },
-  {
-    title: "Brick",
-    path: pimRoutePaths.PRODUCT_BRICK,
-    Component: loadable(() => import("./brick")),
-    exact: true
-  },
-  {
-    title: "Create Brick",
-    hideInMenu: true,
-    path: pimRoutePaths.PRODUCT_BRICK_CREATION,
-    Component: loadable(() => import("./brick/creation")),
-    exact: true
-  },
-  {
-    title: "Edit Brick",
-    hideInMenu: true,
-    path: pimRoutePaths.PRODUCT_BRICK_EDITION,
-    Component: loadable(() => import("./brick/edition")),
-    exact: true
   }
 ];
 
