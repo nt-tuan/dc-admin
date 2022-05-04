@@ -45,7 +45,7 @@ const OptionsForm = () => {
     <Grid container spacing={4}>
       <Grid item xs={6}>
         <Typography variant="h6">Options Value</Typography>
-        <Stack direction="row" justifyContent="space-between" mt={2} mb={2}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2} mb={2}>
           <FormControlLabel
             control={
               <Checkbox name="sort-options" checked={!isManualSort} onChange={() => onSort()} />
@@ -93,7 +93,6 @@ const OptionsForm = () => {
             onClick={() => onAddOption()}
             sx={{
               visibility: title ? "visible" : "hidden",
-              py: 0.5,
               minHeight: 0
             }}
           >

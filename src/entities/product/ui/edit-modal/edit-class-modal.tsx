@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { TextField } from "@/components/commons/fields";
 import { extractLocalCode } from "../../libs/tree-node";
 import { useUpdateClassTitle } from "../../libs/use-update-entity";
+import { classSchema } from "./validation.chema";
 
 interface Props extends BaseFormModalProps {
   code: string;
@@ -38,10 +39,15 @@ const EditClassModal = ({ code, parentCode, title, open, onClose }: Props) => {
       onSave={triggerSubmit}
       isLoading={isLoading}
     >
-      <Formik innerRef={ref} initialValues={{ title, familyCode }} onSubmit={submit}>
+      <Formik
+        innerRef={ref}
+        initialValues={{ title, familyCode }}
+        onSubmit={submit}
+        validationSchema={classSchema}
+      >
         <Form>
           <Stack spacing={3}>
-            <TextField required name="title" label="Family Name" fieldConfig={{}} />
+            <TextField required name="title" label="Class Name" fieldConfig={{}} />
             <FamilySelect
               name="familyCode"
               label="Parent Family"

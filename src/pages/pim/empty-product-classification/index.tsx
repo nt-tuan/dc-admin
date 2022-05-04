@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PageContentLayout from "../page-layout";
-const EmptyProductClassification = () => {
+
+const EmptyProductClassification = ({ onStart }: { onStart: () => void }) => {
   return (
     <PageContentLayout title="Product Classification">
       <Typography variant="h6">Create Product Classification</Typography>
@@ -12,9 +13,10 @@ const EmptyProductClassification = () => {
         Product Classification) schema . This enables you to easily search and classify products
         accurately in your Marketplace.
       </Typography>
-      <Link to="/admin/product-classification/creation">
-        <Button variant="contained">Start</Button>
-      </Link>
+
+      <Button variant="contained" onClick={onStart}>
+        Start
+      </Button>
     </PageContentLayout>
   );
 };

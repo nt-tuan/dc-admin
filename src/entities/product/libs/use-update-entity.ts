@@ -1,6 +1,7 @@
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import {
   AttributeValue,
+  BulkDeleteResponse,
   createBulkProductAttributes,
   createProductAttribute,
   deleteBulkAttributes,
@@ -20,7 +21,11 @@ import { useMutation } from "react-query";
 import { Dictionary, TreeNodeValue } from "../model/types";
 import { useProductClassificationContext } from "../ui/product-classification/provider";
 import { findNode, getActualCode, getDecendantCodes, toTreeNodeDictionary } from "./tree-node";
-import { useInvalidateBrick, useInvalidateProductAttibutes } from "./use-get-entity";
+import {
+  useInvalidateBrick,
+  useInvalidateGetSegments,
+  useInvalidateProductAttibutes
+} from "./use-get-entity";
 import { useHistory } from "react-router-dom";
 import { useMessage } from "@/hooks/use-message";
 
@@ -34,6 +39,7 @@ export const deleteNodeAndDecendants = (nodes: Dictionary<TreeNodeValue>, localC
 };
 
 export const useUpdateSegmentTitle = (localCode: string) => {
+  const invalidate = useInvalidateGetSegments();
   const code = getActualCode(localCode) ?? "";
   const { setNodes } = useProductClassificationContext();
   const reloadSegment = async (segment?: Segment) => {
@@ -49,7 +55,10 @@ export const useUpdateSegmentTitle = (localCode: string) => {
     });
   };
   const { mutate, isLoading } = useMutation(updateSegmentTitle, {
-    onSuccess: (segment?: Segment) => reloadSegment(segment)
+    onSuccess: async (segment?: Segment) => {
+      await invalidate();
+      await reloadSegment(segment);
+    }
   });
   return { mutate, isLoading };
 };
@@ -123,7 +132,7 @@ interface useDeleteOptions {
 const handleOnSuccess = (
   options: useDeleteOptions | undefined,
   invalidate: () => Promise<void>
-) => async () => {
+) => async (result: BulkDeleteResponse) => {
   await invalidate();
   if (options?.onSuccess) {
     options.onSuccess();
@@ -176,6 +185,9 @@ export const useUpdateProductAttribute = (options?: useDeleteOptions) => {
     onSuccess: async () => {
       await invalidate();
       message.success("Update successfully.");
+    },
+    onError: async () => {
+      await invalidate();
     }
   });
   return { mutate, isLoading };

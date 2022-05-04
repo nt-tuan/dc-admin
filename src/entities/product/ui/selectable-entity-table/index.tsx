@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   Checkbox,
-  TableCell,
   TableContainer,
   TableHead,
   TablePagination,
@@ -12,10 +11,15 @@ import {
   Box,
   TableCellProps
 } from "@mui/material";
+import MuiTableCell from "@mui/material/TableCell";
 import Button from "@mui/lab/LoadingButton";
 import { visuallyHidden } from "@mui/utils";
 import useSelectableTable, { getComparator, stableSort } from "../../libs/use-selectable-table";
+import { styled } from "@mui/material/styles";
 
+const TableCell = styled(MuiTableCell)({
+  height: 52
+});
 interface ColumnDef<T> {
   props?: TableCellProps;
   header?: React.ReactNode;
@@ -78,6 +82,7 @@ export default function SelectableEntityTable<T extends { code: string }>({
                 <TableCell key={column.key} padding="none">
                   {selected.length > 0 && column.isLabel ? (
                     <Button
+                      size="small"
                       variant="contained"
                       onClick={() => onDelete(selected)}
                       loading={isDeleting}

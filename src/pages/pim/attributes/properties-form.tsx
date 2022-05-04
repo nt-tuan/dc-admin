@@ -3,11 +3,15 @@ import { SelectField, TextField } from "@/components/commons/fields";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 
-const PropertiesForm = () => {
+interface Props {
+  disabledFields?: { [key: string]: boolean };
+}
+const PropertiesForm = ({ disabledFields }: Props) => {
   return (
     <Grid container spacing={4}>
       <Grid item xs={4}>
         <TextField
+          disabled={disabledFields && disabledFields["code"]}
           fullWidth
           required
           name="code"

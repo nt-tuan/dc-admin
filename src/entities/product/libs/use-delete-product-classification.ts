@@ -1,13 +1,18 @@
 import {
+  BulkDeleteResponse,
   deleteBulkAttributes,
   deleteBulkBricks,
   deleteBulkClasses,
   deleteBulkFamilies,
   deleteBulkSegments
 } from "@/services/pim.service";
+import { useModal } from "mui-modal-provider";
 import React from "react";
 import { useMutation } from "react-query";
 import { Dictionary, TreeNodeValue } from "../model/types";
+import DeleteFailedAlert from "../ui/delete-failed-alert";
+import { useProductClassificationContext } from "../ui/product-classification";
+import { getDecendantCodes } from "./tree-node";
 
 export const deleteTreeNodes = async (
   nodes: Dictionary<TreeNodeValue>,
@@ -42,42 +47,76 @@ export const deleteTreeNodes = async (
     }
   }
 
-  const deleteSegmentsPromise = async () => {
-    if (deletedSegments.length === 0) return;
-    await deleteBulkSegments(deletedSegments);
+  const result: { successCodes: string[]; failedCodes: string[] } = {
+    successCodes: [],
+    failedCodes: []
   };
-  const deleteFamiliesPromise = async () => {
-    if (deletedFamilies.length === 0) return;
-    await deleteBulkFamilies(deletedFamilies);
+  const updateResult = (response: BulkDeleteResponse) => {
+    const successCodes = response.filter((item) => item.status === 204).map((item) => item.code);
+    const failedCodes = response.filter((item) => item.status !== 204).map((item) => item.code);
+    result.successCodes.push(...successCodes);
+    result.failedCodes.push(...failedCodes);
   };
-  const deleteClassesPromise = async () => {
-    if (deletedClasses.length === 0) return;
-    await deleteBulkClasses(deletedClasses);
+
+  const deleteEntities = async <T extends any>(
+    fn: (e: T[]) => Promise<BulkDeleteResponse>,
+    entities: T[]
+  ) => {
+    if (entities.length === 0) return;
+    const response = await fn(entities);
+    updateResult(response);
   };
-  const deleteBricksPromise = async () => {
-    if (deletedBricks.length === 0) return;
-    await deleteBulkBricks(deletedBricks);
-  };
-  const deleteAttributePromise = async () => {
-    if (deletedAttributes.length === 0) return;
-    await deleteBulkAttributes(deletedAttributes);
-  };
-  await Promise.all([
-    deleteSegmentsPromise(),
-    deleteFamiliesPromise(),
-    deleteClassesPromise(),
-    deleteBricksPromise(),
-    deleteAttributePromise()
-  ]);
+
+  await deleteEntities(deleteBulkAttributes, deletedAttributes);
+  await deleteEntities(deleteBulkBricks, deletedBricks);
+  await deleteEntities(deleteBulkClasses, deletedClasses);
+  await deleteEntities(deleteBulkFamilies, deletedFamilies);
+  await deleteEntities(deleteBulkSegments, deletedSegments);
+  return result;
 };
-const useDeleteProductClassification = (
-  nodes: Dictionary<TreeNodeValue>,
-  nodeSelection: Dictionary<boolean>
-) => {
-  const { mutate } = useMutation(() => deleteTreeNodes(nodes, nodeSelection));
+
+const useDeleteLocalNodes = () => {
+  const { nodes, nodeSelection, setNodes, setNodeSelection } = useProductClassificationContext();
+  return React.useCallback(
+    (codes: string[]) => {
+      const nextNodes = { ...nodes };
+      const nextSelection = { ...nodeSelection };
+      for (const code of codes) {
+        const decendants = getDecendantCodes(nodes, code);
+        for (const decendant of decendants) {
+          delete nextNodes[decendant];
+          delete nextSelection[decendant];
+        }
+      }
+      setNodes(nextNodes);
+      setNodeSelection(nextSelection);
+    },
+    [nodes, nodeSelection, setNodes, setNodeSelection]
+  );
+};
+
+const useDeleteProductClassification = () => {
+  const { showModal, destroyModal } = useModal();
+  const deleteLocalNodes = useDeleteLocalNodes();
+  const { nodes, nodeSelection } = useProductClassificationContext();
+  const { mutate, isLoading: isDeleting } = useMutation(
+    () => deleteTreeNodes(nodes, nodeSelection),
+    {
+      onSuccess: (result) => {
+        deleteLocalNodes(result.successCodes);
+        if (result.failedCodes.length > 0) {
+          const title = result.failedCodes.join(",");
+          const id = showModal(DeleteFailedAlert, {
+            onCancel: () => destroyModal(id),
+            title
+          });
+        }
+      }
+    }
+  );
   const canDelete = React.useMemo(() => {
     return Object.values(nodeSelection).some((item) => item);
   }, [nodeSelection]);
-  return { canDelete, mutate };
+  return { canDelete, mutate, isDeleting };
 };
 export default useDeleteProductClassification;

@@ -4,6 +4,7 @@ import { Form, Formik, FormikProps } from "formik";
 import { useUpdateSegmentTitle } from "../../libs/use-update-entity";
 import FormModal, { BaseFormModalProps } from "../form-modal";
 import { Segment } from "@/services/pim.service";
+import { segmentSchema } from "./validation.chema";
 
 interface Props extends BaseFormModalProps {
   code: string;
@@ -39,7 +40,12 @@ const EditSegmentModal = ({ code, title, open, onClose, onSuccess }: Props) => {
       onSave={triggerSubmit}
       isLoading={isLoading}
     >
-      <Formik innerRef={ref} initialValues={{ title }} onSubmit={submit}>
+      <Formik
+        innerRef={ref}
+        initialValues={{ title }}
+        onSubmit={submit}
+        validationSchema={segmentSchema}
+      >
         <Form>
           <TextField
             fullWidth

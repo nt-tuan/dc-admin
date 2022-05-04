@@ -18,14 +18,6 @@ export const pimRoutes = [
     exact: true
   },
   {
-    title: "Product Classification Wizard",
-    hideInMenu: true,
-    icon: ProductIcon,
-    path: pimRoutePaths.PRODUCT_CLASSFICATION_WIZARD,
-    Component: loadable(() => import("./product-classification/wizard")),
-    exact: true
-  },
-  {
     title: "Brick",
     path: pimRoutePaths.PRODUCT_BRICK,
     Component: loadable(() => import("./brick")),

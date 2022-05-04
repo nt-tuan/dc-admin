@@ -16,20 +16,18 @@ import {
 } from "@/services/pim.service";
 import { Box, Stack, Typography } from "@mui/material";
 import Button from "@mui/lab/LoadingButton";
-import { Redirect, useHistory } from "react-router-dom";
-import PageContentLayout from "../page-layout";
-
-const AddButton = () => {
-  const history = useHistory();
+import { Redirect } from "react-router-dom";
+interface Props {
+  onSuccess: () => Promise<void>;
+}
+const AddButton = ({ onSuccess }: Props) => {
   const { nodes, nodeSelection } = useProductClassificationContext();
   const { importData, isCreatable, isLoading } = useImportProductClassification(
     nodes,
     nodeSelection
   );
   const handleClick = () => {
-    importData(() => {
-      history.push(pimRoutePaths.PRODUCT_CLASSFICATION);
-    });
+    importData(onSuccess);
   };
   return (
     <Stack alignItems="center">
@@ -70,35 +68,30 @@ const selectionLoaders = {
   }
 };
 
-const Wizard = () => {
+const Wizard = (props: Props) => {
   const { data: dcSegments, isLoading: isDCSegmentLoading } = useGetDCSegments();
   const { data: segment, isLoading: isSegmentLoading } = useGetSegments();
   if (isSegmentLoading || isDCSegmentLoading) return <Loader />;
   if (dcSegments == null || segment == null)
     return <Redirect to={pimRoutePaths.PRODUCT_CLASSFICATION} />;
   return (
-    <PageContentLayout
-      title="Create Product Wizard"
-      parentPage={pimRoutePaths.PRODUCT_CLASSFICATION}
+    <ProductClassificationProvider
+      segments={dcSegments}
+      defaulSelection={toDictionary(segment.segments ?? [], undefined, undefined, () => true)}
+      loaders={getDCDataLoaders()}
+      selectionLoaders={selectionLoaders}
     >
-      <ProductClassificationProvider
-        segments={dcSegments}
-        defaulSelection={toDictionary(segment.segments ?? [], undefined, undefined, () => true)}
-        loaders={getDCDataLoaders()}
-        selectionLoaders={selectionLoaders}
-      >
-        <Stack height="100%" spacing={3}>
-          <Typography variant="body2">
-            Add more required components (Segment, Family, Class, Brick, and Attribute), using the
-            current GPC schema.
-          </Typography>
-          <Box height={0} flexGrow={1}>
-            <ProductClassificationTable />
-          </Box>
-          <AddButton />
-        </Stack>
-      </ProductClassificationProvider>
-    </PageContentLayout>
+      <Stack height="100%" spacing={3}>
+        <Typography variant="body2">
+          Add more required components (Segment, Family, Class, Brick, and Attribute), using the
+          current GPC schema.
+        </Typography>
+        <Box height={0} flexGrow={1}>
+          <ProductClassificationTable />
+        </Box>
+        <AddButton {...props} />
+      </Stack>
+    </ProductClassificationProvider>
   );
 };
 export default Wizard;

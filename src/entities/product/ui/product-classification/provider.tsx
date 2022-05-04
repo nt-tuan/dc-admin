@@ -8,7 +8,6 @@ import {
   getActualCode,
   getAncestorCodes,
   getDecendantCodes,
-  getLowerEntityType,
   getNodesByCode,
   isNodeChecked,
   toDictionary,
@@ -39,6 +38,7 @@ interface Props {
   selectionLoaders?: {
     [key in EntityType]?: LoaderFunction;
   };
+  autoSelectParent?: boolean;
 }
 
 const Provider = ({
@@ -46,7 +46,8 @@ const Provider = ({
   segments,
   loaders,
   selectionLoaders,
-  defaulSelection
+  defaulSelection,
+  autoSelectParent
 }: React.PropsWithChildren<Props>) => {
   const asyncWrapper = useAsyncErrorHandler();
   const [nodeDictionary, setNodeDictionary] = React.useState(() => toTreeNodeDictionary(segments));
@@ -135,16 +136,18 @@ const Provider = ({
 
   const changeCheckbox = (code: string | undefined, checked: boolean) => {
     const decendants = getDecendantCodes(nodeDictionary, code);
-    const ancestors = getAncestorCodes(code);
+
     const decendantDictionary = {};
     if (code) {
       decendantDictionary[code] = checked;
     }
-    const ancestorDictionary = {};
     for (const d of decendants) {
       decendantDictionary[d] = checked;
     }
-    if (checked) {
+
+    const ancestorDictionary = {};
+    if (autoSelectParent && checked) {
+      const ancestors = getAncestorCodes(code);
       for (const ancestor of ancestors) {
         ancestorDictionary[ancestor] = checked;
       }

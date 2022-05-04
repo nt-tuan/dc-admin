@@ -17,7 +17,7 @@ import { useQuery, useQueryClient } from "react-query";
 
 const ATTRIBUTE_QUERY_KEY = "attributes";
 export const useGetProductAttributes = () => {
-  return useQuery(ATTRIBUTE_QUERY_KEY, getProductAttributes);
+  return useQuery([ATTRIBUTE_QUERY_KEY], getProductAttributes);
 };
 
 export const useGetProductAttribute = (code: string) => {
@@ -27,7 +27,7 @@ export const useGetProductAttribute = (code: string) => {
 };
 export const useInvalidateProductAttibutes = () => {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries(ATTRIBUTE_QUERY_KEY);
+  return () => queryClient.invalidateQueries([ATTRIBUTE_QUERY_KEY]);
 };
 
 export const useGetBricks = (params?: PaginationParams) => {

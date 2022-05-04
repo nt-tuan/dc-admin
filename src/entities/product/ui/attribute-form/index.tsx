@@ -7,6 +7,7 @@ import validationSchema from "./validation.schema";
 
 export interface IAttributeFormContext {
   options: AttributeValue[];
+  isMutating: boolean;
   newOptions: AttributeValue[];
   deletedCodes: string[];
   isManualSort: boolean;
@@ -15,6 +16,7 @@ export interface IAttributeFormContext {
   setOptions: React.Dispatch<React.SetStateAction<AttributeValue[]>>;
   changeManualSort: (value: boolean) => void;
   saveOptions: () => void;
+  clearOptions: () => void;
 }
 export const AttributeFormContext = React.createContext<IAttributeFormContext>({} as never);
 
@@ -22,22 +24,30 @@ interface Props {
   attribute?: ProductAttribute;
   children?: React.ReactNode;
   isMutating?: boolean;
-  onSubmit: (params: {
-    attribute: ProductAttribute;
-    newValues: AttributeValue[];
-    deletedValues: string[];
-  }) => void;
+  onSubmit: (
+    params: {
+      attribute: ProductAttribute;
+      newValues: AttributeValue[];
+      deletedValues: string[];
+    },
+    options?: {
+      onError: () => void;
+    }
+  ) => void;
 }
-export const AttributeFormProvider = ({ attribute, children, onSubmit }: Props) => {
+export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutating }: Props) => {
   const [isManualSort, setManualSort] = useState<boolean>(false);
   const [options, setOptions] = useState<AttributeValue[]>(attribute?.attributeValues ?? []);
   const [deletedCodes, setDeletedCodes] = useState<string[]>([]);
   const [newOptions, setNewOptions] = useState<AttributeValue[]>([]);
-  React.useEffect(() => {
+  const clearOptions = React.useCallback(() => {
     setOptions(attribute?.attributeValues ?? []);
     setDeletedCodes([]);
     setNewOptions([]);
   }, [attribute]);
+  React.useEffect(() => {
+    clearOptions();
+  }, [clearOptions]);
 
   const submit = ({ code, title }) => {
     const attribute: ProductAttribute = {
@@ -49,7 +59,12 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit }: Props) 
 
   const saveOptions = () => {
     if (attribute == null) return;
-    onSubmit({ attribute, deletedValues: deletedCodes, newValues: newOptions });
+    onSubmit(
+      { attribute, deletedValues: deletedCodes, newValues: newOptions },
+      {
+        onError: clearOptions
+      }
+    );
   };
 
   const addOption = (title: string) => {
@@ -72,6 +87,7 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit }: Props) 
   return (
     <AttributeFormContext.Provider
       value={{
+        isMutating: Boolean(isMutating),
         isManualSort,
         changeManualSort: setManualSort,
         options,
@@ -80,7 +96,8 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit }: Props) 
         newOptions,
         addOption,
         deleteOption,
-        saveOptions
+        saveOptions,
+        clearOptions
       }}
     >
       <Formik

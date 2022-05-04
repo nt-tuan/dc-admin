@@ -23,7 +23,7 @@ const CreateButton = () => {
     nodeSelection
   );
   const invalidate = useInvalidateGetSegments();
-  const onSuccess = () => {
+  const onSuccess = async () => {
     invalidate().finally(() => {
       history.push({
         pathname: pimRoutePaths.PRODUCT_CLASSFICATION

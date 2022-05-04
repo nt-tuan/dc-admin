@@ -7,6 +7,7 @@ import { getActualCode } from "../../libs/tree-node";
 import FormModal, { BaseFormModalProps } from "../form-modal";
 import SegmentSelect from "../segment-select";
 import { useUpdateFamilyTitle } from "../../libs/use-update-entity";
+import { familySchema } from "./validation.chema";
 
 interface Props extends BaseFormModalProps {
   code: string;
@@ -21,9 +22,11 @@ const EditFamilyModal = ({ code, segmentCode, title, open, onClose }: Props) => 
   const { mutate, isLoading } = useUpdateFamilyTitle(code);
   const ref = React.useRef<FormikProps<FormValue>>(null);
   const triggerSubmit = () => {
+    console.log(ref.current);
     ref.current?.submitForm();
   };
   const submit = async (value: FormValue) => {
+    console.log(code);
     const actualCode = getActualCode(code);
     if (actualCode == null) return;
     mutate(value, {
@@ -44,6 +47,7 @@ const EditFamilyModal = ({ code, segmentCode, title, open, onClose }: Props) => 
         innerRef={ref}
         initialValues={{ title, segmentCode: getActualCode(segmentCode) ?? 0 }}
         onSubmit={submit}
+        validationSchema={familySchema}
       >
         <Form>
           <Stack spacing={3}>

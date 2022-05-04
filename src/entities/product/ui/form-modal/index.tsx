@@ -40,12 +40,17 @@ const FormModal = ({ open, onClose, title, onSave, children, isLoading }: Props)
         <Stack
           pl={2}
           direction="row"
-          height={40}
           alignItems="center"
           justifyContent="space-between"
           sx={{ backgroundColor: "grey.100" }}
         >
-          <Typography id="modal-modal-title" variant="body1" fontWeight="bold">
+          <Typography
+            lineHeight="17px"
+            py={1.5}
+            id="modal-modal-title"
+            variant="body1"
+            fontWeight="bold"
+          >
             {title}
           </Typography>
           <IconButton onClick={onClose}>

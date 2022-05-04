@@ -9,21 +9,24 @@ import { ThemeProvider } from "@mui/material/styles";
 import { adminTheme } from "@/theme/admin-theme";
 import { createBrowserHistory } from "history";
 import { store } from "@/redux/store";
+import ModalProvider from "mui-modal-provider";
 
 export const history = createBrowserHistory();
 export const App = () => {
   return (
     <ThemeProvider theme={adminTheme}>
-      <ErrorBoundary>
-        <SnackbarProvider>
-          <QueryClientProvider>
-            <CssBaseline />
-            <Provider store={store}>
-              <Router history={history} />
-            </Provider>
-          </QueryClientProvider>
-        </SnackbarProvider>
-      </ErrorBoundary>
+      <ModalProvider>
+        <ErrorBoundary>
+          <SnackbarProvider>
+            <QueryClientProvider>
+              <CssBaseline />
+              <Provider store={store}>
+                <Router history={history} />
+              </Provider>
+            </QueryClientProvider>
+          </SnackbarProvider>
+        </ErrorBoundary>
+      </ModalProvider>
     </ThemeProvider>
   );
 };

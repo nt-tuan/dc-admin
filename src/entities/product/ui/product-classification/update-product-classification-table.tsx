@@ -1,14 +1,6 @@
 import Edit from "@mui/icons-material/Edit";
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  Table,
-  TableBody,
-  TableHead,
-  Typography
-} from "@mui/material";
+import { Box, IconButton, Stack, Table, TableBody, TableHead, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { EntityType, TreeNodeValue } from "../../model/types";
 import Provider, { useProductClassificationContext } from "./provider";
 import {
@@ -25,9 +17,9 @@ import {
 } from "@/commons/consts/system/routes/pim-route-paths.const";
 
 import CreateClassificationItemDropdown from "./create-classification-item-dropdown";
-import EditClassModal from "../edit-class-modal";
-import EditFamilyModal from "../edit-family-modal";
-import EditSegmentModal from "../edit-segment-modal";
+import EditClassModal from "../edit-modal/edit-class-modal";
+import EditFamilyModal from "../edit-modal/edit-family-modal";
+import EditSegmentModal from "../edit-modal/edit-segment-modal";
 import MuiTableRow from "@mui/material/TableRow";
 import NewEntityModalGroup from "../new-entity-modal-group";
 import React from "react";
@@ -54,10 +46,7 @@ const Consumer = () => {
     updateNode
   } = useProductClassificationContext();
 
-  const { canDelete, mutate: deleteEntities } = useDeleteProductClassification(
-    allNodes,
-    nodeSelection
-  );
+  const { canDelete, mutate: deleteEntities, isDeleting } = useDeleteProductClassification();
   const removeAllDecendants = () => {
     const deletedCodes = Object.keys(nodeSelection).filter((item) => nodeSelection[item]);
     const allDecendantCodes: string[] = [];
@@ -139,12 +128,13 @@ const Consumer = () => {
             <TableCell colSpan={2}>
               <Stack px={1.5} direction="row" justifyContent="space-between">
                 {canDelete && (
-                  <Button
+                  <LoadingButton
                     variant="contained"
+                    loading={isDeleting}
                     onClick={() => deleteEntities(undefined, { onSuccess: removeAllDecendants })}
                   >
                     Bulk Delete
-                  </Button>
+                  </LoadingButton>
                 )}
                 <div />
                 <CreateClassificationItemDropdown onCreate={openCreateModal} />

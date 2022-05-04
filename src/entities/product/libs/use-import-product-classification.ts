@@ -3,6 +3,7 @@ import { importPimData, ImportSegment } from "@/services/pim.service";
 import { useMutation } from "react-query";
 import type { TreeNodeValue, Dictionary } from "../model/types";
 import { getNodesByCode, isNodeChecked } from "./tree-node";
+import { useInvalidateGetSegments } from "./use-get-entity";
 
 interface BaseValue {
   code: string;
@@ -84,17 +85,25 @@ const useImportProductClassification = (
   nodes: Dictionary<TreeNodeValue>,
   selectedCodes: Dictionary<boolean>
 ) => {
+  const invalidate = useInvalidateGetSegments();
   const { mutate, isLoading } = useMutation(importPimData);
   const isCreatable = React.useMemo(
     () => Object.values(selectedCodes).filter((checked) => checked).length > 0,
     [selectedCodes]
   );
   const importData = React.useCallback(
-    (onSuccess?: () => void) => {
+    (onSuccess?: () => Promise<void>) => {
       const segments = parseTreeNodeValue(nodes, selectedCodes);
-      mutate(segments, { onSuccess });
+      mutate(segments, {
+        onSuccess: async () => {
+          await invalidate();
+          if (onSuccess) {
+            await onSuccess();
+          }
+        }
+      });
     },
-    [mutate, nodes, selectedCodes]
+    [mutate, nodes, selectedCodes, invalidate]
   );
   return { isCreatable, importData, isLoading };
 };

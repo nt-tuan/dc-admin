@@ -1,10 +1,10 @@
 import { DTCTabs, useTabSearchParams } from "@/components/commons";
 import { Form } from "formik";
 import { useParams } from "react-router-dom";
-import { useMemo } from "react";
+import React from "react";
 
 import { ProductAttribute } from "@/services/pim.service";
-import Button from "@mui/material/Button";
+import Button from "@mui/lab/LoadingButton";
 import OptionsForm from "./options-form";
 import PageContentLayout from "../page-layout";
 import PropertiesForm from "./properties-form";
@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { useUpdateProductAttribute } from "@/entities/product/libs/use-update-entity";
 import { useGetProductAttribute } from "@/entities/product/libs/use-get-entity";
-import { AttributeFormProvider } from "@/entities/product/ui/attribute-form";
+import { AttributeFormContext, AttributeFormProvider } from "@/entities/product/ui/attribute-form";
 
 const TAB_KEYS = {
   PROPERTIES: "PROPERTIES",
@@ -26,12 +26,13 @@ type QuizParams = {
 };
 
 const Content = ({ attribute }: { attribute: ProductAttribute }) => {
-  const tabs = useMemo(
+  const { isMutating } = React.useContext(AttributeFormContext);
+  const tabs = React.useMemo(
     () => [
       {
         label: "Properties",
         key: PROPERTIES,
-        component: <PropertiesForm />
+        component: <PropertiesForm disabledFields={{ code: true }} />
       },
       {
         label: "Options",
@@ -44,7 +45,7 @@ const Content = ({ attribute }: { attribute: ProductAttribute }) => {
   const [value, onChange] = useTabSearchParams(tabs);
 
   return (
-    <Form name="properties-form">
+    <Form name="properties-form" noValidate>
       <PageContentLayout
         title={
           <Typography component="div" variant="h5">
@@ -56,7 +57,7 @@ const Content = ({ attribute }: { attribute: ProductAttribute }) => {
         }
         parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
         actions={
-          <Button type="submit" variant="contained">
+          <Button loading={isMutating} type="submit" variant="contained">
             Save
           </Button>
         }

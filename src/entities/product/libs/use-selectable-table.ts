@@ -56,6 +56,14 @@ const useSelectableTable = <T extends { code: string }>({
     setOrderBy(property);
   };
 
+  React.useEffect(() => {
+    setSelected((current) => {
+      return current.filter((currentItem) =>
+        dataSource.some((sourceItem) => sourceItem.code === currentItem)
+      );
+    });
+  }, [dataSource]);
+
   return {
     order,
     orderBy,
