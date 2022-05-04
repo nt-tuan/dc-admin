@@ -51,6 +51,7 @@ const Importer = ({ segments, defaulSelection }: Props) => {
       segments={segments}
       defaulSelection={defaulSelection}
       loaders={getDCDataLoaders()}
+      autoSelectParent
     >
       <Stack height="100%" spacing={3}>
         <Typography variant="body2">
