@@ -1,6 +1,6 @@
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { nanoid } from "nanoid";
 
 import { AttributeValue, ProductAttribute } from "@/services/pim.service";
 import validationSchema from "./validation.schema";
@@ -17,6 +17,7 @@ export interface IAttributeFormContext {
   changeManualSort: (value: boolean) => void;
   saveOptions: () => void;
   clearOptions: () => void;
+  ref: React.RefObject<FormikProps<FormValue>>;
 }
 export const AttributeFormContext = React.createContext<IAttributeFormContext>({} as never);
 
@@ -35,11 +36,17 @@ interface Props {
     }
   ) => void;
 }
+
+interface FormValue {
+  code: string;
+  title: string;
+}
 export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutating }: Props) => {
   const [isManualSort, setManualSort] = useState<boolean>(false);
   const [options, setOptions] = useState<AttributeValue[]>(attribute?.attributeValues ?? []);
   const [deletedCodes, setDeletedCodes] = useState<string[]>([]);
   const [newOptions, setNewOptions] = useState<AttributeValue[]>([]);
+  const ref = React.useRef<FormikProps<FormValue>>(null);
   const clearOptions = React.useCallback(() => {
     setOptions(attribute?.attributeValues ?? []);
     setDeletedCodes([]);
@@ -69,11 +76,11 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
 
   const addOption = (title: string) => {
     if (attribute == null) return;
-    const code = uuidv4();
+    const code = nanoid(20);
     const newOption: AttributeValue = {
       code,
       title,
-      attributeCode: attribute.code
+      attributeCode: attribute.code + "adalskdaldnkl askldnlas dal dalskd alsdkals dlsa "
     };
     setNewOptions((options) => [...options, newOption]);
     setOptions((options) => [...options, newOption]);
@@ -97,10 +104,12 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
         addOption,
         deleteOption,
         saveOptions,
-        clearOptions
+        clearOptions,
+        ref
       }}
     >
       <Formik
+        innerRef={ref}
         enableReinitialize
         initialValues={{ ...initialValues, type: "dropdown" }}
         onSubmit={submit}

@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useModal } from "mui-modal-provider";
-import { BulkDeleteResponse } from "@/services/pim.service";
+import { BulkResponse } from "@/services/pim.service";
 
 interface Props {
   open?: boolean;
@@ -16,7 +16,7 @@ export const useDeleteFailedAlert = ({
   dataSource: { code: string; title: string }[];
 }) => {
   const { showModal: show, destroyModal } = useModal();
-  const showModal = (result: BulkDeleteResponse) => {
+  const showModal = (result: BulkResponse) => {
     const failedBricks = dataSource.filter((item) =>
       result.some((resultItem) => resultItem.status !== 204 && resultItem.code === item.code)
     );

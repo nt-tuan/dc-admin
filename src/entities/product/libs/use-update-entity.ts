@@ -1,7 +1,7 @@
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import {
   AttributeValue,
-  BulkDeleteResponse,
+  BulkResponse,
   createBulkProductAttributes,
   createProductAttribute,
   deleteBulkAttributes,
@@ -132,7 +132,7 @@ interface useDeleteOptions {
 const handleOnSuccess = (
   options: useDeleteOptions | undefined,
   invalidate: () => Promise<void>
-) => async (result: BulkDeleteResponse) => {
+) => async (result: BulkResponse) => {
   await invalidate();
   if (options?.onSuccess) {
     options.onSuccess();
@@ -158,6 +158,14 @@ export const useCreateProductAttribute = () => {
   return { mutate, isLoading };
 };
 
+const exludeItems = <T extends unknown>(
+  array: T[],
+  excludedItems: T[],
+  isEqual: (a: T, b: T) => boolean
+) => {
+  return array.filter((item) => excludedItems.every((excludeItem) => !isEqual(item, excludeItem)));
+};
+
 const updateProductAttributeAndValue = async ({
   attribute,
   newValues,
@@ -171,18 +179,40 @@ const updateProductAttributeAndValue = async ({
     code: attribute.code,
     title: attribute.title
   });
+
+  const excessValues = newValues.filter((value) =>
+    deletedValues.some((deletedValue) => deletedValue === value.code)
+  );
+  const responses: BulkResponse = [];
   if (newValues.length > 0) {
-    await createBulkProductAttributes(newValues);
+    const response = await createBulkProductAttributes(
+      exludeItems(newValues, excessValues, (a, b) => a.code === b.code)
+    );
+    responses.push(...response);
   }
   if (deletedValues.length > 0) {
-    await deleteBulkAttributeValues(deletedValues);
+    const response = await deleteBulkAttributeValues(
+      exludeItems(
+        deletedValues,
+        excessValues.map((item) => item.code),
+        (a, b) => a === b
+      )
+    );
+    responses.push(...response);
   }
+  return responses;
 };
-export const useUpdateProductAttribute = (options?: useDeleteOptions) => {
+
+export const useUpdateProductAttribute = () => {
   const invalidate = useInvalidateProductAttibutes();
   const message = useMessage();
   const { mutate, isLoading } = useMutation(updateProductAttributeAndValue, {
-    onSuccess: async () => {
+    onSuccess: async (bulkResponses) => {
+      for (const response of bulkResponses) {
+        if (response.status === 400) {
+          message.error(response.description);
+        }
+      }
       await invalidate();
       message.success("Update successfully.");
     },

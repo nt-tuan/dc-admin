@@ -22,12 +22,13 @@ export const useGetProductAttributes = () => {
 
 export const useGetProductAttribute = (code: string) => {
   return useQuery([ATTRIBUTE_QUERY_KEY, code], () => getProductAttribute(code ?? ""), {
-    enabled: code != null
+    enabled: code != null,
+    notifyOnChangeProps: ["isLoading", "data"]
   });
 };
 export const useInvalidateProductAttibutes = () => {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries([ATTRIBUTE_QUERY_KEY]);
+  return () => queryClient.invalidateQueries(ATTRIBUTE_QUERY_KEY);
 };
 
 export const useGetBricks = (params?: PaginationParams) => {

@@ -26,7 +26,7 @@ type QuizParams = {
 };
 
 const Content = ({ attribute }: { attribute: ProductAttribute }) => {
-  const { isMutating } = React.useContext(AttributeFormContext);
+  const { isMutating, ref } = React.useContext(AttributeFormContext);
   const tabs = React.useMemo(
     () => [
       {
@@ -44,6 +44,16 @@ const Content = ({ attribute }: { attribute: ProductAttribute }) => {
   );
   const [value, onChange] = useTabSearchParams(tabs);
 
+  const handleSubmit = async () => {
+    if (ref.current == null) return;
+    await ref.current.validateForm();
+    if (!ref.current.isValid) {
+      onChange(PROPERTIES);
+      return;
+    }
+    ref.current.submitForm();
+  };
+
   return (
     <Form name="properties-form" noValidate>
       <PageContentLayout
@@ -57,7 +67,7 @@ const Content = ({ attribute }: { attribute: ProductAttribute }) => {
         }
         parentPage={pimRoutePaths.PRODUCT_ATTRIBUTES}
         actions={
-          <Button loading={isMutating} type="submit" variant="contained">
+          <Button loading={isMutating} onClick={handleSubmit} variant="contained">
             Save
           </Button>
         }
@@ -82,7 +92,7 @@ const AttributeEdition = () => {
     );
 
   return (
-    <AttributeFormProvider attribute={data} onSubmit={mutate} isMutating={isLoading}>
+    <AttributeFormProvider attribute={{ ...data }} onSubmit={mutate} isMutating={isLoading}>
       <Content attribute={data} />
     </AttributeFormProvider>
   );

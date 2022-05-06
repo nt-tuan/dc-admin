@@ -39,9 +39,10 @@ const defaultPagination: PaginationParams = {
   page: 0,
   size: 100
 };
-export type BulkDeleteResponse = {
+export type BulkResponse = {
   code: string;
   status: number;
+  description: string;
 }[];
 // #endregion
 
@@ -88,9 +89,8 @@ export const updateSegment: (segment: Segment) => Promise<Segment> = (segment) =
 export const createSegment: (payload: { code: string; title: string }) => Promise<Segment> = (
   payload
 ) => backendAPI.post(`/pim/product-classification/segments`, payload);
-export const deleteBulkSegments: (code: string[]) => Promise<BulkDeleteResponse> = (
-  codes: string[]
-) => backendAPI.delete("/pim/product-classification/segments/bulk", undefined, codes);
+export const deleteBulkSegments: (code: string[]) => Promise<BulkResponse> = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/segments/bulk", undefined, codes);
 // #endregion
 
 // #region Product Family API
@@ -112,9 +112,8 @@ export const createProductFamily: (payload: {
   segmentCode: string;
 }) => Promise<ProductFamily> = (payload) =>
   backendAPI.post(`/pim/product-classification/families`, payload);
-export const deleteBulkFamilies: (code: string[]) => Promise<BulkDeleteResponse> = (
-  codes: string[]
-) => backendAPI.delete("/pim/product-classification/families/bulk", undefined, codes);
+export const deleteBulkFamilies: (code: string[]) => Promise<BulkResponse> = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/families/bulk", undefined, codes);
 // #endregion
 
 // #region Product Class API
@@ -136,9 +135,8 @@ export const createProductClass: (payload: {
   familyCode: string;
 }) => Promise<ProductClass> = (payload) =>
   backendAPI.post(`/pim/product-classification/classes`, payload);
-export const deleteBulkClasses: (codes: string[]) => Promise<BulkDeleteResponse> = (
-  codes: string[]
-) => backendAPI.delete("/pim/product-classification/classes/bulk", undefined, codes);
+export const deleteBulkClasses: (codes: string[]) => Promise<BulkResponse> = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/classes/bulk", undefined, codes);
 // #endregion
 
 // #region Product Brick API
@@ -164,9 +162,8 @@ export const updateProductBrick: (payload: {
   attributeCodes: string[];
 }) => Promise<ProductBrick> = (payload) =>
   backendAPI.put(`/pim/product-classification/bricks/${payload.code}`, payload);
-export const deleteBulkBricks: (codes: string[]) => Promise<BulkDeleteResponse> = (
-  codes: string[]
-) => backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
+export const deleteBulkBricks: (codes: string[]) => Promise<BulkResponse> = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/bricks/bulk", undefined, codes);
 // #endregion
 
 // #region Product Attribute API
@@ -178,17 +175,16 @@ export const createProductAttribute: (attribute: ProductAttribute) => Promise<vo
   backendAPI.post(`/pim/product-classification/attributes`, attribute);
 export const updateProductAttribute: (attribute: ProductAttribute) => Promise<void> = (attribute) =>
   backendAPI.put(`/pim/product-classification/attributes/${attribute.code}`, attribute);
-export const deleteBulkAttributes: (codes: string[]) => Promise<BulkDeleteResponse> = (
-  codes: string[]
-) => backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
+export const deleteBulkAttributes: (codes: string[]) => Promise<BulkResponse> = (codes: string[]) =>
+  backendAPI.delete("/pim/product-classification/attributes/bulk", undefined, codes);
 export const deleteBulkAttributeValues = (codes: string[]) =>
-  backendAPI.delete("/pim/product-classification/attributes-values/bulk", undefined, codes);
+  backendAPI.delete("/pim/product-classification/attributeValues/bulk", undefined, codes);
 // #endregion
 
 // #region Product Attribute API
-export const createBulkProductAttributes: (values: AttributeValue[]) => Promise<void> = (values) =>
-  backendAPI.post(`pim/product-classification/attributes-values/bulk`, values);
-export const deleteBulkProductAttributes: (codes: string) => Promise<BulkDeleteResponse> = (
-  codes
-) => backendAPI.delete(`pim/product-classification/attributes-values/bulk`, undefined, codes);
+export const createBulkProductAttributes: (values: AttributeValue[]) => Promise<BulkResponse> = (
+  values
+) => backendAPI.post(`pim/product-classification/attributeValues/bulk`, values);
+export const deleteBulkProductAttributes: (codes: string) => Promise<BulkResponse> = (codes) =>
+  backendAPI.delete(`pim/product-classification/attributeValues/bulk`, undefined, codes);
 // #region

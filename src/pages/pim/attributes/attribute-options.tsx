@@ -52,9 +52,6 @@ const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentP
 };
 
 const AttributeOptions = ({ editable, options: sourceOptions, onChange, onDelete }: Props) => {
-  /**
-   * reordering the result
-   */
   const reorder = (list: AttributeValue[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);

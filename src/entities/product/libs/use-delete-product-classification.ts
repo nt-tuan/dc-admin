@@ -1,5 +1,5 @@
 import {
-  BulkDeleteResponse,
+  BulkResponse,
   deleteBulkAttributes,
   deleteBulkBricks,
   deleteBulkClasses,
@@ -51,7 +51,7 @@ export const deleteTreeNodes = async (
     successCodes: [],
     failedCodes: []
   };
-  const updateResult = (response: BulkDeleteResponse) => {
+  const updateResult = (response: BulkResponse) => {
     const successCodes = response.filter((item) => item.status === 204).map((item) => item.code);
     const failedCodes = response.filter((item) => item.status !== 204).map((item) => item.code);
     result.successCodes.push(...successCodes);
@@ -59,7 +59,7 @@ export const deleteTreeNodes = async (
   };
 
   const deleteEntities = async <T extends any>(
-    fn: (e: T[]) => Promise<BulkDeleteResponse>,
+    fn: (e: T[]) => Promise<BulkResponse>,
     entities: T[]
   ) => {
     if (entities.length === 0) return;
