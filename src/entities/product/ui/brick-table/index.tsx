@@ -1,7 +1,7 @@
 import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getBrickEditionPath } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { useDeleteBricks } from "../../libs/use-update-entity";
 import DeleteConfirm from "../delete-confirm";
@@ -12,12 +12,14 @@ import Stack from "@mui/material/Stack";
 import SearchInput from "../search-input";
 import { filterProductEntity } from "../../libs/filter";
 import { useModal } from "mui-modal-provider";
+import Box from "@mui/material/Box";
 
 interface Props {
   dataSource: ProductBrick[];
 }
 
 export default function BrickTable({ dataSource }: Props) {
+  const history = useHistory();
   const [filter, setFilter] = React.useState("");
   const { mutate, isLoading } = useDeleteBricks();
   const { showModal: showFailedBricks } = useDeleteFailedAlert({ dataSource });
@@ -39,6 +41,10 @@ export default function BrickTable({ dataSource }: Props) {
     });
   };
 
+  const navigateToBrickEdition = (row: ProductBrick) => {
+    history.push(getBrickEditionPath(row.code));
+  };
+
   const filteredDataSource = React.useMemo(() => {
     return filterProductEntity(dataSource, filter);
   }, [dataSource, filter]);
@@ -50,6 +56,7 @@ export default function BrickTable({ dataSource }: Props) {
         dataSource={filteredDataSource}
         onDelete={openDeleteConfirm}
         isDeleting={isLoading}
+        onRowClick={navigateToBrickEdition}
         columns={[
           {
             dataIndex: "title",
@@ -68,11 +75,13 @@ export default function BrickTable({ dataSource }: Props) {
               align: "right"
             },
             renderCell: (row) => (
-              <Link to={getBrickEditionPath(row.code)}>
-                <IconButton color="primary">
-                  <EditIcon />
-                </IconButton>
-              </Link>
+              <Box px={2}>
+                <Link to={getBrickEditionPath(row.code)}>
+                  <IconButton color="primary">
+                    <EditIcon />
+                  </IconButton>
+                </Link>
+              </Box>
             )
           }
         ]}

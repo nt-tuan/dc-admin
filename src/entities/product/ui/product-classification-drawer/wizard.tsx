@@ -38,6 +38,7 @@ const AddButton = ({ onSuccess }: Props) => {
         fullWidth
         sx={{ maxWidth: 304 }}
         variant="contained"
+        size="large"
       >
         Add
       </Button>

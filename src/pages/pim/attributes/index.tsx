@@ -1,13 +1,13 @@
-import AttributeTypeModal from "./attribute-type-modal";
 import { Button } from "@mui/material";
 import PageContentLayout from "../page-layout";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { useGetProductAttributes } from "@/entities/product/libs/use-get-entity";
 import AttributeTable from "@/entities/product/ui/attribute-table";
+import { useHistory } from "react-router-dom";
+import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 
 const Attributes = () => {
-  const [modal, setModal] = useState(false);
+  const history = useHistory();
   const { data, isLoading } = useGetProductAttributes();
 
   return (
@@ -15,7 +15,10 @@ const Attributes = () => {
       title="Attributes"
       loading={isLoading}
       actions={
-        <Button variant="contained" onClick={() => setModal(true)}>
+        <Button
+          variant="contained"
+          onClick={() => history.push(pimRoutePaths.PRODUCT_ATTRIBUTE_CREATION)}
+        >
           Create Attribute
         </Button>
       }
@@ -27,7 +30,6 @@ const Attributes = () => {
         128GB, etc.) Color (White, Grey,etc.).
       </Typography>
       {data && <AttributeTable dataSource={data.attributes} />}
-      <AttributeTypeModal open={modal} onClose={() => setModal(false)} />
     </PageContentLayout>
   );
 };

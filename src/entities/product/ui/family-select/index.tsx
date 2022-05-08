@@ -9,6 +9,7 @@ interface Props {
   placeholder: string;
   segmentCode?: string;
   required?: boolean;
+  disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const FamilySelect = ({
@@ -18,6 +19,7 @@ const FamilySelect = ({
   label,
   placeholder,
   required,
+  disabled,
   onChange
 }: Props) => {
   const { data } = useGetFamilies();
@@ -34,6 +36,7 @@ const FamilySelect = ({
   }, [segmentCode, data]);
   return (
     <AutocompleteField
+      disabled={disabled}
       label={label}
       required={required}
       placeholder={placeholder}

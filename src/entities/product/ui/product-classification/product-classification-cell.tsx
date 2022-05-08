@@ -15,8 +15,17 @@ interface Props {
   onClick: () => void;
   expanded: boolean;
   isLoading: boolean;
+  isLastLevel?: boolean;
 }
-const ProductClassificationCell = ({ type, title, expanded, isLoading, level, onClick }: Props) => {
+const ProductClassificationCell = ({
+  type,
+  title,
+  expanded,
+  isLoading,
+  level,
+  onClick,
+  isLastLevel
+}: Props) => {
   const getButtonIcon = () => {
     if (type === "Attribute") return null;
     if (isLoading) return <CircularProgress size={24} />;
@@ -24,7 +33,7 @@ const ProductClassificationCell = ({ type, title, expanded, isLoading, level, on
     return <FolderIcon />;
   };
   return (
-    <TableCell component="th" scope="row">
+    <TableCell width={600} component="th" scope="row">
       <Link
         onClick={onClick}
         underline="none"
@@ -35,12 +44,19 @@ const ProductClassificationCell = ({ type, title, expanded, isLoading, level, on
           }
         }}
       >
-        <Stack direction="row" alignItems="center" paddingLeft={level} spacing={1}>
-          <span>{getButtonIcon()}</span>
-          <Typography variant="body2">
+        {isLastLevel ? (
+          <Typography color="primary.main" paddingLeft={level} variant="body2">
+            {" "}
             {type} {title}
           </Typography>
-        </Stack>
+        ) : (
+          <Stack direction="row" alignItems="center" paddingLeft={level} spacing={1}>
+            {getButtonIcon()}
+            <Typography variant="body2">
+              {type} {title}
+            </Typography>
+          </Stack>
+        )}
       </Link>
     </TableCell>
   );

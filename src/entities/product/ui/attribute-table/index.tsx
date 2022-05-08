@@ -1,7 +1,7 @@
 import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getAttributeEditionPath } from "@/commons/consts/system/routes/pim-route-paths.const";
 import DeleteConfirm from "../delete-confirm";
 import { useDeleteFailedAlert } from "../delete-failed-alert";
@@ -12,12 +12,14 @@ import { useDeleteProductAttributes } from "../../libs/use-update-entity";
 import SearchInput from "../search-input";
 import { filterProductEntity } from "../../libs/filter";
 import { useModal } from "mui-modal-provider";
+import Box from "@mui/material/Box";
 
 interface Props {
   dataSource: ProductAttribute[];
 }
 
 export default function AttributeTable({ dataSource }: Props) {
+  const history = useHistory();
   const [filter, setFilter] = React.useState<string>("");
   const { mutate, isLoading } = useDeleteProductAttributes();
   const { showModal: showFailedBricks } = useDeleteFailedAlert({ dataSource });
@@ -39,6 +41,10 @@ export default function AttributeTable({ dataSource }: Props) {
     });
   };
 
+  const navigateToRowEdition = (row: ProductAttribute) => {
+    history.push(getAttributeEditionPath(row.code));
+  };
+
   const filteredDataSource = React.useMemo(() => {
     return filterProductEntity(dataSource, filter);
   }, [dataSource, filter]);
@@ -50,11 +56,12 @@ export default function AttributeTable({ dataSource }: Props) {
         dataSource={filteredDataSource}
         onDelete={openDeleteConfirm}
         isDeleting={isLoading}
+        onRowClick={navigateToRowEdition}
         columns={[
           {
             dataIndex: "title",
             key: "title",
-            header: "Brick Name",
+            header: "Label",
             isLabel: true
           },
           {
@@ -68,11 +75,13 @@ export default function AttributeTable({ dataSource }: Props) {
               align: "right"
             },
             renderCell: (row) => (
-              <Link to={getAttributeEditionPath(row.code)}>
-                <IconButton color="primary">
-                  <EditIcon />
-                </IconButton>
-              </Link>
+              <Box px={2}>
+                <Link to={getAttributeEditionPath(row.code)}>
+                  <IconButton color="primary">
+                    <EditIcon />
+                  </IconButton>
+                </Link>
+              </Box>
             )
           }
         ]}

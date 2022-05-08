@@ -96,7 +96,7 @@ const useDeleteLocalNodes = () => {
 };
 
 const useDeleteProductClassification = () => {
-  const { showModal, destroyModal } = useModal();
+  const { showModal } = useModal();
   const deleteLocalNodes = useDeleteLocalNodes();
   const { nodes, nodeSelection } = useProductClassificationContext();
   const { mutate, isLoading: isDeleting } = useMutation(
@@ -104,10 +104,15 @@ const useDeleteProductClassification = () => {
     {
       onSuccess: (result) => {
         deleteLocalNodes(result.successCodes);
+        const nodeList = Object.values(nodes);
         if (result.failedCodes.length > 0) {
-          const title = result.failedCodes.join(",");
-          const id = showModal(DeleteFailedAlert, {
-            onCancel: () => destroyModal(id),
+          const titles = result.failedCodes.map((code) => {
+            const foundNode = nodeList.find((node) => node.code.endsWith(code));
+            return foundNode?.title ?? code;
+          });
+          const title = titles.join(", ");
+          const modal = showModal(DeleteFailedAlert, {
+            onCancel: () => modal?.destroy(),
             title
           });
         }

@@ -17,9 +17,6 @@ import {
 } from "@/commons/consts/system/routes/pim-route-paths.const";
 
 import CreateClassificationItemDropdown from "./create-classification-item-dropdown";
-import EditClassModal from "../edit-modal/edit-class-modal";
-import EditFamilyModal from "../edit-modal/edit-family-modal";
-import EditSegmentModal from "../edit-modal/edit-segment-modal";
 import MuiTableRow from "@mui/material/TableRow";
 import NewEntityModalGroup from "../new-entity-modal-group";
 import React from "react";
@@ -28,12 +25,16 @@ import TableRow from "./table-row";
 import useDeleteProductClassification from "../../libs/use-delete-product-classification";
 import { useHistory } from "react-router-dom";
 import { getHSCodeFromBrick } from "../../libs/mapper";
+import { useModal } from "mui-modal-provider";
+import DeleteConfirm from "../delete-confirm";
+import EditEntityModalGroup from "../edit-entity-modal-group";
 
 interface Props {
   segments: Segment[];
 }
 
 const Consumer = () => {
+  const { showModal } = useModal();
   const history = useHistory();
   const [editingNode, setEditingNode] = React.useState<TreeNodeValue>();
   const [newNodeType, setNewNodeType] = React.useState<EntityType>();
@@ -42,8 +43,7 @@ const Consumer = () => {
     getNodes,
     setNodes,
     nodeSelection,
-    setNodeSelection,
-    updateNode
+    setNodeSelection
   } = useProductClassificationContext();
 
   const { canDelete, mutate: deleteEntities, isDeleting } = useDeleteProductClassification();
@@ -76,11 +76,6 @@ const Consumer = () => {
     setNewNodeType(undefined);
   };
 
-  const reloadSegment = async (segment?: Segment) => {
-    if (editingNode == null || segment == null) return;
-    updateNode(editingNode.code, (currentNode) => ({ ...currentNode, title: segment.title }));
-  };
-
   const handleNodeClick = (nodeValue: TreeNodeValue) => {
     const actualCode = getActualCode(nodeValue.code);
     if (!actualCode) return;
@@ -111,27 +106,42 @@ const Consumer = () => {
             </Typography>
           )}
         </TableCell>
-        <TableCell>
-          <IconButton>
-            <Edit color="primary" onClick={() => handleNodeClick(nodeValue)} />
+        <TableCell align="right" sx={{ px: 2 }}>
+          <IconButton onClick={() => handleNodeClick(nodeValue)}>
+            <Edit sx={{ fontSize: 24 }} color="primary" />
           </IconButton>
         </TableCell>
       </>
     );
   };
 
+  const requestConfirmDelete = () => {
+    const modal = showModal(DeleteConfirm, {
+      onCancel: () => modal?.destroy(),
+      onDelete: () => {
+        modal?.update({ isLoading: true });
+        deleteEntities(undefined, {
+          onSuccess: () => {
+            removeAllDecendants();
+            modal?.destroy();
+          }
+        });
+      }
+    });
+  };
+
   return (
     <Box height="100%" overflow="auto">
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table stickyHeader sx={{ minWidth: 650 }} aria-label="product classification table">
         <TableHead>
-          <MuiTableRow sx={{ backgroundColor: "grey.100" }}>
+          <MuiTableRow sx={{ backgroundColor: "grey.100", height: "52px" }}>
             <TableCell colSpan={2}>
               <Stack px={1.5} direction="row" justifyContent="space-between">
                 {canDelete && (
                   <LoadingButton
                     variant="contained"
                     loading={isDeleting}
-                    onClick={() => deleteEntities(undefined, { onSuccess: removeAllDecendants })}
+                    onClick={requestConfirmDelete}
                   >
                     Bulk Delete
                   </LoadingButton>
@@ -140,8 +150,12 @@ const Consumer = () => {
                 <CreateClassificationItemDropdown onCreate={openCreateModal} />
               </Stack>
             </TableCell>
-            <TableCell align="center">HS Code</TableCell>
-            <TableCell>Edit</TableCell>
+            <TableCell width={160} align="center">
+              HS Code
+            </TableCell>
+            <TableCell align="right" sx={{ px: 3 }}>
+              Edit
+            </TableCell>
           </MuiTableRow>
         </TableHead>
         <TableBody>
@@ -151,37 +165,7 @@ const Consumer = () => {
         </TableBody>
       </Table>
       <NewEntityModalGroup type={newNodeType} onClose={closeCreateModal} />
-      {editingNode && (
-        <>
-          {editingNode.type === "Segment" && (
-            <EditSegmentModal
-              open
-              code={editingNode.code}
-              title={editingNode.title}
-              onClose={closeModal}
-              onSuccess={reloadSegment}
-            />
-          )}
-          {editingNode.type === "Family" && (
-            <EditFamilyModal
-              open
-              code={editingNode.code}
-              segmentCode={editingNode.parentCode ?? ""}
-              title={editingNode.title}
-              onClose={closeModal}
-            />
-          )}
-          {editingNode.type === "Class" && editingNode.parentCode && (
-            <EditClassModal
-              open
-              parentCode={editingNode.parentCode}
-              code={editingNode.code}
-              title={editingNode.title}
-              onClose={closeModal}
-            />
-          )}
-        </>
-      )}
+      <EditEntityModalGroup node={editingNode} onClose={closeModal} />
     </Box>
   );
 };
@@ -219,6 +203,7 @@ const UpdateClassificationTable = ({ segments }: Props) => {
         Brick: bricksLoader,
         Attribute: attributesLoader
       }}
+      lastLevel="Brick"
     >
       <Consumer />
     </Provider>

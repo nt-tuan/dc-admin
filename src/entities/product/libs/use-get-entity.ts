@@ -17,7 +17,7 @@ import { useQuery, useQueryClient } from "react-query";
 
 const ATTRIBUTE_QUERY_KEY = "attributes";
 export const useGetProductAttributes = () => {
-  return useQuery([ATTRIBUTE_QUERY_KEY], getProductAttributes);
+  return useQuery([ATTRIBUTE_QUERY_KEY], () => getProductAttributes());
 };
 
 export const useGetProductAttribute = (code: string) => {

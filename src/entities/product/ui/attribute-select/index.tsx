@@ -33,7 +33,7 @@ interface Props {
 const AttributeSelect = ({ attributes, onDelete }: Props) => {
   return (
     <Box height="100%" overflow="auto">
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label="attribute table">
         <Header />
         <TableBody>
           {attributes.map((att) => {

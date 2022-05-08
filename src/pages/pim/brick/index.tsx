@@ -17,7 +17,9 @@ const Brick = () => {
       loading={isLoading}
       actions={
         <Link to={pimRoutePaths.PRODUCT_BRICK_CREATION}>
-          <Button variant="contained">Create Brick</Button>
+          <Button size="large" variant="contained">
+            Create Brick
+          </Button>
         </Link>
       }
     >

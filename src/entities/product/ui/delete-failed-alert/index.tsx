@@ -15,15 +15,15 @@ export const useDeleteFailedAlert = ({
 }: {
   dataSource: { code: string; title: string }[];
 }) => {
-  const { showModal: show, destroyModal } = useModal();
+  const { showModal: show } = useModal();
   const showModal = (result: BulkResponse) => {
     const failedBricks = dataSource.filter((item) =>
       result.some((resultItem) => resultItem.status !== 204 && resultItem.code === item.code)
     );
     if (failedBricks.length === 0) return;
-    const alertId = show(DeleteFailedAlert, {
+    const alertModal = show(DeleteFailedAlert, {
       title: failedBricks.map((item) => item.title).join(", "),
-      onCancel: () => destroyModal(alertId)
+      onCancel: () => alertModal?.destroy()
     });
   };
   return { showModal };
@@ -35,7 +35,7 @@ const DeleteFailedAlert = ({ title, open, onCancel }: Props) => {
       size="tiny"
       onClose={onCancel}
       open={open}
-      title={<span title={title}>Unable to remove ${shortTitle}</span>}
+      title={<span title={title}>Unable to remove {shortTitle}</span>}
       content={
         <Stack alignItems="center" spacing={2}>
           <Typography variant="body2" textAlign="center">
@@ -43,7 +43,7 @@ const DeleteFailedAlert = ({ title, open, onCancel }: Props) => {
             marketplace.
           </Typography>
           <Stack direction="row" spacing={2}>
-            <Button onClick={onCancel} variant="contained">
+            <Button size="large" onClick={onCancel} variant="contained">
               Back
             </Button>
           </Stack>

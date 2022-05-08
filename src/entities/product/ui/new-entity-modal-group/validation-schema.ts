@@ -7,8 +7,8 @@ export const newSegmentValidation = yup.object({
 });
 
 export const newFamilyValidation = yup.object({
-  code: yup.string().required(REQUIRED_ERR("Segment Code")),
-  title: yup.string().required(REQUIRED_ERR("Segment Name")),
+  code: yup.string().required(REQUIRED_ERR("Family Code")),
+  title: yup.string().required(REQUIRED_ERR("Family Name")),
   segmentCode: yup.string().required(REQUIRED_ERR("Parent Segment"))
 });
 

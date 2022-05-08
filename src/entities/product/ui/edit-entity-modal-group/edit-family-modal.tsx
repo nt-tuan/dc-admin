@@ -8,17 +8,19 @@ import FormModal, { BaseFormModalProps } from "../form-modal";
 import SegmentSelect from "../segment-select";
 import { useUpdateFamilyTitle } from "../../libs/use-update-entity";
 import { familySchema } from "./validation.chema";
+import { ProductFamily } from "@/services/pim.service";
 
 interface Props extends BaseFormModalProps {
   code: string;
   title: string;
   segmentCode: string;
+  onSuccess: (family: ProductFamily) => Promise<void>;
 }
 interface FormValue {
   title: string;
   segmentCode: string;
 }
-const EditFamilyModal = ({ code, segmentCode, title, open, onClose }: Props) => {
+const EditFamilyModal = ({ code, segmentCode, title, open, onClose, onSuccess }: Props) => {
   const { mutate, isLoading } = useUpdateFamilyTitle(code);
   const ref = React.useRef<FormikProps<FormValue>>(null);
   const triggerSubmit = () => {
@@ -30,8 +32,11 @@ const EditFamilyModal = ({ code, segmentCode, title, open, onClose }: Props) => 
     const actualCode = getActualCode(code);
     if (actualCode == null) return;
     mutate(value, {
-      onSuccess: () => {
+      onSuccess: async (family) => {
         onClose();
+        if (family) {
+          await onSuccess(family);
+        }
       }
     });
   };
@@ -53,6 +58,7 @@ const EditFamilyModal = ({ code, segmentCode, title, open, onClose }: Props) => 
           <Stack spacing={3}>
             <TextField required name="title" label="Family Name" fieldConfig={{}} />
             <SegmentSelect
+              required
               name="segmentCode"
               label="Parent Segment"
               placeholder="Select Parent Segment"

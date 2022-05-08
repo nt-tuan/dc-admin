@@ -143,7 +143,11 @@ export const BrickFormTabsConsumer = () => {
       tabs={tabs}
       value={value}
       onChange={onChange}
-      actions={value === "Attributes" ? <AttributeDropdown onAdd={addAttributes} /> : null}
+      actions={
+        value === "Attributes" ? (
+          <AttributeDropdown initialAttributes={attributes} onAdd={addAttributes} />
+        ) : null
+      }
     />
   );
 };

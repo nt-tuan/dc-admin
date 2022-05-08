@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 
 import AttributeOptions from "./attribute-options";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
@@ -19,7 +20,8 @@ const OptionsForm = () => {
     isManualSort,
     options,
     changeManualSort,
-    saveOptions
+    saveOptions,
+    isMutating
   } = useContext(AttributeFormContext);
 
   const [isLayoutReady, onSetLayoutReady] = useState<boolean>((options || []).length !== 0);
@@ -56,9 +58,15 @@ const OptionsForm = () => {
               </Typography>
             }
           />
-          <Button onClick={saveOptions} size="small" variant="contained" sx={{ flexShrink: 0 }}>
+          <LoadingButton
+            loading={isMutating}
+            onClick={saveOptions}
+            size="small"
+            variant="contained"
+            sx={{ flexShrink: 0 }}
+          >
             Add option
-          </Button>
+          </LoadingButton>
         </Stack>
         <AttributeOptions
           editable={isManualSort}

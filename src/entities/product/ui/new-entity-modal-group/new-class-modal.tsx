@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, FormikProps } from "formik";
 import Stack from "@mui/material/Stack";
-import { TextField } from "@mui/material";
+
 import SegmentSelect from "../segment-select";
 import FormModal, { BaseFormModalProps } from "../form-modal";
 import FamilySelect from "../family-select";
-import { RenderField } from "@/components/commons/fields";
+import { RenderField, TextField } from "@/components/commons/fields";
 import { newClassValidation } from "./validation-schema";
 interface FormValue {
   code: string;
@@ -25,7 +25,7 @@ const NewClassModal = ({ open, onClose, onSubmit, isLoading }: Props) => {
     <FormModal
       open={open}
       onClose={onClose}
-      title="New Family"
+      title="New Class"
       onSave={triggerSubmit}
       isLoading={isLoading}
     >
@@ -63,6 +63,7 @@ const NewClassModal = ({ open, onClose, onSubmit, isLoading }: Props) => {
                 return (
                   <FamilySelect
                     segmentCode={segmentCode}
+                    disabled={segmentCode == null || segmentCode === ""}
                     name="familyCode"
                     label="Parent Family"
                     placeholder="Ex: Communications"

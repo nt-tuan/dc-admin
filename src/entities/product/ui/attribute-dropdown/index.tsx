@@ -17,17 +17,29 @@ import Typography from "@mui/material/Typography";
 import { useGetProductAttributes } from "../../libs/use-get-entity";
 
 interface Props {
+  initialAttributes: ProductAttribute[];
   onAdd: (attributes: ProductAttribute[]) => void;
 }
 interface CheckboxListProps extends Props {
   foundAttributes: ProductAttribute[];
   isLoading?: boolean;
 }
-const CheckboxList = ({ onAdd, foundAttributes, isLoading }: CheckboxListProps) => {
-  const [selectedAttributes, setSelectedAttributes] = React.useState<ProductAttribute[]>([]);
+const CheckboxList = ({
+  onAdd,
+  initialAttributes,
+  foundAttributes,
+  isLoading
+}: CheckboxListProps) => {
+  const [selectedAttributes, setSelectedAttributes] = React.useState<ProductAttribute[]>(
+    initialAttributes
+  );
+  React.useEffect(() => {
+    setSelectedAttributes(initialAttributes);
+  }, [initialAttributes]);
   const checkboxResult = React.useMemo(() => {
     const selectedCodes = new Set(selectedAttributes.map((item) => item.code));
-    const all = [...foundAttributes, ...selectedAttributes].reduce(
+
+    const all = [...initialAttributes, ...foundAttributes, ...selectedAttributes].reduce(
       (acc, current) => ({
         ...acc,
         [current.code]: { ...current, checked: selectedCodes.has(current.code) }
@@ -35,7 +47,7 @@ const CheckboxList = ({ onAdd, foundAttributes, isLoading }: CheckboxListProps) 
       {} as { [key: string]: ProductAttribute & { checked: boolean } }
     );
     return Object.values(all);
-  }, [foundAttributes, selectedAttributes]);
+  }, [foundAttributes, selectedAttributes, initialAttributes]);
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     attribute: ProductAttribute & { checked: boolean }
@@ -55,7 +67,7 @@ const CheckboxList = ({ onAdd, foundAttributes, isLoading }: CheckboxListProps) 
   };
   return (
     <Stack spacing={3}>
-      <Box height={160} sx={{ overflowY: "scroll", overflowX: "hidden" }}>
+      <Box>
         {isLoading && <Loader />}
         {!isLoading && (
           <FormGroup>
@@ -89,7 +101,7 @@ const CheckboxList = ({ onAdd, foundAttributes, isLoading }: CheckboxListProps) 
   );
 };
 
-const AttributeDropdown = ({ onAdd }: Props) => {
+const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
   const [searchText, setSearchText] = React.useState<string>("");
   const { data, isLoading } = useGetProductAttributes();
   const [open, setOpen] = React.useState(false);
@@ -130,7 +142,10 @@ const AttributeDropdown = ({ onAdd }: Props) => {
     e?.stopPropagation();
     if (reason === "input") setSearchText(value);
   };
-
+  const handleAdd = (attributes: ProductAttribute[]) => {
+    onAdd(attributes);
+    setOpen(false);
+  };
   return (
     <>
       <Button
@@ -151,29 +166,35 @@ const AttributeDropdown = ({ onAdd }: Props) => {
           vertical: "bottom",
           horizontal: "left"
         }}
+        PaperProps={{ sx: { width: 448 } }}
       >
-        <Stack width={448} p={2} spacing={3} alignItems="stretch">
-          <Autocomplete
-            fullWidth
-            multiple
-            disablePortal
-            id="combo-box-demo"
-            value={[]}
-            inputValue={searchText}
-            onInputChange={changeSearchText}
-            options={dataSource}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={option.attribute.code}>
-                  {option.attribute.title}
-                </li>
-              );
-            }}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} label="Search" />}
+        <Autocomplete
+          fullWidth
+          multiple
+          disablePortal
+          id="combo-box-demo"
+          value={[]}
+          inputValue={searchText}
+          onInputChange={changeSearchText}
+          options={dataSource}
+          renderOption={(props, option) => {
+            return (
+              <li {...props} key={option.attribute.code}>
+                {option.attribute.title}
+              </li>
+            );
+          }}
+          onChange={handleChange}
+          renderInput={(params) => <TextField {...params} label="Search" />}
+        />
+        <Box sx={{ flexGrow: 1, flexShrink: 1 }}>
+          <CheckboxList
+            initialAttributes={initialAttributes}
+            onAdd={handleAdd}
+            foundAttributes={foundAttributes}
+            isLoading={isLoading}
           />
-          <CheckboxList onAdd={onAdd} foundAttributes={foundAttributes} isLoading={isLoading} />
-        </Stack>
+        </Box>
       </Popover>
     </>
   );

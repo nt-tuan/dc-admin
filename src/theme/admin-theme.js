@@ -43,15 +43,35 @@ export const adminTheme = createTheme({
       styleOverrides: {
         root: {
           padding: "1px",
+          fontSize: "24px"
+        },
+        fontSizeSmall: {
           fontSize: "20px"
+        },
+        fontSizeLarge: {
+          fontSize: "28px"
         }
       }
     },
     MuiButton: {
       styleOverrides: {
         root: {
+          boxShadow: "none",
           fontWeight: 700,
           textTransform: "none"
+        },
+        sizeSmall: {
+          lineHeight: "22px"
+        }
+      }
+    },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          ".MuiButtonGroup-grouped:not(:last-of-type)": {
+            borderRight: "1px solid #fff"
+          }
         }
       }
     },
@@ -107,6 +127,22 @@ export const adminTheme = createTheme({
           paddingLeft: 8,
           minWidth: 170,
           alignItems: "flex-start"
+        }
+      }
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 4,
+          color: "#FFFFFF",
+          backgroundColor: "rgba(0, 0, 0, 0.87)"
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          backgroundColor: "#F5F5F5"
         }
       }
     }

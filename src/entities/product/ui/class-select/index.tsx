@@ -10,6 +10,7 @@ interface Props {
   placeholder: string;
   familyCode?: string;
   required?: boolean;
+  disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -26,6 +27,7 @@ const ClassSelect = ({
   label,
   onChange,
   required,
+  disabled,
   placeholder
 }: Props) => {
   const { data, isLoading } = useGetClasses({ enabled: !Boolean(familyCode) });
@@ -45,6 +47,7 @@ const ClassSelect = ({
       dataSource={dataSource}
       name={name}
       value={value}
+      disabled={disabled}
       onChange={onChange}
     />
   );

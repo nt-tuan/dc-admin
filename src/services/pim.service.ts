@@ -37,7 +37,7 @@ export interface PaginationParams {
 }
 const defaultPagination: PaginationParams = {
   page: 0,
-  size: 100
+  size: 100000
 };
 export type BulkResponse = {
   code: string;
@@ -167,8 +167,10 @@ export const deleteBulkBricks: (codes: string[]) => Promise<BulkResponse> = (cod
 // #endregion
 
 // #region Product Attribute API
-export const getProductAttributes: () => Promise<{ attributes: ProductAttribute[] }> = () =>
-  backendAPI.get("/pim/product-classification/attributes");
+export const getProductAttributes: (
+  params?: PaginationParams
+) => Promise<{ attributes: ProductAttribute[] }> = (params = defaultPagination) =>
+  backendAPI.get("/pim/product-classification/attributes", params);
 export const getProductAttribute: (code: string) => Promise<ProductAttribute> = (code) =>
   backendAPI.get(`/pim/product-classification/attributes/${code}`);
 export const createProductAttribute: (attribute: ProductAttribute) => Promise<void> = (attribute) =>

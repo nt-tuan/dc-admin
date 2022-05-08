@@ -54,7 +54,7 @@ const FormModal = ({ open, onClose, title, onSave, children, isLoading }: Props)
             {title}
           </Typography>
           <IconButton onClick={onClose}>
-            <Close sx={{ color: "common.black", fontSize: "24px" }} />
+            <Close sx={{ color: "common.black" }} />
           </IconButton>
         </Stack>
         <Box px={3} my={3}>

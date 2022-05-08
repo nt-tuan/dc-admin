@@ -25,6 +25,8 @@ interface IProductClassificationContext {
   changeCheckbox: (code: string | undefined, checked: boolean) => void;
   isChecked: (code: string) => boolean;
   updateNode: UpdateAction;
+  isDefaultSelection: (code: string) => boolean;
+  lastLevel: EntityType;
 }
 const ProductClassificationContext = React.createContext<IProductClassificationContext>({} as any);
 
@@ -39,6 +41,7 @@ interface Props {
     [key in EntityType]?: LoaderFunction;
   };
   autoSelectParent?: boolean;
+  lastLevel?: EntityType;
 }
 
 const Provider = ({
@@ -47,7 +50,8 @@ const Provider = ({
   loaders,
   selectionLoaders,
   defaulSelection,
-  autoSelectParent
+  autoSelectParent,
+  lastLevel = "Attribute"
 }: React.PropsWithChildren<Props>) => {
   const asyncWrapper = useAsyncErrorHandler();
   const [nodeDictionary, setNodeDictionary] = React.useState(() => toTreeNodeDictionary(segments));
@@ -62,6 +66,10 @@ const Provider = ({
     }
     return { ...initSelection, ...defaulSelection };
   });
+
+  const isDefaultSelection = (code: string) => {
+    return Boolean(defaulSelection && defaulSelection[code]);
+  };
 
   const findNodeByActualCode = (code: string) => {
     const foundEntry = Object.entries(nodeDictionary).find(
@@ -106,6 +114,7 @@ const Provider = ({
     const codeNumber = getActualCode(parentCode);
     if (codeNumber == null || loader == null) return;
     const loadedEntities = await loader(codeNumber);
+
     const appendedDictionary = toTreeNodeDictionary(loadedEntities, type, parentCode);
     setNodeDictionary((current) => ({
       ...current,
@@ -175,7 +184,9 @@ const Provider = ({
         getNodes,
         loadMoreData,
         changeCheckbox,
-        isChecked
+        isChecked,
+        isDefaultSelection,
+        lastLevel
       }}
     >
       {children}

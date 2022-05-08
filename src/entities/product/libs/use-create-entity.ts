@@ -5,21 +5,21 @@ import {
   createSegment,
   ProductBrick,
   ProductClass,
-  ProductFamily,
-  Segment
+  ProductFamily
 } from "@/services/pim.service";
 import { useMutation } from "react-query";
+import { useInvalidateGetSegments } from "./use-get-entity";
 
-export const useCreateSegment = ({
-  onSuccess
-}: {
-  onSuccess: (segment: Segment) => Promise<void>;
-}) => {
+export const useCreateSegment = () => {
+  const invalidate = useInvalidateGetSegments();
   const { mutate, isLoading } = useMutation(createSegment, {
-    onSuccess
+    onSuccess: async () => {
+      await invalidate();
+    }
   });
   return { mutate, isLoading };
 };
+
 export const useCreateProductFamily = ({
   onSuccess
 }: {

@@ -20,6 +20,8 @@ interface Props {
   gridColumns?: number;
 }
 
+const isNullOrEmpty = (value: string | null | undefined) => value == null || value === "";
+
 const BrickForm = React.forwardRef(
   ({ gridColumns = 12 }: Props, ref: React.RefObject<FormikProps<BrickFormValue>>) => {
     return (
@@ -63,6 +65,7 @@ const BrickForm = React.forwardRef(
                   <FamilySelect
                     required
                     segmentCode={segmentCode}
+                    disabled={isNullOrEmpty(segmentCode)}
                     name="familyCode"
                     label="Parent Family"
                     placeholder="Ex: Communications"
@@ -79,6 +82,7 @@ const BrickForm = React.forwardRef(
                   <ClassSelect
                     required
                     familyCode={familyCode}
+                    disabled={isNullOrEmpty(familyCode)}
                     name="classCode"
                     label="Parent Class"
                     placeholder="Ex: Mobile Communication Devices/Services "

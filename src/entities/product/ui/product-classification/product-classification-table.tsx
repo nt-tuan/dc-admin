@@ -35,7 +35,7 @@ const ProductClassificationTable = () => {
   }, [getNodes]);
   return (
     <Box height="100%" overflow="auto">
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table stickyHeader sx={{ minWidth: 650 }} aria-label="dc product classification table">
         <ProductClassificationTableHead />
         <TableBody>
           {nodes.map((node) => (

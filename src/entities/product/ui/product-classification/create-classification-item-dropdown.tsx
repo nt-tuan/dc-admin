@@ -1,5 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import MuiButton from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
@@ -9,7 +9,13 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { Divider } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { EntityType } from "../../model/types";
+
+const Button = styled(MuiButton)({
+  paddingTop: 4,
+  paddingBottom: 4
+});
 
 interface Props {
   onCreate: (type: EntityType) => void;
@@ -38,7 +44,9 @@ const CreateClassificationItemDropdown = (props: Props) => {
   return (
     <React.Fragment>
       <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-        <Button onClick={() => props.onCreate("Brick")}>Create Brick</Button>
+        <Button size="small" onClick={() => props.onCreate("Brick")}>
+          Create Brick
+        </Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
@@ -46,6 +54,7 @@ const CreateClassificationItemDropdown = (props: Props) => {
           aria-label="select merge strategy"
           aria-haspopup="menu"
           onClick={handleToggle}
+          sx={{ py: "3px" }}
         >
           <ArrowDropDownIcon />
         </Button>

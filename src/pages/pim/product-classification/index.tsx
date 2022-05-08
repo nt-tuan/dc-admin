@@ -6,7 +6,7 @@ import EmptyProductClassification from "@/pages/pim/empty-product-classification
 import { Button, IconButton, Stack, Tooltip } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import PageContentLayout from "../page-layout";
-import HelpOutlined from "@mui/icons-material/HelpOutlined";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ProductClassificationDrawer from "@/entities/product/ui/product-classification-drawer";
 
 const ProductClassification = () => {
@@ -24,14 +24,17 @@ const ProductClassification = () => {
         <PageContentLayout
           title="Product Classification"
           actions={
-            <Stack direction="row" spacing={1}>
-              <Tooltip title="Add more required components (Segment, Family, Class, Brick, and Attribute), using the current GPC schema.">
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Tooltip
+                placement="left"
+                title="Add more required components (Segment, Family, Class, Brick, and Attribute), using the current GPC schema."
+              >
                 <IconButton>
-                  <HelpOutlined />
+                  <HelpOutlineIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
 
-              <Button variant="contained" onClick={openWizard}>
+              <Button size="large" variant="contained" onClick={openWizard}>
                 Open Classification Wizard
               </Button>
             </Stack>

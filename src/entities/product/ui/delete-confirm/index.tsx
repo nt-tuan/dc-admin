@@ -23,10 +23,16 @@ const DeleteConfirm = ({ open, onCancel, onDelete, isLoading }: Props) => {
             Are you sure you want to delete the selected item(s)?
           </Typography>
           <Stack direction="row" spacing={2}>
-            <Button onClick={onCancel} variant="outlined">
+            <Button size="large" onClick={onCancel} variant="outlined">
               Cancel
             </Button>
-            <LoadingButton loading={isLoading} color="error" onClick={onDelete} variant="contained">
+            <LoadingButton
+              size="large"
+              loading={isLoading}
+              color="error"
+              onClick={onDelete}
+              variant="contained"
+            >
               Delete
             </LoadingButton>
           </Stack>

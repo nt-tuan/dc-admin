@@ -22,7 +22,7 @@ const NewEntityModalGroup = ({ type, onClose }: Props) => {
     onClassSuccess,
     onBrickSuccess
   } = useCreateEntitySuccess({ onSuccess: onClose });
-  const segmentMutation = useCreateSegment({ onSuccess: onSegmentSuccess });
+  const segmentMutation = useCreateSegment();
   const familyMutation = useCreateProductFamily({ onSuccess: onFamilySuccess });
   const classMutation = useCreateProductClass({ onSuccess: onClassSuccess });
   const brickMutation = useCreateProductBrick({ onSuccess: onBrickSuccess });
@@ -33,7 +33,7 @@ const NewEntityModalGroup = ({ type, onClose }: Props) => {
         <NewSegmentModal
           open
           onClose={onClose}
-          onSubmit={segmentMutation.mutate}
+          onSubmit={(value) => segmentMutation.mutate(value, { onSuccess: onSegmentSuccess })}
           isLoading={segmentMutation.isLoading}
         />
       )}

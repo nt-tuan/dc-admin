@@ -32,6 +32,7 @@ interface Props<T> {
   dataSource: T[];
   columns: ColumnDef<T>[];
   onDelete: (codes: string[]) => void;
+  onRowClick: (row: T) => void;
   isDeleting?: boolean;
 }
 
@@ -40,11 +41,13 @@ const getContent = <T extends unknown>(column: ColumnDef<T>, row: T) => {
   if (column.renderCell) return column.renderCell(row);
   return null;
 };
+
 export default function SelectableEntityTable<T extends { code: string }>({
   dataSource,
   columns,
   onDelete,
-  isDeleting
+  isDeleting,
+  onRowClick
 }: Props<T>) {
   const {
     selected,
@@ -53,8 +56,7 @@ export default function SelectableEntityTable<T extends { code: string }>({
     orderBy,
     pagination,
     toggleAllSelection,
-    changeSortOrder,
-    changeRowSelection
+    changeSortOrder
   } = useSelectableTable({
     dataSource
   });
@@ -65,7 +67,7 @@ export default function SelectableEntityTable<T extends { code: string }>({
     <div style={{ height: 400, width: "100%" }}>
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-          <TableHead sx={{ backgroundColor: "grey.100" }}>
+          <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
@@ -116,7 +118,7 @@ export default function SelectableEntityTable<T extends { code: string }>({
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => changeRowSelection(event, row.code)}
+                    onClick={() => onRowClick(row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
