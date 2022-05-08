@@ -1,7 +1,6 @@
-/* eslint-disable */
 import React from "react";
 
-import { Segment, ProductFamily, ProductClass, ProductBrick } from "@/services/pim.service";
+import { Segment } from "@/services/pim.service";
 import { useAsyncErrorHandler } from "@/utils/error-handler.util";
 import { Dictionary, EntityType, ProductEntity, TreeNodeValue } from "../../model/types";
 import {
@@ -162,8 +161,7 @@ const Provider = ({
       }
     }
     setNodeSelection((current) => {
-      const nextCurrent = { ...current, ...decendantDictionary, ...ancestorDictionary };
-      return nextCurrent;
+      return { ...current, ...decendantDictionary, ...ancestorDictionary };
     });
   };
 
