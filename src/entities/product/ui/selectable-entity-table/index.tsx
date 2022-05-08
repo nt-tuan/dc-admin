@@ -56,7 +56,8 @@ export default function SelectableEntityTable<T extends { code: string }>({
     orderBy,
     pagination,
     toggleAllSelection,
-    changeSortOrder
+    changeSortOrder,
+    changeRowSelection
   } = useSelectableTable({
     dataSource
   });
@@ -132,6 +133,10 @@ export default function SelectableEntityTable<T extends { code: string }>({
                         inputProps={{
                           "aria-labelledby": labelId
                         }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        onChange={(e) => changeRowSelection(e, row.code)}
                       />
                     </TableCell>
                     {columns.map((column) => (
