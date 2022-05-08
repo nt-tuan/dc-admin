@@ -52,9 +52,6 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
     setDeletedCodes([]);
     setNewOptions([]);
   }, [attribute]);
-  React.useEffect(() => {
-    clearOptions();
-  }, [clearOptions]);
 
   const submit = ({ code, title }) => {
     const attribute: ProductAttribute = {
@@ -80,7 +77,7 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
     const newOption: AttributeValue = {
       code,
       title,
-      attributeCode: attribute.code + "adalskdaldnkl askldnlas dal dalskd alsdkals dlsa "
+      attributeCode: attribute.code
     };
     setNewOptions((options) => [...options, newOption]);
     setOptions((options) => [...options, newOption]);
