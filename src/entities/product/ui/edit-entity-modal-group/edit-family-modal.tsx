@@ -24,11 +24,9 @@ const EditFamilyModal = ({ code, segmentCode, title, open, onClose, onSuccess }:
   const { mutate, isLoading } = useUpdateFamilyTitle(code);
   const ref = React.useRef<FormikProps<FormValue>>(null);
   const triggerSubmit = () => {
-    console.log(ref.current);
     ref.current?.submitForm();
   };
   const submit = async (value: FormValue) => {
-    console.log(code);
     const actualCode = getActualCode(code);
     if (actualCode == null) return;
     mutate(value, {

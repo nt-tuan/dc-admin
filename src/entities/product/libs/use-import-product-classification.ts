@@ -2,8 +2,9 @@ import React from "react";
 import { importPimData, ImportSegment } from "@/services/pim.service";
 import { useMutation } from "react-query";
 import type { TreeNodeValue, Dictionary } from "../model/types";
-import { getNodesByCode, isNodeChecked } from "./tree-node";
+import { getNodesByCode } from "./tree-node";
 import { useInvalidateGetSegments } from "./use-get-entity";
+import { useProductClassificationContext } from "../ui/product-classification";
 
 interface BaseValue {
   code: string;
@@ -31,11 +32,10 @@ const parseTreeNodeValue = (
     entities: (BaseValue & T)[],
     update: (entity: BaseValue & T, children: BaseValue[]) => void
   ) => {
-    console.log(entities);
     for (const entity of entities) {
       const children = getNodesByCode(nodes, entity.localCode);
       const updatedChildren = children.filter((item) => {
-        return isNodeChecked(selectedCodes, item.code);
+        return selectedCodes[item.code];
       });
       const parsedChildren = updatedChildren.map(parseBaseValue);
       update(entity, parsedChildren);
@@ -81,19 +81,29 @@ const parseTreeNodeValue = (
   }));
 };
 
-const useImportProductClassification = (
-  nodes: Dictionary<TreeNodeValue>,
-  selectedCodes: Dictionary<boolean>
-) => {
+const useImportProductClassification = () => {
+  const { nodes, nodeSelection, isDefaultSelection } = useProductClassificationContext();
   const invalidate = useInvalidateGetSegments();
   const { mutate, isLoading } = useMutation(importPimData);
   const isCreatable = React.useMemo(
-    () => Object.values(selectedCodes).filter((checked) => checked).length > 0,
-    [selectedCodes]
+    () => Object.values(nodeSelection).filter((checked) => checked).length > 0,
+    [nodeSelection]
   );
+  const getNewCodes = React.useCallback(() => {
+    const newCodes: Dictionary<boolean> = {};
+    const keys = Object.keys(nodeSelection);
+    for (const key of keys) {
+      if (isDefaultSelection(key) || !nodeSelection[key]) {
+        continue;
+      }
+      newCodes[key] = true;
+    }
+    return newCodes;
+  }, [isDefaultSelection, nodeSelection]);
   const importData = React.useCallback(
     (onSuccess?: () => Promise<void>) => {
-      const segments = parseTreeNodeValue(nodes, selectedCodes);
+      const newCodes = getNewCodes();
+      const segments = parseTreeNodeValue(nodes, newCodes);
       mutate(segments, {
         onSuccess: async () => {
           await invalidate();
@@ -103,7 +113,7 @@ const useImportProductClassification = (
         }
       });
     },
-    [mutate, nodes, selectedCodes, invalidate]
+    [mutate, nodes, getNewCodes, invalidate]
   );
   return { isCreatable, importData, isLoading };
 };

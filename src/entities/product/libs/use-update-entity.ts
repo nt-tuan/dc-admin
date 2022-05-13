@@ -96,12 +96,10 @@ export const useUpdateClassTitle = (localCode: string) => {
     const cl = await getProductClass(actualCode);
     if (cl == null) return;
     const parentNode = findNode(nodes, cl.familyCode);
-    console.log(nodes, cl, parentNode);
     if (parentNode == null) return;
     setNodes((current) => {
       const nextNodes = deleteNodeAndDecendants(current, localCode);
       const newNodes = toTreeNodeDictionary([cl], "Class", parentNode.code);
-      console.log(newNodes);
       return { ...nextNodes, ...newNodes };
     });
   };

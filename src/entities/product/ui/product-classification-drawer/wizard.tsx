@@ -1,3 +1,4 @@
+import React from "react";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { Loader } from "@/components/commons";
 import { getDCDataLoaders, toDictionary } from "@/entities/product/libs/tree-node";
@@ -5,8 +6,7 @@ import { useGetDCSegments, useGetSegments } from "@/entities/product/libs/use-ge
 import useImportProductClassification from "@/entities/product/libs/use-import-product-classification";
 import {
   ProductClassificationProvider,
-  ProductClassificationTable,
-  useProductClassificationContext
+  ProductClassificationTable
 } from "@/entities/product/ui/product-classification";
 import {
   getProductBrick,
@@ -21,11 +21,7 @@ interface Props {
   onSuccess: () => Promise<void>;
 }
 const AddButton = ({ onSuccess }: Props) => {
-  const { nodes, nodeSelection } = useProductClassificationContext();
-  const { importData, isCreatable, isLoading } = useImportProductClassification(
-    nodes,
-    nodeSelection
-  );
+  const { importData, isCreatable, isLoading } = useImportProductClassification();
   const handleClick = () => {
     importData(onSuccess);
   };
@@ -80,7 +76,7 @@ const Wizard = (props: Props) => {
       segments={dcSegments}
       defaulSelection={toDictionary(segment.segments ?? [], undefined, undefined, () => true)}
       loaders={getDCDataLoaders()}
-      selectionLoaders={selectionLoaders}
+      autoSelectParent
     >
       <Stack height="100%" spacing={3}>
         <Typography variant="body2">

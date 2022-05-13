@@ -17,11 +17,7 @@ interface Props {
 }
 const CreateButton = () => {
   const history = useHistory();
-  const { nodes, nodeSelection } = useProductClassificationContext();
-  const { importData, isCreatable, isLoading } = useImportProductClassification(
-    nodes,
-    nodeSelection
-  );
+  const { importData, isCreatable, isLoading } = useImportProductClassification();
   const invalidate = useInvalidateGetSegments();
   const onSuccess = async () => {
     invalidate().finally(() => {

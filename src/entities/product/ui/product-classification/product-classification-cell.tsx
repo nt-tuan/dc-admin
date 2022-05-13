@@ -33,7 +33,7 @@ const ProductClassificationCell = ({
     return <FolderIcon />;
   };
   return (
-    <TableCell width={600} component="th" scope="row">
+    <TableCell sx={{ minWidth: 600 }} component="th" scope="row">
       <Link
         onClick={onClick}
         underline="none"

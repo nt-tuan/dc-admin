@@ -99,7 +99,7 @@ const Consumer = () => {
       <>
         {checkboxCells}
         {productClassification}
-        <TableCell>
+        <TableCell sx={{ width: 160 }} align="center">
           {nodeValue.type === "Brick" && (
             <Typography variant="body2" color="error">
               {getHSCodeFromBrick(nodeValue as never)}
@@ -132,7 +132,7 @@ const Consumer = () => {
 
   return (
     <Box height="100%" overflow="auto">
-      <Table stickyHeader sx={{ minWidth: 650 }} aria-label="product classification table">
+      <Table sx={{ minWidth: 900 }} stickyHeader aria-label="product classification table">
         <TableHead>
           <MuiTableRow sx={{ backgroundColor: "grey.100", height: "52px" }}>
             <TableCell colSpan={2}>
@@ -150,7 +150,7 @@ const Consumer = () => {
                 <CreateClassificationItemDropdown onCreate={openCreateModal} />
               </Stack>
             </TableCell>
-            <TableCell width={160} align="center">
+            <TableCell sx={{ width: 160 }} align="center">
               HS Code
             </TableCell>
             <TableCell align="right" sx={{ px: 3 }}>
