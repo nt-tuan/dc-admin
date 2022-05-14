@@ -6,7 +6,8 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
+import { AttributeFormContext } from "@/entities/product/ui/attribute-form";
 
 interface Props {
   editable: boolean;
@@ -22,6 +23,7 @@ interface OptionComponentProps {
 }
 
 const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentProps) => {
+  const { isMutating } = React.useContext(AttributeFormContext);
   const { title, code } = option;
 
   return (
@@ -41,7 +43,7 @@ const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentP
               {editable && <DragIndicatorIcon />}
               <Typography>{title}</Typography>
             </Stack>
-            <IconButton color="error" onClick={() => onDelete(option.code)}>
+            <IconButton disabled={isMutating} color="error" onClick={() => onDelete(option.code)}>
               <DeleteOutlineIcon />
             </IconButton>
           </Stack>

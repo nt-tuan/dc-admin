@@ -8,12 +8,7 @@ import {
   ProductClassificationProvider,
   ProductClassificationTable
 } from "@/entities/product/ui/product-classification";
-import {
-  getProductBrick,
-  getProductClass,
-  getProductFamily,
-  getSegment
-} from "@/services/pim.service";
+
 import { Box, Stack, Typography } from "@mui/material";
 import Button from "@mui/lab/LoadingButton";
 import { Redirect } from "react-router-dom";
@@ -40,29 +35,6 @@ const AddButton = ({ onSuccess }: Props) => {
       </Button>
     </Stack>
   );
-};
-
-const selectionLoaders = {
-  Family: async (code: string | undefined) => {
-    if (code == null) return [];
-    const segment = await getSegment(code);
-    return segment?.families ?? [];
-  },
-  Class: async (code: string | undefined) => {
-    if (code == null) return [];
-    const family = await getProductFamily(code);
-    return family?.classes ?? [];
-  },
-  Brick: async (code: string | undefined) => {
-    if (code == null) return [];
-    const cl = await getProductClass(code);
-    return cl?.bricks ?? [];
-  },
-  Attribute: async (code: string | undefined) => {
-    if (code == null) return [];
-    const brick = await getProductBrick(code);
-    return brick?.attributes ?? [];
-  }
 };
 
 const Wizard = (props: Props) => {

@@ -1,7 +1,6 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import AttributeOptions from "./attribute-options";
-import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,37 +11,70 @@ import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
 import { AttributeFormContext } from "@/entities/product/ui/attribute-form";
 
-const OptionsForm = () => {
-  const {
-    addOption,
-    deleteOption,
-    setOptions,
-    isManualSort,
-    options,
-    changeManualSort,
-    saveOptions,
-    isMutating
-  } = useContext(AttributeFormContext);
+type InputType = "code" | "title";
+const emptyOption = {
+  code: "",
+  title: ""
+};
+const OptionInputProps = {
+  code: { label: "Options Code" },
+  title: { label: "Options Value" }
+};
+const useAddOption = () => {
+  const { addOption } = useContext(AttributeFormContext);
+  const [inputType, setInputType] = useState<InputType>("code");
+  const [option, setOption] = React.useState<{ code: string; title: string }>(emptyOption);
+  const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setOption((current) => ({ ...current, [name]: value }));
+  };
+  const save = () => {
+    if (inputType === "code") {
+      setInputType("title");
+    }
+    if (inputType === "title") {
+      addOption(option);
+      reset();
+    }
+  };
+  const canSave =
+    (inputType === "code" && option.code.length > 0) ||
+    (inputType === "title" && option.title.length > 0);
+  const reset = () => {
+    setOption(emptyOption);
+    setInputType("code");
+  };
 
+  return {
+    reset,
+    inputType,
+    value: option[inputType],
+    changeInput,
+    canSave,
+    save,
+    inputProps: OptionInputProps[inputType]
+  };
+};
+
+const OptionsForm = () => {
+  const { deleteOption, isManualSort, options, changeManualSort, isMutating } = useContext(
+    AttributeFormContext
+  );
+  const [orderedOptions, setOrderedOptions] = React.useState(options);
+  React.useEffect(() => {
+    setOrderedOptions(options);
+  }, [options]);
   const [isLayoutReady, onSetLayoutReady] = useState<boolean>((options || []).length !== 0);
-  const [title, changeTitle] = useState<string>("");
+  const { inputType, value, changeInput, save, canSave, inputProps, reset } = useAddOption();
 
   const onSort = () => {
     changeManualSort(!isManualSort);
     let result = Array.from(options);
     result.sort((a, b) => a.title.localeCompare(b.title));
-    setOptions(result);
+    setOrderedOptions(result);
   };
-
-  const onAddOption = () => {
-    addOption(title);
-    changeTitle("");
-  };
-
-  const onChangeOption = (e) => changeTitle(e.target.value);
 
   if (!isLayoutReady) return <OptionsFormEmpty onSetLayoutReady={() => onSetLayoutReady(true)} />;
-
   return (
     <Grid container spacing={4}>
       <Grid item xs={6}>
@@ -60,7 +92,7 @@ const OptionsForm = () => {
           />
           <LoadingButton
             loading={isMutating}
-            onClick={saveOptions}
+            onClick={reset}
             size="small"
             variant="contained"
             sx={{ flexShrink: 0 }}
@@ -70,8 +102,8 @@ const OptionsForm = () => {
         </Stack>
         <AttributeOptions
           editable={isManualSort}
-          options={options}
-          onChange={setOptions}
+          options={orderedOptions}
+          onChange={setOrderedOptions}
           onDelete={deleteOption}
         />
       </Grid>
@@ -87,25 +119,25 @@ const OptionsForm = () => {
           <TextField
             required
             fullWidth
-            name="add-options"
-            label="Options Value"
-            fieldConfig={{}}
+            name={inputType}
             placeholder="Ex: Touchscreen"
-            value={title}
-            onChange={onChangeOption}
+            value={value}
+            onChange={changeInput}
+            {...inputProps}
           />
 
-          <Button
+          <LoadingButton
+            loading={isMutating}
             size="small"
             variant="contained"
-            onClick={() => onAddOption()}
+            onClick={save}
             sx={{
-              visibility: title ? "visible" : "hidden",
+              visibility: canSave ? "visible" : "hidden",
               minHeight: 0
             }}
           >
             Done
-          </Button>
+          </LoadingButton>
         </Stack>
       </Grid>
     </Grid>

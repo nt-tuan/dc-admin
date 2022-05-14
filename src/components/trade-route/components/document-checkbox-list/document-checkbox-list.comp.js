@@ -46,7 +46,7 @@ export const DocumentCheckboxList = ({
 
       <hr />
       <FormGroup>
-        {documentTypes?.map((opt, index) => (
+        {documentTypes?.map((opt) => (
           <FormControlLabel
             key={opt.id}
             control={

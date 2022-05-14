@@ -10,7 +10,7 @@ import {
   getProductClass,
   getProductBrick
 } from "@/services/pim.service";
-import { getActualCode, getDecendantCodes } from "../../libs/tree-node";
+import { getActualCode, getDecendantCodes, sortNodes } from "../../libs/tree-node";
 import {
   getAttributeEditionPath,
   getBrickEditionPath
@@ -64,7 +64,7 @@ const Consumer = () => {
     setNodeSelection(nextNodeSelection);
   };
   const nodes = React.useMemo(() => {
-    return getNodes();
+    return sortNodes(getNodes());
   }, [getNodes]);
   const closeModal = () => {
     setEditingNode(undefined);
@@ -101,8 +101,8 @@ const Consumer = () => {
         {productClassification}
         <TableCell sx={{ width: 160 }} align="center">
           {nodeValue.type === "Brick" && (
-            <Typography variant="body2" color="error">
-              {getHSCodeFromBrick(nodeValue as never)}
+            <Typography variant="body2" color={nodeValue.hsCode ? "primary" : "error"}>
+              {getHSCodeFromBrick(nodeValue)}
             </Typography>
           )}
         </TableCell>
@@ -140,6 +140,7 @@ const Consumer = () => {
                 {canDelete && (
                   <LoadingButton
                     variant="contained"
+                    size="small"
                     loading={isDeleting}
                     onClick={requestConfirmDelete}
                   >

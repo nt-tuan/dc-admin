@@ -20,12 +20,17 @@ const useCreateEntitySuccess = ({ onSuccess }: { onSuccess: () => void }) => {
   };
   const onClassSuccess = async (cl: ProductClass) => {
     const parentNode = findNode(nodes, cl.familyCode);
-    onSuccess();
-    if (parentNode == null) return;
+    const classNode = findNode(nodes, cl.code);
     setNodes((current) => {
-      const newNodes = toTreeNodeDictionary([cl], "Class", parentNode.code);
-      return { ...current, ...newNodes };
+      const nextNodes = { ...current };
+      const newNodes =
+        parentNode != null ? toTreeNodeDictionary([cl], "Class", parentNode.code) : {};
+      if (classNode != null) {
+        delete nextNodes[classNode.code];
+      }
+      return { ...nextNodes, ...newNodes };
     });
+    onSuccess();
   };
   const onBrickSuccess = async (brick: ProductBrick) => {
     const parentNode = findNode(nodes, brick.classCode);

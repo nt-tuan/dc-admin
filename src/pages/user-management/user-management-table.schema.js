@@ -133,9 +133,7 @@ export const getUserTableColumns = (actions) => [
           {badges &&
             badges
               .sort((a, b) => b.value - a.value)
-              .map((badge, index) => (
-                <UserBadge key={badge.type} type={badge.type} value={badge.value} />
-              ))}
+              .map((badge) => <UserBadge key={badge.type} type={badge.type} value={badge.value} />)}
           {badgeDTOList.map((badge, index) => {
             return (
               <Box key={`badgeDTOList-${index}`} style={{ width: 40, height: 40 }}>

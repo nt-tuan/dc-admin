@@ -11,6 +11,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { useProductClassificationContext } from "./provider";
 import TableCell from "./table-cell";
 import TableRow from "./table-row";
+import { sortNodes } from "../../libs/tree-node";
 
 const ProductClassificationTableHead = () => {
   const { changeCheckbox } = useProductClassificationContext();
@@ -30,8 +31,9 @@ const ProductClassificationTableHead = () => {
 const ProductClassificationTable = () => {
   const { getNodes } = useProductClassificationContext();
   const nodes = React.useMemo(() => {
-    return getNodes();
+    return sortNodes(getNodes());
   }, [getNodes]);
+
   return (
     <Box height="100%" overflow="auto">
       <Table stickyHeader sx={{ minWidth: 650 }} aria-label="dc product classification table">

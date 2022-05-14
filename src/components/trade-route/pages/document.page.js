@@ -207,7 +207,7 @@ const DocumentPage = () => {
         <Stack direction="row" justifyContent="flex-end">
           <Button
             variant="contained"
-            onClick={(e) => {
+            onClick={() => {
               setMutationTitle("Create Document");
               setShowDocumentMutationModal(true);
               isEdit.current = false;

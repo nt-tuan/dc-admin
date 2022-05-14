@@ -4,7 +4,7 @@ import CheckboxCell from "./checkbox-cell";
 import ProductClassificationCell from "./product-classification-cell";
 import type { TreeNodeValue } from "../../model/types";
 import { useProductClassificationContext } from "./provider";
-import { getLowerEntityType } from "../../libs/tree-node";
+import { getLowerEntityType, sortNodes } from "../../libs/tree-node";
 interface Props {
   level: number;
   data: TreeNodeValue;
@@ -34,7 +34,7 @@ const TableRow = ({ level, data, renderCells = defaultRenderCells }: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
   const childrenNodes = React.useMemo(() => {
-    return getNodes(data.code);
+    return sortNodes(getNodes(data.code));
   }, [getNodes, data.code]);
   const isLastLevel = lastLevel === data.type;
   const toggleExpand = async () => {

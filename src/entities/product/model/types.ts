@@ -21,4 +21,5 @@ export interface TreeNodeValue {
   title: string;
   parentCode?: string;
   type: EntityType;
+  hsCode?: string;
 }

@@ -24,7 +24,6 @@ export const withListItem = (
       onOk,
       okText = "OK",
       disabledIds = [],
-      initialProducts,
       ...restProps
     }) => {
       const [checkedList, setCheckedList] = useState({});

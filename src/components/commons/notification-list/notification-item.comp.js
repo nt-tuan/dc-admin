@@ -11,7 +11,7 @@ const contentMessageStyle = {
 const contentMetaStyle = {
   small: (theme) => theme.typography.caption
 };
-const ContentMessage = styled(Box)(({ theme, size }) => ({
+const ContentMessage = styled(Box)(({ theme }) => ({
   fontWeight: "bolder",
   fontSize: theme.typography.fontSize
 }));

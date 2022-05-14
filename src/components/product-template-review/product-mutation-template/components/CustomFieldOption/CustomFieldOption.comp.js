@@ -139,9 +139,9 @@ const CustomFieldOption = (props) => {
           <section>
             <p>Please choose field's properties:</p>
             <Form.List name={[fieldName, "fieldOption"]}>
-              {(fields, { add, remove }) => (
+              {(fields) => (
                 <>
-                  {fields.map((field, index) => (
+                  {fields.map((field) => (
                     <>
                       <div className="row">
                         <div className="col-3 font-weight-bold">Allowed input:</div>

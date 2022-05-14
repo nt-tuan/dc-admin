@@ -19,21 +19,18 @@ export const useAddTradeRoute = (isDefault, { onSuccess }) => {
     onSuccess: handleSuccess
   });
 
-  const initialValues = React.useMemo(
-    (is) => {
-      if (!isFetched) return;
-      const routeDocumentTypeRequests = parseDefaultDocuments(defaultDocuments);
-      return {
-        categoryId: "",
-        typeId: "",
-        fromCountry: "",
-        toCountry: "",
-        isDefault,
-        routeDocumentTypeRequests
-      };
-    },
-    [defaultDocuments, isFetched, isDefault]
-  );
+  const initialValues = React.useMemo(() => {
+    if (!isFetched) return;
+    const routeDocumentTypeRequests = parseDefaultDocuments(defaultDocuments);
+    return {
+      categoryId: "",
+      typeId: "",
+      fromCountry: "",
+      toCountry: "",
+      isDefault,
+      routeDocumentTypeRequests
+    };
+  }, [defaultDocuments, isFetched, isDefault]);
 
   const handleSubmit = (values) => {
     const composedValues = parseTradeRouteForm(values);

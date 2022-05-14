@@ -85,14 +85,14 @@ export default function NewWithdrawalPage() {
   const isInvalidField = useMemo(() => {
     return (
       !amountWithdraw ||
-      amountWithdraw == "-" ||
+      amountWithdraw === "-" ||
       amountWithdraw < 100 ||
       amountWithdraw > accountData?.availableBalance
     );
   }, [amountWithdraw, accountData?.availableBalance]);
 
   const errorMessage = useMemo(() => {
-    if (!amountWithdraw || amountWithdraw == "-") {
+    if (!amountWithdraw || amountWithdraw === "-") {
       return "Only numeric number greater than 0.";
     }
     if (amountWithdraw < 100) {

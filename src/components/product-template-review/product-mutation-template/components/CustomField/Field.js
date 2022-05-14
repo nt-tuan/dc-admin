@@ -7,7 +7,7 @@ import { getLagecyModalContainer } from "@/components/lagecy/lagecy.comp";
 
 // import "../../product-mutation-template.comp.scss";
 
-const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue }, ref) => {
+const Field = forwardRef(({ field, form, onRemove, index, canDelete, fieldValue }) => {
   const [showFieldTypeInfoPopup, setShowFieldTypeInfoPopup] = useState(false);
   const [showRemoveConfirmPopup, setShowRemoveConfirmPopup] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();

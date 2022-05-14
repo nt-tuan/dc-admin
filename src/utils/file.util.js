@@ -97,7 +97,7 @@ export async function getCroppedImg(imageSrc, pixelCrop, rotation = 0, fileName 
   }
 
   // As a blob
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     canvas.toBlob((blob) => {
       let file = new File([blob], fileName, { type: imageType });
       resolve({

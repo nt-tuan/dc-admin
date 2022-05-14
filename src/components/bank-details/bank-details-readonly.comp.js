@@ -123,7 +123,7 @@ export const BankDetailsReadonly = ({
                   <Typography variant="h5">{renderTitle(index)}</Typography>
                 </Box>
               )}
-              {Object.values(schema).map((field, schemaKeyIndex) => (
+              {Object.values(schema).map((field) => (
                 <Box key={field}>
                   <Divider />
                   <Row>

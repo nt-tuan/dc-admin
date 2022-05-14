@@ -183,10 +183,16 @@ export const deleteBulkAttributeValues = (codes: string[]) =>
   backendAPI.delete("/pim/product-classification/attributeValues/bulk", undefined, codes);
 // #endregion
 
-// #region Product Attribute API
-export const createBulkProductAttributes: (values: AttributeValue[]) => Promise<BulkResponse> = (
-  values
-) => backendAPI.post(`pim/product-classification/attributeValues/bulk`, values);
-export const deleteBulkProductAttributes: (codes: string) => Promise<BulkResponse> = (codes) =>
+// #region Product Attribute Value API
+export const createProductAttributeValue = (value: ProductAttribute) =>
+  backendAPI.post(`pim/product-classification/attributeValues`, value);
+export const createBulkProductAttributeValues: (
+  values: AttributeValue[]
+) => Promise<BulkResponse> = (values) =>
+  backendAPI.post(`pim/product-classification/attributeValues/bulk`, values);
+export const deleteProductAttributeValue = (code: string) =>
+  backendAPI.delete(`pim/product-classification/attributeValues/${code}`);
+export const deleteBulkProductAttributeValues: (codes: string) => Promise<BulkResponse> = (codes) =>
   backendAPI.delete(`pim/product-classification/attributeValues/bulk`, undefined, codes);
+
 // #region

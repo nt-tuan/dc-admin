@@ -106,7 +106,6 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
   const { data, isLoading } = useGetProductAttributes();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [foundAttributes, setFoundAttributes] = React.useState<ProductAttribute[]>([]);
   const id = "add-attribute-popover";
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -124,15 +123,24 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
       })) ?? []
     );
   }, [data]);
+  const foundAttributes = React.useMemo(() => {
+    const isMatchAttribute = (attribute: ProductAttribute) => {
+      const nornalizedText = searchText.toLowerCase();
+      return (
+        attribute.code.toLowerCase().includes(nornalizedText) ||
+        attribute.title.toLowerCase().includes(nornalizedText)
+      );
+    };
+    return data?.attributes.filter(isMatchAttribute).slice(0, 5) ?? [];
+  }, [data, searchText]);
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     value: { attribute: ProductAttribute }[] | null
   ) => {
     event.stopPropagation();
-    if (value == null) return;
-    setFoundAttributes((current) => {
-      return [...current, ...value.map((item) => item.attribute)];
-    });
+    if (value && value.length > 0) {
+      setSearchText(value[0].attribute.title);
+    }
   };
   const changeSearchText = (
     e: React.SyntheticEvent<Element, Event>,
@@ -166,7 +174,7 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
           vertical: "bottom",
           horizontal: "left"
         }}
-        PaperProps={{ sx: { width: 448 } }}
+        PaperProps={{ sx: { width: 448, px: 2, pt: 2, pb: 3 } }}
       >
         <Autocomplete
           fullWidth

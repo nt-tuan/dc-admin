@@ -21,7 +21,7 @@ const ChildFieldModal = ({
     form.setFieldsValue({ childField: data });
   }, [data, form]);
 
-  const handleOK = (e) => {
+  const handleOK = () => {
     let formValue = form?.getFieldsValue()?.childField.map((child) => {
       return {
         ...child,

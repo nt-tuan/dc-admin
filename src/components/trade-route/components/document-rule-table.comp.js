@@ -24,7 +24,7 @@ const viewerDataSource = [
     label: "Logistic Service Provider"
   }
 ];
-const RowField = ({ name, disabled, getRowValues, dataSource }) => {
+const RowField = ({ name, disabled, getRowValues }) => {
   const { values } = useFormikContext();
   const documentRowData = getRowValues(values) ?? {};
   const selectedDocuments = documentRowData?.routeDocumentRuleDto ?? {};

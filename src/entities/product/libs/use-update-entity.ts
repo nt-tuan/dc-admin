@@ -2,11 +2,13 @@ import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.co
 import {
   AttributeValue,
   BulkResponse,
-  createBulkProductAttributes,
+  createBulkProductAttributeValues,
   createProductAttribute,
+  createProductAttributeValue,
   deleteBulkAttributes,
   deleteBulkAttributeValues,
   deleteBulkBricks,
+  deleteProductAttributeValue,
   getProductClass,
   ProductAttribute,
   ProductFamily,
@@ -27,7 +29,7 @@ import {
   useInvalidateProductAttibutes
 } from "./use-get-entity";
 import { useHistory } from "react-router-dom";
-import { useMessage } from "@/hooks/use-message";
+import useHandleBulkUploadResponse from "./use-handle-bulk-upload-response";
 
 export const deleteNodeAndDecendants = (nodes: Dictionary<TreeNodeValue>, localCode: string) => {
   const nextNodes = { ...nodes };
@@ -183,7 +185,7 @@ const updateProductAttributeAndValue = async ({
   );
   const responses: BulkResponse = [];
   if (newValues.length > 0) {
-    const response = await createBulkProductAttributes(
+    const response = await createBulkProductAttributeValues(
       exludeItems(newValues, excessValues, (a, b) => a.code === b.code)
     );
     responses.push(...response);
@@ -202,21 +204,34 @@ const updateProductAttributeAndValue = async ({
 };
 
 export const useUpdateProductAttribute = () => {
+  const handleBulkResponse = useHandleBulkUploadResponse();
   const invalidate = useInvalidateProductAttibutes();
-  const message = useMessage();
   const { mutate, isLoading } = useMutation(updateProductAttributeAndValue, {
     onSuccess: async (bulkResponses) => {
-      for (const response of bulkResponses) {
-        if (response.status === 400) {
-          message.error(response.description);
-        }
-      }
+      handleBulkResponse(bulkResponses);
       await invalidate();
-      message.success("Update successfully.");
     },
     onError: async () => {
       await invalidate();
     }
   });
   return { mutate, isLoading };
+};
+
+export const useCreateAttributeValue = () => {
+  const invalidate = useInvalidateProductAttibutes();
+  return useMutation(createProductAttributeValue, {
+    onSuccess: async () => {
+      await invalidate();
+    }
+  });
+};
+
+export const useDeleteAttributeValue = () => {
+  const invalidate = useInvalidateProductAttibutes();
+  return useMutation(deleteProductAttributeValue, {
+    onSuccess: async () => {
+      await invalidate();
+    }
+  });
 };

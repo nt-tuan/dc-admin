@@ -3,7 +3,7 @@ import Button from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import ProductClassificationProvider, { useProductClassificationContext } from "./provider";
+import ProductClassificationProvider from "./provider";
 import ProductClassificationTable from "./product-classification-table";
 import useImportProductClassification from "../../libs/use-import-product-classification";
 import { useHistory } from "react-router-dom";

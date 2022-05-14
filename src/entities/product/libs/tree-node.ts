@@ -139,6 +139,9 @@ export const toTreeNodeDictionary = (
       parentCode: queueItem.parentCode,
       type: queueItem.type
     };
+    if ("hsCode" in entity) {
+      treeNodeValue.hsCode = entity.hsCode;
+    }
     return treeNodeValue;
   });
 };
@@ -161,4 +164,8 @@ export const findNode = (nodes: Dictionary<TreeNodeValue>, code: string) => {
   );
   if (foundEntry == null) return;
   return foundEntry[1];
+};
+
+export const sortNodes = (nodes: TreeNodeValue[]) => {
+  return nodes.sort((a, b) => a.title.localeCompare(b.title));
 };

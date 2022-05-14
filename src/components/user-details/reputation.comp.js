@@ -46,7 +46,7 @@ export const Reputation = ({ data, getUserDetails, isEditable, user }) => {
                 .map((badge) => (
                   <UserBadge key={badge.type} type={badge.type} value={badge.value} />
                 ))}
-            {assignedBadges?.map((badge, idx) => (
+            {assignedBadges?.map((badge) => (
               <Box w={40} h={40} title={badge.name}>
                 <img height={40} width={40} src={badge.url} alt={badge.name} />
               </Box>

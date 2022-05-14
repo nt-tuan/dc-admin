@@ -5,7 +5,7 @@ import { createFormErrorComp } from "@/utils/form.util";
 import { REQUIRED_ERR } from "@/commons/consts";
 import { isScreensize } from "@/utils/general.util";
 
-export const VitalInformationAddFieldsForm = ({ form }) => {
+export const VitalInformationAddFieldsForm = () => {
   const isSmallDevice = isScreensize("sm");
   return (
     <Form.List name="customVital">
