@@ -3,17 +3,18 @@ const envFile = process.env.ENV_FILE ?? process.argv[2] ?? "./.env";
 const data = fs.readFileSync(envFile, { encoding: "utf8", flag: "r" });
 const lines = data.split(/\r?\n/);
 const configContentLines = [];
+const getValue = (key, valueParts) => {
+  if (valueParts == null || valueParts.length === 0) return process.env[key];
+  const envValue = valueParts.join("=");
+  if (envValue) return envValue;
+  return process.env[key];
+};
 for (const line of lines) {
   const parts = line.split("=");
   const [key, ...valueParts] = parts;
   if (!key) continue;
-  if (!valueParts || valueParts.length === 0 || !valueParts[1]) {
-    const envValue = process.env[key];
-    if (envValue) configContentLines.push(`\t"${key}":"${envValue}"`);
-    continue;
-  }
-  const value = valueParts.join("=");
-  configContentLines.push(`\t"${key}":"${value}"`);
+  const envValue = getValue(key, valueParts);
+  if (envValue) configContentLines.push(`\t"${key}":"${envValue}"`);
 }
 const configContent = `
 var _env_ = {
