@@ -14,15 +14,26 @@ interface Props {
   options: AttributeValue[];
   onChange: (options: AttributeValue[]) => void;
   onDelete: (code: string) => void;
+  selectedOptionCode?: string;
+  onOptionClick: (code?: string) => void;
 }
 interface OptionComponentProps {
   editable: boolean;
   index: number;
   option: AttributeValue;
   onDelete: (code: string) => void;
+  onClick: () => void;
+  selected?: boolean;
 }
 
-const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentProps) => {
+const OptionComponent = ({
+  selected,
+  option,
+  index,
+  editable,
+  onDelete,
+  onClick
+}: OptionComponentProps) => {
   const { isMutating } = React.useContext(AttributeFormContext);
   const { title, code } = option;
 
@@ -37,7 +48,8 @@ const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentP
             alignItems="center"
             borderBottom="1px solid"
             borderColor="#E5E5E5"
-            bgcolor="white"
+            bgcolor={selected ? "primary.main" : "white"}
+            onClick={onClick}
           >
             <Stack direction="row" spacing={1} alignItems="center">
               {editable && <DragIndicatorIcon />}
@@ -53,7 +65,14 @@ const OptionComponent = ({ option, index, editable, onDelete }: OptionComponentP
   );
 };
 
-const AttributeOptions = ({ editable, options: sourceOptions, onChange, onDelete }: Props) => {
+const AttributeOptions = ({
+  editable,
+  options: sourceOptions,
+  onChange,
+  onDelete,
+  selectedOptionCode,
+  onOptionClick
+}: Props) => {
   const reorder = (list: AttributeValue[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -82,6 +101,8 @@ const AttributeOptions = ({ editable, options: sourceOptions, onChange, onDelete
                 index={index}
                 editable={editable}
                 onDelete={onDelete}
+                onClick={() => onOptionClick(option.code)}
+                selected={selectedOptionCode === option.code}
               />
             ))}
             {provided.placeholder}

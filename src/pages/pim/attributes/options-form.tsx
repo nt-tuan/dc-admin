@@ -57,9 +57,15 @@ const useAddOption = () => {
 };
 
 const OptionsForm = () => {
-  const { deleteOption, isManualSort, options, changeManualSort, isMutating } = useContext(
-    AttributeFormContext
-  );
+  const {
+    deleteOption,
+    isManualSort,
+    options,
+    changeManualSort,
+    isMutating,
+    selectedOptionCode,
+    changeSelectedOptionCode
+  } = useContext(AttributeFormContext);
   const [orderedOptions, setOrderedOptions] = React.useState(options);
   React.useEffect(() => {
     setOrderedOptions(options);
@@ -105,6 +111,8 @@ const OptionsForm = () => {
           options={orderedOptions}
           onChange={setOrderedOptions}
           onDelete={deleteOption}
+          selectedOptionCode={selectedOptionCode}
+          onOptionClick={changeSelectedOptionCode}
         />
       </Grid>
       <Grid item xs={6}>

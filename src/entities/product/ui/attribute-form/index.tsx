@@ -12,6 +12,8 @@ export interface IAttributeFormContext {
   addOption: (option: { code: string; title: string }) => void;
   deleteOption: (code: string) => void;
   changeManualSort: (value: boolean) => void;
+  selectedOptionCode?: string;
+  changeSelectedOptionCode: (code?: string) => void;
   ref: React.RefObject<FormikProps<FormValue>>;
 }
 export const AttributeFormContext = React.createContext<IAttributeFormContext>({} as never);
@@ -31,6 +33,7 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
   const [isManualSort, setManualSort] = useState<boolean>(false);
   const ref = React.useRef<FormikProps<FormValue>>(null);
   const options = attribute?.attributeValues ?? [];
+  const [selectedOptionCode, setSelectedOptionCode] = React.useState<string>();
   const createValueMutation = useCreateAttributeValue();
   const deleteValueMutation = useDeleteAttributeValue();
 
@@ -66,6 +69,8 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
         options,
         addOption,
         deleteOption,
+        selectedOptionCode,
+        changeSelectedOptionCode: setSelectedOptionCode,
         ref
       }}
     >
