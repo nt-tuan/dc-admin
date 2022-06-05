@@ -9,7 +9,7 @@
     "qat": "node initEnv ./.env.qat && react-app-rewired start",
     "staging": "node initEnv ./.env.staging && react-app-rewired start",
     "build": "react-app-rewired build",
-    "build-vercel": "PUBLIC_URL=/ react-app-rewired build",
+    "build-vercel": "PUBLIC_URL=/ node initEnv && react-app-rewired build",
     "build-dev": "env-cmd -f .env.dev react-app-rewired build",
     "test": "react-app-rewired test",
     "test:coverage": "react-app-rewired test --coverage --watchAll=false",
