@@ -20,10 +20,27 @@ const OptionInputProps = {
   code: { label: "Options Code" },
   title: { label: "Options Value" }
 };
+
 const useAddOption = () => {
-  const { addOption } = useContext(AttributeFormContext);
+  const {
+    addOption,
+    updateOption,
+    selectedOptionCode,
+    options,
+    changeSelectedOptionCode
+  } = useContext(AttributeFormContext);
+
   const [inputType, setInputType] = useState<InputType>("code");
   const [option, setOption] = React.useState<{ code: string; title: string }>(emptyOption);
+
+  React.useEffect(() => {
+    if (!selectedOptionCode) return;
+    const selectedOption = options.find((option) => option.code === selectedOptionCode);
+    if (!selectedOption) return;
+    setOption(selectedOption);
+    setInputType("code");
+  }, [options, selectedOptionCode]);
+
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setOption((current) => ({ ...current, [name]: value }));
@@ -31,11 +48,17 @@ const useAddOption = () => {
   const save = () => {
     if (inputType === "code") {
       setInputType("title");
+      return;
     }
-    if (inputType === "title") {
-      addOption(option);
+
+    if (selectedOptionCode && inputType === "title") {
+      updateOption({ ...option, code: selectedOptionCode });
       reset();
+      return;
     }
+
+    addOption(option);
+    reset();
   };
   const canSave =
     (inputType === "code" && option.code.length > 0) ||
@@ -43,9 +66,14 @@ const useAddOption = () => {
   const reset = () => {
     setOption(emptyOption);
     setInputType("code");
+    changeSelectedOptionCode(undefined);
   };
 
+  const disabled =
+    option.code != null && selectedOptionCode === option.code && inputType === "code";
+
   return {
+    disabled,
     reset,
     inputType,
     value: option[inputType],
@@ -71,7 +99,16 @@ const OptionsForm = () => {
     setOrderedOptions(options);
   }, [options]);
   const [isLayoutReady, onSetLayoutReady] = useState<boolean>((options || []).length !== 0);
-  const { inputType, value, changeInput, save, canSave, inputProps, reset } = useAddOption();
+  const {
+    inputType,
+    value,
+    changeInput,
+    save,
+    canSave,
+    inputProps,
+    disabled,
+    reset
+  } = useAddOption();
 
   const onSort = () => {
     changeManualSort(!isManualSort);
@@ -131,6 +168,7 @@ const OptionsForm = () => {
             placeholder="Ex: Touchscreen"
             value={value}
             onChange={changeInput}
+            disabled={disabled}
             {...inputProps}
           />
 

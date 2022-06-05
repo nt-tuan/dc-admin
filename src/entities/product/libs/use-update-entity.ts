@@ -14,6 +14,7 @@ import {
   ProductFamily,
   Segment,
   updateProductAttribute,
+  updateProductAttributeValue,
   updateProductBrick,
   updateProductClass,
   updateProductFamily,
@@ -221,6 +222,15 @@ export const useUpdateProductAttribute = () => {
 export const useCreateAttributeValue = () => {
   const invalidate = useInvalidateProductAttibutes();
   return useMutation(createProductAttributeValue, {
+    onSuccess: async () => {
+      await invalidate();
+    }
+  });
+};
+
+export const useUpdateAttributeValue = () => {
+  const invalidate = useInvalidateProductAttibutes();
+  return useMutation(updateProductAttributeValue, {
     onSuccess: async () => {
       await invalidate();
     }

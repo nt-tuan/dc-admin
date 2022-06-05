@@ -194,5 +194,6 @@ export const deleteProductAttributeValue = (code: string) =>
   backendAPI.delete(`pim/product-classification/attributeValues/${code}`);
 export const deleteBulkProductAttributeValues: (codes: string) => Promise<BulkResponse> = (codes) =>
   backendAPI.delete(`pim/product-classification/attributeValues/bulk`, undefined, codes);
-
-// #region
+export const updateProductAttributeValue: (value: AttributeValue) => Promise<void> = (value) =>
+  backendAPI.put(`pim/product-classification/attributeValues/${value.code}`, value);
+// #endregion

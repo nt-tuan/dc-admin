@@ -26,6 +26,24 @@ interface OptionComponentProps {
   selected?: boolean;
 }
 
+const SelectableTitle = ({
+  children,
+  selected,
+  onClick
+}: {
+  children: React.ReactNode;
+  selected?: boolean;
+  onClick: () => void;
+}) => {
+  if (selected)
+    return (
+      <Typography onClick={onClick} color="primary.main" fontWeight="bold">
+        {children}
+      </Typography>
+    );
+  return <Typography onClick={onClick}>{children}</Typography>;
+};
+
 const OptionComponent = ({
   selected,
   option,
@@ -48,12 +66,12 @@ const OptionComponent = ({
             alignItems="center"
             borderBottom="1px solid"
             borderColor="#E5E5E5"
-            bgcolor={selected ? "primary.main" : "white"}
-            onClick={onClick}
           >
             <Stack direction="row" spacing={1} alignItems="center">
               {editable && <DragIndicatorIcon />}
-              <Typography>{title}</Typography>
+              <SelectableTitle onClick={onClick} selected={selected}>
+                {title}
+              </SelectableTitle>
             </Stack>
             <IconButton disabled={isMutating} color="error" onClick={() => onDelete(option.code)}>
               <DeleteOutlineIcon />
