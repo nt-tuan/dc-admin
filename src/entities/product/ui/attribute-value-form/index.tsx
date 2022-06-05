@@ -9,7 +9,7 @@ import OptionsFormEmpty from "./options-form-empty";
 import Stack from "@mui/material/Stack";
 import { TextField } from "@/components/commons/fields";
 import Typography from "@mui/material/Typography";
-import { AttributeFormContext } from "@/entities/product/ui/attribute-form";
+import { AttributeFormContext } from "@/entities/product/ui/attribute-form-provider";
 
 type InputType = "code" | "title";
 const emptyOption = {
@@ -84,7 +84,7 @@ const useAddOption = () => {
   };
 };
 
-const OptionsForm = () => {
+const AttributeValueForm = () => {
   const {
     deleteOption,
     isManualSort,
@@ -190,4 +190,4 @@ const OptionsForm = () => {
   );
 };
 
-export default OptionsForm;
+export default AttributeValueForm;

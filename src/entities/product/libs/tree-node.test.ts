@@ -207,7 +207,8 @@ test("toTreeNodeDictionary should work", () => {
       code: "s-1.f-1.cl-1.br-1",
       parentCode: "s-1.f-1.cl-1",
       title: "brick-1",
-      type: "Brick"
+      type: "Brick",
+      hsCode: "hs-code"
     },
     "s-1.f-1.cl-1.br-1.att-1": {
       actualCode: "att-1",

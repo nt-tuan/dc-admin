@@ -10,9 +10,11 @@ import { useMutation } from "react-query";
 import useDeleteProductClassification, {
   deleteTreeNodes
 } from "./use-delete-product-classification";
+import { useProductClassificationContext } from "../ui/product-classification";
 
 jest.mock("@/services/pim.service");
 jest.mock("react-query");
+jest.mock("../ui/product-classification");
 
 const nodeDictionary = {
   "s-1": {
@@ -64,6 +66,11 @@ const nodeSelection = {
   "s-1.f-1.cl-1.br-1.att-2": true
 };
 test("deleteTreeNodes.deleteTreeNodes should work", async () => {
+  (deleteBulkAttributes as jest.Mock).mockResolvedValue([]);
+  (deleteBulkBricks as jest.Mock).mockResolvedValue([]);
+  (deleteBulkClasses as jest.Mock).mockResolvedValue([]);
+  (deleteBulkFamilies as jest.Mock).mockResolvedValue([]);
+  (deleteBulkSegments as jest.Mock).mockResolvedValue([]);
   await deleteTreeNodes(nodeDictionary as never, nodeSelection);
   expect(deleteBulkAttributes).toBeCalledWith(["att-1"]);
   expect(deleteBulkBricks).toBeCalledWith(["br-1"]);
@@ -74,9 +81,11 @@ test("deleteTreeNodes.deleteTreeNodes should work", async () => {
 
 test("useDeleteProductClassification should work", () => {
   (useMutation as jest.Mock).mockReturnValue({});
-  const { result } = renderHook(() =>
-    useDeleteProductClassification(nodeDictionary as never, nodeSelection)
-  );
+  (useProductClassificationContext as jest.Mock).mockReturnValue({
+    nodes: {},
+    nodeSelection
+  });
+  const { result } = renderHook(() => useDeleteProductClassification());
   expect(result.current.canDelete).toEqual(true);
   expect(useMutation).toBeCalled();
 });

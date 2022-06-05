@@ -6,7 +6,7 @@ export const pimRoutes = [
     title: "Product Classification",
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_CLASSFICATION,
-    Component: loadable(() => import("./product-classification")),
+    Component: loadable(() => import("./product-classification/list.page")),
     exact: true
   },
   {
@@ -14,34 +14,34 @@ export const pimRoutes = [
     hideInMenu: true,
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_CLASSFICATION_CREATION,
-    Component: loadable(() => import("./product-classification/creation")),
+    Component: loadable(() => import("./product-classification/creation.page")),
     exact: true
   },
   {
     title: "Brick",
     path: pimRoutePaths.PRODUCT_BRICK,
-    Component: loadable(() => import("./brick")),
+    Component: loadable(() => import("./brick/list.page")),
     exact: true
   },
   {
     title: "Create Brick",
     hideInMenu: true,
     path: pimRoutePaths.PRODUCT_BRICK_CREATION,
-    Component: loadable(() => import("./brick/creation")),
+    Component: loadable(() => import("./brick/creation.page")),
     exact: true
   },
   {
     title: "Edit Brick",
     hideInMenu: true,
     path: pimRoutePaths.PRODUCT_BRICK_EDITION,
-    Component: loadable(() => import("./brick/edition")),
+    Component: loadable(() => import("./brick/edition.page")),
     exact: true
   },
   {
     title: "Attributes",
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_ATTRIBUTES,
-    Component: loadable(() => import("./attributes")),
+    Component: loadable(() => import("./attributes/list.page")),
     exact: true
   },
   {
@@ -49,7 +49,7 @@ export const pimRoutes = [
     hideInMenu: true,
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_ATTRIBUTE_CREATION,
-    Component: loadable(() => import("./attributes/creation")),
+    Component: loadable(() => import("./attributes/creation.page")),
     exact: true
   },
   {
@@ -57,7 +57,7 @@ export const pimRoutes = [
     hideInMenu: true,
     icon: ProductIcon,
     path: pimRoutePaths.PRODUCT_ATTRIBUTE_EDITION,
-    Component: loadable(() => import("./attributes/edition"))
+    Component: loadable(() => import("./attributes/edition.page"))
   }
 ];
 

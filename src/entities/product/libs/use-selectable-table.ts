@@ -7,7 +7,7 @@ const useSelectableTable = <T extends { code: string }>({
   dataSource
 }: useSelectableTableProps<T>) => {
   const [order, setOrder] = React.useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("code");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -28,15 +28,8 @@ const useSelectableTable = <T extends { code: string }>({
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, code);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+    } else {
+      newSelected = selected.filter((item) => item !== code);
     }
 
     setSelected(newSelected);

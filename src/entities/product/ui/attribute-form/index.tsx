@@ -1,102 +1,51 @@
-import { Formik, FormikProps } from "formik";
-import React, { useState } from "react";
+import { SelectField, TextField } from "@/components/commons/fields";
 
-import { AttributeValue, ProductAttribute } from "@/services/pim.service";
-import validationSchema from "./validation.schema";
-import {
-  useCreateAttributeValue,
-  useDeleteAttributeValue,
-  useUpdateAttributeValue
-} from "../../libs/use-update-entity";
-
-export interface IAttributeFormContext {
-  options: AttributeValue[];
-  isMutating: boolean;
-  isManualSort: boolean;
-  addOption: (option: { code: string; title: string }) => void;
-  updateOption: (option: { code: string; title: string }) => void;
-  deleteOption: (code: string) => void;
-  changeManualSort: (value: boolean) => void;
-  selectedOptionCode?: string;
-  changeSelectedOptionCode: (code?: string) => void;
-  ref: React.RefObject<FormikProps<FormValue>>;
-}
-export const AttributeFormContext = React.createContext<IAttributeFormContext>({} as never);
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 
 interface Props {
-  attribute?: ProductAttribute;
-  children?: React.ReactNode;
-  isMutating?: boolean;
-  onSubmit: (params: { attribute: ProductAttribute }) => void;
+  disabledFields?: { [key: string]: boolean };
 }
-
-interface FormValue {
-  code: string;
-  title: string;
-}
-export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutating }: Props) => {
-  const [isManualSort, setManualSort] = useState<boolean>(false);
-  const ref = React.useRef<FormikProps<FormValue>>(null);
-  const options = attribute?.attributeValues ?? [];
-  const [selectedOptionCode, setSelectedOptionCode] = React.useState<string>();
-  const createValueMutation = useCreateAttributeValue();
-  const updateValueMutation = useUpdateAttributeValue();
-  const deleteValueMutation = useDeleteAttributeValue();
-
-  const submit = ({ code, title }) => {
-    const attribute: ProductAttribute = {
-      code,
-      title
-    };
-    onSubmit({ attribute });
-  };
-
-  const addOption = ({ code, title }: { code: string; title: string }) => {
-    if (attribute == null) return;
-    const newOption: AttributeValue = {
-      code,
-      title,
-      attributeCode: attribute.code
-    };
-    createValueMutation.mutate(newOption);
-  };
-  const updateOption = (value: { code: string; title: string }) => {
-    if (attribute == null) return;
-    updateValueMutation.mutate({ ...value, attributeCode: attribute.code });
-  };
-  const deleteOption = (code: string) => {
-    deleteValueMutation.mutate(code);
-  };
-  const initialValues = { code: attribute?.code ?? "", title: attribute?.title ?? "" };
+const AttributeForm = ({ disabledFields }: Props) => {
   return (
-    <AttributeFormContext.Provider
-      value={{
-        isMutating: Boolean(
-          isMutating ||
-            createValueMutation.isLoading ||
-            deleteValueMutation.isLoading ||
-            updateValueMutation.isLoading
-        ),
-        isManualSort,
-        changeManualSort: setManualSort,
-        options,
-        addOption,
-        updateOption,
-        deleteOption,
-        selectedOptionCode,
-        changeSelectedOptionCode: setSelectedOptionCode,
-        ref
-      }}
-    >
-      <Formik
-        innerRef={ref}
-        enableReinitialize
-        initialValues={{ ...initialValues, type: "dropdown" }}
-        onSubmit={submit}
-        validationSchema={validationSchema}
-      >
-        {children}
-      </Formik>
-    </AttributeFormContext.Provider>
+    <Grid container spacing={4}>
+      <Grid item xs={4}>
+        <TextField
+          disabled={disabledFields && disabledFields["code"]}
+          fullWidth
+          required
+          name="code"
+          label="Attribute Code"
+          fieldConfig={{}}
+          placeholder="|Ex: 20002603"
+        />
+      </Grid>
+      <Grid item xs={8} />
+      <Grid item xs={4}>
+        <TextField
+          fullWidth
+          required
+          name="title"
+          label="Label"
+          fieldConfig={{}}
+          placeholder="Ex: Input Registration"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+      <Grid item xs={4}>
+        <SelectField
+          fullWidth
+          required
+          disabled
+          name="type"
+          dataSource={[{ label: "Simple Select Dropdown", value: "dropdown" }]}
+          label="Attribute Type*"
+        />
+      </Grid>
+    </Grid>
   );
 };
+
+export default AttributeForm;

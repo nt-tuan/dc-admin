@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useCallback } from "react";
-import { AttributeFormContext } from "@/entities/product/ui/attribute-form";
+import { AttributeFormContext } from "@/entities/product/ui/attribute-form-provider";
 
 interface Props {
   editable: boolean;

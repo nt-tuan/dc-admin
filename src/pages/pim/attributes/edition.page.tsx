@@ -5,14 +5,17 @@ import React from "react";
 
 import { ProductAttribute } from "@/services/pim.service";
 import Button from "@mui/lab/LoadingButton";
-import OptionsForm from "./options-form";
+import AttributeValueForm from "@/entities/product/ui/attribute-value-form";
 import PageContentLayout from "../page-layout";
-import PropertiesForm from "./properties-form";
 import Typography from "@mui/material/Typography";
 import { pimRoutePaths } from "@/commons/consts/system/routes/pim-route-paths.const";
 import { useUpdateProductAttribute } from "@/entities/product/libs/use-update-entity";
 import { useGetProductAttribute } from "@/entities/product/libs/use-get-entity";
-import { AttributeFormContext, AttributeFormProvider } from "@/entities/product/ui/attribute-form";
+import {
+  AttributeFormContext,
+  AttributeFormProvider
+} from "@/entities/product/ui/attribute-form-provider";
+import AttributeForm from "@/entities/product/ui/attribute-form";
 
 const TAB_KEYS = {
   PROPERTIES: "PROPERTIES",
@@ -32,12 +35,12 @@ const Content = ({ attribute }: { attribute: ProductAttribute }) => {
       {
         label: "Properties",
         key: PROPERTIES,
-        component: <PropertiesForm disabledFields={{ code: true }} />
+        component: <AttributeForm disabledFields={{ code: true }} />
       },
       {
         label: "Options",
         key: OPTIONS,
-        component: <OptionsForm />
+        component: <AttributeValueForm />
       }
     ],
     []

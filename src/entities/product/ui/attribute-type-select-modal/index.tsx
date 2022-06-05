@@ -12,10 +12,6 @@ const TYPE_ENNUM = {
 };
 
 const TYPES = [
-  // {
-  //   value: TYPE_ENNUM.textbox,
-  //   label: "Textbox"
-  // },
   {
     value: TYPE_ENNUM.dropdown,
     label: "Multi Select Dropdown"
@@ -54,7 +50,7 @@ const Content = ({ onClose }) => {
     </Stack>
   );
 };
-const AttributeTypeModal = ({ open, onClose }) => {
+const AttributeTypeSelectModal = ({ open, onClose }) => {
   return (
     <DTCModal
       open={open}
@@ -70,4 +66,4 @@ const AttributeTypeModal = ({ open, onClose }) => {
   );
 };
 
-export default AttributeTypeModal;
+export default AttributeTypeSelectModal;
