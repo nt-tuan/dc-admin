@@ -6,7 +6,12 @@ const configContentLines = [];
 for (const line of lines) {
   const parts = line.split("=");
   const [key, ...valueParts] = parts;
-  if (!key || !valueParts || valueParts.length === 0) continue;
+  if (!key) continue;
+  if (!valueParts || valueParts.length === 0 || !valueParts[1]) {
+    const envValue = process.env[key];
+    if (envValue) configContentLines.push(`\t"${key}":"${envValue}"`);
+    continue;
+  }
   const value = valueParts.join("=");
   configContentLines.push(`\t"${key}":"${value}"`);
 }
