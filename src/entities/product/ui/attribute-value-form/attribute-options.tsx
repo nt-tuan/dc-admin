@@ -100,11 +100,14 @@ const AttributeOptions = ({
 
   const onDragEnd = useCallback(
     ({ source, destination }) => {
+      const selectedValue = sourceOptions[source.index];
+      onOptionClick(selectedValue?.code);
+
       if (!destination) return;
       const items: AttributeValue[] = reorder(sourceOptions, source.index, destination.index);
       onChange(items);
     },
-    [sourceOptions, onChange]
+    [sourceOptions, onChange, onOptionClick]
   );
 
   return (

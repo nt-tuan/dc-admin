@@ -1,5 +1,3 @@
-import Autocomplete, { AutocompleteInputChangeReason } from "@mui/material/Autocomplete";
-
 import ArrowDown from "@/components/icons/arrow-down.comp";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -115,14 +113,7 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
     setAnchorEl(null);
     setOpen(false);
   };
-  const dataSource = React.useMemo(() => {
-    return (
-      data?.attributes.map((attribute) => ({
-        label: attribute.title,
-        attribute
-      })) ?? []
-    );
-  }, [data]);
+
   const foundAttributes = React.useMemo(() => {
     const isMatchAttribute = (attribute: ProductAttribute) => {
       const nornalizedText = searchText.toLowerCase();
@@ -133,22 +124,9 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
     };
     return data?.attributes.filter(isMatchAttribute).slice(0, 5) ?? [];
   }, [data, searchText]);
-  const handleChange = (
-    event: React.SyntheticEvent<Element, Event>,
-    value: { attribute: ProductAttribute }[] | null
-  ) => {
-    event.stopPropagation();
-    if (value && value.length > 0) {
-      setSearchText(value[0].attribute.title);
-    }
-  };
-  const changeSearchText = (
-    e: React.SyntheticEvent<Element, Event>,
-    value: string,
-    reason: AutocompleteInputChangeReason
-  ) => {
-    e?.stopPropagation();
-    if (reason === "input") setSearchText(value);
+
+  const changeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
   const handleAdd = (attributes: ProductAttribute[]) => {
     onAdd(attributes);
@@ -176,25 +154,7 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
         }}
         PaperProps={{ sx: { width: 448, px: 2, pt: 2, pb: 3 } }}
       >
-        <Autocomplete
-          fullWidth
-          multiple
-          disablePortal
-          id="combo-box-demo"
-          value={[]}
-          inputValue={searchText}
-          onInputChange={changeSearchText}
-          options={dataSource}
-          renderOption={(props, option) => {
-            return (
-              <li {...props} key={option.attribute.code}>
-                {option.attribute.title}
-              </li>
-            );
-          }}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} label="Search" />}
-        />
+        <TextField fullWidth label="Search" value={searchText} onChange={changeSearchText} />
         <Box sx={{ flexGrow: 1, flexShrink: 1 }}>
           <CheckboxList
             initialAttributes={initialAttributes}
