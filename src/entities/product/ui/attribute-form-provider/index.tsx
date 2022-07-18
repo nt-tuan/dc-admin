@@ -50,7 +50,6 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
     };
     onSubmit({ attribute });
   };
-
   const addOption = ({ code, title }: { code: string; title: string }) => {
     if (attribute == null) return;
     const newOption: AttributeValue = {
@@ -66,6 +65,9 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
   };
   const deleteOption = (code: string) => {
     deleteValueMutation.mutate(code);
+  };
+  const changeSelectedOptionCode = (code: string | undefined) => {
+    setSelectedOptionCode(code);
   };
   const initialValues = { code: attribute?.code ?? "", title: attribute?.title ?? "" };
   return (
@@ -84,7 +86,7 @@ export const AttributeFormProvider = ({ attribute, children, onSubmit, isMutatin
         updateOption,
         deleteOption,
         selectedOptionCode,
-        changeSelectedOptionCode: setSelectedOptionCode,
+        changeSelectedOptionCode,
         ref
       }}
     >

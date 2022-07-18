@@ -38,7 +38,7 @@ const useAddOption = () => {
     const selectedOption = options.find((option) => option.code === selectedOptionCode);
     if (!selectedOption) return;
     setOption(selectedOption);
-    setInputType("code");
+    setInputType("title");
   }, [options, selectedOptionCode]);
 
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,7 +5,6 @@ import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import Checkbox from "@mui/material/Checkbox";
 import { getAttributeType } from "../../libs/mapper";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
@@ -17,9 +16,6 @@ const Header = () => {
       <TableRow sx={{ backgroundColor: "grey.100" }}>
         <TableCell>Label</TableCell>
         <TableCell>Attribute Type</TableCell>
-        <TableCell>
-          <Box pl="9px">Required</Box>
-        </TableCell>
         <TableCell></TableCell>
       </TableRow>
     </TableHead>
@@ -41,9 +37,6 @@ const AttributeSelect = ({ attributes, onDelete }: Props) => {
               <TableRow key={att.code}>
                 <TableCell>{att.title}</TableCell>
                 <TableCell>{getAttributeType(att)}</TableCell>
-                <TableCell>
-                  <Checkbox />
-                </TableCell>
                 <TableCell align="right">
                   <IconButton color="error" onClick={() => onDelete(att.code)}>
                     <DeleteOutline />

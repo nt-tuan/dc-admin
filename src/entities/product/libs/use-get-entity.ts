@@ -11,7 +11,8 @@ import {
   getSegment,
   PaginationParams,
   getProductClass,
-  getProductAttribute
+  getProductAttribute,
+  ProductBrick
 } from "@/services/pim.service";
 import { useQuery, useQueryClient } from "react-query";
 
@@ -39,8 +40,26 @@ export const useGetBrick = (code?: string) => {
 };
 export const useInvalidateBrick = () => {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries("bricks");
+  return async (updatedBrick?: ProductBrick) => {
+    if (updatedBrick) {
+      queryClient.setQueriesData<{ bricks: ProductBrick[] } | undefined>("bricks", (data) => {
+        if (data?.bricks == null) return data;
+        const bricks = data.bricks.map((brick) => {
+          if (brick.code === updatedBrick.code) {
+            return updatedBrick;
+          }
+          return brick;
+        });
+        return {
+          ...data,
+          bricks
+        };
+      });
+    }
+    await queryClient.invalidateQueries("bricks");
+  };
 };
+
 interface Options {
   enabled?: boolean;
 }

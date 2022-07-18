@@ -118,10 +118,12 @@ export const useUpdateClassTitle = (localCode: string) => {
 };
 
 export const useUpdateProductBrick = () => {
+  const invalidate = useInvalidateBrick();
   const history = useHistory();
   return useMutation(updateProductBrick, {
-    onSuccess: async () => {
+    onSuccess: async (brick) => {
       history.push(pimRoutePaths.PRODUCT_BRICK);
+      await invalidate(brick);
     }
   });
 };

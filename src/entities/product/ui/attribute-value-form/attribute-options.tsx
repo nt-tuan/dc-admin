@@ -53,7 +53,7 @@ const OptionComponent = ({
   onClick
 }: OptionComponentProps) => {
   const { isMutating } = React.useContext(AttributeFormContext);
-  const { title, code } = option;
+  const { code } = option;
 
   return (
     <Draggable index={index} draggableId={code}>
@@ -70,7 +70,7 @@ const OptionComponent = ({
             <Stack direction="row" spacing={1} alignItems="center">
               {editable && <DragIndicatorIcon />}
               <SelectableTitle onClick={onClick} selected={selected}>
-                {title}
+                {code}
               </SelectableTitle>
             </Stack>
             <IconButton disabled={isMutating} color="error" onClick={() => onDelete(option.code)}>

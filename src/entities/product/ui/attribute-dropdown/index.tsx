@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useGetProductAttributes } from "../../libs/use-get-entity";
+import { debounce } from "lodash";
 
 interface Props {
   initialAttributes: ProductAttribute[];
@@ -31,13 +32,14 @@ const CheckboxList = ({
   const [selectedAttributes, setSelectedAttributes] = React.useState<ProductAttribute[]>(
     initialAttributes
   );
+
   React.useEffect(() => {
     setSelectedAttributes(initialAttributes);
   }, [initialAttributes]);
+
   const checkboxResult = React.useMemo(() => {
     const selectedCodes = new Set(selectedAttributes.map((item) => item.code));
-
-    const all = [...initialAttributes, ...foundAttributes, ...selectedAttributes].reduce(
+    const all = foundAttributes.reduce(
       (acc, current) => ({
         ...acc,
         [current.code]: { ...current, checked: selectedCodes.has(current.code) }
@@ -45,7 +47,7 @@ const CheckboxList = ({
       {} as { [key: string]: ProductAttribute & { checked: boolean } }
     );
     return Object.values(all);
-  }, [foundAttributes, selectedAttributes, initialAttributes]);
+  }, [foundAttributes, selectedAttributes]);
 
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
@@ -100,12 +102,37 @@ const CheckboxList = ({
   );
 };
 
-const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
+interface ContentProps extends Props {
+  attributes: ProductAttribute[];
+}
+const AttributeDropdownContent = ({ onAdd, attributes, initialAttributes }: ContentProps) => {
   const [searchText, setSearchText] = React.useState<string>("");
-  const { data, isLoading } = useGetProductAttributes();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const id = "add-attribute-popover";
+
+  const [foundAttributes, setFoundAttributes] = React.useState<ProductAttribute[]>(attributes);
+
+  const debounceSetValue = React.useMemo(
+    () =>
+      debounce((value: string) => {
+        console.log("debouce changed");
+        const isMatchAttribute = (attribute: ProductAttribute) => {
+          const nornalizedText = value.toLowerCase();
+          return (
+            attribute.code.toLowerCase().includes(nornalizedText) ||
+            attribute.title.toLowerCase().includes(nornalizedText)
+          );
+        };
+        setFoundAttributes(attributes.filter(isMatchAttribute) ?? []);
+      }, 300),
+    [attributes]
+  );
+
+  React.useEffect(() => {
+    setFoundAttributes(attributes ?? []);
+  }, [attributes]);
+
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
@@ -115,19 +142,10 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
     setOpen(false);
   };
 
-  const foundAttributes = React.useMemo(() => {
-    const isMatchAttribute = (attribute: ProductAttribute) => {
-      const nornalizedText = searchText.toLowerCase();
-      return (
-        attribute.code.toLowerCase().includes(nornalizedText) ||
-        attribute.title.toLowerCase().includes(nornalizedText)
-      );
-    };
-    return data?.attributes.filter(isMatchAttribute) ?? [];
-  }, [data, searchText]);
-
   const changeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("change text", e.target.value);
     setSearchText(e.target.value);
+    debounceSetValue(e.target.value);
   };
   const handleAdd = (attributes: ProductAttribute[]) => {
     onAdd(attributes);
@@ -162,12 +180,17 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
               initialAttributes={initialAttributes}
               onAdd={handleAdd}
               foundAttributes={foundAttributes}
-              isLoading={isLoading}
             />
           </Box>
         </Stack>
       </Popover>
     </>
   );
+};
+
+const AttributeDropdown = (props: Props) => {
+  const { data, isLoading } = useGetProductAttributes();
+  if (isLoading || data?.attributes == null) return <Loader />;
+  return <AttributeDropdownContent {...props} attributes={data.attributes} />;
 };
 export default AttributeDropdown;
