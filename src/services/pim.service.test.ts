@@ -203,7 +203,8 @@ test("createProductBrick should work", () => {
     code: "my-code",
     title: "my-title",
     classCode: "my-class",
-    hsCode: "my-hs-code"
+    hsCode: "my-hs-code",
+    attributeCodes: []
   };
   createProductBrick(payload);
   expect(backendAPI.post).toBeCalledWith(`${BRICK_PREFIX}`, payload);
@@ -213,7 +214,8 @@ test("updateProductBrick should work", () => {
     code: "my-code",
     title: "my-title",
     classCode: "my-class",
-    hsCode: "my-hs-code"
+    hsCode: "my-hs-code",
+    attributeCodes: []
   };
   updateProductBrick(payload);
   expect(backendAPI.put).toBeCalledWith(`${BRICK_PREFIX}/my-code`, payload);

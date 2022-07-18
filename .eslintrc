@@ -1,6 +1,6 @@
 {
-  "extends": ["react-app", "plugin:import/warnings", "plugin:sonarjs/recommended"],
-  "plugins": ["react", "import", "sonarjs"],
+  "extends": ["react-app", "plugin:sonarjs/recommended"],
+  "plugins": ["react", "sonarjs"],
   "rules": {
     "react/jsx-filename-extension": [
       1,

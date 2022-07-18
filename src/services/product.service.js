@@ -61,10 +61,6 @@ export class ProductService {
     );
   };
 
-  static getProductCategories = () => {
-    return backendAPI.get(this.PRODUCT_CATEGORY);
-  };
-
   static getProductTypeByCategory = (catId) => {
     return backendAPI.get(`${this.PRODUCT_CATEGORY}/${catId}`);
   };

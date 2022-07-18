@@ -14,6 +14,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useGetProductAttributes } from "../../libs/use-get-entity";
 import { debounce } from "lodash";
+import { FixedSizeList } from "react-window";
 
 interface Props {
   initialAttributes: ProductAttribute[];
@@ -68,19 +69,30 @@ const CheckboxList = ({
   };
   return (
     <Stack spacing={2} height="100%">
-      <Box sx={{ flexGrow: 1, overflowY: "scroll", pt: 2 }}>
+      <Box sx={{ flexGrow: 1, pt: 2 }}>
         {isLoading && <Loader />}
         {!isLoading && (
           <FormGroup>
-            {checkboxResult.map((item) => (
-              <FormControlLabel
-                key={item.code}
-                control={<Checkbox checked={item.checked} sx={{ padding: 0.5, mr: 1 }} />}
-                onChange={(event) => handleChange(event, item)}
-                label={item.title}
-                sx={{ paddingLeft: 1 }}
-              />
-            ))}
+            <FixedSizeList
+              height={160}
+              itemCount={checkboxResult.length}
+              itemSize={32}
+              width="100%"
+            >
+              {({ index, style }) => {
+                const item = checkboxResult[index];
+                return (
+                  <FormControlLabel
+                    style={style}
+                    key={item.code}
+                    control={<Checkbox checked={item.checked} sx={{ padding: 0.5, mr: 1 }} />}
+                    onChange={(event) => handleChange(event, item)}
+                    label={item.title}
+                    sx={{ paddingLeft: 1, width: "100%" }}
+                  />
+                );
+              }}
+            </FixedSizeList>
           </FormGroup>
         )}
       </Box>
@@ -105,6 +117,7 @@ const CheckboxList = ({
 interface ContentProps extends Props {
   attributes: ProductAttribute[];
 }
+
 const AttributeDropdownContent = ({ onAdd, attributes, initialAttributes }: ContentProps) => {
   const [searchText, setSearchText] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
@@ -116,7 +129,6 @@ const AttributeDropdownContent = ({ onAdd, attributes, initialAttributes }: Cont
   const debounceSetValue = React.useMemo(
     () =>
       debounce((value: string) => {
-        console.log("debouce changed");
         const isMatchAttribute = (attribute: ProductAttribute) => {
           const nornalizedText = value.toLowerCase();
           return (
@@ -124,7 +136,8 @@ const AttributeDropdownContent = ({ onAdd, attributes, initialAttributes }: Cont
             attribute.title.toLowerCase().includes(nornalizedText)
           );
         };
-        setFoundAttributes(attributes.filter(isMatchAttribute) ?? []);
+
+        setFoundAttributes(attributes.filter(isMatchAttribute));
       }, 300),
     [attributes]
   );
@@ -143,7 +156,6 @@ const AttributeDropdownContent = ({ onAdd, attributes, initialAttributes }: Cont
   };
 
   const changeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("change text", e.target.value);
     setSearchText(e.target.value);
     debounceSetValue(e.target.value);
   };

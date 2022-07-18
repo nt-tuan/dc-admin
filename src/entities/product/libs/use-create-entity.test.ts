@@ -10,11 +10,7 @@ import { renderHook } from "@testing-library/react-hooks";
 jest.mock("react-query");
 
 test("useCreateSegment should work", () => {
-  renderHook(() =>
-    useCreateSegment({
-      onSuccess: jest.fn()
-    })
-  );
+  renderHook(() => useCreateSegment());
   expect(useMutation).toBeCalled();
 });
 
