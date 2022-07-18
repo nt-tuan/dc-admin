@@ -107,7 +107,7 @@ export const backendAPI = new HttpApi({
 });
 export const jobAPI = new HttpApi({
   baseURL: getAPIEndPoint(),
-  timeout: 240_000,
+  timeout: 3_600_000,
   headers: {
     "Content-Type": "application/json"
   }

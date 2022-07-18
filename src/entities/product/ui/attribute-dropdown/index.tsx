@@ -46,6 +46,7 @@ const CheckboxList = ({
     );
     return Object.values(all);
   }, [foundAttributes, selectedAttributes, initialAttributes]);
+
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     attribute: ProductAttribute & { checked: boolean }
@@ -64,15 +65,15 @@ const CheckboxList = ({
     onAdd(selectedAttributes);
   };
   return (
-    <Stack spacing={3}>
-      <Box>
+    <Stack spacing={2} height="100%">
+      <Box sx={{ flexGrow: 1, overflowY: "scroll", pt: 2 }}>
         {isLoading && <Loader />}
         {!isLoading && (
           <FormGroup>
             {checkboxResult.map((item) => (
               <FormControlLabel
                 key={item.code}
-                control={<Checkbox checked={item.checked} />}
+                control={<Checkbox checked={item.checked} sx={{ padding: 0.5, mr: 1 }} />}
                 onChange={(event) => handleChange(event, item)}
                 label={item.title}
                 sx={{ paddingLeft: 1 }}
@@ -122,7 +123,7 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
         attribute.title.toLowerCase().includes(nornalizedText)
       );
     };
-    return data?.attributes.filter(isMatchAttribute).slice(0, 5) ?? [];
+    return data?.attributes.filter(isMatchAttribute) ?? [];
   }, [data, searchText]);
 
   const changeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,17 +153,19 @@ const AttributeDropdown = ({ onAdd, initialAttributes }: Props) => {
           vertical: "bottom",
           horizontal: "left"
         }}
-        PaperProps={{ sx: { width: 448, px: 2, pt: 2, pb: 3 } }}
+        PaperProps={{ sx: { width: 448, height: 310, px: 2, pt: 2, pb: 2, overflowY: "hidden" } }}
       >
-        <TextField fullWidth label="Search" value={searchText} onChange={changeSearchText} />
-        <Box sx={{ flexGrow: 1, flexShrink: 1 }}>
-          <CheckboxList
-            initialAttributes={initialAttributes}
-            onAdd={handleAdd}
-            foundAttributes={foundAttributes}
-            isLoading={isLoading}
-          />
-        </Box>
+        <Stack height="100%">
+          <TextField fullWidth label="Search" value={searchText} onChange={changeSearchText} />
+          <Box sx={{ flexGrow: 1, flexShrink: 1, overflow: "hidden" }}>
+            <CheckboxList
+              initialAttributes={initialAttributes}
+              onAdd={handleAdd}
+              foundAttributes={foundAttributes}
+              isLoading={isLoading}
+            />
+          </Box>
+        </Stack>
       </Popover>
     </>
   );

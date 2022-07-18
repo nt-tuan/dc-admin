@@ -6,6 +6,15 @@ const tryGetJSONValue = (jsonString, defaultValue) => {
   }
 };
 
+const tryGetStringArray = (str) => {
+  if (str == null) return [];
+  try {
+    return str.split(",").map((item) => item.trim());
+  } catch {
+    return [];
+  }
+};
+
 export const getPlugins = () => {
   const pluginsJSON = window._env_?.REACT_APP_PLUGINS;
   return tryGetJSONValue(pluginsJSON, []);
@@ -52,4 +61,7 @@ export const getAssetURL = (path) => {
 };
 export const getAppVersion = () => {
   return window._env_?.APPLICATION_VERSION ?? "v0.0.0";
+};
+export const getFlags = () => {
+  return tryGetStringArray(window?._env_?.REACT_APP_FLAGS);
 };
