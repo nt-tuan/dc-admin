@@ -67,7 +67,7 @@ const OptionComponent = ({
             borderBottom="1px solid"
             borderColor="#E5E5E5"
           >
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ flexGrow: 1 }}>
               {editable && <DragIndicatorIcon />}
               <SelectableTitle onClick={onClick} selected={selected}>
                 {code}
