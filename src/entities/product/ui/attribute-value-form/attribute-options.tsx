@@ -60,14 +60,13 @@ const OptionComponent = ({
           <Stack
             p={1}
             direction="row"
-            justifyContent="space-between"
             alignItems="center"
             borderBottom="1px solid"
             borderColor="#E5E5E5"
           >
             <Stack direction="row" spacing={1} alignItems="center" sx={{ flexGrow: 1 }}>
               {editable && <DragIndicatorIcon />}
-              <Stack height={40} onClick={onClick} alignItems="center" justifyContent="center">
+              <Stack height={40} onClick={onClick} justifyContent="center" sx={{ flexGrow: 1 }}>
                 <SelectableTitle selected={selected}>{code}</SelectableTitle>
               </Stack>
             </Stack>
@@ -98,18 +97,23 @@ const AttributeOptions = ({
 
   const onDragEnd = useCallback(
     ({ source, destination }) => {
-      const selectedValue = sourceOptions[source.index];
-      onOptionClick(selectedValue?.code);
-
       if (!destination) return;
       const items: AttributeValue[] = reorder(sourceOptions, source.index, destination.index);
       onChange(items);
     },
-    [sourceOptions, onChange, onOptionClick]
+    [sourceOptions, onChange]
   );
+  const handleDragStart = ({ source, destination }) => {
+    const selectedValue = sourceOptions[source.index];
+    onOptionClick(selectedValue?.code);
+  };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragEnd={onDragEnd}
+      onDragStart={handleDragStart}
+      onBeforeDragStart={handleDragStart}
+    >
       <Droppable droppableId="options-container">
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
